@@ -1,2 +1,2 @@
 # dbay
-Repository for DBay Electonics Platform
+Repository for the Device Bay (DBay) Electonics Platform
