@@ -1,6 +1,6 @@
 # Isolated Voltage Source Webserver and GUI
 
-A web-app user interface for controlling an UDP connected isolated voltage source, built with svelte for the frontend, and FastAPI for the backend. 
+A web-app user interface for controlling an UDP connected isolated voltage source, built with [svelte](https://svelte.dev/) for the frontend, and [FastAPI](https://fastapi.tiangolo.com/) for the backend. 
 
 <!-- <img style="display: block; margin-left: auto; margin-right: auto; width: 30%" src="GUI.PNG"> -->
 
@@ -13,6 +13,9 @@ A web-app user interface for controlling an UDP connected isolated voltage sourc
 
 
 ## Installation
+<details>
+<summary>How to set up the DBay graphical user interface for use in your lab</summary>
+
 
 ### 1. Install docker
 
@@ -101,9 +104,12 @@ docker run -d --restart unless-stopped --name vsource_control_container -p 80:80
 ```
 
 The user interface should now be visible by typing `0.0.0.0` into the browser of the computer running docker. If docker was installed on a remote host computer on the same network, view the UI by directing the browser to the ip address of the host computer. 
-
+</details>
 
 ## Various Useful Docker Commands
+
+<details>
+<summary> Docker commands needed for starting/stopping/updating a container</summary>
 
 ### Build command:
 ```console
@@ -150,9 +156,55 @@ docker ps
 ```console
 docker logs -f <container_id>
 ```
+</details>
 
 
-## Developer Notes
+## Development
+<details>
+<summary>Initial steps for adding functionality to the web-based frontend or the python backend</summary>
+
+### Frontend Development
+
+node and npm need to be installed
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+This will show a 'fallback state' of the GUI, for when it isn't able to connect to the python backend. Building the 'look' of a new module in the GUI is probably fastest by adding it to the fallback state located in `frontend/src/fallbackState.ts`, and watching for changes while the `npm run dev` development server is running. 
+
+### Full State Development
+
+#### Running the python server
+(getting the backend python to work with the frontend)
+
+Use anaconda or pip to install dependencies. For pip:
+```bash
+pip install --no-cache-dir --upgrade -r requirements.txt
+cd backend
+python main.py
+```
+
+#### Update the python server with modified frontend code
+The frontend code needs to be 'compiled' to html and javascript to be used and loaded by the backend python server. 
+
+```bash
+cd frontend
+npm run build
+```
+
+If you look inside the `package.json` file in `frontend`, you'll see that `npm run build` has been customized to compile the code with `vite build` and copy it to `/backend/snspd_bias_control/`. So anytime new frontend functionality is added and it's time to get it working with the backend, this command needs to be run. 
+
+</details>
+
+
+## Docker Development Notes
+
+<details>
+<summary>Commands and notes related to building the docker container</summary>
+
 
 The uploaded docker image was built on an ARM-based macbook. In order to build an image that will run on an x86-64 platform, you have to use `buildx`, a feature for multi-architecture builds. 
 
@@ -180,3 +232,5 @@ Then with the docker desktop utility, publish the image to dockerhub. This way w
 Trying to pull repository docker.io/sansseriff/vsource_control ... 
 missing signature key
 ```
+
+</details>

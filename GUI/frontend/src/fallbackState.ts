@@ -2,10 +2,10 @@ import type { Module4chState, SystemState, ChState } from "./stores/voltageStore
 
 const module_1: Module4chState = {
   channels: [
-    { index: 1, bias_voltage: 0.0, activated: false, heading_text: "test 1" },
-    { index: 2, bias_voltage: 0.0, activated: false, heading_text: "test 2" },
-    { index: 3, bias_voltage: 0.0, activated: false, heading_text: "test 3" },
-    { index: 4, bias_voltage: 0.0, activated: false, heading_text: "test 4" },
+    { index: 1, bias_voltage: 0.0, activated: false, heading_text: "test 1", measuring: false},
+    { index: 2, bias_voltage: 0.0, activated: false, heading_text: "test 2", measuring: false},
+    { index: 3, bias_voltage: 0.0, activated: false, heading_text: "test 3", measuring: false},
+    { index: 4, bias_voltage: 0.0, activated: false, heading_text: "test 4", measuring: false},
   ],
   slot: 1,
   type: "4Ch",
@@ -14,10 +14,10 @@ const module_1: Module4chState = {
 
 const module_2: Module4chState = {
   channels: [
-    { index: 1, bias_voltage: 0.0, activated: false, heading_text: "test 5" },
-    { index: 2, bias_voltage: 0.0, activated: false, heading_text: "test 6" },
-    { index: 3, bias_voltage: 0.0, activated: false, heading_text: "test 7" },
-    { index: 4, bias_voltage: 0.0, activated: false, heading_text: "test 8" },
+    { index: 1, bias_voltage: 0.0, activated: false, heading_text: "test 5", measuring: false},
+    { index: 2, bias_voltage: 0.0, activated: false, heading_text: "test 6", measuring: false},
+    { index: 3, bias_voltage: 0.0, activated: false, heading_text: "test 7", measuring: false},
+    { index: 4, bias_voltage: 0.0, activated: false, heading_text: "test 8", measuring: false},
   ],
   slot: 4,
   type: "4Ch",

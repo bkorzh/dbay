@@ -49,7 +49,7 @@
             <select bind:value={selectedType} style="height: 2.6rem; width: 100%">
                 <option value="" selected>Select module type</option>
                 <option value="1">4 Ch. Triax</option>
-                <option value="1">16 Ch. Micro Coax</option>
+                <option value="1">16 Ch. Micro Coax (not implemented yet)</option>
             </select>
         </div>
         <SubmitButton {uiStateStore} on:submit={initialize}
