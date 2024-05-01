@@ -1,6 +1,0 @@
-you could use the spread feature for BiasVoltageComponent or whatever I called it
-
-
-<BiasController {...bias_state} /> is the same as:
-
-<BiasController voltage={bias_state.voltage} activated={bias_state.acivated} ... />
