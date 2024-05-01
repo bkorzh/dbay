@@ -85,6 +85,8 @@ function switch_on_off_module(module: VoltageSourceModule, onoff: boolean): Volt
 export function switch_on_off_system(system: SystemState, onoff: boolean): SystemState {
   return {
     data: system.data.map((module) => {
+      
+      // if it's a type of module that can be turned on and off
       if (module instanceof VoltageSourceModule) {
         return switch_on_off_module(module, onoff);
       }
