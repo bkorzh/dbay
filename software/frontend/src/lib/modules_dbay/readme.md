@@ -1,0 +1,1 @@
+Components that correspond to a real-life module for the D-Bay rack go here. These include a 4-channel differential voltage source module, a differential 16-channel voltage source module, and others. 

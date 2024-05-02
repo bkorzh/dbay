@@ -1,19 +1,22 @@
 <script lang="ts">
   import "./app.css";
   import TopControls from "./lib/TopControls.svelte";
-  import Channel from "./lib/BareChannel.svelte";
   import { onMount, onDestroy } from "svelte";
   import { getFullState } from "./api";
   import SubmitButton from "./lib/SubmitButton.svelte";
   import { uiStateStore } from "./stores/uiStateStore";
-  import Module from "./lib/Module.svelte";
-  import { writable } from "svelte/store";
+
+
+  // import all dbay modules
+  import * as Modules from "./lib/modules_dbay/index.js";
+
+
   import type { SystemState, Module4chState } from "./stores/voltageStore";
   import { voltageStore } from "./stores/voltageStore";
   import { fallbackState } from "./fallbackState";
-  import ModuleAdder from "./lib/ModuleAdder.svelte";
+  import ModuleAdder from "./lib/modules_ui/ModuleAdder.svelte";
   import BasicContainer from "./lib/BasicContainer.svelte";
-  import ReInitSource from "./lib/ReInitSource.svelte";
+  import ReInitSource from "./lib/modules_ui/ReInitSource.svelte";
 
   function toggleDarkMode() {
     console.log("toggleDarkMode");
@@ -105,11 +108,11 @@
         </p>
       </BasicContainer>
       {#each fallbackState.data as module_state, i}
-        <Module module_index={i + 1} />
+        <Modules.Module module_index={i + 1} />
       {/each}
     {:else if module_idx}
       {#each module_idx as idx}
-        <Module module_index={idx} />
+        <Modules.Module module_index={idx} />
       {/each}
     {:else}
       <div class="basic-block">Loading...</div>

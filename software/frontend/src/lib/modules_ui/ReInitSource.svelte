@@ -1,9 +1,9 @@
 <script>
-  import SubmitButton from "./SubmitButton.svelte";
-  import { uiStateStore } from "../stores/uiStateStore";
-  import EditPencil from "./EditPencil.svelte";
+  import SubmitButton from "../SubmitButton.svelte";
+  import { uiStateStore } from "../../stores/uiStateStore";
+  import EditPencil from "../EditPencil.svelte";
   // import type { VsourceParams } from "../stores/voltageStore";
-  import { initializeVsouce } from "../api"
+  import { initializeVsouce } from "../../api"
 
   let ipEditable = false;
   let portEditable = false;

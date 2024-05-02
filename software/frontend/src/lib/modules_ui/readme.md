@@ -1,0 +1,1 @@
+Components that look like or help construct module-like user interface blocks. These don't correspond to physical objects, but they fulfill some purpose like re-initializing the source or for adding real modules. 
