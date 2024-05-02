@@ -4,9 +4,16 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/snspd_bias_control/',
+  base: '/dbay_control/',
   plugins: [svelte()],
   css: {
     postcss
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `[name].js`
+      }
+    }
   }
 })

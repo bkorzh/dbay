@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rm -rf ../backend/snspd_bias_control/assets && vite build && cp -r dist/ ../backend/snspd_bias_control/",
+    "build": "rm -rf ../backend/dbay_control/assets && vite build && cp -r dist/ ../backend/dbay_control/",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "deploy": "npx gh-pages -d snspd_bias_control"

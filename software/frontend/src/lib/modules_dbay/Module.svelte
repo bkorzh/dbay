@@ -66,7 +66,7 @@
       <div class="left-space"></div>
       <div class="right-content">
         {#each channel_list as _, i}
-          <div transition:slide class="channel">
+          <div transition:slide|global class="channel">
             <Channel
             index={i + 1}
             module_index={module_index}
