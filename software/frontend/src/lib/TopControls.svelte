@@ -86,7 +86,7 @@
 
 <div class="bound-box">
   <div class="top-bar">
-    <h1 class="heading">D-Bay Control System</h1>
+    <h1 class="heading">Device Bay Electronics System</h1>
     <LightDarkToggleFG />
     <Hamburger onClick={toggleMenu}/>
     {#if showDropdown}
