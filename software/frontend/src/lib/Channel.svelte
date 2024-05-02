@@ -740,6 +740,10 @@
         color: var(--icon-color);
     }
 
+    .chevron:focus {
+        outline: none;
+    }
+
     .bound-box {
         display: flex;
         flex-direction: column;

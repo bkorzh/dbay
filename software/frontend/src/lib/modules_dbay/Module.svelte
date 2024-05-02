@@ -100,6 +100,10 @@
     color: var(--module-icon-color);
   }
 
+  .chevron:focus {
+        outline: none;
+    }
+
   .identifier {
     margin-left: 10px;
     color: var(--module-icon-color);

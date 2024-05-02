@@ -8,7 +8,6 @@
   import Hamburger from './Hamburger.svelte';
   import { componentInstance } from "../stores/componentInstanceStore";
   import { uiStateStore } from "../stores/uiStateStore";
-  import Menu from "./Menu.svelte";
   import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./MenuButton.svelte";
   import Button from "./Button.svelte";
@@ -90,7 +89,7 @@
     <LightDarkToggleFG />
     <Hamburger onClick={toggleMenu}/>
     {#if showDropdown}
-      <Menu onClick={toggleMenu} menuVisible={showDropdown} />
+      <!-- <Menu onClick={toggleMenu} menuVisible={showDropdown} /> -->
       <MenuSlotted onClick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
         <MenuButton on:click={addModule}>Add a Module</MenuButton>
         <MenuButton on:click={showSourceReInit}>Re-Initialize Source</MenuButton>
