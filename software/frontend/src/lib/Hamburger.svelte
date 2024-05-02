@@ -13,7 +13,7 @@
     }
 </script>
 
-<div class="hamburger" on:click={onClick} on:keydown={handleKeyDown} bind:this={$componentInstance}>
+<div class="hamburger" on:click={onClick} on:keydown={handleKeyDown} bind:this={$componentInstance} role="button" tabindex="0">
     <svg
         class="h-5.5 w-6 my-1 mr-1"
         viewBox="0 0 24 24"

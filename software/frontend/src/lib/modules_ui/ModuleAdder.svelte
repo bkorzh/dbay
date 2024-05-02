@@ -118,8 +118,8 @@
         color: var(--text-color);
     }
 
-    .warning {
+    /* .warning {
         color: red;
         margin-bottom: 1rem;
-    }
+    } */
 </style>

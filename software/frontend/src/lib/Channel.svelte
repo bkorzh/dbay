@@ -302,7 +302,7 @@
             {/if} -->
         </div>
         <div class="top-right">
-            <div class="dot-menu" on:click={toggleMenu} on:keydown={toggleMenu} bind:this={dotMenu}>
+            <div class="dot-menu" on:click={toggleMenu} on:keydown={toggleMenu} bind:this={dotMenu} role="button" tabindex="0">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="21"
@@ -336,6 +336,8 @@
                 class:toggle_up
                 class:toggle_down
                 viewBox="0 0 16 16"
+                role="button"
+                tabindex="0"
                 on:click={togglerRotateState}
                 on:keydown={togglerRotateState}
             >
@@ -369,6 +371,8 @@
                 <div
                     class="plus-minus"
                     style="--state_opacity: {st.opacity}"
+                    role="button"
+                    tabindex="0"
                     on:click={updatedPlusMinus}
                     on:keydown={updatedPlusMinus}
                 >
@@ -377,11 +381,11 @@
                 <div class="controls">
                     <div class="buttons-top">
                         <ChevButtonTop on:click={() => increment(1)} />
-                        <div class="spacer-chev" />
+                        <div class="spacer-chev"></div>
                         <ChevButtonTop on:click={() => increment(0.1)} />
-                        <div class="spacer-chev" />
+                        <div class="spacer-chev"></div>
                         <ChevButtonTop on:click={() => increment(0.01)} />
-                        <div class="spacer-chev" />
+                        <div class="spacer-chev"></div>
                         <ChevButtonTop on:click={() => increment(0.001)} />
                     </div>
 
@@ -393,28 +397,28 @@
                         >
                             {ones}
                         </div>
-                        <div class="short-spacer" />
+                        <div class="short-spacer"></div>
                         <div
                             class="digit dot"
                             style="--state_opacity: {st.opacity}"
                         >
                             .
                         </div>
-                        <div class="short-spacer" />
+                        <div class="short-spacer"></div>
                         <div
                             class="digit"
                             style="--state_opacity: {st.opacity}"
                         >
                             {tens}
                         </div>
-                        <div class="spacer" />
+                        <div class="spacer"></div>
                         <div
                             class="digit"
                             style="--state_opacity: {st.opacity}"
                         >
                             {hundreds}
                         </div>
-                        <div class="spacer" />
+                        <div class="spacer"></div>
                         <div
                             class="digit"
                             style="--state_opacity: {st.opacity}"
@@ -425,11 +429,11 @@
 
                     <div class="buttons-bottom">
                         <ChevButtonBottom on:click={() => increment(-1)} />
-                        <div class="spacer-chev" />
+                        <div class="spacer-chev"></div>
                         <ChevButtonBottom on:click={() => increment(-0.1)} />
-                        <div class="spacer-chev" />
+                        <div class="spacer-chev"></div>
                         <ChevButtonBottom on:click={() => increment(-0.01)} />
-                        <div class="spacer-chev" />
+                        <div class="spacer-chev"></div>
                         <ChevButtonBottom on:click={() => increment(-0.001)} />
                     </div>
                 </div>

@@ -90,7 +90,7 @@
     <LightDarkToggleFG />
     <Hamburger onClick={toggleMenu}/>
     {#if showDropdown}
-      <!-- <Menu onClick={toggleMenu} menuVisible={showDropdown} /> -->
+      <Menu onClick={toggleMenu} menuVisible={showDropdown} />
       <MenuSlotted onClick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
         <MenuButton on:click={addModule}>Add a Module</MenuButton>
         <MenuButton on:click={showSourceReInit}>Re-Initialize Source</MenuButton>

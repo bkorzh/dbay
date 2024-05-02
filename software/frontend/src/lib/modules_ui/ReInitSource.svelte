@@ -42,7 +42,7 @@
       <div class="label">IP</div>
       <div class="input-params">
         <input type="text" bind:value={ipaddr} readonly={!ipEditable} class:non-editable={!ipEditable} />
-        <div class="icon" on:click={toggleIpEditable} on:keydown={toggleIpEditable}>
+        <div class="icon" on:click={toggleIpEditable} on:keydown={toggleIpEditable} role="button" tabindex="0">
           <EditPencil darkMode={$uiStateStore.colorMode} />
         </div>
       </div>
@@ -52,7 +52,7 @@
       <div class="label">Port</div>
       <div class="input-params">
         <input type="text" bind:value={port} readonly={!portEditable} class:non-editable={!portEditable} />
-        <div class="icon" on:click={togglePortEditable} on:keydown={togglePortEditable}>
+        <div class="icon" role="button" tabindex="0" on:click={togglePortEditable} on:keydown={togglePortEditable}>
           <EditPencil darkMode={$uiStateStore.colorMode} />
         </div>
       </div>
@@ -62,7 +62,7 @@
       <div class="label">Timeout</div>
       <div class="input-params">
         <input type="text" bind:value={timeout} readonly={!timeoutEditable} class:non-editable={!timeoutEditable} />
-        <div class="icon" on:click={toggleTimeoutEditable} on:keydown={toggleTimeoutEditable}>
+        <div class="icon" on:click={toggleTimeoutEditable} on:keydown={toggleTimeoutEditable} role="button" tabindex="0">
           <EditPencil darkMode={$uiStateStore.colorMode} />
         </div>
       </div>

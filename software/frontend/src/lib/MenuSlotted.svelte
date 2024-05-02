@@ -60,7 +60,7 @@
     <div class="settings-top">
         <h3>Settings</h3>
 
-        <div class="close-buttom" on:click={onClick} on:keydown={handleKeyDown}>
+        <div class="close-buttom" on:click={onClick} on:keydown={handleKeyDown} role="button" tabindex="0">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"

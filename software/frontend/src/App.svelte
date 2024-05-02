@@ -7,7 +7,7 @@
   import { uiStateStore } from "./stores/uiStateStore";
 
 
-  // import all dbay modules
+  // // import all dbay modules
   import * as Modules from "./lib/modules_dbay/index.js";
 
 
@@ -47,6 +47,7 @@
       const response = await getFullState();
       // console.log("the response: ", response);
       total_state = response;
+      console.log("full state: ", total_state);
 
       // console.log("total_state: ", total_state);
 
@@ -73,7 +74,7 @@
 
       // if no response, server is not available. Use fallback state for testing
     } catch (error) {
-      console.log("An error occurred: ", error);
+      console.log("Whee error occurred: ", error);
       // Handle the error here
       serverNotResponding = true;
       voltageStore.set(fallbackState);
@@ -102,7 +103,6 @@
 
     {#if serverNotResponding}
       <BasicContainer>
-        <!-- add some padding -->
         <p class="text-red-500 p-3">
           Server not responding. Viewing fallback state
         </p>
@@ -119,7 +119,7 @@
     {/if}
   </div>
 
-  <div class="side-area" />
+<div class="side-area"></div>
 </div>
 
 <style>

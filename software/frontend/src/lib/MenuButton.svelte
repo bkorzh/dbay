@@ -1,7 +1,7 @@
 <script>
-
-    import { text } from "svelte/internal";
-
+    // nooo! not for svelte 5! 
+    // import { text } from "svelte/internal";
+    
 </script>
 
 <button on:click>

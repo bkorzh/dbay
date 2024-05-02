@@ -49,6 +49,8 @@
         class:toggle_up
         class:toggle_down
         viewBox="0 0 16 16"
+        role="button"
+        tabindex="0"
         on:click={togglerRotateState}
         on:keydown={togglerRotateState}
       >
