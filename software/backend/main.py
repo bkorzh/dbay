@@ -50,23 +50,19 @@ class VoltageChange(BaseModel):
 class ModuleAddition(BaseModel):
     slot: int
     type: str
+    # system_activated: bool
 
 
 class SourceState(BaseModel):
     data: list[Module]
     valid: bool
+    dev_mode: bool
 
 class VsourceParams(BaseModel):
     ipaddr: str
     timeout: float
     port: int
-
-
-# vsource = VMECTRL("10.7.0.193", 8880)
-
-# with open("vsource_params.json", "w") as f:
-#     json.dump({"ipaddr": "10.7.0.193", "port": 8880}, f)
-
+    dev_mode: bool
 
 
 # load defuault ip address and port
@@ -154,9 +150,10 @@ module_2 = Module(
 
 # data_state = [module_1, module_2]
 data_state = []
+system_activated = True
 
 
-source_state = SourceState(data=data_state, valid=True)
+source_state = SourceState(data=data_state, valid=True, dev_mode=vsource_params["dev_mode"])
 
 channel_default_state = {
     "index": 0,
@@ -181,9 +178,9 @@ app = FastAPI()
 
 
 app.mount(
-    "/snspd_bias_control",
-    StaticFiles(directory=Path(BASE_DIR, "snspd_bias_control")),
-    name="snspd_bias_control",
+    "/dbay_control",
+    StaticFiles(directory=Path(BASE_DIR, "dbay_control")),
+    name="dbay_control",
 )
 
 
@@ -242,7 +239,7 @@ def identify_change(change: VoltageChange, old_channel_state: Channel):
 
 @app.get("/", response_class=HTMLResponse)
 async def return_index(request: Request):
-    return FileResponse(Path(BASE_DIR, "snspd_bias_control", "index.html"))
+    return FileResponse(Path(BASE_DIR, "dbay_control", "index.html"))
 
 
 @app.put("/channel")
@@ -286,7 +283,7 @@ async def voltage_set(request: Request, change: VoltageChange):
 
             # !!!! update!
 
-            vsource.setChVol(board, change.index-1, 0)
+            if not source_state.dev_mode: vsource.setChVol(board, change.index-1, 0)
             return change
         else:  # turning on or already on
             print("turning on ", change.index-1, "or already on")
@@ -297,7 +294,7 @@ async def voltage_set(request: Request, change: VoltageChange):
                 source_channel.activated = True
 
             # ch, voltage = source.setVoltage(change.channel, change.voltage)
-            vsource.setChVol(board, change.index-1, change.bias_voltage)
+            if not source_state.dev_mode: vsource.setChVol(board, change.index-1, change.bias_voltage)
 
             return change
     else:
@@ -307,12 +304,13 @@ async def voltage_set(request: Request, change: VoltageChange):
 async def zero_out_module(module: Module):
     for channel in range(len(module.channels)):
         await asyncio.sleep(0.01)
-        vsource.setChVol(module.slot, channel, 0)
+        if not source_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
 
 
 @app.post("/initialize-module")
 async def state_set(request: Request, module_args: ModuleAddition):
 
+    # system_activated = module_args.activated
 
     # I should submit all the default voltages to the VME when a new module is added
     new_module = Module(
@@ -344,6 +342,9 @@ async def state_set(request: Request, module_args: ModuleAddition):
 
 @app.post("/initialize-vsource")
 async def vsource_set_state(params: VsourceParams):
+
+    source_state.dev_mode = params.dev_mode
+
     global vsource
     vsource = VMECTRL(params.ipaddr, params.port)
     print("source reinitialized")

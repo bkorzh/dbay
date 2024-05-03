@@ -4,7 +4,7 @@ import select
 class VMECTRL:
 
 
-    def __init__(self, ip, port, timeout = 5):    
+    def __init__(self, ip, port, timeout = 0.2):    
         self._ip = ip
         self._port = port
         self._udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -17,14 +17,25 @@ class VMECTRL:
         try:
             # Send the message to the target IP and port
             self._udp_socket.sendto(message.encode(), (self._ip, self._port))
-            #print("Message sent successfully.")
-            # Wait for a response with timeout
-            ready = select.select([self._udp_socket], [], [], self._timeout)
-            if ready[0]:
-                # Receive the response from the server
-                data, server_address =self._udp_socket.recvfrom(self._port)
-                response = data.decode()
-                return response
+            # Initialize a counter for failed attempts
+            failed_attempts = 0
+            while True:
+                # Wait for a response with a short timeout
+                ready = select.select([self._udp_socket], [], [], 1)
+                if ready[0]:
+                    # Receive the response from the server
+                    data, server_address = self._udp_socket.recvfrom(self._port)
+                    response = data.decode()
+                    return response
+                else:
+                    # Increment the counter for failed attempts
+                    failed_attempts += 1
+                    # If the counter reaches a threshold, return an error message
+                    if failed_attempts >= 10:  # adjust this value as needed
+                        return -1
+                # Check if a KeyboardInterrupt has been raised
+                if KeyboardInterrupt:
+                    break
         except Exception as e:
             return "Error: {}".format(str(e))
 
@@ -38,7 +49,7 @@ class VMECTRL:
             return "error, voltage out of range"
         else:
             message = "SetDAC "+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
-        print(message)
+        # print(message)
         
         return self.send_message(message)
 
