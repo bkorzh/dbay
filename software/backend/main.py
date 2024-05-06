@@ -162,15 +162,15 @@ channel_default_state = {
     "heading_text": "",
 }
 
-module_default_state = Module(
-    type="4Ch",
-    slot=0,
-    name="",
-    channels=[
-        Channel(index=i, bias_voltage=0, activated=False, heading_text="", measuring=False)
-        for i in range(4)
-    ],
-)
+# module_default_state = Module(
+#     type="4Ch",
+#     slot=0,
+#     name="",
+#     channels=[
+#         Channel(index=i, bias_voltage=0, activated=False, heading_text="", measuring=False)
+#         for i in range(4)
+#     ],
+# )
 
 
 app = FastAPI()
