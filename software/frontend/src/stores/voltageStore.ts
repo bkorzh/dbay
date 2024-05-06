@@ -45,6 +45,8 @@ export class Module {
     public name: string) { }
 }
 
+
+// instead of inheritance, I should use composition
 export class VoltageSourceModule extends Module {
   constructor(
     slot: number,
@@ -64,12 +66,14 @@ export class Module16chState extends VoltageSourceModule { }
 export interface SystemState {
   data: Array<Module>;
   valid: boolean;
+  dev_mode: boolean;
 }
 
 export interface VsourceParams {
   ipaddr: string;
   timeout: number;
   port: number;
+  dev_mode: boolean;
 }
 
 function switch_on_off_channel(channel: ChState, onoff: boolean): ChState {
@@ -98,6 +102,6 @@ export function switch_on_off_system(system: SystemState, onoff: boolean): Syste
 
 
 
-export const voltageStore = writable<SystemState>({ data: [], valid: false });
+export const voltageStore = writable<SystemState>({ data: [], valid: false, dev_mode: false});
 
 

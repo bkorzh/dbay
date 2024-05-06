@@ -25,7 +25,7 @@
 
   let total_state;
 
-  let non_initialized_state: SystemState = { data: [], valid: true };
+  let non_initialized_state: SystemState = { data: [], valid: true, dev_mode: true};
 
   let serverNotResponding = false;
   // let serverNotInitialized = false;
@@ -47,10 +47,6 @@
       const response = await getFullState();
       // console.log("the response: ", response);
       total_state = response;
-      console.log("full state: ", total_state);
-
-      // console.log("total_state: ", total_state);
-
       // if the server responds, but the data field is empty, then the server is not initialized
       if (total_state.data.length === 0) {
         uiStateStore.update((state) => {
@@ -74,7 +70,6 @@
 
       // if no response, server is not available. Use fallback state for testing
     } catch (error) {
-      console.log("Whee error occurred: ", error);
       // Handle the error here
       serverNotResponding = true;
       voltageStore.set(fallbackState);
@@ -99,6 +94,14 @@
 
     {#if $uiStateStore.show_source_reinit}
       <ReInitSource />
+    {/if}
+
+    {#if $voltageStore.dev_mode}
+    <BasicContainer>
+        <p class="text-red-500 p-3">
+          Dev mode is enabled. No UDP commands will be sent to the hardware.
+        </p>
+      </BasicContainer>
     {/if}
 
     {#if serverNotResponding}

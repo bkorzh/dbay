@@ -20,17 +20,17 @@
     import MenuSlotted from "./MenuSlotted.svelte";
     import MenuButton from "./MenuButton.svelte";
 
-    export let index; // index of the bias control
-    export let module_index;
+    export let index: number; // index of the bias control
+    export let module_index: number;
 
-    let bias_voltage;
-    let activated;
-    let heading_text;
-    let immediate_text;
+    let bias_voltage: number;
+    let activated: boolean;
+    let heading_text: string;
+    let immediate_text: string;
     let heading_editing = false;
     let measuring = true;
 
-    let dotMenu;
+    let dotMenu: HTMLElement;
     let menuLocation = { top: 0, left: 0 };
 
     immediate_text = heading_text;
@@ -48,7 +48,7 @@
         console.log("menuLocation: ", menuLocation);
     }
 
-    async function validateUpdateVoltage(voltage) {
+    async function validateUpdateVoltage(voltage: number) {
         if (voltage >= 5) {
             voltage = 5;
         }
@@ -67,7 +67,7 @@
     }
 
     //// grab and update
-    async function increment(value) {
+    async function increment(value: number) {
         // bias_voltage =
         //     get(voltageStore).data[module_index - 1][index - 1].bias_voltage;
 

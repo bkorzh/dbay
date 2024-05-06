@@ -24,4 +24,4 @@ const module_2: Module4chState = {
   name: "module 2 slot 4"
 };
 
-export let fallbackState: SystemState = {data: [module_1, module_2], valid: false};
+export let fallbackState: SystemState = {data: [module_1, module_2], valid: false, dev_mode: true};
