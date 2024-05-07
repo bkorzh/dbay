@@ -1,4 +1,9 @@
+// ui state is not synced with the server
+
+
 import { writable } from 'svelte/store';
+
+
 
 export interface UIState {
   show_module_adder: boolean;

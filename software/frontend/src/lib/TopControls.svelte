@@ -5,16 +5,16 @@
 <script lang="ts">
   import LightDarkToggle from "./LightDarkToggle.svelte";
   import LightDarkToggleFG from "./LightDarkToggleFG.svelte";
-  import Hamburger from './Hamburger.svelte';
-  import { componentInstance } from "../stores/componentInstanceStore";
-  import { uiStateStore } from "../stores/uiStateStore";
+  import Hamburger from './shared/Hamburger.svelte';
+  import { componentInstance } from "../state/componentInstanceStore";
+  import { uiStateStore } from "../state/uiState";
   import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./MenuButton.svelte";
   import Button from "./Button.svelte";
   import { get } from 'svelte/store';
-  import { voltageStore, switch_on_off_system } from "../stores/voltageStore";
+  import { voltageStore, switch_on_off_system } from "../state/systemState";
   import {requestFullStateUpdate} from "../api";
-  import type { SystemState } from "../stores/voltageStore";
+  import type { SystemState } from "../state/systemState";
   import {onMount} from "svelte";
 
   let burgerMenu;

@@ -1,10 +1,9 @@
 <script>
   import SubmitButton from "../SubmitButton.svelte";
-  import { uiStateStore } from "../../stores/uiStateStore";
-  import EditPencil from "../EditPencil.svelte";
-  // import type { VsourceParams } from "../stores/voltageStore";
-  import { initializeVsouce } from "../../api"
-  import { voltageStore } from "../../stores/voltageStore";
+  import { uiStateStore } from "../../state/uiState";
+  import EditPencil from "../shared/EditPencil.svelte";
+  import { initializeVsource } from "../../api"
+  import { voltageStore } from "../../state/systemState";
 
   let ipEditable = false;
   let portEditable = false;
@@ -36,7 +35,7 @@
 
     console.log("done")
 
-    initializeVsouce({ipaddr, port, timeout, dev_mode})
+    initializeVsource({ipaddr, port, timeout, dev_mode})
   }
 
 

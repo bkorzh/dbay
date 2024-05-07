@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { onMount } from "svelte";
-  import { uiStateStore, setMode } from "../stores/uiStateStore";
+  import { uiStateStore, setMode } from "../state/uiState";
 
   // indicate if we're in dark mode or not
   let dark: boolean;

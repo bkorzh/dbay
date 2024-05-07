@@ -4,15 +4,15 @@
   import { onMount, onDestroy } from "svelte";
   import { getFullState } from "./api";
   import SubmitButton from "./lib/SubmitButton.svelte";
-  import { uiStateStore } from "./stores/uiStateStore";
+  import { uiStateStore } from "./state/uiState";
 
 
   // // import all dbay modules
   import * as Modules from "./lib/modules_dbay/index.js";
 
 
-  import type { SystemState, Module4chState } from "./stores/voltageStore";
-  import { voltageStore } from "./stores/voltageStore";
+  import type { SystemState, Module4chState } from "./state/systemState";
+  import { voltageStore } from "./state/systemState";
   import { fallbackState } from "./fallbackState";
   import ModuleAdder from "./lib/modules_ui/ModuleAdder.svelte";
   import BasicContainer from "./lib/BasicContainer.svelte";
@@ -113,6 +113,8 @@
       {#each fallbackState.data as module_state, i}
         <Modules.Module module_index={i + 1} />
       {/each}
+
+
     {:else if module_idx}
       {#each module_idx as idx}
         <Modules.Module module_index={idx} />

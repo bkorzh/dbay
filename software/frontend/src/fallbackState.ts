@@ -1,4 +1,4 @@
-import type { Module4chState, SystemState, ChState } from "./stores/voltageStore";
+import type { Module4chState, SystemState, ChState } from "./state/systemState";
 
 const module_1: Module4chState = {
   channels: [

@@ -1,0 +1,1 @@
+Addons provide functionality to modules. Multiple types of modules may include things like voltage sources. So the voltage source addon (vsource) provides a reusable state object and communication interface. 

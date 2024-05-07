@@ -4,7 +4,7 @@
 </script>
 
 <script lang="ts">
-    import { uiStateStore } from "../stores/uiStateStore";
+    import { uiStateStore } from "../state/uiState";
     // import { voltageStore } from "../stores/voltageStore"
     import Button from "./Button.svelte";
     import ChevButtonTop from "./ChevButtonTop.svelte";
@@ -12,7 +12,7 @@
     import SubmitButton from "./SubmitButton.svelte";
     // import { voltageStore } from "../stores/voltageStore";
     import { requestChannelUpdate } from "../api";
-    import type { ChannelChange } from "../stores/voltageStore";
+    import type { ChannelChange } from "../state/systemState";
     import App from "../App.svelte";
     import { onMount } from 'svelte';
 

@@ -1,6 +1,6 @@
 <script>
     import { writable } from 'svelte/store';
-    import { componentInstance } from '../stores/componentInstanceStore'
+    import { componentInstance } from '../../state/componentInstanceStore'
 
     export let onClick;
     
