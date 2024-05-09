@@ -1,7 +1,7 @@
 <script>
     import LightDarkToggle from "./LightDarkToggle.svelte";
     import { onMount, onDestroy } from "svelte";
-    import { uiStateStore } from "../state/uiState";
+    import { uiStateStore } from "../state/uiState.svelte";
 
     export let onClick;
     export let menuVisible;

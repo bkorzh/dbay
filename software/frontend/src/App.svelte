@@ -4,78 +4,82 @@
   import { onMount, onDestroy } from "svelte";
   import { getFullState } from "./api";
   import SubmitButton from "./lib/SubmitButton.svelte";
-  import { uiStateStore } from "./state/uiState";
-
+  import { ui_state } from "./state/uiState.svelte";
+  import type {JsonSystemState} from "./state/systemState.svelte"
 
   // // import all dbay modules
   import * as Modules from "./lib/modules_dbay/index.js";
 
 
-  import type { SystemState, Module4chState } from "./state/systemState";
-  import { voltageStore } from "./state/systemState";
+  import type { SystemState } from "./state/systemState.svelte";
+  // import { system_state } from "./state/systemState.svelte";
   import { fallbackState } from "./fallbackState";
   import ModuleAdder from "./lib/modules_ui/ModuleAdder.svelte";
   import BasicContainer from "./lib/BasicContainer.svelte";
   import ReInitSource from "./lib/modules_ui/ReInitSource.svelte";
+
+  import { createSystemStateFromJson } from "./lib/modules_dbay";
 
   function toggleDarkMode() {
     console.log("toggleDarkMode");
     document.body.classList.toggle("dark-mode");
   }
 
-  let total_state;
+  // let total_state;
 
-  let non_initialized_state: SystemState = { data: [], valid: true, dev_mode: true};
+  // let non_initialized_state: SystemState = { data: [], valid: true, dev_mode: true};
+
+  let system_state: SystemState = {data: $state([]), valid: $state(false), dev_mode: $state(false)};
 
   let serverNotResponding = false;
   // let serverNotInitialized = false;
   let num_modules = 0;
-  let module_idx = [];
-  let intervalId;
+  let module_idx: number[] = [];
+  let intervalId: number;
 
-  $: {
-    // console.log("running")
-    module_idx = Array.from(
-      { length: $voltageStore.data.length },
-      (_, i) => i + 1,
-    );
-    // console.log($voltageStore.data[0].slot)
-  }
+  // $: {
+  //   // console.log("running")
+  //   module_idx = Array.from(
+  //     { length: $voltageStore.data.length },
+  //     (_, i) => i + 1,
+  //   );
+  //   // console.log($voltageStore.data[0].slot)
+  // }
 
   onMount(async () => {
     try {
-      const response = await getFullState();
+      const json_state: JsonSystemState = await getFullState();
       // console.log("the response: ", response);
-      total_state = response;
       // if the server responds, but the data field is empty, then the server is not initialized
-      if (total_state.data.length === 0) {
-        uiStateStore.update((state) => {
-          state.show_module_adder = true;
-          return state;
-        });
-        // console.log("serverNotInitialized");
-        voltageStore.set(non_initialized_state);
-      }
+      if (json_state.data.length === 0) {
+        // ui_state.update((state) => {
+        //   state.show_module_adder = true;
+        //   return state;
+        // });
+        ui_state.show_module_adder = true; // reactive
 
-      voltageStore.set(total_state);
-      num_modules = total_state.data.length;
-      module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
+        // console.log("serverNotInitialized");
+      }
+      // voltageStore.set(json_state);
+      system_state = createSystemStateFromJson(json_state);
 
       // Start the interval
       intervalId = setInterval(async () => {
-        const response = await getFullState();
-        total_state = response;
-        voltageStore.set(total_state);
+        const json_state = await getFullState();
+        system_state = createSystemStateFromJson(json_state); // this seems costly
+        // voltageStore.set(total_state);
       }, 1000); // 1000 milliseconds = 1 second
 
       // if no response, server is not available. Use fallback state for testing
     } catch (error) {
       // Handle the error here
       serverNotResponding = true;
-      voltageStore.set(fallbackState);
-      num_modules = fallbackState.data.length;
-      module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
+      system_state = fallbackState;
+      
     }
+    num_modules = fallbackState.data.length;
+    module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
+
   });
 
   onDestroy(() => {
@@ -88,15 +92,15 @@
   <div class="main-bar">
     <TopControls />
 
-    {#if $uiStateStore.show_module_adder}
+    {#if ui_state.show_module_adder}
       <ModuleAdder />
     {/if}
 
-    {#if $uiStateStore.show_source_reinit}
+    {#if ui_state.show_source_reinit}
       <ReInitSource />
     {/if}
 
-    {#if $voltageStore.dev_mode}
+    {#if system_state.dev_mode}
     <BasicContainer>
         <p class="text-red-500 p-3">
           Dev mode is enabled. No UDP commands will be sent to the hardware.
@@ -128,61 +132,18 @@
 </div>
 
 <style>
-  /* .basic-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
-    border: 1.3px solid var(--outer-border-color);
-    margin: 0.2rem 0rem;
-  } */
-
-  /* input {
-    background-color: var(--display-color);
-    border-radius: 4px;
-    border: 1.5px solid var(--inner-border-color);
-    padding: 0rem 0.3rem;
-    font-family: "Roboto Flex", sans-serif;
-    font-weight: 300;
-    font-size: 1.7rem;
-    letter-spacing: 0.58rem;
-    color: var(--digits-color);
-    transition: background-color 0.1s ease-in-out;
-    margin: 0.5rem 0rem;
-  } */
 
   .container-main {
     display: flex;
-    /* flex-direction: row; */
-    /* justify-content: space-between; */
-    /* align-items: stretch; */
-    /* align-items: center; */
-    /* min-height: 100vh;
-    min-width: 100vw; */
-    /* width: 100%; */
   }
 
   .main-bar {
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* height: 100%; */
     background-color: var(--bg-color);
-
-    /* flex-grow: 1; */
-    /* min-width: 300px; */
-
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* flex-grow: 1; */
   }
 
   .side-area {
     background-color: var(--bg-color);
   }
-
-  /* * {
-    background-color: var(--bg-color);
-  } */
 
   @media (min-width: 460px) {
     .main-bar {

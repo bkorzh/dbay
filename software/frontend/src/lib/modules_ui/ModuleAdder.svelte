@@ -1,9 +1,9 @@
 <script>
     import SubmitButton from "../SubmitButton.svelte";
     import GeneralButton from "../GeneralButton.svelte";
-    import { uiStateStore } from "../../state/uiState";
+    import { uiStateStore } from "../../state/uiState.svelte";
     import {initializeModule} from "../../api";
-    import { voltageStore } from "../../state/systemState";
+    import { voltageStore } from "../../state/systemState.svelte";
 
     let selectedSlot = "";
     let selectedType = "";

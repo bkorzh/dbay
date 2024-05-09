@@ -7,18 +7,35 @@ import type { ChSourceState, ChSenseState } from "../lib/addons"
 
 
 export interface IModule {
-  module: Module;
+  core: CoreModule;
   vsource?: VsourceAddon; // VsourceAddon is a class that implements the IVsourceAddon interface...
   vsense?: VsenseAddon;
 }
 
+export interface JsonModule {
+  core: JsonCoreModule;
+  vsource?: IVsourceAddon;
+  vsense?: IVsenseAddon;
+}
 
-// 'core' properties that every module needs
-export class Module {
-  constructor(
-    public slot: number,
-    public type: string,
-    public name: string) { }
+
+
+export interface JsonCoreModule {
+  slot: number;
+  type: string;
+  name: string;
+}
+
+export class CoreModule implements JsonCoreModule {
+  slot: number;
+  type: string;
+  name: string;
+
+  constructor(data: JsonCoreModule) {
+      this.slot = data.slot;
+      this.type = data.type;
+      this.name = $state(data.name);
+  }
 }
 
 
@@ -27,6 +44,13 @@ export interface SystemState {
   valid: boolean;
   dev_mode: boolean;
 }
+
+export interface JsonSystemState {
+  data: Array<JsonModule>;
+  valid: boolean;
+  dev_mode: boolean;
+}
+
 
 export interface VMEParams {
   ipaddr: string;
@@ -62,8 +86,10 @@ export function switch_on_off_system(system: SystemState, onoff: boolean): Syste
 //   return module;
 // }
 
+// export const 
+
+// export const voltageStore = writable<SystemState>({ data: [], valid: false, dev_mode: false});
 
 
-export const voltageStore = writable<SystemState>({ data: [], valid: false, dev_mode: false});
 
 

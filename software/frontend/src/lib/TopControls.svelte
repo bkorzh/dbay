@@ -7,14 +7,14 @@
   import LightDarkToggleFG from "./LightDarkToggleFG.svelte";
   import Hamburger from './shared/Hamburger.svelte';
   import { componentInstance } from "../state/componentInstanceStore";
-  import { uiStateStore } from "../state/uiState";
+  import { uiStateStore } from "../state/uiState.svelte";
   import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./MenuButton.svelte";
   import Button from "./Button.svelte";
   import { get } from 'svelte/store';
-  import { voltageStore, switch_on_off_system } from "../state/systemState";
+  import { voltageStore, switch_on_off_system } from "../state/systemState.svelte";
   import {requestFullStateUpdate} from "../api";
-  import type { SystemState } from "../state/systemState";
+  import type { SystemState } from "../state/systemState.svelte";
   import {onMount} from "svelte";
 
   let burgerMenu;

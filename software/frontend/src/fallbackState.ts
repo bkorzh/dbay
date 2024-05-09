@@ -1,13 +1,13 @@
 // import type { Module4chState, SystemState, ChState } from "./state/systemState";
 
-import { dac4D } from "./lib/modules_dbay/dac4D";
-import { dac16D } from "./lib/modules_dbay/dac16D";
-import { Module } from "./state/systemState";
+import { dac4D } from "./lib/modules_dbay/dac4D_data.svelte";
+import { dac16D } from "./lib/modules_dbay/dac16D_data.svelte";
+import type { CoreModule } from "./state/systemState.svelte";
 import { VsourceAddon } from "./lib/addons";
 import { VsenseAddon } from "./lib/addons";
 import type { ChSourceState } from "./lib/addons";
 
-import type { SystemState } from "./state/systemState";
+import type { SystemState } from "./state/systemState.svelte";
 
 // const module_1: Module4chState = {
 //   channels: [
@@ -35,8 +35,8 @@ import type { SystemState } from "./state/systemState";
 
 
 // these use default VsourceAddon objects internally
-const module_1: dac4D = new dac4D(new Module(1, "dac4D", "my 4ch module 1"));
-const module_2: dac4D = new dac4D(new Module(1, "dac4D", "my 4ch module 2"));
-const module_3: dac16D = new dac16D(new Module(4, "dac16D", "my 16ch module 1"));
+const module_1: dac4D = new dac4D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
+const module_2: dac4D = new dac4D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
+const module_3: dac16D = new dac16D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
 
-export let fallbackState: SystemState = {data: [module_1, module_2, module_3], valid: false, dev_mode: true};
+export let fallbackState: SystemState = {data: $state([module_1, module_2, module_3]), valid: false, dev_mode: true};

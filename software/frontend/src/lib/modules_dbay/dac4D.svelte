@@ -1,8 +1,8 @@
 <script>
   import Channel from "../Channel.svelte";
   import { onMount } from "svelte";
-  import { uiStateStore } from "../../state/uiState";
-  import { voltageStore } from "../../state/systemState";
+  import { uiStateStore } from "../../state/uiState.svelte";
+  import { voltageStore } from "../../state/systemState.svelte";
   import { slide } from 'svelte/transition';
   import { blur } from 'svelte/transition';
 
