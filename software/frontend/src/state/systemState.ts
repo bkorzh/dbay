@@ -2,12 +2,13 @@ import { writable } from 'svelte/store';
 
 
 import { VsourceAddon, VsenseAddon } from "../lib/addons"
+import type { IVsourceAddon, IVsenseAddon } from "../lib/addons"
 import type { ChSourceState, ChSenseState } from "../lib/addons"
 
 
 export interface IModule {
   module: Module;
-  vsource?: VsourceAddon;
+  vsource?: VsourceAddon; // VsourceAddon is a class that implements the IVsourceAddon interface...
   vsense?: VsenseAddon;
 }
 

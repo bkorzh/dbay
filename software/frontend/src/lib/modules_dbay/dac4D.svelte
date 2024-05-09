@@ -78,17 +78,6 @@
         {/each}
       </div>
     {/if}
-    <!-- <div class="left-space"></div>
-    <div class="right-content">
-      {#each module_state as channel_state, i}
-        <Channel
-          index={i + 1}
-          bias_voltage={channel_state.bias_voltage}
-          activated={channel_state.activated}
-          heading_text={channel_state.heading_text}
-        />
-      {/each}
-    </div> -->
   </div>
 </div>
 

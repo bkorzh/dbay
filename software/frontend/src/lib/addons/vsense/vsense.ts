@@ -1,16 +1,6 @@
-// STATE
+import type { IVsenseAddon, ChSenseState } from './interface';
 
-export interface ChSenseState {
-    index: number;
-    voltage: number;
-    measuring: number;
-  }
-
-
-
-// OBJECT
-
-export class VsenseAddon {
+export class VsenseAddon implements IVsenseAddon{
     constructor(
       public channels: Array<ChSenseState>) { }
   }

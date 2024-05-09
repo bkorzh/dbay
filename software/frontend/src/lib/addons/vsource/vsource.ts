@@ -1,17 +1,7 @@
 
+import type { IVsourceAddon, ChSourceState } from './interface';
 
-
-
-export interface ChSourceState {
-    index: number;
-    bias_voltage: number;
-    activated: boolean;
-    heading_text: string;
-    measuring: boolean;
-  }
-  
-
-export class VsourceAddon {
+export class VsourceAddon implements IVsourceAddon{
     constructor(
       public channels: Array<ChSourceState>) { }
   
