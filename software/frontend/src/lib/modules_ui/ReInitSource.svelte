@@ -1,9 +1,9 @@
 <script>
   import SubmitButton from "../SubmitButton.svelte";
-  import { uiStateStore } from "../../state/uiState.svelte";
+  import { ui_state } from "../../state/uiState.svelte";
   import EditPencil from "../shared/EditPencil.svelte";
   import { initializeVsource } from "../../api"
-  import { voltageStore } from "../../state/systemState.svelte";
+  import { system_state } from "../../state/systemState.svelte";
 
   let ipEditable = false;
   let portEditable = false;
@@ -28,10 +28,8 @@
 
   function submit() {
     console.log("dev mode: ", dev_mode)
-    voltageStore.update((state) => {
-        state.dev_mode = dev_mode;
-        return state;
-      });
+
+    system_state.dev_mode = dev_mode;
 
     console.log("done")
 
@@ -56,7 +54,7 @@
       <div class="input-params">
         <input type="text" bind:value={ipaddr} readonly={!ipEditable} class:non-editable={!ipEditable} />
         <div class="icon" on:click={toggleIpEditable} on:keydown={toggleIpEditable} role="button" tabindex="0">
-          <EditPencil darkMode={$uiStateStore.colorMode} />
+          <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
     </div>
@@ -66,7 +64,7 @@
       <div class="input-params">
         <input type="text" bind:value={port} readonly={!portEditable} class:non-editable={!portEditable} />
         <div class="icon" role="button" tabindex="0" on:click={togglePortEditable} on:keydown={togglePortEditable}>
-          <EditPencil darkMode={$uiStateStore.colorMode} />
+          <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
     </div>
@@ -76,7 +74,7 @@
       <div class="input-params">
         <input type="text" bind:value={timeout} readonly={!timeoutEditable} class:non-editable={!timeoutEditable} />
         <div class="icon" on:click={toggleTimeoutEditable} on:keydown={toggleTimeoutEditable} role="button" tabindex="0">
-          <EditPencil darkMode={$uiStateStore.colorMode} />
+          <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
     </div>
@@ -91,7 +89,7 @@
 
 
     <br>
-    <SubmitButton {uiStateStore} on:submit={submit} >Re-Initialize</SubmitButton>
+    <SubmitButton onclick={submit} >Re-Initialize</SubmitButton>
   </div>
 </div>
 

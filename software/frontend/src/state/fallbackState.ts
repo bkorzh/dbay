@@ -1,13 +1,13 @@
 // import type { Module4chState, SystemState, ChState } from "./state/systemState";
 
-import { dac4D } from "../lib/modules_dbay/dac4D_data.svelte";
-import { dac16D } from "../lib/modules_dbay/dac16D_data.svelte";
-import type { CoreModule } from "./systemState.svelte";
-import { VsourceAddon } from "../lib/addons";
-import { VsenseAddon } from "../lib/addons";
-import type { ChSourceState } from "../lib/addons";
+// import { dac4D } from "../lib/modules_dbay/dac4D_data.svelte";
+// import { dac16D } from "../lib/modules_dbay/dac16D_data.svelte";
+// import type { CoreModule } from "./systemState.svelte";
+// import { VsourceAddon } from "../lib/addons";
+// import { VsenseAddon } from "../lib/addons";
+// import type { ChSourceState } from "../lib/addons";
 
-import type { SystemState } from "./systemState.svelte";
+// import type { SystemState } from "./systemState.svelte";
 
 // const module_1: Module4chState = {
 //   channels: [

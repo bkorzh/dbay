@@ -56,7 +56,7 @@ export function initializeVsource(params: VMEParams) {
 }
 
 
-export function requestChannelUpdate(dst: VsourceChange) {
+export function requestChannelUpdate(dst: VsourceChange): Promise<VsourceChange>{
     return fetchWithConfig("/channel", "PUT", dst);
 }
 

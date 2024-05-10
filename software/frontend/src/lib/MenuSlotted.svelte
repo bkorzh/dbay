@@ -1,7 +1,7 @@
 <script>
     import LightDarkToggle from "./LightDarkToggle.svelte";
     import { onMount, onDestroy } from "svelte";
-    import { uiStateStore } from "../state/uiState.svelte";
+    import { ui_state } from "../state/uiState.svelte";
 
     export let onClick;
     export let menuVisible;
@@ -46,12 +46,14 @@
     }
 
     function addModule() {
-        uiStateStore.update((state) => {
-            state.show_module_adder = true;
-            return state;
-        });
+        // uiStateStore.update((state) => {
+        //     state.show_module_adder = true;
+        //     return state;
+        // });
+
+        ui_state.show_module_adder = true;
         console.log("done");
-        console.log("module adder: ", $uiStateStore.show_module_adder)
+        console.log("module adder: ", ui_state.show_module_adder)
     }
 
 </script>

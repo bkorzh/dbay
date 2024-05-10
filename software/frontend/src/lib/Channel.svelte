@@ -1,7 +1,7 @@
-<script lang="ts" context="module">
+<!-- <script lang="ts" context="module">
     import "../app.css";
     export let activated;
-</script>
+</script> -->
 
 <script lang="ts">
     import { ui_state } from "../state/uiState.svelte";
@@ -13,31 +13,47 @@
     import { get } from "svelte/store";
     // import { voltageStore } from "../stores/voltageStore";
     import { requestChannelUpdate } from "../api";
-    import type { ChannelChange } from "../state/systemState.svelte";
+
+    import type { VsourceChange } from "./addons/vsource/interface"
+
     import App from "../App.svelte";
     import { onMount } from "svelte";
+
     import { system_state } from "../state/systemState.svelte";
+    import type { IModule } from "../state/systemState.svelte";
+
     import MenuSlotted from "./MenuSlotted.svelte";
     import MenuButton from "./MenuButton.svelte";
 
-    export let index: number; // index of the bias control
-    export let module_index: number;
+    import { dac4D } from "./modules_dbay/dac4D_data.svelte";
+
+    // export let index: number; // index of the bias control
+    // export let module_index: number;
+
+    const module_1: dac4D = new dac4D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
+
+    interface Props {
+        index: number;
+        module_index: number;
+    }
+
+    let { index, module_index }: Props = $props();
 
     let bias_voltage: number;
     let activated: boolean;
-    let heading_text: string;
-    let immediate_text: string;
+    let heading_text: string = $state("");
+    let immediate_text: string = $state("");
     let heading_editing = false;
-    let measuring = true;
+    let measuring = $state(true);
 
     let dotMenu: HTMLElement;
-    let menuLocation = { top: 0, left: 0 };
+    let menuLocation = $state({ top: 0, left: 0 });
 
-    immediate_text = heading_text;
+    // immediate_text = heading_text;
 
     
 
-    let showDropdown = false;
+    let showDropdown = $state(false);
     function toggleMenu() {
         showDropdown = !showDropdown;
         const rect = dotMenu.getBoundingClientRect();
@@ -55,7 +71,7 @@
         if (voltage <= -5) {
             voltage = -5;
         }
-        const data: ChannelChange = {
+        const data: VsourceChange = {
             module_index,
             bias_voltage: voltage,
             activated,
@@ -79,7 +95,7 @@
     function switchState() {
         // const activation = get(voltageStore).data[module_index - 1][index - 1].activated;
 
-        const data: ChannelChange = {
+        const data: VsourceChange = {
             module_index,
             bias_voltage,
             activated: !activated,
@@ -92,7 +108,7 @@
 
     function switchMeasurementMode() {
         measuring = !measuring;
-        const data: ChannelChange = {
+        const data: VsourceChange = {
             module_index,
             bias_voltage,
             activated,
@@ -105,7 +121,7 @@
 
     function updatedPlusMinus() {
         isPlusMinusPressed = true;
-        const data: ChannelChange = {
+        const data: VsourceChange = {
             module_index,
             bias_voltage: -bias_voltage,
             activated,
@@ -120,20 +136,28 @@
         }, 1);
     }
 
-    async function updateChannel(data: ChannelChange) {
+    async function updateChannel(data: VsourceChange) {
         const returnData = await requestChannelUpdate(data);
 
-        voltageStore.update((full_state) => {
-            full_state.data[module_index - 1].channels[index - 1].activated =
-                returnData.activated;
-            full_state.data[module_index - 1].channels[index - 1].bias_voltage =
-                returnData.bias_voltage;
-            full_state.data[module_index - 1].channels[index - 1].heading_text =
-                returnData.heading_text;
-            full_state.data[module_index - 1].channels[index - 1].measuring =
-                returnData.measuring;
-            return full_state;
-        });
+        let res = system_state.data[module_index - 1].vsource?.channels
+
+        if (res) {
+            res[index - 1].activated = returnData.activated;
+            res[index - 1].bias_voltage = returnData.bias_voltage;
+            res[index - 1].heading_text = returnData.heading_text;
+            res[index - 1].measuring = returnData.measuring;
+        }
+        // system_state.update((full_state) => {
+        //     full_state.data[module_index - 1].channels[index - 1].activated =
+        //         returnData.activated;
+        //     full_state.data[module_index - 1].channels[index - 1].bias_voltage =
+        //         returnData.bias_voltage;
+        //     full_state.data[module_index - 1].channels[index - 1].heading_text =
+        //         returnData.heading_text;
+        //     full_state.data[module_index - 1].channels[index - 1].measuring =
+        //         returnData.measuring;
+        //     return full_state;
+        // });
     }
 
     // export let updateChannel;
@@ -142,18 +166,18 @@
 
     // immediate_text = heading_text;
 
-    let st = {
+    let st = $state({
         action_string: "Turn Off",
         colorMode: false,
         opacity: 1,
-    };
+    });
 
-    let toggle_up = false;
-    let toggle_down = true;
+    let toggle_up = $state(false);
+    let toggle_down = $state(true);
 
     // let alter = false;
-    let visible = true;
-    let no_border = false;
+    let visible = $state(true);
+    let no_border = $state(false);
 
     function togglerRotateState() {
         toggle_up = !toggle_up;
@@ -163,16 +187,16 @@
         no_border = !no_border;
     }
 
-    let sign = "+";
+    let sign = $state("+");
 
     let input_value = "";
-    let isPlusMinusPressed = false;
+    let isPlusMinusPressed = $state(false);
 
-    let ones = 0,
-        tens = 0,
-        hundreds = 0,
-        thousands = 0,
-        integer = 0;
+    let ones = $state(0),
+        tens = $state(0),
+        hundreds = $state(0),
+        thousands = $state(0),
+        integer = $state(0);
 
     let isMounted = false;
     let updateComplete = false; //

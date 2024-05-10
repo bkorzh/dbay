@@ -1,7 +1,7 @@
 <script lang="ts">
   import "../app.css";
   import { onMount } from "svelte";
-  import { uiStateStore, setMode } from "../state/uiState.svelte";
+  import { ui_state, setMode } from "../state/uiState.svelte";
 
   // indicate if we're in dark mode or not
   let dark: boolean;
@@ -10,7 +10,7 @@
   let hidden = true;
 
   onMount(() => {
-    setMode($uiStateStore.colorMode);
+    setMode(ui_state.colorMode);
   });
 
   function handleChange({ matches: dark }: MediaQueryListEvent) {
@@ -45,19 +45,19 @@
 
 <!-- animated switch version -->
 <button
-  class="{$uiStateStore.colorMode
+  class="{ui_state.colorMode
     ? 'bg-gray-600 '
     : ' bg-gray-200'} relative inline-flex flex-shrink-1 h-5 w-9 border-2 border-transparent rounded-full ease-in-out duration-200 my-auto mx-1"
   on:click={toggle}
 >
   <span class="sr-only">Toggle Dark Mode</span>
   <span
-    class="{$uiStateStore.colorMode
+    class="{ui_state.colorMode
       ? 'translate-x-0 bg-gray-400'
       : 'translate-x-4 bg-white'} pointer-events-none relative inline-block h-4 w-4 rounded-full shadow transform ring-0 transition ease-in-out duration-200"
   >
     <span
-      class="{$uiStateStore.colorMode
+      class="{ui_state.colorMode
         ? 'opacity-100 ease-in duration-200'
         : 'opacity-0 ease-out duration-100'} absolute inset-0 h-full w-full flex items-center justify-center transition-opacity"
       aria-hidden="true"
@@ -74,7 +74,7 @@
       </svg>
     </span>
     <span
-      class="{$uiStateStore.colorMode
+      class="{ui_state.colorMode
         ? 'opacity-0 ease-out duration-100'
         : 'opacity-100 ease-in duration-200'} absolute inset-0 h-full w-full flex items-center justify-center transition-opacity"
       aria-hidden="true"

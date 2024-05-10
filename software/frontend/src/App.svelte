@@ -6,7 +6,7 @@
   import SubmitButton from "./lib/SubmitButton.svelte";
   import { ui_state } from "./state/uiState.svelte";
   import type {IModule, JsonSystemState} from "./state/systemState.svelte"
-
+  import Dac4D from "./lib/modules_dbay/dac4D.svelte";
   // import * as Modules from "./lib/modules_dbay/index.svelte.js";
 
 
@@ -84,6 +84,8 @@
     }
     num_modules = system_state.data.length;
     module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
+    console.log("module_idx: ", module_idx);
+    console.log("component_array: ", component_array);
 
   });
 
@@ -122,8 +124,8 @@
       <!-- {#each fallbackState.data as module_state, i}
         <Modules.Module module_index={i + 1} />
       {/each} -->
-
-
+      
+    <Dac4D module_index={1} />
     {:else if module_idx}
       {#each module_idx as idx}
         <svelte:component this={component_array[idx]} />

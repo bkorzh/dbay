@@ -1,21 +1,28 @@
-// ui state is not synced with the server
+// export interface UIState {
+//   show_module_adder: boolean;
+//   show_source_reinit: boolean;
+//   colorMode: boolean;
+// }
 
+// export let ui_state: UIState = {
+//   show_module_adder: $state(false),
+//   show_source_reinit: $state(false),
+//   colorMode: $state(false)
+// };
 
-import { writable } from 'svelte/store';
+export class UIState {
+  show_module_adder: boolean = $state(false);
+  show_source_reinit: boolean = $state(false);
+  colorMode: boolean = $state(false);
 
-
-
-export interface UIState {
-  show_module_adder: boolean;
-  show_source_reinit: boolean;
-  colorMode: boolean;
+  constructor(show_module_adder = false, show_source_reinit = false, colorMode = false) {
+    this.show_module_adder = show_module_adder;
+    this.show_source_reinit = show_source_reinit;
+    this.colorMode = colorMode;
+  }
 }
 
-export const ui_state: UIState = {
-  show_module_adder: $state(false),
-  show_source_reinit: $state(false),
-  colorMode: $state(false)
-};
+export let ui_state = new UIState();
 
 const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 setMode(isDarkMode);

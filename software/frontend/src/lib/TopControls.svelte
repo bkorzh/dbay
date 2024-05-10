@@ -7,20 +7,22 @@
   import LightDarkToggleFG from "./LightDarkToggleFG.svelte";
   import Hamburger from './shared/Hamburger.svelte';
   import { componentInstance } from "../state/componentInstanceStore";
-  import { uiStateStore } from "../state/uiState.svelte";
+  import { ui_state } from "../state/uiState.svelte";
   import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./MenuButton.svelte";
   import Button from "./Button.svelte";
   import { get } from 'svelte/store';
-  import { voltageStore, switch_on_off_system } from "../state/systemState.svelte";
+  import { system_state, switch_on_off_system} from "../state/systemState.svelte";
+
+  import { updateSystemStatefromJson } from "./modules_dbay/index.svelte"
   import {requestFullStateUpdate} from "../api";
   import type { SystemState } from "../state/systemState.svelte";
   import {onMount} from "svelte";
 
-  let burgerMenu;
-  let menuLocation = { top: 0, left: 0 };
+  let burgerMenu: any;
+  let menuLocation = $state({ top: 0, left: 0 });
 
-  let showDropdown = false;
+  let showDropdown = $state(false);
   function toggleMenu() {
     showDropdown = !showDropdown;
     const rect = burgerMenu.getBoundingClientRect();
@@ -32,37 +34,41 @@
 
   let total_state: SystemState;
 
-  voltageStore.subscribe((state) => {
-    total_state = state;
-  });
+  // voltageStore.subscribe((state) => {
+  //   total_state = state;
+  // });
 
   async function allOn() {
     // const total_state = get(voltageStore);
     const modified_state = switch_on_off_system(total_state, true);
     const returned_state = await requestFullStateUpdate(modified_state);
-    voltageStore.set(returned_state);
+    updateSystemStatefromJson(returned_state)
   }
 
   async function allOff() {
     // const total_state = get(voltageStore);
     const modified_state = switch_on_off_system(total_state, false);
     const returned_state = await requestFullStateUpdate(modified_state);
-    voltageStore.set(returned_state);
+    // voltageStore.set(returned_state);
+    updateSystemStatefromJson(returned_state)
+
   }
 
   function addModule() {
-        uiStateStore.update((state) => {
-            state.show_module_adder = true;
-            return state;
-        });
+        // uiStateStore.update((state) => {
+        //     state.show_module_adder = true;
+        //     return state;
+        // });
+        ui_state.show_module_adder = true;
     }
 
   function showSourceReInit() {
     // console.log("showSourceReInit");
-    uiStateStore.update((state) => {
-      state.show_source_reinit = !state.show_source_reinit;
-      return state;
-    });
+    // uiStateStore.update((state) => {
+    //   state.show_source_reinit = !state.show_source_reinit;
+    //   return state;
+    // });
+    ui_state.show_source_reinit = !ui_state.show_source_reinit;
 
     // console.log("show_source_reinit: ", $uiStateStore.show_source_reinit);
 
@@ -98,8 +104,8 @@
   </div>
 
   <div class="button-bar">
-    <Button redGreen={true} {uiStateStore} on:click={allOn}>All On</Button>
-    <Button redGreen={false} {uiStateStore} on:click={allOff}>All Off</Button>
+    <Button redGreen={true} onclick={allOn}>All On</Button>
+    <Button redGreen={false} onclick={allOff}>All Off</Button>
   </div>
 </div>
 

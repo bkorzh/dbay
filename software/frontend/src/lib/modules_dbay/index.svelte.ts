@@ -3,7 +3,7 @@ import { default as dac16D_component } from './dac16D.svelte'
 import { dac4D } from './dac4D_data.svelte'
 import { dac16D } from './dac16D_data.svelte'
 import type { IModule } from '../../state/systemState.svelte'
-import { SvelteComponent } from 'svelte'
+// import { SvelteComponent } from 'svelte'
 import type { CoreModule } from '../../state/systemState.svelte'
 import type { SystemState, JsonSystemState } from '../../state/systemState.svelte'
 // import { writable } from 'svelte';
@@ -17,8 +17,13 @@ import { system_state } from '../../state/systemState.svelte'
 // }
 
 const components: any = {
-    dac4D_component, 
-    dac16D_component, 
+    dac4D: dac4D_component, 
+    dac16D: dac16D_component, 
+}
+
+const modules: ModulesDict = {
+  dac4D,
+  dac16D,
 }
 
 type Constructor<T> = new(data: IModule) => T;
@@ -27,13 +32,12 @@ interface ModulesDict {
     [key: string]: Constructor<IModule>;
 }
 
-const modules: ModulesDict = {
-    dac4D,
-    dac16D,
-}
+
 
 
 function getComponent(name: any): ComponentType {
+    console.log("the name is: ", name)
+    console.log("the components are: ", components)
     const component = components[name];
     if (!component) {
       throw new Error(`Component ${name} does not exist`);

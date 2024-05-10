@@ -1,6 +1,3 @@
-import { writable } from 'svelte/store';
-
-
 import { VsourceAddon, VsenseAddon } from "../lib/addons"
 import type { IVsourceAddon, IVsenseAddon } from "../lib/addons"
 import type { ChSourceState, ChSenseState } from "../lib/addons"
@@ -29,12 +26,12 @@ export interface JsonCoreModule {
 export class CoreModule implements JsonCoreModule {
   slot: number;
   type: string;
-  name: string;
+  name: string = $state("");
 
   constructor(data: JsonCoreModule) {
       this.slot = data.slot;
       this.type = data.type;
-      this.name = $state(data.name);
+      this.name = data.name;
   }
 }
 
@@ -43,6 +40,18 @@ export interface SystemState {
   data: Array<IModule>;
   valid: boolean;
   dev_mode: boolean;
+}
+
+export class SystemStateClass implements SystemState {
+  data: Array<IModule> = $state([]);
+  valid: boolean = $state(false);
+  dev_mode: boolean = $state(false);
+
+  constructor(data: Array<IModule>, valid: boolean, dev_mode: boolean) {
+    this.data = data;
+    this.valid = valid;
+    this.dev_mode = dev_mode;
+  }
 }
 
 export interface JsonSystemState {
@@ -88,7 +97,7 @@ export function switch_on_off_system(system: SystemState, onoff: boolean): Syste
 
 // export const 
 
-export let system_state: SystemState = { data: $state([]), valid: $state(false), dev_mode: $state(false) };
+export let system_state: SystemState = new SystemStateClass([], false, false);
 
 
 
