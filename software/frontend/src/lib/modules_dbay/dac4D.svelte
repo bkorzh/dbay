@@ -1,31 +1,29 @@
-<script>
+<script lang='ts'>
   import Channel from "../Channel.svelte";
   import { onMount } from "svelte";
-  import { uiStateStore } from "../../state/uiState.svelte";
-  import { voltageStore } from "../../state/systemState.svelte";
+  import { ui_state } from "../../state/uiState.svelte";
+  // import { voltageStore } from "../../state/systemState.svelte";
+  import { system_state } from "../../state/systemState.svelte";
   import { slide } from 'svelte/transition';
   import { blur } from 'svelte/transition';
 
-  export let module_index;
-  let slot = 0;
+  interface MyProps {
+    module_index: number;
+  }
+
+  let { module_index }: MyProps = $props();
+  // let slot = 0;
 
 
-  $: slot = $voltageStore.data[module_index-1]?.slot
+  let slot = $derived(system_state.data[module_index-1]?.core.slot);
 
-  // const intervalId = setInterval(async () => {
-  //       console.log($voltageStore.data[module_index-1]?.slot)
-  //     }, 1000); // 1000 milliseconds = 1 second
-
-
-  // onMount(() => {
-  //   console.log("module_state: ", module_state);
-  // });]
+  // let slot = system_state.data[module_index-1]?.core.slot
 
   let channel_list = [1,2,3,4]
 
-  let toggle_up = false;
-  let toggle_down = true;
-  let visible = true;
+  let toggle_up = $state(false);
+  let toggle_down = $state(true);
+  let visible = $state(true);
 
   function togglerRotateState() {
     console.log("togglerRotateState");
@@ -51,8 +49,8 @@
         viewBox="0 0 16 16"
         role="button"
         tabindex="0"
-        on:click={togglerRotateState}
-        on:keydown={togglerRotateState}
+        onclick={togglerRotateState}
+        onkeydown={togglerRotateState}
       >
         <path
           fill-rule="evenodd"
@@ -128,11 +126,6 @@
     width: 93%;
   }
 
-  /* .body {
-    display: flex;
-    flex-direction: row;
-    
-  } */
 
   .heading {
     display: flex;
@@ -143,24 +136,15 @@
     padding: 0.3rem;
     color: var(--text-color);
     font-size: 1.3rem;
-    /* margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto; */
-    /* padding-right: 0.8rem; */
-    /* opacity: 0.5; */
     border: 1.3px solid var(--module-border-color);
     border-radius: 0.4rem;
   }
 
   .module-container {
-    /* font-size: 0.5rem; */
     
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* box-shadow: 0 0 7px rgba(0, 0, 0, 0.05); */
-    /* border: 1.3px solid var(--outer-border-color); */
-    /* background-color: var(--module-header-color); */
     margin-bottom: 2rem;
   }
 

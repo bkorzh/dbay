@@ -88,7 +88,7 @@ export function switch_on_off_system(system: SystemState, onoff: boolean): Syste
 
 // export const 
 
-// export const voltageStore = writable<SystemState>({ data: [], valid: false, dev_mode: false});
+export let system_state: SystemState = { data: $state([]), valid: $state(false), dev_mode: $state(false) };
 
 
 

@@ -1,4 +1,4 @@
-export {VsenseAddon} from './vsense/vsense';
+export {VsenseAddon} from './vsense/vsense.svelte';
 export type {ChSenseState} from './vsense/interface';
 export type {IVsenseAddon} from './vsense/interface';
 

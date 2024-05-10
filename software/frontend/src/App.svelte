@@ -5,20 +5,22 @@
   import { getFullState } from "./api";
   import SubmitButton from "./lib/SubmitButton.svelte";
   import { ui_state } from "./state/uiState.svelte";
-  import type {JsonSystemState} from "./state/systemState.svelte"
+  import type {IModule, JsonSystemState} from "./state/systemState.svelte"
 
-  // // import all dbay modules
-  import * as Modules from "./lib/modules_dbay/index.js";
+  // import * as Modules from "./lib/modules_dbay/index.svelte.js";
 
 
   import type { SystemState } from "./state/systemState.svelte";
-  // import { system_state } from "./state/systemState.svelte";
-  import { fallbackState } from "./fallbackState";
+  // import { fallbackState } from "./state/fallbackState";
   import ModuleAdder from "./lib/modules_ui/ModuleAdder.svelte";
   import BasicContainer from "./lib/BasicContainer.svelte";
   import ReInitSource from "./lib/modules_ui/ReInitSource.svelte";
 
-  import { createSystemStateFromJson } from "./lib/modules_dbay";
+  import { createComponentArray } from "./lib/modules_dbay/index.svelte";
+
+  import { updateSystemStatefromJson, updateSystemStatetoFallback } from "./lib/modules_dbay/index.svelte";
+
+  import { system_state } from "./state/systemState.svelte";
 
   function toggleDarkMode() {
     console.log("toggleDarkMode");
@@ -29,12 +31,11 @@
 
   // let non_initialized_state: SystemState = { data: [], valid: true, dev_mode: true};
 
-  let system_state: SystemState = {data: $state([]), valid: $state(false), dev_mode: $state(false)};
 
-  let serverNotResponding = false;
+  let serverNotResponding = $state(false);
   // let serverNotInitialized = false;
   let num_modules = 0;
-  let module_idx: number[] = [];
+  let module_idx: number[] = $state([]);
   let intervalId: number;
 
   // $: {
@@ -45,6 +46,9 @@
   //   );
   //   // console.log($voltageStore.data[0].slot)
   // }
+
+  // this is where all the components are acctually being "imported"
+  let component_array = $derived(createComponentArray(system_state.data))
 
   onMount(async () => {
     try {
@@ -61,12 +65,12 @@
         // console.log("serverNotInitialized");
       }
       // voltageStore.set(json_state);
-      system_state = createSystemStateFromJson(json_state);
+      updateSystemStatefromJson(json_state);
 
       // Start the interval
       intervalId = setInterval(async () => {
         const json_state = await getFullState();
-        system_state = createSystemStateFromJson(json_state); // this seems costly
+        updateSystemStatefromJson(json_state); // this seems costly
         // voltageStore.set(total_state);
       }, 1000); // 1000 milliseconds = 1 second
 
@@ -74,10 +78,11 @@
     } catch (error) {
       // Handle the error here
       serverNotResponding = true;
-      system_state = fallbackState;
+      // system_state = fallbackState;
+      updateSystemStatetoFallback();
       
     }
-    num_modules = fallbackState.data.length;
+    num_modules = system_state.data.length;
     module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
 
   });
@@ -114,14 +119,14 @@
           Server not responding. Viewing fallback state
         </p>
       </BasicContainer>
-      {#each fallbackState.data as module_state, i}
+      <!-- {#each fallbackState.data as module_state, i}
         <Modules.Module module_index={i + 1} />
-      {/each}
+      {/each} -->
 
 
     {:else if module_idx}
       {#each module_idx as idx}
-        <Modules.Module module_index={idx} />
+        <svelte:component this={component_array[idx]} />
       {/each}
     {:else}
       <div class="basic-block">Loading...</div>
