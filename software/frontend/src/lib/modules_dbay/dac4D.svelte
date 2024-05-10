@@ -65,7 +65,7 @@
     {#if visible}
       <div class="left-space"></div>
       <div class="right-content">
-        {#each channel_list as _, i}
+        <!-- {#each channel_list as _, i}
           <div transition:slide|global class="channel">
             <Channel
             index={i + 1}
@@ -73,7 +73,7 @@
           />
           </div>
           
-        {/each}
+        {/each} -->
       </div>
     {/if}
   </div>

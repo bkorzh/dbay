@@ -121,14 +121,11 @@
           Server not responding. Viewing fallback state
         </p>
       </BasicContainer>
-      <!-- {#each fallbackState.data as module_state, i}
-        <Modules.Module module_index={i + 1} />
-      {/each} -->
-      
-    <Dac4D module_index={1} />
-    {:else if module_idx}
+    {/if}
+
+    {#if module_idx}
       {#each module_idx as idx}
-        <svelte:component this={component_array[idx]} />
+        <svelte:component this={component_array[idx-1]} module_index={idx}/>
       {/each}
     {:else}
       <div class="basic-block">Loading...</div>
