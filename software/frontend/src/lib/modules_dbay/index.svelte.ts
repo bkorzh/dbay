@@ -1,7 +1,17 @@
+
+
 import { default as dac4D_component } from './dac4D.svelte'
-import { default as dac16D_component } from './dac16D.svelte'
 import { dac4D } from './dac4D_data.svelte'
+
+import { default as dac4D_old_component } from './dac4D_old.svelte'
+import { dac4D_old } from './dac4D_old_data.svelte'
+
+import { default as dac16D_component } from './dac16D.svelte'
 import { dac16D } from './dac16D_data.svelte'
+
+
+
+
 import type { IModule } from '../../state/systemState.svelte'
 // import { SvelteComponent } from 'svelte'
 import type { CoreModule } from '../../state/systemState.svelte'
@@ -18,11 +28,13 @@ import { system_state } from '../../state/systemState.svelte'
 
 const components: any = {
     dac4D: dac4D_component, 
+    dac4D_old: dac4D_old_component,
     dac16D: dac16D_component, 
 }
 
 const modules: ModulesDict = {
   dac4D,
+  dac4D_old,
   dac16D,
 }
 
@@ -36,9 +48,9 @@ interface ModulesDict {
 
 
 function getComponent(name: any): ComponentType {
-    console.log("the name is: ", name)
+    // console.log("the name is: ", name)
     const component = components[name];
-    console.log("the name of the component is: ", component)
+    // console.log("the name of the component is: ", component)
     if (!component) {
       throw new Error(`Component ${name} does not exist`);
     }
@@ -47,7 +59,6 @@ function getComponent(name: any): ComponentType {
 
 
 export function createComponentArray(module_list: IModule[]): any {
-    console.log("updating the component array")
     return module_list.map((module) => {
         const component = getComponent(module.core.type)
         return component
@@ -76,7 +87,7 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
 
 export function updateSystemStatetoFallback() {
   const module_1: dac4D = new dac4D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
-  const module_2: dac4D = new dac4D({core: {slot: 2, type: "dac4D", name: "my 4ch module 1"}});
+  const module_2: dac4D_old = new dac4D_old({core: {slot: 2, type: "dac4D_old", name: "my 4ch module 1"}});
   const module_3: dac16D = new dac16D({core: {slot: 3, type: "dac16D", name: "my 4ch module 1"}});
   const module_4: dac16D = new dac16D({core: {slot: 4, type: "dac16D", name: "my 4ch module 1"}});
   system_state.data = [module_1, module_2, module_3, module_4];

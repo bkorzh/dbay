@@ -1,5 +1,5 @@
 <script lang='ts'>
-  import Channel from "../Channel.svelte";
+  import Channel from "../Channel_old.svelte";
   import { onMount } from "svelte";
   import { ui_state } from "../../state/uiState.svelte";
   // import { voltageStore } from "../../state/systemState.svelte";
@@ -59,11 +59,11 @@
         />
       </svg>
     </div>
-    <div class="identifier">M{slot}</div>
+    <div class="identifier">(old) M{slot}</div>
   </div>
   <div class="body">
     {#if visible}
-      <!-- <div class="left-space"></div> -->
+      <div class="left-space"></div>
       <div class="right-content">
         {#each channel_list as _, i}
           <div transition:slide|global class="channel">
@@ -113,17 +113,17 @@
     flex-direction: row;
   }
 
-  /* .left-space {
+  .left-space {
     width: 7%;
     background-color: var(--module-header-color);
     background-color: var(--bg-color);
-  } */
+  }
 
   .right-content {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 93%;
   }
 
 
@@ -137,8 +137,7 @@
     color: var(--text-color);
     font-size: 1.3rem;
     border: 1.3px solid var(--module-border-color);
-    border-top-left-radius: 0.4rem;
-    border-top-right-radius: 0.4rem;
+    border-radius: 0.4rem;
   }
 
   .module-container {
@@ -147,18 +146,17 @@
     flex-direction: column;
     justify-content: center;
     margin-bottom: 2rem;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
   }
 
   @media (min-width: 460px) {
     .module-container {
-      margin: 5px 20px 8px 5px;
+      margin: 5px 20px 15px 5px;
     }
   }
 
   @media (max-width: 460px) {
     .module-container {
-      margin: 5px 5px 8px 5px;
+      margin: 5px 5px 15px 5px;
     }
   }
 </style>

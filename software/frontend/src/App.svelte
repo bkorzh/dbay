@@ -7,11 +7,7 @@
   import { ui_state } from "./state/uiState.svelte";
   import type {IModule, JsonSystemState} from "./state/systemState.svelte"
   import Dac4D from "./lib/modules_dbay/dac4D.svelte";
-  // import * as Modules from "./lib/modules_dbay/index.svelte.js";
-
-
   import type { SystemState } from "./state/systemState.svelte";
-  // import { fallbackState } from "./state/fallbackState";
   import ModuleAdder from "./lib/modules_ui/ModuleAdder.svelte";
   import BasicContainer from "./lib/BasicContainer.svelte";
   import ReInitSource from "./lib/modules_ui/ReInitSource.svelte";
@@ -27,10 +23,6 @@
     document.body.classList.toggle("dark-mode");
   }
 
-  // let total_state;
-
-  // let non_initialized_state: SystemState = { data: [], valid: true, dev_mode: true};
-
 
   let serverNotResponding = $state(false);
   // let serverNotInitialized = false;
@@ -38,54 +30,33 @@
   let module_idx: number[] = $state([]);
   let intervalId: number;
 
-  // $: {
-  //   // console.log("running")
-  //   module_idx = Array.from(
-  //     { length: $voltageStore.data.length },
-  //     (_, i) => i + 1,
-  //   );
-  //   // console.log($voltageStore.data[0].slot)
-  // }
-
-  // this is where all the components are acctually being "imported"
   let component_array = $derived(createComponentArray(system_state.data))
 
   onMount(async () => {
     try {
       const json_state: JsonSystemState = await getFullState();
-      // console.log("the response: ", response);
       // if the server responds, but the data field is empty, then the server is not initialized
       if (json_state.data.length === 0) {
-        // ui_state.update((state) => {
-        //   state.show_module_adder = true;
-        //   return state;
-        // });
         ui_state.show_module_adder = true; // reactive
 
-        // console.log("serverNotInitialized");
       }
-      // voltageStore.set(json_state);
       updateSystemStatefromJson(json_state);
 
       // Start the interval
       intervalId = setInterval(async () => {
         const json_state = await getFullState();
         updateSystemStatefromJson(json_state); // this seems costly
-        // voltageStore.set(total_state);
       }, 1000); // 1000 milliseconds = 1 second
 
       // if no response, server is not available. Use fallback state for testing
     } catch (error) {
-      // Handle the error here
       serverNotResponding = true;
-      // system_state = fallbackState;
       updateSystemStatetoFallback();
-      
     }
     num_modules = system_state.data.length;
     module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
-    console.log("module_idx: ", module_idx);
-    console.log("component_array: ", component_array);
+    // console.log("module_idx: ", module_idx);
+    // console.log("component_array: ", component_array);
 
   });
 

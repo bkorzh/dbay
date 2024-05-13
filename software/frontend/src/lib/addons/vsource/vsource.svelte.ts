@@ -36,22 +36,6 @@ export class VsourceAddon implements IVsourceAddon{
           } else {
             return new ChSourceStateClass(channels[i]);
           }
-          // let index = deflt ? i + 1 : channels[i].index;
-          // let bias_voltage = deflt ? $state(0) : $state(channels[i].bias_voltage);
-          // let activated = deflt ? $state(false) : $state(channels[i].activated);
-          // let heading_text = deflt ? $state("channel " + (i + 1)) : $state(channels[i].heading_text);
-          // let measuring = deflt ? $state(false) : $state(channels[i].measuring);
-          // return {
-          //   index,
-          //   get bias_voltage() { return bias_voltage },
-          //   set bias_voltage(v) { bias_voltage = v; },
-          //   get activated() { return activated },
-          //   set activated(v) { activated = v; },
-          //   get heading_text() { return heading_text },
-          //   set heading_text(v) { heading_text = v; },
-          //   get measuring() { return measuring },
-          //   set measuring(v) { measuring = v; },
-          // }
         });
       }
   

@@ -4,7 +4,7 @@ import { CoreModule } from "../../state/systemState.svelte";
 import type { ChSourceState } from "../addons";
 
 // 4 channel differential voltage source
-export class dac4D implements IModule {
+export class dac4D_old implements IModule {
   public vsource: VsourceAddon;
   public core: CoreModule;
 

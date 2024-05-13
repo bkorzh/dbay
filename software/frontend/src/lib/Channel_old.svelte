@@ -333,23 +333,38 @@
 
                     <div class="display {isPlusMinusPressed ? 'updating' : ''}">
                         <!-- <div class="display updating"> -->
-                        <div class="digit" class:digit-off={st.colorMode}>
+                        <div
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                        >
                             {ones}
                         </div>
                         <div class="short-spacer"></div>
-                        <div class="digit dot" class:digit-off={st.colorMode}>
+                        <div
+                            class="digit dot"
+                            class:digit-off={st.colorMode}
+                        >
                             .
                         </div>
                         <div class="short-spacer"></div>
-                        <div class="digit" class:digit-off={st.colorMode}>
+                        <div
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                        >
                             {tens}
                         </div>
                         <div class="spacer"></div>
-                        <div class="digit" class:digit-off={st.colorMode}>
+                        <div
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                        >
                             {hundreds}
                         </div>
                         <div class="spacer"></div>
-                        <div class="digit" class:digit-off={st.colorMode}>
+                        <div
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                        >
                             {thousands}
                         </div>
                     </div>
@@ -412,6 +427,7 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        
     }
 
     .top-right {
@@ -457,13 +473,13 @@
     }
 
     /* Deactivate the chevrons that appear on input type=number */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
     }
 
-    input[type="number"] {
+    input[type='number'] {
         -moz-appearance: textfield;
     }
 
@@ -611,6 +627,8 @@
         margin-right: 0.3rem;
     }
 
+    
+
     .plus-minus:hover {
         cursor: pointer;
         background-color: var(--hover-body-color);
@@ -652,39 +670,26 @@
         transition: transform 0.2s ease-in-out;
     }
 
+    
+
     .bound-box {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        /* box-shadow: 0 0 7px rgba(0, 0, 0, 0.05); */
-        /* border: 1.3px solid var(--outer-border-color); */
-        border-left: 1.3px solid var(--outer-border-color);
-        border-right: 1.3px solid var(--outer-border-color);
-        border-bottom: 1.3px solid var(--divider-border-color);
-        /* margin: 0.2rem 0rem; */
+        box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
+        border: 1.3px solid var(--outer-border-color);
+        margin: 0.2rem 0rem;
     }
     .top-bar {
         display: flex;
-        /* position: relative; */
         flex-direction: row;
         background-color: var(--heading-color);
         border-bottom: 1.3px solid var(--inner-border-color);
         justify-content: space-between;
-        padding: 0rem 1rem;
+        padding: 0.0rem 1rem;
         padding-bottom: 0.2rem;
         padding-right: 0px;
-        /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
     }
-
-    /* .top-bar::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -12px;
-        height: 12px;
-        background: linear-gradient(rgba(0, 0, 0, 0.05), transparent);
-    } */
 
     .dot-menu {
         margin: 0px 3px;
@@ -702,11 +707,11 @@
     .chevron {
         margin: 0px 5px;
         padding: 0px 5px;
-        padding-top: 0rem;
+        padding-top: 0.0rem;
         border-radius: 5px;
         /* margin-top: 0.01rem;
         padding-top: 0.2rem; */
-
+        
         color: var(--icon-color);
     }
 
@@ -718,6 +723,7 @@
         cursor: pointer;
         background-color: var(--hover-heading-color);
     }
+
 
     .main-controlls {
         /* flex-grow: 1;
@@ -733,7 +739,9 @@
         transition: background-color 0.1s ease-in-out;
     }
 
+
     .no_border {
         border: none;
     }
+
 </style>
