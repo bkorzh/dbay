@@ -115,12 +115,6 @@
     flex-direction: row;
   }
 
-  /* .left-space {
-    width: 7%;
-    background-color: var(--module-header-color);
-    background-color: var(--bg-color);
-  } */
-
   .right-content {
     box-sizing: border-box;
     display: flex;

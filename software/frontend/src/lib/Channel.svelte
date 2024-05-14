@@ -1,8 +1,3 @@
-<!-- <script lang="ts" context="module">
-    import "../app.css";
-    export let activated;
-</script> -->
-
 <script lang="ts">
     import { ui_state } from "../state/uiState.svelte";
     // import { voltageStore } from "../stores/voltageStore"
@@ -12,7 +7,6 @@
     import SubmitButton from "./SubmitButton.svelte";
     import GeneralButton from "./GeneralButton.svelte";
     import { get } from "svelte/store";
-    // import { voltageStore } from "../stores/voltageStore";
     import { requestChannelUpdate } from "../api";
 
     import type { VsourceChange } from "./addons/vsource/interface";
@@ -43,22 +37,19 @@
     let menuLocation = $state({ top: 0, left: 0 });
     let immediate_text: string = $state("");
 
-    // let integer = $derived(Math.round(Math.abs(ch.bias_voltage * 1000)));
-    // let thousands = $derived(integer % 10);
-    // let hundreds = $derived(Math.floor(integer / 10) % 10);
-    // let tens = $derived(Math.floor(integer / 100) % 10);
-    // let ones = $derived(Math.floor(integer / 1000) % 10);
-    // let sign = $derived(ch.bias_voltage < 0 ? "-" : "+");
-
     let thousands = $state(0);
     let hundreds = $state(0);
     let tens = $state(0);
     let ones = $state(0);
     let sign = $state("+");
 
-    // $effect(() => {
-    //     console.log("ch.measuring: ", ch.measuring);
-    // });
+    let sign_temp = $state("+");
+
+    let temp = $state([0,0,0,0])
+
+    $effect(() => {
+        console.log("temp: ", temp)
+    })
 
     let st = $derived(
         ch.activated
@@ -82,7 +73,6 @@
             top: rect.top + window.scrollY,
             left: rect.right + window.scrollX,
         };
-        // console.log("menuLocation: ", menuLocation);
     }
 
     async function validateUpdateVoltage(voltage: number) {
@@ -95,21 +85,32 @@
         updateChannel({ voltage: voltage });
     }
 
-    async function increment(value: number) {
-        let new_bias_voltage = ch.bias_voltage + value;
+    async function increment(index: number, value: number) {
+        
+        const scaling = [1, 0.1, 0.01, 0.001];
+        const plus_minus = sign_temp === "+" ? 1 : -1;
+        if (editing) {
+            temp[index] += value*plus_minus;
+            validateRefresh(temp);
+            return
+        }
+        let new_bias_voltage = ch.bias_voltage + scaling[index]*value;
         validateUpdateVoltage(new_bias_voltage);
     }
+
+
 
     function switchState() {
         updateChannel({ activated: !ch.activated });
     }
 
-    function switchMeasurementMode() {
-        updateChannel({ measuring: !ch.measuring });
-    }
-
     function updatedPlusMinus() {
-        isPlusMinusPressed = true;
+        if (editing) {
+            sign_temp = sign_temp === "+" ? "-" : "+";
+            return
+        }
+
+        isPlusMinusPressed = true; //needed for the animation
 
         updateChannel({ voltage: -ch.bias_voltage });
 
@@ -133,6 +134,7 @@
             index,
             measuring,
         };
+        console.log("sending: ", data.bias_voltage, "activated: ", data.activated);
         if (system_state.valid) {
             const returnData = await requestChannelUpdate(data);
 
@@ -146,6 +148,31 @@
             ch.heading_text = data.heading_text;
             ch.measuring = data.measuring;
         }
+        biasVoltage2Digits(ch.bias_voltage);
+    }
+
+    function biasVoltage2DigitsTemp(bias_voltage: number) {
+        const integer = Math.round(Math.abs(bias_voltage * 1000));
+        temp[3] = integer % 10;
+        temp[2] = Math.floor(integer / 10) % 10;
+        temp[1] = Math.floor(integer / 100) % 10;
+        temp[0] = Math.floor(integer / 1000) % 10;
+        sign_temp = bias_voltage < 0 ? "-" : "+";
+    }
+
+    function biasVoltage2Digits(bias_voltage: number) {
+        const integer = Math.round(Math.abs(bias_voltage * 1000));
+        thousands = integer % 10;
+        hundreds = Math.floor(integer / 10) % 10;
+        tens = Math.floor(integer / 100) % 10;
+        ones = Math.floor(integer / 1000) % 10;
+        sign = bias_voltage < 0 ? "-" : "+";
+
+        temp[3] = thousands;
+        temp[2] = hundreds;
+        temp[1] = tens;
+        temp[0] = ones;
+        sign_temp = sign;
     }
 
     let toggle_up = $state(false);
@@ -155,7 +182,7 @@
     let visible = $state(true);
     let no_border = $state(false);
 
-    let editing = $state(true);
+    let editing = $state(false);
 
     function togglerRotateState() {
         toggle_up = !toggle_up;
@@ -195,23 +222,26 @@
         }
     }
 
-    let inputRef: HTMLInputElement = $state();
-    function handleSubmitButtonClick() {
-        console.log("Input value: " + inputRef.value);
-        let input = parseFloat(inputRef.value);
-        if (isNaN(input)) {
-            console.log("Input is not a number");
-            return;
-        } else {
-            validateUpdateVoltage(input);
-            inputRef.value = ""; // Clear the input element in the DOM
-            isPlusMinusPressed = true;
-            setTimeout(() => {
-                isPlusMinusPressed = false;
-            }, 1);
-        }
+
+    function validateRefresh(temp) {
+        const v = (temp[3]* 0.001 + temp[2] * 0.01 + temp[1] * 0.1 + temp[0])* (sign_temp === "+" ? 1 : -1);
+        biasVoltage2DigitsTemp(v);
     }
-    function handleInputKeyDown(event) {
+
+
+    function handleSubmitButtonClick() {
+        const submitted_voltage = parseFloat(`${sign_temp}${temp[0]}.${temp[1]}${temp[2]}${temp[3]}`)
+
+        validateUpdateVoltage(submitted_voltage);
+
+        editing = false;
+        focusing = false;
+        isPlusMinusPressed = true;
+        setTimeout(() => {
+            isPlusMinusPressed = false;
+        }, 1);
+    }
+    function handleInputKeyDown(event: any) {
         if (event.key === "Enter") {
             handleSubmitButtonClick();
         }
@@ -221,30 +251,35 @@
     let tens_el = $state();
     let hundreds_el = $state();
     let thousands_el = $state();
+    let focusing = $state(false);
+    let submit_button = $state();
 
-    // onMount(() => {
-    //     // ones_el.focus();
-    // });
-
-    // let ones, tens, hundreds, thousands;
-    let inputs = $derived([ones_el, tens_el, hundreds_el, thousands_el]);
+    let inputs = $derived([ones_el, tens_el, hundreds_el, thousands_el]) as HTMLInputElement[];
+    let input_values = $derived([temp[0], temp[1], temp[2], temp[3]]);
 
     function handleDisplayInput(event, index) {
-        console.log(event.target.value);
-        if (isNaN(event.target.value) || event.target.value == ".") {
+        if (isNaN(event.target.value) || event.target.value.includes(".")) {
             event.preventDefault();
             event.target.value = ""; // Clear the input if the value is not a number
         } else if (event.target.value.length > 0) {
             if (index < inputs.length - 1) {
                 inputs[index + 1].value = ""; // Move the extra digit to the next input
                 inputs[index + 1].focus();
+            } else {
+                // this is for allowing the last input to change its single digit
+                // if another digit is entered before "Enter"
+                inputs[index].value = event.target.value[event.target.value.length - 1];
+                temp[3] = parseFloat(inputs[index].value[event.target.value.length - 1]);
             }
         }
     }
 
     function handleKeydown(event, index) {
-        // console.log("index: ", index);
-        // console.log(inputs);
+        var key = event.charCode ? event.charCode : event.keyCode;
+        // for any key other than 0-9, prevent the default action
+        if (key < 48 || key > 57) {
+            event.preventDefault();
+        }
         if (
             event.key === "Backspace" &&
             event.target.value === "" &&
@@ -255,11 +290,34 @@
             }
             inputs[index - 1].focus();
         }
-        console.log("keydown: ", event.target.value);
-        if (isNaN(event.target.value) || event.target.value == ".") {
-            event.preventDefault();
-            event.target.value = ""; // Clear the input if the value is not a number
+        if (event.key === "Enter" && index === inputs.length - 1) {
+            event.target.blur();
+            handleSubmitButtonClick();
         }
+    }
+
+    function inputFocus(event, index) {
+        if (!isNaN(index)) {
+            inputs[index].focus();
+        }
+        event.target.value = "";
+        focusing = true;
+        editing = true;
+    }
+
+    function inputBlur(event, index) {
+
+        focusing = false;
+        event.target.value = input_values[index];
+    }
+
+    function exitEditing() {
+        temp[0] = ones;
+        temp[1] = tens;
+        temp[2] = hundreds;
+        temp[3] = thousands;
+        sign_temp = sign;
+        editing = false;
     }
 </script>
 
@@ -354,73 +412,122 @@
                 <div
                     class="plus-minus"
                     class:digit-off={st.colorMode}
+                    class:digit-edit={editing}
                     role="button"
                     tabindex="0"
                     onclick={updatedPlusMinus}
                     onkeydown={updatedPlusMinus}
                 >
-                    {sign}
+                    {sign_temp}
                 </div>
                 <div class="controls">
                     <div class="buttons-top">
-                        <ChevButtonTop onclick={() => {ones = ones + 1}} />
+                        <ChevButtonTop onclick={() => increment(0, 1)}/>
                         <div class="spacer-chev"></div>
-                        <ChevButtonTop onclick={() => increment(0.1)} />
+                        <ChevButtonTop onclick={() => increment(1, 1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonTop onclick={() => increment(0.01)} />
+                        <ChevButtonTop onclick={() => increment(2, 1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonTop onclick={() => increment(0.001)} />
+                        <ChevButtonTop onclick={() => increment(3, 1)} />
                     </div>
 
-                    <div class="display {isPlusMinusPressed ? 'updating' : ''}">
-                        <!-- <div class="display updating"> -->
+                    <div
+                        class="display {isPlusMinusPressed ? 'updating' : ''}"
+                        class:display-focus={editing}
+                        role="button"
+                        tabindex="-1"
+                    >
                         <input
                             class="digit"
+                            type="number"
                             class:digit-off={st.colorMode}
-                            bind:value={ones}
+                            class:digit-edit={editing}
+                            bind:value={temp[0]}
                             oninput={(e) => handleDisplayInput(e, 0)}
                             onkeydown={(e) => handleKeydown(e, 0)}
-                            onfocus={(e) => (e.target.value = "")}
+                            onfocus={inputFocus}
+                            onblur={(e) => inputBlur(e, 0)}
                             bind:this={ones_el}
                             tabindex="-1"
                             maxlength="1"
                         />
-                        <div class="short-spacer"></div>
-                        <div class="digit dot" class:digit-off={st.colorMode}>
+                        <div
+                            class="short-spacer"
+                            onclick={(e) => inputFocus(e, 0)}
+                            onkeydown={(e) => inputFocus(e, 0)}
+                            role="button"
+                            tabindex="-1"
+                        ></div>
+                        <div
+                            class="digit dot"
+                            onclick={(e) => inputFocus(e, 0)}
+                            onkeydown={(e) => inputFocus(e, 0)}
+                            role="button"
+                            tabindex="-1"
+                            class:digit-off={st.colorMode}
+                            class:digit-edit={editing}
+                        >
                             .
                         </div>
-                        <div class="short-spacer"></div>
+                        <div
+                            class="short-spacer"
+                            onclick={(e) => inputFocus(e, 1)}
+                            onkeydown={(e) => inputFocus(e, 1)}
+                            role="button"
+                            tabindex="-1"
+                        ></div>
                         <input
                             class="digit"
+                            type="number"
                             class:digit-off={st.colorMode}
-                            bind:value={tens}
+                            class:digit-edit={editing}
+                            bind:value={temp[1]}
                             oninput={(e) => handleDisplayInput(e, 1)}
                             onkeydown={(e) => handleKeydown(e, 1)}
-                            onfocus={(e) => (e.target.value = "")}
+                            onfocus={inputFocus}
+                            onblur={(e) => inputBlur(e, 1)}
                             bind:this={tens_el}
                             tabindex="-1"
                             maxlength="1"
                         />
-                        <div class="spacer"></div>
+                        <div
+                            class="spacer"
+                            onclick={(e) => inputFocus(e, 1)}
+                            onkeydown={(e) => inputFocus(e, 1)}
+                            role="button"
+                            tabindex="-1"
+                        ></div>
                         <input
                             class="digit"
+                            type="number"
                             class:digit-off={st.colorMode}
-                            bind:value={hundreds}
+                            class:digit-edit={editing}
+                            bind:value={temp[2]}
                             oninput={(e) => handleDisplayInput(e, 2)}
                             onkeydown={(e) => handleKeydown(e, 2)}
-                            onfocus={(e) => (e.target.value = "")}
+                            onfocus={inputFocus}
+                            onblur={(e) => inputBlur(e, 2)}
                             bind:this={hundreds_el}
                             tabindex="-1"
                             maxlength="1"
                         />
-                        <div class="spacer"></div>
+                        <div
+                            class="spacer"
+                            onclick={(e) => inputFocus(e, 2)}
+                            onkeydown={(e) => inputFocus(e, 2)}
+                            role="button"
+                            tabindex="-1"
+                        ></div>
                         <input
                             class="digit"
+                            type="number"
                             class:digit-off={st.colorMode}
-                            bind:value={thousands}
+                            class:digit-edit={editing}
+                            bind:value={temp[3]}
                             oninput={(e) => handleDisplayInput(e, 3)}
                             onkeydown={(e) => handleKeydown(e, 3)}
-                            onfocus={(e) => (e.target.value = "")}
+                            onfocus={inputFocus}
+                            onblur={(e) => inputBlur(e, 3)}
                             bind:this={thousands_el}
                             tabindex="-1"
                             maxlength="1"
@@ -428,24 +535,25 @@
                     </div>
 
                     <div class="buttons-bottom">
-                        <ChevButtonBottom onclick={() => increment(-1)} />
+                        <ChevButtonBottom onclick={() => increment(0, -1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonBottom onclick={() => increment(-0.1)} />
+                        <ChevButtonBottom onclick={() => increment(1, -1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonBottom onclick={() => increment(-0.01)} />
+                        <ChevButtonBottom onclick={() => increment(2, -1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonBottom onclick={() => increment(-0.001)} />
+                        <ChevButtonBottom onclick={() => increment(3, -1)} />
                     </div>
                 </div>
                 <div class="voltage">V</div>
             </div>
             {#if editing}
                 <div class="right-editing">
-                    <SubmitButton onclick={handleSubmitButtonClick}
-                        >Submit</SubmitButton
+                    <SubmitButton
+                        onclick={handleSubmitButtonClick}
+                        bind:this={submit_button}>Submit</SubmitButton
                     >
 
-                    <GeneralButton onclick={() => (editing = !editing)}
+                    <GeneralButton onclick={exitEditing}
                         >Cancel</GeneralButton
                     >
                     <!-- <input
@@ -453,6 +561,14 @@
                     bind:this={inputRef}
                     onkeydown={handleInputKeyDown}
                 /> -->
+                </div>
+            {:else}
+                <div class="right">
+                    <Button
+                        onclick={switchState}
+                        redGreen={st.colorMode}
+                        >{st.action_string}</Button
+                    >
                 </div>
             {/if}
         </div>
@@ -521,7 +637,7 @@
         /* margin-bottom: -18px; */
         height: 78%;
         /* margin-top: 0.3rem; */
-        padding-top: 0.30rem;
+        padding-top: 0.3rem;
         /* padding: 0; */
         /* height: 80%; */
         /* padding: 0.0rem 0.5rem; */
@@ -541,7 +657,7 @@
     }
 
     input {
-        background-color: var(--display-color);
+        background-color: transparent;
         border-radius: 4px;
         border: 1.5px solid var(--value-border-color);
         padding: 0rem 0.3rem;
@@ -550,7 +666,7 @@
         font-size: 1.7rem;
         letter-spacing: 0.58rem;
         color: var(--digits-color);
-        transition: background-color 0.1s ease-in-out;
+        /* transition: background-color 0.1s ease-in-out; */
     }
 
     /* Deactivate the chevrons that appear on input type=number */
@@ -563,12 +679,15 @@
     input[type="number"] {
         -moz-appearance: textfield;
     }
+    input:focus {
+        outline: none;
+    }
 
     .heading-input {
         color: var(--digits-color);
         background-color: var(--heading-color);
         border: 1.5px solid var(--heading-color);
-        padding-bottom: 0.2rem;
+        margin: auto;
     }
 
     .heading-input:hover {
@@ -610,11 +729,19 @@
         letter-spacing: 0;
         margin-left: 0;
         margin-right: 0;
+        background-color: none;
     }
 
-    /* .digit-off {
+    .digit-off {
         color: var(--digits-deactivated-color);
-    } */
+    }
+
+    .digit-edit {
+        color: var(--edit-blue);
+        font-weight: 400;
+    }
+
+    
 
     .dot {
         margin-left: -0.7rem;
@@ -643,6 +770,11 @@
         transition: background-color 0.1s ease-in-out;
         /* margin: -0.5rem 0rem; */
         background-color: var(--display-color);
+    }
+
+    .display-focus {
+        background-color: var(--heading-color);
+        border: 1.5px solid var(--outer-border-color);
     }
 
     .display:after {
@@ -727,8 +859,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 1rem 1rem;
-        padding-left: 0.2rem;
+        padding: 0.3rem 0rem;
+        padding-left: 1.0rem;
 
         /* flex: 10; */
         /* padding-right: 13px; */
@@ -743,6 +875,16 @@
         margin-right: 0.5rem;
         width: 45%;
         /* padding-right: 13px; */
+    }
+
+    .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding: 1rem 1rem;
+        padding-right: 0.2rem;
+        margin-right: 0.5rem;
+        width: 45%;
     }
 
     .toggle_up {
@@ -778,7 +920,7 @@
         border-bottom: 1.3px solid var(--inner-border-color);
         justify-content: space-between;
         padding: 0rem 1rem;
-        padding-bottom: 0.0rem;
+        padding-bottom: 0rem;
         padding-right: 0px;
         /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
     }
@@ -810,8 +952,8 @@
 
     .chevron {
         margin: auto;
-        margin-bottom: 0.0rem;
-        margin-top: 0.0rem;
+        margin-bottom: 0rem;
+        margin-top: 0rem;
         margin-right: 0.25rem;
         padding: 0px 5px;
         /* padding-bottom: 1rem; */
