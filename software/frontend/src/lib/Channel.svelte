@@ -10,6 +10,7 @@
     import ChevButtonTop from "./ChevButtonTop.svelte";
     import ChevButtonBottom from "./ChevButtonBottom.svelte";
     import SubmitButton from "./SubmitButton.svelte";
+    import GeneralButton from "./GeneralButton.svelte";
     import { get } from "svelte/store";
     // import { voltageStore } from "../stores/voltageStore";
     import { requestChannelUpdate } from "../api";
@@ -41,12 +42,19 @@
     let dotMenu: HTMLElement;
     let menuLocation = $state({ top: 0, left: 0 });
     let immediate_text: string = $state("");
-    let integer = $derived(Math.round(Math.abs(ch.bias_voltage * 1000)));
-    let thousands = $derived(integer % 10);
-    let hundreds = $derived(Math.floor(integer / 10) % 10);
-    let tens = $derived(Math.floor(integer / 100) % 10);
-    let ones = $derived(Math.floor(integer / 1000) % 10);
-    let sign = $derived(ch.bias_voltage < 0 ? "-" : "+");
+
+    // let integer = $derived(Math.round(Math.abs(ch.bias_voltage * 1000)));
+    // let thousands = $derived(integer % 10);
+    // let hundreds = $derived(Math.floor(integer / 10) % 10);
+    // let tens = $derived(Math.floor(integer / 100) % 10);
+    // let ones = $derived(Math.floor(integer / 1000) % 10);
+    // let sign = $derived(ch.bias_voltage < 0 ? "-" : "+");
+
+    let thousands = $state(0);
+    let hundreds = $state(0);
+    let tens = $state(0);
+    let ones = $state(0);
+    let sign = $state("+");
 
     // $effect(() => {
     //     console.log("ch.measuring: ", ch.measuring);
@@ -147,6 +155,8 @@
     let visible = $state(true);
     let no_border = $state(false);
 
+    let editing = $state(true);
+
     function togglerRotateState() {
         toggle_up = !toggle_up;
         toggle_down = !toggle_down;
@@ -206,6 +216,51 @@
             handleSubmitButtonClick();
         }
     }
+
+    let ones_el = $state();
+    let tens_el = $state();
+    let hundreds_el = $state();
+    let thousands_el = $state();
+
+    // onMount(() => {
+    //     // ones_el.focus();
+    // });
+
+    // let ones, tens, hundreds, thousands;
+    let inputs = $derived([ones_el, tens_el, hundreds_el, thousands_el]);
+
+    function handleDisplayInput(event, index) {
+        console.log(event.target.value);
+        if (isNaN(event.target.value) || event.target.value == ".") {
+            event.preventDefault();
+            event.target.value = ""; // Clear the input if the value is not a number
+        } else if (event.target.value.length > 0) {
+            if (index < inputs.length - 1) {
+                inputs[index + 1].value = ""; // Move the extra digit to the next input
+                inputs[index + 1].focus();
+            }
+        }
+    }
+
+    function handleKeydown(event, index) {
+        // console.log("index: ", index);
+        // console.log(inputs);
+        if (
+            event.key === "Backspace" &&
+            event.target.value === "" &&
+            index > 0
+        ) {
+            if (index + 1 < inputs.length) {
+                inputs[index + 1].value = ""; // Clear the next input
+            }
+            inputs[index - 1].focus();
+        }
+        console.log("keydown: ", event.target.value);
+        if (isNaN(event.target.value) || event.target.value == ".") {
+            event.preventDefault();
+            event.target.value = ""; // Clear the input if the value is not a number
+        }
+    }
 </script>
 
 <div class="bound-box">
@@ -245,7 +300,7 @@
                     fill="currentColor"
                     stroke="currentColor"
                     class="bi bi-three-dots"
-                    viewBox="0 0 16 16"
+                    viewBox="0 -3 16 16"
                 >
                     <path
                         d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
@@ -296,20 +351,6 @@
     {#if visible}
         <div class="main-controlls">
             <div class="left">
-                <Button onclick={switchState} redGreen={st.colorMode}
-                    >{st.action_string}</Button
-                >
-                <input
-                    type="number"
-                    bind:this={inputRef}
-                    onkeydown={handleInputKeyDown}
-                />
-                <SubmitButton onclick={handleSubmitButtonClick}
-                    >Submit</SubmitButton
-                >
-            </div>
-
-            <div class="right">
                 <div
                     class="plus-minus"
                     class:digit-off={st.colorMode}
@@ -322,7 +363,7 @@
                 </div>
                 <div class="controls">
                     <div class="buttons-top">
-                        <ChevButtonTop onclick={() => increment(1)} />
+                        <ChevButtonTop onclick={() => {ones = ones + 1}} />
                         <div class="spacer-chev"></div>
                         <ChevButtonTop onclick={() => increment(0.1)} />
                         <div class="spacer-chev"></div>
@@ -333,25 +374,57 @@
 
                     <div class="display {isPlusMinusPressed ? 'updating' : ''}">
                         <!-- <div class="display updating"> -->
-                        <div class="digit" class:digit-off={st.colorMode}>
-                            {ones}
-                        </div>
+                        <input
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                            bind:value={ones}
+                            oninput={(e) => handleDisplayInput(e, 0)}
+                            onkeydown={(e) => handleKeydown(e, 0)}
+                            onfocus={(e) => (e.target.value = "")}
+                            bind:this={ones_el}
+                            tabindex="-1"
+                            maxlength="1"
+                        />
                         <div class="short-spacer"></div>
                         <div class="digit dot" class:digit-off={st.colorMode}>
                             .
                         </div>
                         <div class="short-spacer"></div>
-                        <div class="digit" class:digit-off={st.colorMode}>
-                            {tens}
-                        </div>
+                        <input
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                            bind:value={tens}
+                            oninput={(e) => handleDisplayInput(e, 1)}
+                            onkeydown={(e) => handleKeydown(e, 1)}
+                            onfocus={(e) => (e.target.value = "")}
+                            bind:this={tens_el}
+                            tabindex="-1"
+                            maxlength="1"
+                        />
                         <div class="spacer"></div>
-                        <div class="digit" class:digit-off={st.colorMode}>
-                            {hundreds}
-                        </div>
+                        <input
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                            bind:value={hundreds}
+                            oninput={(e) => handleDisplayInput(e, 2)}
+                            onkeydown={(e) => handleKeydown(e, 2)}
+                            onfocus={(e) => (e.target.value = "")}
+                            bind:this={hundreds_el}
+                            tabindex="-1"
+                            maxlength="1"
+                        />
                         <div class="spacer"></div>
-                        <div class="digit" class:digit-off={st.colorMode}>
-                            {thousands}
-                        </div>
+                        <input
+                            class="digit"
+                            class:digit-off={st.colorMode}
+                            bind:value={thousands}
+                            oninput={(e) => handleDisplayInput(e, 3)}
+                            onkeydown={(e) => handleKeydown(e, 3)}
+                            onfocus={(e) => (e.target.value = "")}
+                            bind:this={thousands_el}
+                            tabindex="-1"
+                            maxlength="1"
+                        />
                     </div>
 
                     <div class="buttons-bottom">
@@ -366,6 +439,22 @@
                 </div>
                 <div class="voltage">V</div>
             </div>
+            {#if editing}
+                <div class="right-editing">
+                    <SubmitButton onclick={handleSubmitButtonClick}
+                        >Submit</SubmitButton
+                    >
+
+                    <GeneralButton onclick={() => (editing = !editing)}
+                        >Cancel</GeneralButton
+                    >
+                    <!-- <input
+                    type="number"
+                    bind:this={inputRef}
+                    onkeydown={handleInputKeyDown}
+                /> -->
+                </div>
+            {/if}
         </div>
     {/if}
 </div>
@@ -424,22 +513,30 @@
 
     .heading-input {
         color: var(--text-color);
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         letter-spacing: 0rem;
         /* padding: 0.7rem 0.0rem; */
-        padding-right: 2rem;
+        margin: 0;
+        padding-right: 0rem;
+        /* margin-bottom: -18px; */
+        height: 78%;
+        /* margin-top: 0.3rem; */
+        padding-top: 0.30rem;
+        /* padding: 0; */
+        /* height: 80%; */
         /* padding: 0.0rem 0.5rem; */
         /* padding: 0; */
     }
 
     .heading {
         margin-right: auto;
-        margin-top: auto;
+        margin-top: 0.25rem;
         margin-bottom: auto;
         padding: 0rem 0rem;
         padding-right: 0.8rem;
-        padding-bottom: 0.2rem;
+        padding-bottom: 0.25rem;
         opacity: 0.5;
+        font-size: 1.5rem;
         color: var(--text-color);
     }
 
@@ -501,21 +598,27 @@
     }
 
     .digit {
+        width: 2rem;
         font-size: 1.5rem;
         color: var(--digits-color);
         font-family: "Roboto Flex", sans-serif;
         font-weight: 300;
         font-size: 1.7rem;
         opacity: var(--state_opacity);
+        border: none;
+        text-align: center;
+        letter-spacing: 0;
+        margin-left: 0;
+        margin-right: 0;
     }
 
-    .digit-off {
+    /* .digit-off {
         color: var(--digits-deactivated-color);
-    }
+    } */
 
     .dot {
-        margin-left: -0.03rem;
-        margin-right: -0.03rem;
+        margin-left: -0.7rem;
+        margin-right: -0.7rem;
     }
 
     /* .button-box {
@@ -536,7 +639,7 @@
         /* background-color: var(--display-color); */
         border-radius: 4px;
         border: 1.5px solid var(--value-border-color);
-        padding: 0rem 0.44rem;
+        /* padding: 0rem 0.44rem; */
         transition: background-color 0.1s ease-in-out;
         /* margin: -0.5rem 0rem; */
         background-color: var(--display-color);
@@ -556,6 +659,10 @@
         opacity: 0;
         transition: all 0.4s;
         background: var(--digits-color);
+        /* this is needed because we have
+        input elements inside the area that gets
+        the shimmer effect from this pseudo-element */
+        pointer-events: none;
     }
 
     .display.updating:after {
@@ -612,11 +719,11 @@
     }
 
     .plus-minus:hover {
-        cursor: pointer;
+        /* cursor: pointer; */
         background-color: var(--hover-body-color);
     }
 
-    .right {
+    .left {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -627,10 +734,10 @@
         /* padding-right: 13px; */
     }
 
-    .left {
+    .right-editing {
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
+        justify-content: space-evenly;
         padding: 1rem 1rem;
         padding-right: 0.2rem;
         margin-right: 0.5rem;
@@ -671,7 +778,7 @@
         border-bottom: 1.3px solid var(--inner-border-color);
         justify-content: space-between;
         padding: 0rem 1rem;
-        padding-bottom: 0.2rem;
+        padding-bottom: 0.0rem;
         padding-right: 0px;
         /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
     }
@@ -689,19 +796,25 @@
     .dot-menu {
         margin: 0px 3px;
         padding: 0px 5px;
-        padding-top: 0.42rem;
+        padding-top: 0.1rem;
+        margin-bottom: 0.25rem;
+        /* padding-bottom: -10rem; */
         color: var(--icon-color);
         border-radius: 5px;
     }
 
     .dot-menu:hover {
-        cursor: pointer;
+        /* cursor: pointer; */
         background-color: var(--hover-heading-color);
     }
 
     .chevron {
-        margin: 0px 5px;
+        margin: auto;
+        margin-bottom: 0.0rem;
+        margin-top: 0.0rem;
+        margin-right: 0.25rem;
         padding: 0px 5px;
+        /* padding-bottom: 1rem; */
         padding-top: 0rem;
         border-radius: 5px;
         /* margin-top: 0.01rem;
@@ -715,7 +828,7 @@
     }
 
     .chevron:hover {
-        cursor: pointer;
+        /* cursor: pointer; */
         background-color: var(--hover-heading-color);
     }
 
@@ -725,7 +838,7 @@
         background-color: var(--body-color);
         /* transform: scaleY(1);
         transition: all .5s ease-in-out; */
-        user-select: none;
+        /* user-select: none; */
         display: flex;
         flex-direction: row;
         /* justify-content: space-between; */

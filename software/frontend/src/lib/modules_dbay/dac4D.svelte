@@ -34,8 +34,8 @@
   }
 </script>
 
-<div class="module-container">
-  <div class="heading">
+<div class="module-container" >
+  <div class="heading" class:closed = {!visible}>
     <div class="closer">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -86,6 +86,8 @@
     /* padding-top: 1px; */
     color: var(--module-icon-color);
   }
+
+  
 
   .chevron:focus {
         outline: none;
@@ -141,13 +143,18 @@
     border-top-right-radius: 0.4rem;
   }
 
+  .closed {
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
+  }
+
   .module-container {
     
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin-bottom: 2rem;
-    box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 9px rgba(0, 0, 0, 0.05);
   }
 
   @media (min-width: 460px) {
