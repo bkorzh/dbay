@@ -142,12 +142,6 @@
     width: 10rem;
   }
 
-  .enable {
-    font-size: 1.2rem;
-    color: var(--text-color);
-    margin: 0.3rem;
-  }
-
   input {
     background-color: var(--display-color);
     border-radius: 4px;

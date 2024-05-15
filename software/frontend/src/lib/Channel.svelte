@@ -45,11 +45,11 @@
 
     let sign_temp = $state("+");
 
-    let temp = $state([0,0,0,0])
+    let temp = $state([0, 0, 0, 0]);
 
     $effect(() => {
-        console.log("temp: ", temp)
-    })
+        console.log("temp: ", temp);
+    });
 
     let st = $derived(
         ch.activated
@@ -86,19 +86,18 @@
     }
 
     async function increment(index: number, value: number) {
-        
         const scaling = [1, 0.1, 0.01, 0.001];
         const plus_minus = sign_temp === "+" ? 1 : -1;
         if (editing) {
-            temp[index] += value*plus_minus;
+            temp[index] += value * plus_minus;
             validateRefresh(temp);
-            return
+            return;
         }
-        let new_bias_voltage = ch.bias_voltage + scaling[index]*value;
+        let new_bias_voltage =
+            Math.round((ch.bias_voltage + scaling[index] * value) * 1000) /
+            1000;
         validateUpdateVoltage(new_bias_voltage);
     }
-
-
 
     function switchState() {
         updateChannel({ activated: !ch.activated });
@@ -107,7 +106,7 @@
     function updatedPlusMinus() {
         if (editing) {
             sign_temp = sign_temp === "+" ? "-" : "+";
-            return
+            return;
         }
 
         isPlusMinusPressed = true; //needed for the animation
@@ -134,7 +133,12 @@
             index,
             measuring,
         };
-        console.log("sending: ", data.bias_voltage, "activated: ", data.activated);
+        console.log(
+            "sending: ",
+            data.bias_voltage,
+            "activated: ",
+            data.activated,
+        );
         if (system_state.valid) {
             const returnData = await requestChannelUpdate(data);
 
@@ -222,15 +226,17 @@
         }
     }
 
-
     function validateRefresh(temp) {
-        const v = (temp[3]* 0.001 + temp[2] * 0.01 + temp[1] * 0.1 + temp[0])* (sign_temp === "+" ? 1 : -1);
+        const v =
+            (temp[3] * 0.001 + temp[2] * 0.01 + temp[1] * 0.1 + temp[0]) *
+            (sign_temp === "+" ? 1 : -1);
         biasVoltage2DigitsTemp(v);
     }
 
-
     function handleSubmitButtonClick() {
-        const submitted_voltage = parseFloat(`${sign_temp}${temp[0]}.${temp[1]}${temp[2]}${temp[3]}`)
+        const submitted_voltage = parseFloat(
+            `${sign_temp}${temp[0]}.${temp[1]}${temp[2]}${temp[3]}`,
+        );
 
         validateUpdateVoltage(submitted_voltage);
 
@@ -254,7 +260,12 @@
     let focusing = $state(false);
     let submit_button = $state();
 
-    let inputs = $derived([ones_el, tens_el, hundreds_el, thousands_el]) as HTMLInputElement[];
+    let inputs = $derived([
+        ones_el,
+        tens_el,
+        hundreds_el,
+        thousands_el,
+    ]) as HTMLInputElement[];
     let input_values = $derived([temp[0], temp[1], temp[2], temp[3]]);
 
     function handleDisplayInput(event, index) {
@@ -268,8 +279,11 @@
             } else {
                 // this is for allowing the last input to change its single digit
                 // if another digit is entered before "Enter"
-                inputs[index].value = event.target.value[event.target.value.length - 1];
-                temp[3] = parseFloat(inputs[index].value[event.target.value.length - 1]);
+                inputs[index].value =
+                    event.target.value[event.target.value.length - 1];
+                temp[3] = parseFloat(
+                    inputs[index].value[event.target.value.length - 1],
+                );
             }
         }
     }
@@ -306,7 +320,6 @@
     }
 
     function inputBlur(event, index) {
-
         focusing = false;
         event.target.value = input_values[index];
     }
@@ -327,7 +340,6 @@
     <div class="top-bar" class:no_border>
         <div class="top-left">
             <h1 class="heading">{index}</h1>
-            <!-- {#if isEditing} -->
             <input
                 class="heading-input"
                 type="text"
@@ -342,7 +354,11 @@
                 tabindex="0"
             />
         </div>
+        
         <div class="top-right">
+            {#if !visible}
+            <div class="heading-voltage" class:digit-off={st.colorMode}>{(ch.bias_voltage).toFixed(3)}</div>
+            {/if}
             <div
                 class="dot-menu"
                 onclick={toggleMenu}
@@ -422,7 +438,7 @@
                 </div>
                 <div class="controls">
                     <div class="buttons-top">
-                        <ChevButtonTop onclick={() => increment(0, 1)}/>
+                        <ChevButtonTop onclick={() => increment(0, 1)} />
                         <div class="spacer-chev"></div>
                         <ChevButtonTop onclick={() => increment(1, 1)} />
                         <div class="spacer-chev"></div>
@@ -553,9 +569,7 @@
                         bind:this={submit_button}>Submit</SubmitButton
                     >
 
-                    <GeneralButton onclick={exitEditing}
-                        >Cancel</GeneralButton
-                    >
+                    <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>
                     <!-- <input
                     type="number"
                     bind:this={inputRef}
@@ -564,9 +578,7 @@
                 </div>
             {:else}
                 <div class="right">
-                    <Button
-                        onclick={switchState}
-                        redGreen={st.colorMode}
+                    <Button onclick={switchState} redGreen={st.colorMode}
                         >{st.action_string}</Button
                     >
                 </div>
@@ -590,6 +602,22 @@
         background-color: #ab0000;
         position: absolute;
     } */
+
+    .heading-voltage {
+        color: var(--digits-color);
+        font-size: 1.5rem;
+        letter-spacing: 0.58rem;
+        /* padding: 0.3rem 0.5rem; */
+        /* margin: 0;
+        margin-top: 0.2rem; */
+        /* margin-bottom: auto; */
+        /* opacity: 0.5; */
+        font-family: "Roboto Flex", sans-serif;
+        font-weight: 300;
+        margin: auto;
+        margin-left: 0;
+        margin-right: 3rem;
+    }
 
     .strip {
         background-color: var(--heading-color);
@@ -616,7 +644,8 @@
     .top-left {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        /* justify-content: start; */
+        align-items: flex-end;
     }
 
     .top-right {
@@ -632,12 +661,21 @@
         font-size: 1.5rem;
         letter-spacing: 0rem;
         /* padding: 0.7rem 0.0rem; */
-        margin: 0;
+        /* margin: 0; */
         padding-right: 0rem;
         /* margin-bottom: -18px; */
         height: 78%;
-        /* margin-top: 0.3rem; */
+        padding-right: 0rem;
+        margin: auto;
+        margin-left: 0.5rem;
+
         padding-top: 0.3rem;
+        color: var(--digits-color);
+        background-color: var(--heading-color);
+        border: 1.5px solid var(--heading-color);
+        /* justify-content: left;
+        text-align: left; */
+        width: 80%;
         /* padding: 0; */
         /* height: 80%; */
         /* padding: 0.0rem 0.5rem; */
@@ -645,7 +683,7 @@
     }
 
     .heading {
-        margin-right: auto;
+        margin-right: 0rem;
         margin-top: 0.25rem;
         margin-bottom: auto;
         padding: 0rem 0rem;
@@ -681,13 +719,6 @@
     }
     input:focus {
         outline: none;
-    }
-
-    .heading-input {
-        color: var(--digits-color);
-        background-color: var(--heading-color);
-        border: 1.5px solid var(--heading-color);
-        margin: auto;
     }
 
     .heading-input:hover {
@@ -736,12 +767,11 @@
         color: var(--digits-deactivated-color);
     }
 
+
     .digit-edit {
         color: var(--edit-blue);
         font-weight: 400;
     }
-
-    
 
     .dot {
         margin-left: -0.7rem;
@@ -860,7 +890,7 @@
         flex-direction: row;
         justify-content: space-between;
         padding: 0.3rem 0rem;
-        padding-left: 1.0rem;
+        padding-left: 1rem;
 
         /* flex: 10; */
         /* padding-right: 13px; */
@@ -919,6 +949,7 @@
         background-color: var(--heading-color);
         border-bottom: 1.3px solid var(--inner-border-color);
         justify-content: space-between;
+        /* align-items: start; */
         padding: 0rem 1rem;
         padding-bottom: 0rem;
         padding-right: 0px;

@@ -54,6 +54,7 @@ li {
   --module-icon-color: #f1f1f1;
   --red-highlight: #f66f7c;
   --edit-blue: #00499c;
+  --red-text: #7a1010;
 }
 
 .dark {
@@ -77,6 +78,7 @@ li {
   --module-icon-color: #f1f1f1;
   --red-highlight: #c70014;
   --edit-blue: #4b9fff;
+  --red-text: #b11d1d;
 }
 
 body {
