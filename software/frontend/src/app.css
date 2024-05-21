@@ -34,24 +34,25 @@ li {
 
 :root {
   --bg-color: #f1f4f7;
-  --text-color: #525c65;
-  --icon-color: #b5c4d2;
+  --text-color: #738494;
+  --icon-color: #99a8b7;
   --heading-color: #eaeff8;
   --body-color: #f4f9fd;
   --hl-text-color: #444444;
   --inner-border-color: #f1f6fb;
   --value-border-color: #f0f5fa;
-  --outer-border-color: #dde6f1;
+  --outer-border-color: #d7e0ed;
   --divider-border-color: #cad7e8;
   --display-color: #fbfcfe;
   --hover-body-color: #ecf0fb;
-  --hover-heading-color: #dfe4f0;
+  --hover-heading-color: #dfe3ef;
   --digits-color: #090909;
   --digits-deactivated-color: #d2dae8;
   --disabled-digits-color: #c7c7c7;
-  --module-header-color: #515154;
-  --module-border-color: #8b8b8d;
-  --module-icon-color: #f1f1f1;
+  --module-header-color: #eaeff8;
+  --module-header-color-light: #e4eaf5;
+  --module-border-color: #d7e0ed;
+  --module-icon-color: #1d2225;
   --red-highlight: #f66f7c;
   --edit-blue: #00499c;
   --red-text: #7a1010;
@@ -65,7 +66,7 @@ li {
   --body-color: #252528;
   --hl-text-color: #e7e7e7;
   --inner-border-color: #33333b;
-  --outer-border-color: #292930;
+  --outer-border-color: #34343c;
   --divider-border-color: #3f3f49;
   --value-border-color: #292930;
   --display-color: #292A2F;
@@ -73,8 +74,9 @@ li {
   --hover-heading-color: rgb(57, 57, 66);
   --digits-color: #f7f7f7;
   --digits-deactivated-color: #46495a;
-  --module-header-color: #484853;
-  --module-border-color: rgb(59, 59, 59);
+  --module-header-color: #40404b;
+  --module-header-color-light: #3b3b41;
+  --module-border-color: #484853;
   --module-icon-color: #f1f1f1;
   --red-highlight: #c70014;
   --edit-blue: #4b9fff;

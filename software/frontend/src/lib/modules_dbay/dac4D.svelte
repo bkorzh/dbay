@@ -39,8 +39,8 @@
     <div class="closer">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="23"
-        height="23"
+        width="22"
+        height="22"
         fill="currentColor"
         stroke="currentColor"
         class="chevron"
@@ -56,10 +56,18 @@
           fill-rule="evenodd"
           d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
           stroke-width="0.8"
+          transform="translate(0, -2)"
+        />
+        <path
+          fill-rule="evenodd"
+          d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
+          stroke-width="0.8"
+          transform="translate(0, 2)"
         />
       </svg>
     </div>
-    <div class="identifier">M{slot}</div>
+    <div class="identifier">M{slot}:</div>
+    <div class="identifier">Voltage Source</div>
   </div>
   <div class="body">
     {#if visible}
@@ -84,7 +92,7 @@
     margin-top: 0.1rem;
     margin-left: 0.2rem;
     /* padding-top: 1px; */
-    color: var(--module-icon-color);
+    color: var(--text-color);
   }
 
   
@@ -96,6 +104,7 @@
   .identifier {
     margin-left: 10px;
     color: var(--module-icon-color);
+    font-size: large;
   }
 
   .toggle_up {
@@ -133,6 +142,7 @@
     color: var(--text-color);
     font-size: 1.3rem;
     border: 1.3px solid var(--module-border-color);
+    /* border-bottom: none; */
     border-top-left-radius: 0.4rem;
     border-top-right-radius: 0.4rem;
   }

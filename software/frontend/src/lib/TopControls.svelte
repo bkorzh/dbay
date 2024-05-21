@@ -23,14 +23,17 @@
   let menuLocation = $state({ top: 0, left: 0 });
 
   let showDropdown = $state(false);
+
+
+
   function toggleMenu() {
-    showDropdown = !showDropdown;
-    const rect = burgerMenu.getBoundingClientRect();
-    menuLocation = { 
-        top: rect.top + window.scrollY, 
-        left: rect.right + window.scrollX 
-    };
-  }
+        showDropdown = !showDropdown;
+        const rect = burgerMenu.getBoundingClientRect();
+        menuLocation = {
+            top: rect.top + window.scrollY,
+            left: rect.right + window.scrollX,
+        };
+    }
 
   let total_state: SystemState;
 
@@ -75,30 +78,42 @@
   }
 
 
+  // onMount(() => {
+  //   componentInstance.subscribe(value => {
+  //     burgerMenu = value;
+  //     // Now you can use burgerMenu as a reference to the Hamburger component
+  //     // For example, you can get its location like this:
+  //     const rect = burgerMenu.getBoundingClientRect();
+  //     menuLocation = { 
+  //       top: rect.top + window.scrollY, 
+  //       left: rect.right + window.scrollX 
+  //   };
+  //   });
+  // });
+
+  let isMounted = false;
+
   onMount(() => {
-    componentInstance.subscribe(value => {
-      burgerMenu = value;
-      // Now you can use burgerMenu as a reference to the Hamburger component
-      // For example, you can get its location like this:
-      const rect = burgerMenu.getBoundingClientRect();
-      menuLocation = { 
-        top: rect.top + window.scrollY, 
-        left: rect.right + window.scrollX 
-    };
+        isMounted = true;
+        console.log("burgerMenu: ", burgerMenu);
+        const rect = burgerMenu.getBoundingClientRect();
+        menuLocation = {
+            top: rect.top + window.scrollY,
+            left: rect.right + window.scrollX,
+        };
     });
-  });
 </script>
 
 <div class="bound-box">
   <div class="top-bar">
     <h1 class="heading">Device Bay Electronics System</h1>
     <LightDarkToggleFG />
-    <Hamburger onClick={toggleMenu}/>
+    <Hamburger onclick={toggleMenu} bind:burgerMenu/>
     {#if showDropdown}
       <!-- <Menu onClick={toggleMenu} menuVisible={showDropdown} /> -->
-      <MenuSlotted onClick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
-        <MenuButton on:click={addModule}>Add a Module</MenuButton>
-        <MenuButton on:click={showSourceReInit}>Re-Initialize Source</MenuButton>
+      <MenuSlotted onclick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
+        <MenuButton onclick={addModule}>Add a Module</MenuButton>
+        <MenuButton onclick={showSourceReInit}>Re-Initialize Source</MenuButton>
       </MenuSlotted>
     {/if}
   </div>

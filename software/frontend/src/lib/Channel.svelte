@@ -6,12 +6,10 @@
     import ChevButtonBottom from "./ChevButtonBottom.svelte";
     import SubmitButton from "./SubmitButton.svelte";
     import GeneralButton from "./GeneralButton.svelte";
-    import { get } from "svelte/store";
     import { requestChannelUpdate } from "../api";
 
     import type { VsourceChange } from "./addons/vsource/interface";
 
-    import App from "../App.svelte";
     import { onMount } from "svelte";
 
     import { system_state } from "../state/systemState.svelte";
@@ -47,9 +45,9 @@
 
     let temp = $state([0, 0, 0, 0]);
 
-    $effect(() => {
-        console.log("temp: ", temp);
-    });
+    // $effect(() => {
+    //     console.log("temp: ", temp);
+    // });
 
     let st = $derived(
         ch.activated
@@ -226,7 +224,7 @@
         }
     }
 
-    function validateRefresh(temp) {
+    function validateRefresh(temp: number[]) {
         const v =
             (temp[3] * 0.001 + temp[2] * 0.01 + temp[1] * 0.1 + temp[0]) *
             (sign_temp === "+" ? 1 : -1);
@@ -268,11 +266,12 @@
     ]) as HTMLInputElement[];
     let input_values = $derived([temp[0], temp[1], temp[2], temp[3]]);
 
-    function handleDisplayInput(event, index) {
-        if (isNaN(event.target.value) || event.target.value.includes(".")) {
+    function handleDisplayInput(event: Event, index: number) {
+        const target = event.target as HTMLInputElement;
+        if (isNaN(parseFloat(target.value)) || target.value.includes(".")) {
             event.preventDefault();
-            event.target.value = ""; // Clear the input if the value is not a number
-        } else if (event.target.value.length > 0) {
+            target.value = ""; // Clear the input if the value is not a number
+        } else if (target.value.length > 0) {
             if (index < inputs.length - 1) {
                 inputs[index + 1].value = ""; // Move the extra digit to the next input
                 inputs[index + 1].focus();
@@ -280,23 +279,23 @@
                 // this is for allowing the last input to change its single digit
                 // if another digit is entered before "Enter"
                 inputs[index].value =
-                    event.target.value[event.target.value.length - 1];
+                    target.value[target.value.length - 1];
                 temp[3] = parseFloat(
-                    inputs[index].value[event.target.value.length - 1],
+                    inputs[index].value[target.value.length - 1],
                 );
             }
         }
     }
 
-    function handleKeydown(event, index) {
-        var key = event.charCode ? event.charCode : event.keyCode;
+    function handleKeydown(event: KeyboardEvent, index: number) {
+        const target = event.target as HTMLInputElement;
         // for any key other than 0-9, prevent the default action
-        if (key < 48 || key > 57) {
+        if (!event.key.match(/[0-9]/)) {
             event.preventDefault();
         }
         if (
             event.key === "Backspace" &&
-            event.target.value === "" &&
+            target.value === "" &&
             index > 0
         ) {
             if (index + 1 < inputs.length) {
@@ -305,23 +304,25 @@
             inputs[index - 1].focus();
         }
         if (event.key === "Enter" && index === inputs.length - 1) {
-            event.target.blur();
+            target.blur();
             handleSubmitButtonClick();
         }
     }
 
-    function inputFocus(event, index) {
-        if (!isNaN(index)) {
+    function inputFocus(event: Event, index?: number) {
+        const target = event.target as HTMLInputElement;
+        if (typeof index === "number") {
             inputs[index].focus();
         }
-        event.target.value = "";
+        target.value = "";
         focusing = true;
         editing = true;
     }
 
-    function inputBlur(event, index) {
+    function inputBlur(event: Event, index: number) {
+        const target = event.target as HTMLInputElement;
         focusing = false;
-        event.target.value = input_values[index];
+        target.value = input_values[index].toString();
     }
 
     function exitEditing() {
@@ -337,7 +338,7 @@
 <div class="bound-box">
     <!-- notice how I use class:no_border here -->
     <div class="strip" class:animated={ch.measuring}></div>
-    <div class="top-bar" class:no_border>
+    <div class="top-bar" class:animated={ch.measuring} class:no_border>
         <div class="top-left">
             <h1 class="heading">{index}</h1>
             <input
@@ -354,10 +355,12 @@
                 tabindex="0"
             />
         </div>
-        
+
         <div class="top-right">
             {#if !visible}
-            <div class="heading-voltage" class:digit-off={st.colorMode}>{(ch.bias_voltage).toFixed(3)}</div>
+                <div class="heading-voltage" class:digit-off={st.colorMode}>
+                    {ch.bias_voltage.toFixed(3)}
+                </div>
             {/if}
             <div
                 class="dot-menu"
@@ -386,7 +389,7 @@
             <!-- where 'something' is both a boolean in javascript and a class -->
             {#if showDropdown}
                 <MenuSlotted
-                    onClick={toggleMenu}
+                    onclick={toggleMenu}
                     menuVisible={showDropdown}
                     location={menuLocation}
                 >
@@ -671,8 +674,9 @@
 
         padding-top: 0.3rem;
         color: var(--digits-color);
-        background-color: var(--heading-color);
-        border: 1.5px solid var(--heading-color);
+        background-color: transparent;
+        
+        border: none;
         /* justify-content: left;
         text-align: left; */
         width: 80%;
@@ -689,7 +693,6 @@
         padding: 0rem 0rem;
         padding-right: 0.8rem;
         padding-bottom: 0.25rem;
-        opacity: 0.5;
         font-size: 1.5rem;
         color: var(--text-color);
     }
@@ -715,6 +718,7 @@
     }
 
     input[type="number"] {
+        appearance: textfield;
         -moz-appearance: textfield;
     }
     input:focus {
@@ -766,7 +770,6 @@
     .digit-off {
         color: var(--digits-deactivated-color);
     }
-
 
     .digit-edit {
         color: var(--edit-blue);
@@ -931,6 +934,10 @@
         transition: transform 0.2s ease-in-out;
     }
 
+    /* :root {
+    --module-border-color: 0, 0, 0;
+} */
+
     .bound-box {
         display: flex;
         flex-direction: column;
@@ -939,6 +946,8 @@
         /* border: 1.3px solid var(--outer-border-color); */
         border-left: 1.3px solid var(--outer-border-color);
         border-right: 1.3px solid var(--outer-border-color);
+        /* border-left: 1.3px solid rgba(var(--module-border-color), 0.1);
+        border-right: 1.3px solid rgba(var(--module-border-color), 0.1); */
         border-bottom: 1.3px solid var(--divider-border-color);
         /* margin: 0.2rem 0rem; */
     }
