@@ -28,13 +28,13 @@ import { system_state } from '../../state/systemState.svelte'
 
 const components: any = {
     dac4D: dac4D_component, 
-    dac4D_old: dac4D_old_component,
+    // dac4D_old: dac4D_old_component,
     dac16D: dac16D_component, 
 }
 
 const modules: ModulesDict = {
   dac4D,
-  dac4D_old,
+  // dac4D_old,
   dac16D,
 }
 
@@ -65,14 +65,6 @@ export function createComponentArray(module_list: IModule[]): any {
     })
 }
 
-// export function createSystemStateFromJson(parsed: JsonSystemState): IModule[] {
-//   const data = parsed.data.map((item: any) => {
-//     // depending on the type of module, we need dynamically create the module objects
-//     const module = new modules[item.core.type](item);
-//     return module as IModule
-//   });
-//   return data
-// }
 
 export function updateSystemStatefromJson(parsed: JsonSystemState) {
   const data = parsed.data.map((item: any) => {
@@ -87,10 +79,10 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
 
 export function updateSystemStatetoFallback() {
   const module_1: dac4D = new dac4D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
-  const module_2: dac4D_old = new dac4D_old({core: {slot: 2, type: "dac4D_old", name: "my 4ch module 1"}});
-  const module_3: dac16D = new dac16D({core: {slot: 3, type: "dac16D", name: "my 4ch module 1"}});
-  const module_4: dac16D = new dac16D({core: {slot: 4, type: "dac16D", name: "my 4ch module 1"}});
-  system_state.data = [module_1, module_2, module_3, module_4];
+  // const module_2: dac4D_old = new dac4D_old({core: {slot: 2, type: "dac4D_old", name: "my 4ch module 1"}});
+  const module_2: dac16D = new dac16D({core: {slot: 3, type: "dac16D", name: "my 4ch module 1"}});
+  const module_3: dac16D = new dac16D({core: {slot: 4, type: "dac16D", name: "my 4ch module 1"}});
+  system_state.data = [module_1, module_2, module_3];
   system_state.valid = false;
   system_state.dev_mode = true;
 }

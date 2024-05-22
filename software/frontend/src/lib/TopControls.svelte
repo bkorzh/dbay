@@ -95,7 +95,6 @@
 
   onMount(() => {
         isMounted = true;
-        console.log("burgerMenu: ", burgerMenu);
         const rect = burgerMenu.getBoundingClientRect();
         menuLocation = {
             top: rect.top + window.scrollY,

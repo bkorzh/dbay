@@ -3,6 +3,7 @@ import { CoreModule } from "../../state/systemState.svelte"
 
 import { VsourceAddon } from "../addons";
 import type { ChSourceState } from "../addons";
+import { ChSourceStateClass } from "../addons";
 
 
 // this class is used to manage the state of the 4 channel differential voltage source. 
@@ -15,11 +16,21 @@ import type { ChSourceState } from "../addons";
 
 // 4 channel differential voltage source
 export class dac16D implements IModule {
-  public vsource?: VsourceAddon;
+  public vsource: VsourceAddon;
   public core: CoreModule;
+  public shared_voltage: ChSourceState;
 
   constructor(data: JsonModule) {
     this.core = new CoreModule(data.core);
     this.vsource = new VsourceAddon(data.vsource?.channels, 16)
+    this.shared_voltage = new ChSourceStateClass({
+      index: 0,
+      bias_voltage: 0,
+      activated: false,
+      heading_text: "Set All Channels",
+      measuring: false
+    });
   }
+
+  
 }

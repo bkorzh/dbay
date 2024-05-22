@@ -19,21 +19,25 @@
     import MenuButton from "./MenuButton.svelte";
 
     import { dac4D } from "./modules_dbay/dac4D_data.svelte";
+    import { ChSourceStateClass } from "./addons";
 
     interface Props {
-        index: number;
+        ch: ChSourceStateClass
         module_index: number;
+        endpoint: string;
     }
 
-    let { index, module_index }: Props = $props();
+    let { ch, module_index, endpoint }: Props = $props();
 
     // if this component is mounted, then the vsource addon should exist
-    let dac4d = system_state.data[module_index - 1] as dac4D;
-    let ch = dac4d.vsource.channels[index - 1];
+    // let dac4d = system_state.data[module_index - 1] as dac4D;
+    // let ch = dac4d.vsource.channels[index - 1];
+
+
 
     let dotMenu: HTMLElement;
     let menuLocation = $state({ top: 0, left: 0 });
-    let immediate_text: string = $state("");
+    let immediate_text: string = ch.heading_text;
 
     let thousands = $state(0);
     let hundreds = $state(0);
@@ -131,14 +135,8 @@
             index,
             measuring,
         };
-        console.log(
-            "sending: ",
-            data.bias_voltage,
-            "activated: ",
-            data.activated,
-        );
         if (system_state.valid) {
-            const returnData = await requestChannelUpdate(data);
+            const returnData = await requestChannelUpdate(data, endpoint);
 
             ch.activated = returnData.activated;
             ch.bias_voltage = returnData.bias_voltage;
@@ -340,7 +338,7 @@
     <div class="strip" class:animated={ch.measuring}></div>
     <div class="top-bar" class:animated={ch.measuring} class:no_border>
         <div class="top-left">
-            <h1 class="heading">{index}</h1>
+            <h1 class="heading">{ch.index}</h1>
             <input
                 class="heading-input"
                 type="text"
@@ -666,7 +664,8 @@
         /* padding: 0.7rem 0.0rem; */
         /* margin: 0; */
         padding-right: 0rem;
-        /* margin-bottom: -18px; */
+        /* margin-bottom: 3rem; */
+        padding-bottom: 0.15rem;
         height: 78%;
         padding-right: 0rem;
         margin: auto;
@@ -727,13 +726,9 @@
 
     .heading-input:hover {
         background-color: var(--hover-heading-color);
-        border: 1.5px solid var(--inner-border-color);
+        /* border: 1.5px solid var(--inner-border-color); */
     }
 
-    .heading-input:focus {
-        background-color: var(--hover-heading-color);
-        border: 1.5px solid var(--inner-border-color);
-    }
 
     .plus-minus {
         width: 18px;

@@ -6,30 +6,26 @@
   import { system_state } from "../../state/systemState.svelte";
   import { slide } from 'svelte/transition';
   import { blur } from 'svelte/transition';
+  import { dac4D } from "./dac4D_data.svelte"
+  
 
   interface MyProps {
     module_index: number;
   }
-
   let { module_index }: MyProps = $props();
-  // let slot = 0;
+
+  const this_component_data = system_state.data[module_index-1] as dac4D;
 
 
   let slot = $derived(system_state.data[module_index-1]?.core.slot);
-
-  // let slot = system_state.data[module_index-1]?.core.slot
-
   let channel_list = [1,2,3,4]
-
   let toggle_up = $state(false);
   let toggle_down = $state(true);
   let visible = $state(true);
 
   function togglerRotateState() {
-    console.log("togglerRotateState");
     toggle_up = !toggle_up;
     toggle_down = !toggle_down;
-    // alter = !alter;
     visible = !visible;
   }
 </script>
@@ -71,16 +67,17 @@
   </div>
   <div class="body">
     {#if visible}
-      <!-- <div class="left-space"></div> -->
-      <div class="right-content">
+      <div class="content">
         {#each channel_list as _, i}
           <div transition:slide|global class="channel">
             <Channel
-            index={i + 1}
+            ch={this_component_data.vsource.channels[i]}
             module_index={module_index}
+            endpoint="/dac4D/voltage/"
           />
           </div>
-          
+          <!-- instead of passing in an index to Channel, should I pass in the object itself? Would that help?-->
+          <!-- I want to set all channels if necessary. But allow inidivisual channels to vary. You don't want  -->
         {/each}
       </div>
     {/if}
@@ -91,7 +88,6 @@
   .chevron {
     margin-top: 0.1rem;
     margin-left: 0.2rem;
-    /* padding-top: 1px; */
     color: var(--text-color);
   }
 
@@ -124,7 +120,7 @@
     flex-direction: row;
   }
 
-  .right-content {
+  .content {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
