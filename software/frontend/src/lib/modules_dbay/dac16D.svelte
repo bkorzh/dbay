@@ -1,24 +1,25 @@
-<script lang='ts'>
+<script lang="ts">
   import Channel from "../Channel.svelte";
   import { onMount } from "svelte";
   import { ui_state } from "../../state/uiState.svelte";
   // import { voltageStore } from "../../state/systemState.svelte";
   import { system_state } from "../../state/systemState.svelte";
-  import { slide } from 'svelte/transition';
-  import { blur } from 'svelte/transition';
-  import { dac16D } from "./dac16D_data.svelte"
+  import { slide } from "svelte/transition";
+  import { blur } from "svelte/transition";
+  import { dac16D } from "./dac16D_data.svelte";
+  import type { ChSourceState, VsourceChange } from "../addons/vsource/interface";
+  import { requestChannelUpdate } from "../../api";
+  import { ChSourceStateClass } from "../addons";
 
   interface MyProps {
     module_index: number;
   }
   let { module_index }: MyProps = $props();
-  let slot = $derived(system_state.data[module_index-1]?.core.slot);
+  let slot = $derived(system_state.data[module_index - 1]?.core.slot);
 
+  const this_component_data = system_state.data[module_index - 1] as dac16D;
 
-  const this_component_data = system_state.data[module_index-1] as dac16D;
-
-
-  // let channel_list = [1,2,3,4]
+  let channel_list = Array.from({length: 16}, (_, i) => i + 1);
   let toggle_up = $state(false);
   let toggle_down = $state(true);
   let visible = $state(true);
@@ -30,12 +31,35 @@
     visible = !visible;
   }
 
+  async function distributeChannelChange(data: VsourceChange) {
+    let intermediate_data;
+
+    console.log("distributing: ", data);
+    if (system_state.valid) {
+      // the /shared_voltage/ endpoint is a special case for the dac16D module
+      intermediate_data = await requestChannelUpdate(data, "/dac16D/shared_voltage/");
+    } else {
+      intermediate_data = data;
+    }
+
+    this_component_data.vsource.channels.forEach((channel: ChSourceStateClass) => {
+      channel.setChannel(intermediate_data);
+    })
+
+    return intermediate_data;
+  }
+
+  async function modifySingleChannel(data: VsourceChange) {
+    // loop over all the channels to see if this changes makes all channels not the same.
+    // if so, then the AllChannel control will become invalid
+    return data;
+  }
 
   // you would check to see if every one of the 16 channels matches the 'set all' value
 </script>
 
-<div class="module-container" >
-  <div class="heading" class:closed = {!visible}>
+<div class="module-container">
+  <div class="heading" class:closed={!visible}>
     <div class="closer">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -72,12 +96,23 @@
   <div class="body">
     {#if visible}
       <div class="content">
+        <Channel
+          ch={this_component_data.shared_voltage}
+          {module_index}
+          onChannelChange={distributeChannelChange}
+        />
+        {#each channel_list as _, i}
+          <div transition:slide|global class="channel">
             <Channel
-            ch={this_component_data.shared_voltage}
+            ch={this_component_data.vsource.channels[i]}
             module_index={module_index}
-            endpoint="/dac16D/voltage/"
+            onChannelChange = {modifySingleChannel}
           />
           </div>
+          <!-- instead of passing in an index to Channel, should I pass in the object itself? Would that help?-->
+          <!-- I want to set all channels if necessary. But allow inidivisual channels to vary. You don't want  -->
+        {/each}
+      </div>
     {/if}
   </div>
 </div>
@@ -89,11 +124,9 @@
     color: var(--text-color);
   }
 
-  
-
   .chevron:focus {
-        outline: none;
-    }
+    outline: none;
+  }
 
   .identifier {
     margin-left: 10px;
@@ -125,10 +158,9 @@
     width: 100%;
   }
 
-
   .heading {
     display: flex;
-    
+
     flex-direction: row;
     /* justify-content: space-between; */
     background-color: var(--module-header-color);
@@ -147,7 +179,6 @@
   }
 
   .module-container {
-    
     display: flex;
     flex-direction: column;
     justify-content: center;

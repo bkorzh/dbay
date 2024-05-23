@@ -8,7 +8,7 @@
     import GeneralButton from "./GeneralButton.svelte";
     import { requestChannelUpdate } from "../api";
 
-    import type { VsourceChange } from "./addons/vsource/interface";
+    import type { ChSourceState, VsourceChange } from "./addons/vsource/interface";
 
     import { onMount } from "svelte";
 
@@ -22,12 +22,12 @@
     import { ChSourceStateClass } from "./addons";
 
     interface Props {
-        ch: ChSourceStateClass
+        ch: ChSourceStateClass;
         module_index: number;
-        endpoint: string;
+        onChannelChange: (data: VsourceChange) => Promise<VsourceChange>;
     }
 
-    let { ch, module_index, endpoint }: Props = $props();
+    let { ch, module_index, onChannelChange }: Props = $props();
 
     // if this component is mounted, then the vsource addon should exist
     // let dac4d = system_state.data[module_index - 1] as dac4D;
@@ -37,17 +37,39 @@
 
     let dotMenu: HTMLElement;
     let menuLocation = $state({ top: 0, left: 0 });
-    let immediate_text: string = ch.heading_text;
+    let immediate_text: string = $state(ch.heading_text);
 
-    let thousands = $state(0);
-    let hundreds = $state(0);
-    let tens = $state(0);
-    let ones = $state(0);
-    let sign = $state("+");
+    // let thousands = $state(0);
+    // let hundreds = $state(0);
+    // let tens = $state(0);
+    // let ones = $state(0);
+    // let sign = $state("+");
 
-    let sign_temp = $state("+");
 
-    let temp = $state([0, 0, 0, 0]);
+    // let integer = $derived(Math.round(Math.abs(ch.bias_voltage * 1000)));
+    // let thousands = $derived(integer % 10);
+    // let hundreds = $derived(Math.floor(integer / 10) % 10);
+    // let tens = $derived(Math.floor(integer / 100) % 10);
+    // let ones = $derived(Math.floor(integer / 1000) % 10);
+
+    // let sign = $derived(ch.bias_voltage < 0 ? "-" : "+");
+
+
+    // let temp = $derived([thousands, hundreds, tens, ones]) as number[];
+    // let sign_temp = $derived(sign);
+
+    //     ones = Math.floor(integer / 1000) % 10;
+    //     sign = bias_voltage < 0 ? "-" : "+";
+
+    //     temp[3] = thousands;
+    //     temp[2] = hundreds;
+    //     temp[1] = tens;
+    //     temp[0] = ones;
+    //     sign_temp = sign;
+
+    // let sign_temp = $state("+");
+
+    // let temp = [0, 0, 0, 0];
 
     // $effect(() => {
     //     console.log("temp: ", temp);
@@ -89,10 +111,10 @@
 
     async function increment(index: number, value: number) {
         const scaling = [1, 0.1, 0.01, 0.001];
-        const plus_minus = sign_temp === "+" ? 1 : -1;
+        const plus_minus = ch.sign_temp === "+" ? 1 : -1;
         if (editing) {
-            temp[index] += value * plus_minus;
-            validateRefresh(temp);
+            ch.temp[index] += value * plus_minus;
+            validateRefresh(ch.temp);
             return;
         }
         let new_bias_voltage =
@@ -107,7 +129,7 @@
 
     function updatedPlusMinus() {
         if (editing) {
-            sign_temp = sign_temp === "+" ? "-" : "+";
+            ch.sign_temp = ch.sign_temp === "+" ? "-" : "+";
             return;
         }
 
@@ -135,45 +157,43 @@
             index,
             measuring,
         };
-        if (system_state.valid) {
-            const returnData = await requestChannelUpdate(data, endpoint);
-
-            ch.activated = returnData.activated;
-            ch.bias_voltage = returnData.bias_voltage;
-            ch.heading_text = returnData.heading_text;
-            ch.measuring = returnData.measuring;
-        } else {
-            ch.activated = data.activated;
-            ch.bias_voltage = data.bias_voltage;
-            ch.heading_text = data.heading_text;
-            ch.measuring = data.measuring;
-        }
-        biasVoltage2Digits(ch.bias_voltage);
+        const returnData = await onChannelChange(data);
+        ch.setChannel(returnData);
+        // ch.activated = returnData.activated;
+        // ch.bias_voltage = returnData.bias_voltage;
+        // ch.heading_text = returnData.heading_text;
+        // ch.measuring = returnData.measuring;
+        // biasVoltage2Digits(ch.bias_voltage);
     }
 
     function biasVoltage2DigitsTemp(bias_voltage: number) {
         const integer = Math.round(Math.abs(bias_voltage * 1000));
-        temp[3] = integer % 10;
-        temp[2] = Math.floor(integer / 10) % 10;
-        temp[1] = Math.floor(integer / 100) % 10;
-        temp[0] = Math.floor(integer / 1000) % 10;
-        sign_temp = bias_voltage < 0 ? "-" : "+";
+        ch.temp[3] = integer % 10;
+        ch.temp[2] = Math.floor(integer / 10) % 10;
+        ch.temp[1] = Math.floor(integer / 100) % 10;
+        ch.temp[0] = Math.floor(integer / 1000) % 10;
+        ch.sign_temp = bias_voltage < 0 ? "-" : "+";
     }
 
-    function biasVoltage2Digits(bias_voltage: number) {
-        const integer = Math.round(Math.abs(bias_voltage * 1000));
-        thousands = integer % 10;
-        hundreds = Math.floor(integer / 10) % 10;
-        tens = Math.floor(integer / 100) % 10;
-        ones = Math.floor(integer / 1000) % 10;
-        sign = bias_voltage < 0 ? "-" : "+";
 
-        temp[3] = thousands;
-        temp[2] = hundreds;
-        temp[1] = tens;
-        temp[0] = ones;
-        sign_temp = sign;
-    }
+
+
+    // function biasVoltage2Digits(bias_voltage: number) {
+
+    //     console.log("updating bias voltage: ", bias_voltage)
+    //     // const integer = Math.round(Math.abs(bias_voltage * 1000));
+    //     // thousands = integer % 10;
+    //     // hundreds = Math.floor(integer / 10) % 10;
+    //     // tens = Math.floor(integer / 100) % 10;
+    //     // ones = Math.floor(integer / 1000) % 10;
+    //     // sign = bias_voltage < 0 ? "-" : "+";
+
+    //     ch.temp[3] = ch.thousands;
+    //     ch.temp[2] = ch.hundreds;
+    //     ch.temp[1] = ch.tens;
+    //     ch.temp[0] = ch.ones;
+    //     ch.sign_temp = ch.sign;
+    // }
 
     let toggle_up = $state(false);
     let toggle_down = $state(true);
@@ -225,13 +245,13 @@
     function validateRefresh(temp: number[]) {
         const v =
             (temp[3] * 0.001 + temp[2] * 0.01 + temp[1] * 0.1 + temp[0]) *
-            (sign_temp === "+" ? 1 : -1);
+            (ch.sign_temp === "+" ? 1 : -1);
         biasVoltage2DigitsTemp(v);
     }
 
     function handleSubmitButtonClick() {
         const submitted_voltage = parseFloat(
-            `${sign_temp}${temp[0]}.${temp[1]}${temp[2]}${temp[3]}`,
+            `${ch.sign_temp}${ch.temp[0]}.${ch.temp[1]}${ch.temp[2]}${ch.temp[3]}`,
         );
 
         validateUpdateVoltage(submitted_voltage);
@@ -262,7 +282,8 @@
         hundreds_el,
         thousands_el,
     ]) as HTMLInputElement[];
-    let input_values = $derived([temp[0], temp[1], temp[2], temp[3]]);
+
+    let input_values = $derived([ch.temp[0], ch.temp[1], ch.temp[2], ch.temp[3]]);
 
     function handleDisplayInput(event: Event, index: number) {
         const target = event.target as HTMLInputElement;
@@ -278,7 +299,7 @@
                 // if another digit is entered before "Enter"
                 inputs[index].value =
                     target.value[target.value.length - 1];
-                temp[3] = parseFloat(
+                ch.temp[3] = parseFloat(
                     inputs[index].value[target.value.length - 1],
                 );
             }
@@ -324,11 +345,12 @@
     }
 
     function exitEditing() {
-        temp[0] = ones;
-        temp[1] = tens;
-        temp[2] = hundreds;
-        temp[3] = thousands;
-        sign_temp = sign;
+        // edit the edit mode without changing the value. Return to the original bias voltage
+        ch.temp[0] = ch.ones;
+        ch.temp[1] = ch.tens;
+        ch.temp[2] = ch.hundreds;
+        ch.temp[3] = ch.thousands;
+        ch.sign_temp = ch.sign;
         editing = false;
     }
 </script>
@@ -435,7 +457,7 @@
                     onclick={updatedPlusMinus}
                     onkeydown={updatedPlusMinus}
                 >
-                    {sign_temp}
+                    {ch.sign_temp}
                 </div>
                 <div class="controls">
                     <div class="buttons-top">
@@ -459,7 +481,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
-                            bind:value={temp[0]}
+                            bind:value={ch.temp[0]}
                             oninput={(e) => handleDisplayInput(e, 0)}
                             onkeydown={(e) => handleKeydown(e, 0)}
                             onfocus={inputFocus}
@@ -498,7 +520,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
-                            bind:value={temp[1]}
+                            bind:value={ch.temp[1]}
                             oninput={(e) => handleDisplayInput(e, 1)}
                             onkeydown={(e) => handleKeydown(e, 1)}
                             onfocus={inputFocus}
@@ -519,7 +541,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
-                            bind:value={temp[2]}
+                            bind:value={ch.temp[2]}
                             oninput={(e) => handleDisplayInput(e, 2)}
                             onkeydown={(e) => handleKeydown(e, 2)}
                             onfocus={inputFocus}
@@ -540,7 +562,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
-                            bind:value={temp[3]}
+                            bind:value={ch.temp[3]}
                             oninput={(e) => handleDisplayInput(e, 3)}
                             onkeydown={(e) => handleKeydown(e, 3)}
                             onfocus={inputFocus}
@@ -569,13 +591,8 @@
                         onclick={handleSubmitButtonClick}
                         bind:this={submit_button}>Submit</SubmitButton
                     >
-
                     <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>
-                    <!-- <input
-                    type="number"
-                    bind:this={inputRef}
-                    onkeydown={handleInputKeyDown}
-                /> -->
+
                 </div>
             {:else}
                 <div class="right">
@@ -776,12 +793,6 @@
         margin-right: -0.7rem;
     }
 
-    /* .button-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin: 0.75rem;
-    } */
 
     .display {
         position: relative;
@@ -819,7 +830,7 @@
         opacity: 0;
         transition: all 0.4s;
         background: var(--digits-color);
-        /* this is needed because we have
+        /* pointer-events: none is needed because we have
         input elements inside the area that gets
         the shimmer effect from this pseudo-element */
         pointer-events: none;
@@ -960,15 +971,6 @@
         /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
     }
 
-    /* .top-bar::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -12px;
-        height: 12px;
-        background: linear-gradient(rgba(0, 0, 0, 0.05), transparent);
-    } */
 
     .dot-menu {
         margin: 0px 3px;

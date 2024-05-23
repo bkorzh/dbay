@@ -7,6 +7,8 @@
   import { slide } from 'svelte/transition';
   import { blur } from 'svelte/transition';
   import { dac4D } from "./dac4D_data.svelte"
+  import type { VsourceChange } from "../addons/vsource/interface";
+  import { requestChannelUpdate } from "../../api";
   
 
   interface MyProps {
@@ -27,6 +29,17 @@
     toggle_up = !toggle_up;
     toggle_down = !toggle_down;
     visible = !visible;
+  }
+
+
+  async function onChannelChange(data: VsourceChange) {
+    let returnData;
+    if (system_state.valid) {
+          returnData = await requestChannelUpdate(data, "/dac4D/vsource/");
+        } else {
+          returnData = data;
+        }
+    return returnData;
   }
 </script>
 
@@ -73,7 +86,7 @@
             <Channel
             ch={this_component_data.vsource.channels[i]}
             module_index={module_index}
-            endpoint="/dac4D/voltage/"
+            {onChannelChange}
           />
           </div>
           <!-- instead of passing in an index to Channel, should I pass in the object itself? Would that help?-->
