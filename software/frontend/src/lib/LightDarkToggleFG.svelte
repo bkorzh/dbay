@@ -84,10 +84,3 @@
 </button>
 
 
-<!-- <style>
-  button {
-    margin-right: 0.2rem;
-  }
-</style> -->
-
-<!-- <button class="bg-green-400" type="button">This</button> -->

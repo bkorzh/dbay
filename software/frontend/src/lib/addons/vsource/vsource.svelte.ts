@@ -10,6 +10,8 @@ export class ChSourceStateClass implements ChSourceState {
   public temp: Array<number> = $state([0, 0, 0, 0]);
   public sign_temp = $state("+");
 
+  public valid = $state(true);
+
   integer = $derived(Math.round(Math.abs(this.bias_voltage * 1000)));
   thousands = $derived(this.integer % 10);
   hundreds = $derived(Math.floor(this.integer / 10) % 10);
@@ -31,7 +33,7 @@ export class ChSourceStateClass implements ChSourceState {
     this.activated = data.activated;
     this.heading_text = data.heading_text;
     this.measuring = data.measuring;
-
+    this.valid = true;
 
     // updating bias voltage should update temp and sign_temp, but temp and sign_temp
     // are allowed to get out of sync with bias_voltage (during edit mode of <Channel>)
@@ -40,6 +42,22 @@ export class ChSourceStateClass implements ChSourceState {
     this.temp[1] = this.tens;
     this.temp[0] = this.ones;
     this.sign_temp = this.sign;
+  }
+
+  public setInvalid(): void {
+    this.valid = false;
+    
+    this.temp[3] = 0;
+    this.temp[2] = 0;
+    this.temp[1] = 0;
+    this.temp[0] = 0;
+    this.sign_temp = "+";
+    this.activated = false;
+  }
+
+  public setValid(data: VsourceChange): void {
+    this.valid = true;
+    this.setChannel(data);
   }
 }
 

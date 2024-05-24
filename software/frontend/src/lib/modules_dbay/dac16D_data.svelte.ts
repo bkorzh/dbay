@@ -18,7 +18,7 @@ import { ChSourceStateClass } from "../addons";
 export class dac16D implements IModule {
   public vsource: VsourceAddon;
   public core: CoreModule;
-  public shared_voltage: ChSourceState;
+  public shared_voltage: ChSourceStateClass;
 
   constructor(data: JsonModule) {
     this.core = new CoreModule(data.core);

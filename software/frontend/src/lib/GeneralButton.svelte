@@ -4,7 +4,7 @@
   import { ui_state } from "../state/uiState.svelte";
 
   interface Props {
-    onclick: () => void;
+    onclick: (event: MouseEvent) => void;
   }
 
   let { onclick }: Props = $props();

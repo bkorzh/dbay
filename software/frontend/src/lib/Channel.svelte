@@ -8,7 +8,10 @@
     import GeneralButton from "./GeneralButton.svelte";
     import { requestChannelUpdate } from "../api";
 
-    import type { ChSourceState, VsourceChange } from "./addons/vsource/interface";
+    import type {
+        ChSourceState,
+        VsourceChange,
+    } from "./addons/vsource/interface";
 
     import { onMount } from "svelte";
 
@@ -20,60 +23,30 @@
 
     import { dac4D } from "./modules_dbay/dac4D_data.svelte";
     import { ChSourceStateClass } from "./addons";
+    import HorizontalDots from "./HorizontalDots.svelte";
+    import ChannelChevron from "./ChannelChevron.svelte";
 
     interface Props {
         ch: ChSourceStateClass;
         module_index: number;
         onChannelChange: (data: VsourceChange) => Promise<VsourceChange>;
+        staticName?: boolean;
     }
 
-    let { ch, module_index, onChannelChange }: Props = $props();
+    let {
+        ch,
+        module_index,
+        onChannelChange,
+        staticName = false,
+    }: Props = $props();
 
     // if this component is mounted, then the vsource addon should exist
     // let dac4d = system_state.data[module_index - 1] as dac4D;
     // let ch = dac4d.vsource.channels[index - 1];
 
-
-
     let dotMenu: HTMLElement;
     let menuLocation = $state({ top: 0, left: 0 });
     let immediate_text: string = $state(ch.heading_text);
-
-    // let thousands = $state(0);
-    // let hundreds = $state(0);
-    // let tens = $state(0);
-    // let ones = $state(0);
-    // let sign = $state("+");
-
-
-    // let integer = $derived(Math.round(Math.abs(ch.bias_voltage * 1000)));
-    // let thousands = $derived(integer % 10);
-    // let hundreds = $derived(Math.floor(integer / 10) % 10);
-    // let tens = $derived(Math.floor(integer / 100) % 10);
-    // let ones = $derived(Math.floor(integer / 1000) % 10);
-
-    // let sign = $derived(ch.bias_voltage < 0 ? "-" : "+");
-
-
-    // let temp = $derived([thousands, hundreds, tens, ones]) as number[];
-    // let sign_temp = $derived(sign);
-
-    //     ones = Math.floor(integer / 1000) % 10;
-    //     sign = bias_voltage < 0 ? "-" : "+";
-
-    //     temp[3] = thousands;
-    //     temp[2] = hundreds;
-    //     temp[1] = tens;
-    //     temp[0] = ones;
-    //     sign_temp = sign;
-
-    // let sign_temp = $state("+");
-
-    // let temp = [0, 0, 0, 0];
-
-    // $effect(() => {
-    //     console.log("temp: ", temp);
-    // });
 
     let st = $derived(
         ch.activated
@@ -159,11 +132,6 @@
         };
         const returnData = await onChannelChange(data);
         ch.setChannel(returnData);
-        // ch.activated = returnData.activated;
-        // ch.bias_voltage = returnData.bias_voltage;
-        // ch.heading_text = returnData.heading_text;
-        // ch.measuring = returnData.measuring;
-        // biasVoltage2Digits(ch.bias_voltage);
     }
 
     function biasVoltage2DigitsTemp(bias_voltage: number) {
@@ -175,48 +143,15 @@
         ch.sign_temp = bias_voltage < 0 ? "-" : "+";
     }
 
-
-
-
-    // function biasVoltage2Digits(bias_voltage: number) {
-
-    //     console.log("updating bias voltage: ", bias_voltage)
-    //     // const integer = Math.round(Math.abs(bias_voltage * 1000));
-    //     // thousands = integer % 10;
-    //     // hundreds = Math.floor(integer / 10) % 10;
-    //     // tens = Math.floor(integer / 100) % 10;
-    //     // ones = Math.floor(integer / 1000) % 10;
-    //     // sign = bias_voltage < 0 ? "-" : "+";
-
-    //     ch.temp[3] = ch.thousands;
-    //     ch.temp[2] = ch.hundreds;
-    //     ch.temp[1] = ch.tens;
-    //     ch.temp[0] = ch.ones;
-    //     ch.sign_temp = ch.sign;
-    // }
-
-    let toggle_up = $state(false);
-    let toggle_down = $state(true);
-
     // let alter = false;
     let visible = $state(true);
-    let no_border = $state(false);
 
     let editing = $state(false);
+    let isHovering = $state(false);
 
-    function togglerRotateState() {
-        toggle_up = !toggle_up;
-        toggle_down = !toggle_down;
-        // alter = !alter;
-        visible = !visible;
-        no_border = !no_border;
-    }
-
-    let input_value = "";
     let isPlusMinusPressed = $state(false);
 
     let isMounted = false;
-    let updateComplete = false; //
     let heading_editing = false;
 
     onMount(() => {
@@ -283,7 +218,12 @@
         thousands_el,
     ]) as HTMLInputElement[];
 
-    let input_values = $derived([ch.temp[0], ch.temp[1], ch.temp[2], ch.temp[3]]);
+    let input_values = $derived([
+        ch.temp[0],
+        ch.temp[1],
+        ch.temp[2],
+        ch.temp[3],
+    ]);
 
     function handleDisplayInput(event: Event, index: number) {
         const target = event.target as HTMLInputElement;
@@ -297,8 +237,7 @@
             } else {
                 // this is for allowing the last input to change its single digit
                 // if another digit is entered before "Enter"
-                inputs[index].value =
-                    target.value[target.value.length - 1];
+                inputs[index].value = target.value[target.value.length - 1];
                 ch.temp[3] = parseFloat(
                     inputs[index].value[target.value.length - 1],
                 );
@@ -312,11 +251,7 @@
         if (!event.key.match(/[0-9]/)) {
             event.preventDefault();
         }
-        if (
-            event.key === "Backspace" &&
-            target.value === "" &&
-            index > 0
-        ) {
+        if (event.key === "Backspace" && target.value === "" && index > 0) {
             if (index + 1 < inputs.length) {
                 inputs[index + 1].value = ""; // Clear the next input
             }
@@ -353,16 +288,40 @@
         ch.sign_temp = ch.sign;
         editing = false;
     }
+
+    function handleMouseEnter() {
+        isHovering = true;
+    }
+
+    function handleMouseLeave() {
+        isHovering = false;
+    }
 </script>
 
-<div class="bound-box">
+<div
+    onmouseenter={handleMouseEnter}
+    onmouseleave={handleMouseLeave}
+    class="bound-box"
+    role="region"
+>
     <!-- notice how I use class:no_border here -->
-    <div class="strip" class:animated={ch.measuring}></div>
-    <div class="top-bar" class:animated={ch.measuring} class:no_border>
+    <!-- <div class="strip" class:animated={ch.measuring}></div> -->
+    <div
+        class="top-bar"
+        class:animated={ch.measuring}
+        class:no_border={!visible}
+    >
         <div class="top-left">
-            <h1 class="heading">{ch.index}</h1>
+            {#if !staticName}
+                <ChannelChevron
+                    bind:down={visible}
+                    {isHovering}
+                    index={ch.index}
+                ></ChannelChevron>
+            {/if}
             <input
                 class="heading-input"
+                class:input-to-label={staticName}
                 type="text"
                 value={immediate_text}
                 oninput={handleInput}
@@ -373,38 +332,25 @@
                 }}
                 onkeydown={handleKeyDown}
                 tabindex="0"
+                disabled={staticName}
             />
         </div>
 
         <div class="top-right">
             {#if !visible}
-                <div class="heading-voltage" class:digit-off={st.colorMode}>
+                <div
+                    class="heading-voltage"
+                    class:digit-off={st.colorMode}
+                    class:invalid={!ch.valid}
+                >
                     {ch.bias_voltage.toFixed(3)}
                 </div>
             {/if}
-            <div
-                class="dot-menu"
+            <HorizontalDots
                 onclick={toggleMenu}
                 onkeydown={toggleMenu}
-                bind:this={dotMenu}
-                role="button"
-                tabindex="0"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="21"
-                    height="21"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    class="bi bi-three-dots"
-                    viewBox="0 -3 16 16"
-                >
-                    <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
-                        stroke-width="0.3"
-                    />
-                </svg>
-            </div>
+                bind:dotMenu
+            ></HorizontalDots>
             <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
             <!-- where 'something' is both a boolean in javascript and a class -->
             {#if showDropdown}
@@ -422,27 +368,7 @@
                 </MenuSlotted>
             {/if}
 
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                fill="currentColor"
-                stroke="currentColor"
-                class="chevron"
-                class:toggle_up
-                class:toggle_down
-                viewBox="0 0 16 16"
-                role="button"
-                tabindex="0"
-                onclick={togglerRotateState}
-                onkeydown={togglerRotateState}
-            >
-                <path
-                    fill-rule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                    stroke-width="0.8"
-                />
-            </svg>
+            <!-- <ChannelChevron bind:down={visible}></ChannelChevron> -->
         </div>
     </div>
     {#if visible}
@@ -481,6 +407,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
+                            class:invalid={!ch.valid}
                             bind:value={ch.temp[0]}
                             oninput={(e) => handleDisplayInput(e, 0)}
                             onkeydown={(e) => handleKeydown(e, 0)}
@@ -501,6 +428,7 @@
                             class="digit dot"
                             onclick={(e) => inputFocus(e, 0)}
                             onkeydown={(e) => inputFocus(e, 0)}
+                            class:invalid={!ch.valid}
                             role="button"
                             tabindex="-1"
                             class:digit-off={st.colorMode}
@@ -520,6 +448,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
+                            class:invalid={!ch.valid}
                             bind:value={ch.temp[1]}
                             oninput={(e) => handleDisplayInput(e, 1)}
                             onkeydown={(e) => handleKeydown(e, 1)}
@@ -541,6 +470,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
+                            class:invalid={!ch.valid}
                             bind:value={ch.temp[2]}
                             oninput={(e) => handleDisplayInput(e, 2)}
                             onkeydown={(e) => handleKeydown(e, 2)}
@@ -562,6 +492,7 @@
                             type="number"
                             class:digit-off={st.colorMode}
                             class:digit-edit={editing}
+                            class:invalid={!ch.valid}
                             bind:value={ch.temp[3]}
                             oninput={(e) => handleDisplayInput(e, 3)}
                             onkeydown={(e) => handleKeydown(e, 3)}
@@ -592,13 +523,18 @@
                         bind:this={submit_button}>Submit</SubmitButton
                     >
                     <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>
-
                 </div>
             {:else}
                 <div class="right">
-                    <Button onclick={switchState} redGreen={st.colorMode}
-                        >{st.action_string}</Button
-                    >
+                    {#if ch.valid}
+                        <Button onclick={switchState} redGreen={st.colorMode}
+                            >{st.action_string}</Button
+                        >
+                    {:else}
+                        <GeneralButton onclick={(e) => inputFocus(e, 0)}
+                            >Invalid</GeneralButton
+                        >
+                    {/if}
                 </div>
             {/if}
         </div>
@@ -691,7 +627,7 @@
         padding-top: 0.3rem;
         color: var(--digits-color);
         background-color: transparent;
-        
+
         border: none;
         /* justify-content: left;
         text-align: left; */
@@ -702,16 +638,12 @@
         /* padding: 0; */
     }
 
-    .heading {
-        margin-right: 0rem;
-        margin-top: 0.25rem;
-        margin-bottom: auto;
-        padding: 0rem 0rem;
-        padding-right: 0.8rem;
-        padding-bottom: 0.25rem;
-        font-size: 1.5rem;
+    .input-to-label {
+        margin-left: 0rem;
         color: var(--text-color);
     }
+
+    
 
     input {
         background-color: transparent;
@@ -745,7 +677,6 @@
         background-color: var(--hover-heading-color);
         /* border: 1.5px solid var(--inner-border-color); */
     }
-
 
     .plus-minus {
         width: 18px;
@@ -783,6 +714,10 @@
         color: var(--digits-deactivated-color);
     }
 
+    .invalid {
+        color: rgba(0, 0, 0, 0); /* 50% opacity */
+    }
+
     .digit-edit {
         color: var(--edit-blue);
         font-weight: 400;
@@ -792,7 +727,6 @@
         margin-left: -0.7rem;
         margin-right: -0.7rem;
     }
-
 
     .display {
         position: relative;
@@ -926,20 +860,6 @@
         width: 45%;
     }
 
-    .toggle_up {
-        transform: rotate(90deg);
-        margin-top: 0.17rem;
-        padding-top: 0.2rem;
-        transition: transform 0.2s ease-in-out;
-    }
-
-    .toggle_down {
-        transform: rotate(0);
-        margin-top: 0.1rem;
-        padding-top: 0.2rem;
-        transition: transform 0.2s ease-in-out;
-    }
-
     /* :root {
     --module-border-color: 0, 0, 0;
 } */
@@ -958,6 +878,7 @@
         /* margin: 0.2rem 0rem; */
     }
     .top-bar {
+        
         display: flex;
         /* position: relative; */
         flex-direction: row;
@@ -965,50 +886,11 @@
         border-bottom: 1.3px solid var(--inner-border-color);
         justify-content: space-between;
         /* align-items: start; */
-        padding: 0rem 1rem;
+        padding: 0rem 0rem;
         padding-bottom: 0rem;
         padding-right: 0px;
         /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
-    }
-
-
-    .dot-menu {
-        margin: 0px 3px;
-        padding: 0px 5px;
-        padding-top: 0.1rem;
-        margin-bottom: 0.25rem;
-        /* padding-bottom: -10rem; */
-        color: var(--icon-color);
-        border-radius: 5px;
-    }
-
-    .dot-menu:hover {
-        /* cursor: pointer; */
-        background-color: var(--hover-heading-color);
-    }
-
-    .chevron {
-        margin: auto;
-        margin-bottom: 0rem;
-        margin-top: 0rem;
-        margin-right: 0.25rem;
-        padding: 0px 5px;
-        /* padding-bottom: 1rem; */
-        padding-top: 0rem;
-        border-radius: 5px;
-        /* margin-top: 0.01rem;
-        padding-top: 0.2rem; */
-
-        color: var(--icon-color);
-    }
-
-    .chevron:focus {
-        outline: none;
-    }
-
-    .chevron:hover {
-        /* cursor: pointer; */
-        background-color: var(--hover-heading-color);
+        padding-left: 0.7rem;
     }
 
     .main-controlls {
