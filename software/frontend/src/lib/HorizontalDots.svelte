@@ -41,7 +41,8 @@ let { onclick, onkeydown, dotMenu = $bindable() }: Props = $props();
         margin: 0px 3px;
         padding: 0px 5px;
         padding-top: 0.1rem;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.15rem;
+        margin-top: 0.15rem;
         /* padding-bottom: -10rem; */
         color: var(--icon-color);
         border-radius: 5px;

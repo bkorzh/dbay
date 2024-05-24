@@ -558,7 +558,7 @@
     } */
 
     .heading-voltage {
-        color: var(--digits-color);
+        color: var(--red-text);
         font-size: 1.5rem;
         letter-spacing: 0.58rem;
         /* padding: 0.3rem 0.5rem; */
@@ -570,7 +570,7 @@
         font-weight: 300;
         margin: auto;
         margin-left: 0;
-        margin-right: 3rem;
+        margin-right: 0.7rem;
     }
 
     .strip {
@@ -619,9 +619,10 @@
         padding-right: 0rem;
         /* margin-bottom: 3rem; */
         padding-bottom: 0.15rem;
-        height: 78%;
+        /* height: 78%; */
         padding-right: 0rem;
-        margin: auto;
+        margin-top: 0.15rem;
+        margin-bottom: 0.15rem;
         margin-left: 0.5rem;
 
         padding-top: 0.3rem;
@@ -631,7 +632,8 @@
         border: none;
         /* justify-content: left;
         text-align: left; */
-        width: 80%;
+        width: 75%;
+        /* min-height: 2.8rem; */
         /* padding: 0; */
         /* height: 80%; */
         /* padding: 0.0rem 0.5rem; */

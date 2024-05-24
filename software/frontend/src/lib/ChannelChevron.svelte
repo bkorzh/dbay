@@ -37,8 +37,8 @@
         {#if isHovering}
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="23"
-                height="23"
+                width="22"
+                height="22"
                 class="chevron"
                 fill="currentColor"
                 stroke="currentColor"
