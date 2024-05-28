@@ -3,8 +3,8 @@
 import { default as dac4D_component } from './dac4D.svelte'
 import { dac4D } from './dac4D_data.svelte'
 
-import { default as dac4D_old_component } from './dac4D_old.svelte'
-import { dac4D_old } from './dac4D_old_data.svelte'
+// import { default as dac4D_old_component } from '../depreciated/dac4D_old.svelte'
+// import { dac4D_old } from '../depreciated/dac4D_old_data.svelte'
 
 import { default as dac16D_component } from './dac16D.svelte'
 import { dac16D } from './dac16D_data.svelte'

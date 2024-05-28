@@ -25,7 +25,7 @@ let { onclick, onkeydown, dotMenu = $bindable() }: Props = $props();
         height="21"
         fill="currentColor"
         stroke="currentColor"
-        class="bi bi-three-dots"
+        class="bi-three-dots"
         viewBox="0 -3 16 16"
     >
         <path
@@ -51,5 +51,14 @@ let { onclick, onkeydown, dotMenu = $bindable() }: Props = $props();
     .dot-menu:hover {
         /* cursor: pointer; */
         background-color: var(--hover-heading-color);
+        
     }
+
+    .dot-menu:active {
+        transform: scale(0.95);
+    }
+
+    /* .dot-menu:hover {
+        transform: scale(1.05);
+    } */
 </style>

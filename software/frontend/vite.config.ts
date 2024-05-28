@@ -12,7 +12,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: `[name].js`
+        // if I wanted to disable cache busting for the .js file
+        // Though I don't know a way to disable it for css
+        // entryFileNames: `[name].js`
       }
     }
   }

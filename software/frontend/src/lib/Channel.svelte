@@ -25,6 +25,7 @@
     import { ChSourceStateClass } from "./addons";
     import HorizontalDots from "./HorizontalDots.svelte";
     import ChannelChevron from "./ChannelChevron.svelte";
+    import Display from "./Display.svelte";
 
     interface Props {
         ch: ChSourceStateClass;
@@ -204,80 +205,80 @@
         }
     }
 
-    let ones_el = $state();
-    let tens_el = $state();
-    let hundreds_el = $state();
-    let thousands_el = $state();
+    // let ones_el = $state();
+    // let tens_el = $state();
+    // let hundreds_el = $state();
+    // let thousands_el = $state();
     let focusing = $state(false);
     let submit_button = $state();
 
-    let inputs = $derived([
-        ones_el,
-        tens_el,
-        hundreds_el,
-        thousands_el,
-    ]) as HTMLInputElement[];
+    // let inputs = $derived([
+    //     ones_el,
+    //     tens_el,
+    //     hundreds_el,
+    //     thousands_el,
+    // ]) as HTMLInputElement[];
 
-    let input_values = $derived([
-        ch.temp[0],
-        ch.temp[1],
-        ch.temp[2],
-        ch.temp[3],
-    ]);
+    // let input_values = $derived([
+    //     ch.temp[0],
+    //     ch.temp[1],
+    //     ch.temp[2],
+    //     ch.temp[3],
+    // ]);
 
-    function handleDisplayInput(event: Event, index: number) {
-        const target = event.target as HTMLInputElement;
-        if (isNaN(parseFloat(target.value)) || target.value.includes(".")) {
-            event.preventDefault();
-            target.value = ""; // Clear the input if the value is not a number
-        } else if (target.value.length > 0) {
-            if (index < inputs.length - 1) {
-                inputs[index + 1].value = ""; // Move the extra digit to the next input
-                inputs[index + 1].focus();
-            } else {
-                // this is for allowing the last input to change its single digit
-                // if another digit is entered before "Enter"
-                inputs[index].value = target.value[target.value.length - 1];
-                ch.temp[3] = parseFloat(
-                    inputs[index].value[target.value.length - 1],
-                );
-            }
-        }
-    }
+    // function handleDisplayInput(event: Event, index: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     if (isNaN(parseFloat(target.value)) || target.value.includes(".")) {
+    //         event.preventDefault();
+    //         target.value = ""; // Clear the input if the value is not a number
+    //     } else if (target.value.length > 0) {
+    //         if (index < inputs.length - 1) {
+    //             inputs[index + 1].value = ""; // Move the extra digit to the next input
+    //             inputs[index + 1].focus();
+    //         } else {
+    //             // this is for allowing the last input to change its single digit
+    //             // if another digit is entered before "Enter"
+    //             inputs[index].value = target.value[target.value.length - 1];
+    //             ch.temp[3] = parseFloat(
+    //                 inputs[index].value[target.value.length - 1],
+    //             );
+    //         }
+    //     }
+    // }
 
-    function handleKeydown(event: KeyboardEvent, index: number) {
-        const target = event.target as HTMLInputElement;
-        // for any key other than 0-9, prevent the default action
-        if (!event.key.match(/[0-9]/)) {
-            event.preventDefault();
-        }
-        if (event.key === "Backspace" && target.value === "" && index > 0) {
-            if (index + 1 < inputs.length) {
-                inputs[index + 1].value = ""; // Clear the next input
-            }
-            inputs[index - 1].focus();
-        }
-        if (event.key === "Enter" && index === inputs.length - 1) {
-            target.blur();
-            handleSubmitButtonClick();
-        }
-    }
+    // function handleKeydown(event: KeyboardEvent, index: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     // for any key other than 0-9, prevent the default action
+    //     if (!event.key.match(/[0-9]/)) {
+    //         event.preventDefault();
+    //     }
+    //     if (event.key === "Backspace" && target.value === "" && index > 0) {
+    //         if (index + 1 < inputs.length) {
+    //             inputs[index + 1].value = ""; // Clear the next input
+    //         }
+    //         inputs[index - 1].focus();
+    //     }
+    //     if (event.key === "Enter" && index === inputs.length - 1) {
+    //         target.blur();
+    //         handleSubmitButtonClick();
+    //     }
+    // }
 
-    function inputFocus(event: Event, index?: number) {
-        const target = event.target as HTMLInputElement;
-        if (typeof index === "number") {
-            inputs[index].focus();
-        }
-        target.value = "";
-        focusing = true;
-        editing = true;
-    }
+    // function inputFocus(event: Event, index?: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     if (typeof index === "number") {
+    //         inputs[index].focus();
+    //     }
+    //     target.value = "";
+    //     focusing = true;
+    //     editing = true;
+    // }
 
-    function inputBlur(event: Event, index: number) {
-        const target = event.target as HTMLInputElement;
-        focusing = false;
-        target.value = input_values[index].toString();
-    }
+    // function inputBlur(event: Event, index: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     focusing = false;
+    //     target.value = input_values[index].toString();
+    // }
 
     function exitEditing() {
         // edit the edit mode without changing the value. Return to the original bias voltage
@@ -396,113 +397,15 @@
                         <ChevButtonTop onclick={() => increment(3, 1)} />
                     </div>
 
-                    <div
-                        class="display {isPlusMinusPressed ? 'updating' : ''}"
-                        class:display-focus={editing}
-                        role="button"
-                        tabindex="-1"
-                    >
-                        <input
-                            class="digit"
-                            type="number"
-                            class:digit-off={st.colorMode}
-                            class:digit-edit={editing}
-                            class:invalid={!ch.valid}
-                            bind:value={ch.temp[0]}
-                            oninput={(e) => handleDisplayInput(e, 0)}
-                            onkeydown={(e) => handleKeydown(e, 0)}
-                            onfocus={inputFocus}
-                            onblur={(e) => inputBlur(e, 0)}
-                            bind:this={ones_el}
-                            tabindex="-1"
-                            maxlength="1"
-                        />
-                        <div
-                            class="short-spacer"
-                            onclick={(e) => inputFocus(e, 0)}
-                            onkeydown={(e) => inputFocus(e, 0)}
-                            role="button"
-                            tabindex="-1"
-                        ></div>
-                        <div
-                            class="digit dot"
-                            onclick={(e) => inputFocus(e, 0)}
-                            onkeydown={(e) => inputFocus(e, 0)}
-                            class:invalid={!ch.valid}
-                            role="button"
-                            tabindex="-1"
-                            class:digit-off={st.colorMode}
-                            class:digit-edit={editing}
-                        >
-                            .
-                        </div>
-                        <div
-                            class="short-spacer"
-                            onclick={(e) => inputFocus(e, 1)}
-                            onkeydown={(e) => inputFocus(e, 1)}
-                            role="button"
-                            tabindex="-1"
-                        ></div>
-                        <input
-                            class="digit"
-                            type="number"
-                            class:digit-off={st.colorMode}
-                            class:digit-edit={editing}
-                            class:invalid={!ch.valid}
-                            bind:value={ch.temp[1]}
-                            oninput={(e) => handleDisplayInput(e, 1)}
-                            onkeydown={(e) => handleKeydown(e, 1)}
-                            onfocus={inputFocus}
-                            onblur={(e) => inputBlur(e, 1)}
-                            bind:this={tens_el}
-                            tabindex="-1"
-                            maxlength="1"
-                        />
-                        <div
-                            class="spacer"
-                            onclick={(e) => inputFocus(e, 1)}
-                            onkeydown={(e) => inputFocus(e, 1)}
-                            role="button"
-                            tabindex="-1"
-                        ></div>
-                        <input
-                            class="digit"
-                            type="number"
-                            class:digit-off={st.colorMode}
-                            class:digit-edit={editing}
-                            class:invalid={!ch.valid}
-                            bind:value={ch.temp[2]}
-                            oninput={(e) => handleDisplayInput(e, 2)}
-                            onkeydown={(e) => handleKeydown(e, 2)}
-                            onfocus={inputFocus}
-                            onblur={(e) => inputBlur(e, 2)}
-                            bind:this={hundreds_el}
-                            tabindex="-1"
-                            maxlength="1"
-                        />
-                        <div
-                            class="spacer"
-                            onclick={(e) => inputFocus(e, 2)}
-                            onkeydown={(e) => inputFocus(e, 2)}
-                            role="button"
-                            tabindex="-1"
-                        ></div>
-                        <input
-                            class="digit"
-                            type="number"
-                            class:digit-off={st.colorMode}
-                            class:digit-edit={editing}
-                            class:invalid={!ch.valid}
-                            bind:value={ch.temp[3]}
-                            oninput={(e) => handleDisplayInput(e, 3)}
-                            onkeydown={(e) => handleKeydown(e, 3)}
-                            onfocus={inputFocus}
-                            onblur={(e) => inputBlur(e, 3)}
-                            bind:this={thousands_el}
-                            tabindex="-1"
-                            maxlength="1"
-                        />
-                    </div>
+                    <Display
+                        onoff={st.colorMode}
+                        bind:editing
+                        bind:focusing
+                        bind:temp={ch.temp}
+                        {isPlusMinusPressed}
+                        invalid={!ch.valid}
+                        {handleSubmitButtonClick}
+                    ></Display>
 
                     <div class="buttons-bottom">
                         <ChevButtonBottom onclick={() => increment(0, -1)} />
@@ -531,7 +434,7 @@
                             >{st.action_string}</Button
                         >
                     {:else}
-                        <GeneralButton onclick={(e) => inputFocus(e, 0)}
+                        <GeneralButton onclick={(e) => {focusing=true; editing=true;}}
                             >Invalid</GeneralButton
                         >
                     {/if}
@@ -571,12 +474,6 @@
         margin: auto;
         margin-left: 0;
         margin-right: 0.7rem;
-    }
-
-    .strip {
-        background-color: var(--heading-color);
-        position: relative;
-        height: 2.5px;
     }
 
     .animated {
@@ -645,8 +542,6 @@
         color: var(--text-color);
     }
 
-    
-
     input {
         background-color: transparent;
         border-radius: 4px;
@@ -661,7 +556,7 @@
     }
 
     /* Deactivate the chevrons that appear on input type=number */
-    input[type="number"]::-webkit-inner-spin-button,
+    /* input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
         -webkit-appearance: none;
         margin: 0;
@@ -673,7 +568,7 @@
     }
     input:focus {
         outline: none;
-    }
+    } */
 
     .heading-input:hover {
         background-color: var(--hover-heading-color);
@@ -696,7 +591,7 @@
         /* opacity: var(--state_opacity); */
     }
 
-    .digit {
+    /* .digit {
         width: 2rem;
         font-size: 1.5rem;
         color: var(--digits-color);
@@ -710,49 +605,44 @@
         margin-left: 0;
         margin-right: 0;
         background-color: none;
-    }
+    } */
 
-    .digit-off {
+    /* .digit-off {
         color: var(--digits-deactivated-color);
     }
 
     .invalid {
-        color: rgba(0, 0, 0, 0); /* 50% opacity */
+        color: rgba(0, 0, 0, 0);
     }
 
     .digit-edit {
         color: var(--edit-blue);
         font-weight: 400;
-    }
+    } */
 
-    .dot {
+    /* .dot {
         margin-left: -0.7rem;
         margin-right: -0.7rem;
-    }
+    } */
 
-    .display {
+    /* .display {
         position: relative;
         overflow: hidden;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        /* padding: 5px 10px;
-        padding-right: 13px; */
-        /* background-color: var(--display-color); */
         border-radius: 4px;
         border: 1.5px solid var(--value-border-color);
-        /* padding: 0rem 0.44rem; */
         transition: background-color 0.1s ease-in-out;
-        /* margin: -0.5rem 0rem; */
         background-color: var(--display-color);
-    }
+    } */
 
-    .display-focus {
+    /* .display-focus {
         background-color: var(--heading-color);
         border: 1.5px solid var(--outer-border-color);
-    }
+    } */
 
-    .display:after {
+    /* .display:after {
         content: "";
         display: block;
         position: absolute;
@@ -765,14 +655,14 @@
         margin-top: -50%;
         opacity: 0;
         transition: all 0.4s;
-        background: var(--digits-color);
-        /* pointer-events: none is needed because we have
+        background: var(--digits-color); */
+    /* pointer-events: none is needed because we have
         input elements inside the area that gets
         the shimmer effect from this pseudo-element */
-        pointer-events: none;
-    }
+    /* pointer-events: none;
+    } */
 
-    .display.updating:after {
+    /* .display.updating:after {
         padding: 0;
         margin: 0;
         opacity: 0.15;
@@ -781,15 +671,15 @@
 
     .spacer {
         width: 0.8rem;
-    }
+    } */
 
     .spacer-chev {
         width: 0.2rem;
     }
 
-    .short-spacer {
+    /* .short-spacer {
         width: 0rem;
-    }
+    } */
 
     .buttons-top {
         display: flex;
@@ -880,7 +770,6 @@
         /* margin: 0.2rem 0rem; */
     }
     .top-bar {
-        
         display: flex;
         /* position: relative; */
         flex-direction: row;
