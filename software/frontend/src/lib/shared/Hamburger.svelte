@@ -1,19 +1,25 @@
-<script>
-    import { writable } from 'svelte/store';
-    import { componentInstance } from '../stores/componentInstanceStore'
+<script lang="ts">
+    // import { writable } from 'svelte/store';
+    // import { componentInstance } from '../../state/componentInstanceStore'
 
-    export let onClick;
-    
+    // export let onClick;
+
+    interface MyProps {
+        onclick: () => void;
+        burgerMenu: any;
+    }
+    let { onclick, burgerMenu = $bindable() }: MyProps = $props();
 
 
-    function handleKeyDown(event) {
+    function handleKeyDown(event: KeyboardEvent) {
         if (event.key === "Enter" || event.key === " ") {
-            onClick();
+            console.log("onclick: ", onclick)
+            onclick();
         }
     }
 </script>
 
-<div class="hamburger" on:click={onClick} on:keydown={handleKeyDown} bind:this={$componentInstance} role="button" tabindex="0">
+<div class="hamburger" onclick={onclick} onkeydown={handleKeyDown} bind:this={burgerMenu} role="button" tabindex="0">
     <svg
         class="h-5.5 w-6 my-1 mr-1"
         viewBox="0 0 24 24"
@@ -34,7 +40,7 @@
         padding-bottom: 2px;
         padding-left: 4px;
         padding-right: 4px;
-        color: var(--module-icon-color);
+        color: var(--text-color);
     }
 
     .hamburger:hover {

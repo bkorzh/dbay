@@ -1,61 +1,129 @@
-<script lang="ts" context="module">
-    import "../app.css";
-    export let activated;
-</script>
-
 <script lang="ts">
-    import { uiStateStore } from "../stores/uiStateStore";
+    import { ui_state } from "../state/uiState.svelte";
     // import { voltageStore } from "../stores/voltageStore"
     import Button from "./Button.svelte";
     import ChevButtonTop from "./ChevButtonTop.svelte";
     import ChevButtonBottom from "./ChevButtonBottom.svelte";
     import SubmitButton from "./SubmitButton.svelte";
-    import { get } from "svelte/store";
-    // import { voltageStore } from "../stores/voltageStore";
+    import GeneralButton from "./GeneralButton.svelte";
     import { requestChannelUpdate } from "../api";
-    import type { ChannelChange } from "../stores/voltageStore";
-    import App from "../App.svelte";
+
+    import type {
+        ChSourceState,
+        VsourceChange,
+    } from "./addons/vsource/interface";
+
     import { onMount } from "svelte";
-    import { voltageStore } from "../stores/voltageStore";
+
+    import { system_state } from "../state/systemState.svelte";
+    import type { IModule } from "../state/systemState.svelte";
+
     import MenuSlotted from "./MenuSlotted.svelte";
     import MenuButton from "./MenuButton.svelte";
 
-    export let index; // index of the bias control
-    export let module_index;
+    import { dac4D } from "./modules_dbay/dac4D_data.svelte";
+    import { ChSourceStateClass } from "./addons";
+    import HorizontalDots from "./HorizontalDots.svelte";
+    import ChannelChevron from "./ChannelChevron.svelte";
+    import Display from "./Display.svelte";
 
-    let bias_voltage;
-    let activated;
-    let heading_text;
-    let immediate_text;
-    let heading_editing = false;
-    let measuring = true;
+    interface Props {
+        ch: ChSourceStateClass;
+        module_index: number;
+        onChannelChange: (data: VsourceChange) => Promise<VsourceChange>;
+        staticName?: boolean;
+    }
 
-    let dotMenu;
-    let menuLocation = { top: 0, left: 0 };
+    let {
+        ch,
+        module_index,
+        onChannelChange,
+        staticName = false,
+    }: Props = $props();
 
-    immediate_text = heading_text;
+    // if this component is mounted, then the vsource addon should exist
+    // let dac4d = system_state.data[module_index - 1] as dac4D;
+    // let ch = dac4d.vsource.channels[index - 1];
 
-    
+    let dotMenu: HTMLElement;
+    let menuLocation = $state({ top: 0, left: 0 });
+    let immediate_text: string = $state(ch.heading_text);
 
-    let showDropdown = false;
+    let st = $derived(
+        ch.activated
+            ? {
+                  action_string: "Turn Off",
+                  colorMode: false,
+                  opacity: 1,
+              }
+            : {
+                  action_string: "Turn On",
+                  colorMode: true,
+                  opacity: 0.2,
+              },
+    );
+
+    let showDropdown = $state(false);
     function toggleMenu() {
         showDropdown = !showDropdown;
         const rect = dotMenu.getBoundingClientRect();
-        menuLocation = { 
-            top: rect.top + window.scrollY, 
-            left: rect.right + window.scrollX 
+        menuLocation = {
+            top: rect.top + window.scrollY,
+            left: rect.right + window.scrollX,
         };
-        console.log("menuLocation: ", menuLocation);
     }
 
-    async function validateUpdateVoltage(voltage) {
+    async function validateUpdateVoltage(voltage: number) {
         if (voltage >= 5) {
             voltage = 5;
         }
         if (voltage <= -5) {
             voltage = -5;
         }
-        const data: ChannelChange = {
+        updateChannel({ voltage: voltage });
+    }
+
+    async function increment(index: number, value: number) {
+        const scaling = [1, 0.1, 0.01, 0.001];
+        const plus_minus = ch.sign_temp === "+" ? 1 : -1;
+        if (editing) {
+            ch.temp[index] += value * plus_minus;
+            validateRefresh(ch.temp);
+            return;
+        }
+        let new_bias_voltage =
+            Math.round((ch.bias_voltage + scaling[index] * value) * 1000) /
+            1000;
+        validateUpdateVoltage(new_bias_voltage);
+    }
+
+    function switchState() {
+        updateChannel({ activated: !ch.activated });
+    }
+
+    function updatedPlusMinus() {
+        if (editing) {
+            ch.sign_temp = ch.sign_temp === "+" ? "-" : "+";
+            return;
+        }
+
+        isPlusMinusPressed = true; //needed for the animation
+
+        updateChannel({ voltage: -ch.bias_voltage });
+
+        setTimeout(() => {
+            isPlusMinusPressed = false;
+        }, 1);
+    }
+
+    async function updateChannel({
+        voltage = ch.bias_voltage,
+        activated = ch.activated,
+        heading_text = ch.heading_text,
+        index = ch.index,
+        measuring = ch.measuring,
+    } = {}) {
+        const data: VsourceChange = {
             module_index,
             bias_voltage: voltage,
             activated,
@@ -63,391 +131,321 @@
             index,
             measuring,
         };
-        updateChannel(data);
+        const returnData = await onChannelChange(data);
+        ch.setChannel(returnData);
     }
 
-    //// grab and update
-    async function increment(value) {
-        // bias_voltage =
-        //     get(voltageStore).data[module_index - 1][index - 1].bias_voltage;
-
-        let new_bias_voltage = bias_voltage + value;
-        validateUpdateVoltage(new_bias_voltage);
+    function biasVoltage2DigitsTemp(bias_voltage: number) {
+        const integer = Math.round(Math.abs(bias_voltage * 1000));
+        ch.temp[3] = integer % 10;
+        ch.temp[2] = Math.floor(integer / 10) % 10;
+        ch.temp[1] = Math.floor(integer / 100) % 10;
+        ch.temp[0] = Math.floor(integer / 1000) % 10;
+        ch.sign_temp = bias_voltage < 0 ? "-" : "+";
     }
 
-    //// grab and update
-    function switchState() {
-        // const activation = get(voltageStore).data[module_index - 1][index - 1].activated;
+    // let alter = false;
+    let visible = $state(true);
 
-        const data: ChannelChange = {
-            module_index,
-            bias_voltage,
-            activated: !activated,
-            heading_text,
-            index,
-            measuring,
+    let editing = $state(false);
+    let isHovering = $state(false);
+
+    let isPlusMinusPressed = $state(false);
+
+    let isMounted = false;
+    let heading_editing = false;
+
+    onMount(() => {
+        isMounted = true;
+        const rect = dotMenu.getBoundingClientRect();
+        menuLocation = {
+            top: rect.top + window.scrollY,
+            left: rect.right + window.scrollX,
         };
-        updateChannel(data);
+    });
+
+    let isEditing = false;
+
+    function handleInput(event: Event) {
+        let target = event.target as HTMLInputElement;
+        immediate_text = target.value;
     }
 
-    function switchMeasurementMode() {
-        measuring = !measuring;
-        const data: ChannelChange = {
-            module_index,
-            bias_voltage,
-            activated,
-            heading_text,
-            index,
-            measuring,
-        };
-        updateChannel(data);
+    function handleKeyDown(event: KeyboardEvent) {
+        if (event.key === "Enter") {
+            isEditing = false;
+            updateChannel({ heading_text: immediate_text });
+        }
     }
 
-    function updatedPlusMinus() {
+    function validateRefresh(temp: number[]) {
+        const v =
+            (temp[3] * 0.001 + temp[2] * 0.01 + temp[1] * 0.1 + temp[0]) *
+            (ch.sign_temp === "+" ? 1 : -1);
+        biasVoltage2DigitsTemp(v);
+    }
+
+    function handleSubmitButtonClick() {
+        const submitted_voltage = parseFloat(
+            `${ch.sign_temp}${ch.temp[0]}.${ch.temp[1]}${ch.temp[2]}${ch.temp[3]}`,
+        );
+
+        validateUpdateVoltage(submitted_voltage);
+
+        editing = false;
+        focusing = false;
         isPlusMinusPressed = true;
-        const data: ChannelChange = {
-            module_index,
-            bias_voltage: -bias_voltage,
-            activated,
-            heading_text,
-            index,
-            measuring,
-        };
-        updateChannel(data);
-
         setTimeout(() => {
             isPlusMinusPressed = false;
         }, 1);
     }
-
-    async function updateChannel(data: ChannelChange) {
-        const returnData = await requestChannelUpdate(data);
-
-        voltageStore.update((full_state) => {
-            full_state.data[module_index - 1].channels[index - 1].activated =
-                returnData.activated;
-            full_state.data[module_index - 1].channels[index - 1].bias_voltage =
-                returnData.bias_voltage;
-            full_state.data[module_index - 1].channels[index - 1].heading_text =
-                returnData.heading_text;
-            full_state.data[module_index - 1].channels[index - 1].measuring =
-                returnData.measuring;
-            return full_state;
-        });
-    }
-
-    // export let updateChannel;
-
-    // function onStateChange
-
-    // immediate_text = heading_text;
-
-    let st = {
-        action_string: "Turn Off",
-        colorMode: false,
-        opacity: 1,
-    };
-
-    let toggle_up = false;
-    let toggle_down = true;
-
-    // let alter = false;
-    let visible = true;
-    let no_border = false;
-
-    function togglerRotateState() {
-        toggle_up = !toggle_up;
-        toggle_down = !toggle_down;
-        // alter = !alter;
-        visible = !visible;
-        no_border = !no_border;
-    }
-
-    let sign = "+";
-
-    let input_value = "";
-    let isPlusMinusPressed = false;
-
-    let ones = 0,
-        tens = 0,
-        hundreds = 0,
-        thousands = 0,
-        integer = 0;
-
-    let isMounted = false;
-    let updateComplete = false; //
-
-    onMount(() => {
-    isMounted = true;
-    const rect = dotMenu.getBoundingClientRect();
-    menuLocation = { 
-        top: rect.top + window.scrollY, 
-        left: rect.right + window.scrollX 
-    };
-});
-
-    voltageStore.subscribe((full_state) => {
-        // update local state
-        const mst = full_state.data[module_index - 1].channels[index - 1];
-        bias_voltage = mst.bias_voltage;
-        activated = mst.activated;
-        heading_text = mst.heading_text;
-        measuring = mst.measuring;
-        if (!heading_editing) {
-            immediate_text = heading_text;
-        }
-
-        // distribute effects
-        ones = Math.floor(Math.abs(bias_voltage)) % 10;
-        integer = Math.round(Math.abs(bias_voltage * 1000));
-        thousands = integer % 10;
-        hundreds = Math.floor(integer / 10) % 10;
-        tens = Math.floor(integer / 100) % 10;
-        ones = Math.floor(integer / 1000) % 10;
-        sign = bias_voltage < 0 ? "-" : "+";
-        if (activated) {
-            st = {
-                action_string: "Turn Off",
-                colorMode: false,
-                opacity: 1,
-            };
-        } else {
-            st = {
-                action_string: "Turn On",
-                colorMode: true,
-                opacity: 0.2,
-            };
-        }
-    });
-
-
-    let isEditing = false;
-
-    function handleInput(event) {
-        immediate_text = event.target.value;
-    }
-
-    function handleKeyDown(event) {
-        if (event.key === "Enter") {
-            isEditing = false;
-            updateChannel({
-                module_index,
-                bias_voltage,
-                activated,
-                heading_text: immediate_text,
-                index,
-                measuring,
-            });
-        }
-    }
-
-    let inputRef;
-    function handleSubmitButtonClick() {
-        console.log("Input value: " + inputRef.value);
-        let input = parseFloat(inputRef.value);
-        if (isNaN(input)) {
-            console.log("Input is not a number");
-            return;
-        } else {
-            validateUpdateVoltage(input);
-            inputRef.value = ""; // Clear the input element in the DOM
-            isPlusMinusPressed = true;
-            setTimeout(() => {
-                isPlusMinusPressed = false;
-            }, 1);
-        }
-    }
-    function handleInputKeyDown(event) {
+    function handleInputKeyDown(event: any) {
         if (event.key === "Enter") {
             handleSubmitButtonClick();
         }
     }
+
+    // let ones_el = $state();
+    // let tens_el = $state();
+    // let hundreds_el = $state();
+    // let thousands_el = $state();
+    let focusing = $state(false);
+    let submit_button = $state();
+
+    // let inputs = $derived([
+    //     ones_el,
+    //     tens_el,
+    //     hundreds_el,
+    //     thousands_el,
+    // ]) as HTMLInputElement[];
+
+    // let input_values = $derived([
+    //     ch.temp[0],
+    //     ch.temp[1],
+    //     ch.temp[2],
+    //     ch.temp[3],
+    // ]);
+
+    // function handleDisplayInput(event: Event, index: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     if (isNaN(parseFloat(target.value)) || target.value.includes(".")) {
+    //         event.preventDefault();
+    //         target.value = ""; // Clear the input if the value is not a number
+    //     } else if (target.value.length > 0) {
+    //         if (index < inputs.length - 1) {
+    //             inputs[index + 1].value = ""; // Move the extra digit to the next input
+    //             inputs[index + 1].focus();
+    //         } else {
+    //             // this is for allowing the last input to change its single digit
+    //             // if another digit is entered before "Enter"
+    //             inputs[index].value = target.value[target.value.length - 1];
+    //             ch.temp[3] = parseFloat(
+    //                 inputs[index].value[target.value.length - 1],
+    //             );
+    //         }
+    //     }
+    // }
+
+    // function handleKeydown(event: KeyboardEvent, index: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     // for any key other than 0-9, prevent the default action
+    //     if (!event.key.match(/[0-9]/)) {
+    //         event.preventDefault();
+    //     }
+    //     if (event.key === "Backspace" && target.value === "" && index > 0) {
+    //         if (index + 1 < inputs.length) {
+    //             inputs[index + 1].value = ""; // Clear the next input
+    //         }
+    //         inputs[index - 1].focus();
+    //     }
+    //     if (event.key === "Enter" && index === inputs.length - 1) {
+    //         target.blur();
+    //         handleSubmitButtonClick();
+    //     }
+    // }
+
+    // function inputFocus(event: Event, index?: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     if (typeof index === "number") {
+    //         inputs[index].focus();
+    //     }
+    //     target.value = "";
+    //     focusing = true;
+    //     editing = true;
+    // }
+
+    // function inputBlur(event: Event, index: number) {
+    //     const target = event.target as HTMLInputElement;
+    //     focusing = false;
+    //     target.value = input_values[index].toString();
+    // }
+
+    function exitEditing() {
+        // edit the edit mode without changing the value. Return to the original bias voltage
+        ch.temp[0] = ch.ones;
+        ch.temp[1] = ch.tens;
+        ch.temp[2] = ch.hundreds;
+        ch.temp[3] = ch.thousands;
+        ch.sign_temp = ch.sign;
+        editing = false;
+    }
+
+    function handleMouseEnter() {
+        isHovering = true;
+    }
+
+    function handleMouseLeave() {
+        isHovering = false;
+    }
 </script>
 
-<div class="bound-box">
+<div
+    onmouseenter={handleMouseEnter}
+    onmouseleave={handleMouseLeave}
+    class="bound-box"
+    role="region"
+>
     <!-- notice how I use class:no_border here -->
-    <div class="strip" class:animated={measuring}></div>
-    <div class="top-bar" class:no_border>
+    <!-- <div class="strip" class:animated={ch.measuring}></div> -->
+    <div
+        class="top-bar"
+        class:animated={ch.measuring}
+        class:no_border={!visible}
+    >
         <div class="top-left">
-            <h1 class="heading">{index}</h1>
-            <!-- {#if isEditing} -->
+            {#if !staticName}
+                <ChannelChevron
+                    bind:down={visible}
+                    {isHovering}
+                    index={ch.index}
+                ></ChannelChevron>
+            {/if}
             <input
                 class="heading-input"
+                class:input-to-label={staticName}
                 type="text"
                 value={immediate_text}
-                on:input={handleInput}
-                on:focus={() => (heading_editing = true)}
-                on:blur={() => {
+                oninput={handleInput}
+                onfocus={() => (heading_editing = true)}
+                onblur={() => {
                     heading_editing = false;
-                    updateChannel({
-                        module_index,
-                        bias_voltage,
-                        activated,
-                        heading_text: immediate_text,
-                        index,
-                        measuring,
-                    });
+                    updateChannel({ heading_text: immediate_text });
                 }}
-                on:keydown={handleKeyDown}
+                onkeydown={handleKeyDown}
                 tabindex="0"
+                disabled={staticName}
             />
-            <!-- {:else}
-                <h1
-                    class="heading-label"
-                    on:click={() => {isEditing = true}}
-                    on:keydown={handleKeyDown}
-                >
-                    {immediate_text}
-                </h1>
-            {/if} -->
         </div>
+
         <div class="top-right">
-            <div class="dot-menu" on:click={toggleMenu} on:keydown={toggleMenu} bind:this={dotMenu} role="button" tabindex="0">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="21"
-                    height="21"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    class="bi bi-three-dots"
-                    viewBox="0 0 16 16"
+            {#if !visible}
+                <div
+                    class="heading-voltage"
+                    class:digit-off={st.colorMode}
+                    class:invalid={!ch.valid}
                 >
-                    <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
-                        stroke-width="0.3"
-                    />
-                </svg>
-            </div>
+                    {ch.bias_voltage.toFixed(3)}
+                </div>
+            {/if}
+            <HorizontalDots
+                onclick={toggleMenu}
+                onkeydown={toggleMenu}
+                bind:dotMenu
+            ></HorizontalDots>
             <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
             <!-- where 'something' is both a boolean in javascript and a class -->
             {#if showDropdown}
-                <MenuSlotted onClick={toggleMenu} menuVisible={showDropdown} location={menuLocation}>
-                    <MenuButton on:click={switchMeasurementMode}>Toggle Measurement Mode</MenuButton>
+                <MenuSlotted
+                    onclick={toggleMenu}
+                    menuVisible={showDropdown}
+                    location={menuLocation}
+                >
+                    <MenuButton
+                        onclick={() => {
+                            updateChannel({ measuring: !ch.measuring });
+                            showDropdown = !showDropdown;
+                        }}>Toggle Measurement Mode</MenuButton
+                    >
                 </MenuSlotted>
             {/if}
 
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="23"
-                height="23"
-                fill="currentColor"
-                stroke="currentColor"
-                class="chevron"
-                class:toggle_up
-                class:toggle_down
-                viewBox="0 0 16 16"
-                role="button"
-                tabindex="0"
-                on:click={togglerRotateState}
-                on:keydown={togglerRotateState}
-            >
-                <path
-                    fill-rule="evenodd"
-                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
-                    stroke-width="0.8"
-                />
-            </svg>
+            <!-- <ChannelChevron bind:down={visible}></ChannelChevron> -->
         </div>
     </div>
     {#if visible}
         <div class="main-controlls">
             <div class="left">
-                <Button
-                    on:click={switchState}
-                    redGreen={st.colorMode}
-                    {uiStateStore}>{st.action_string}</Button
-                >
-                <input
-                    type="number"
-                    bind:this={inputRef}
-                    on:keydown={handleInputKeyDown}
-                />
-                <SubmitButton {uiStateStore} on:submit={handleSubmitButtonClick}
-                    >Submit</SubmitButton
-                >
-            </div>
-
-            <div class="right">
                 <div
                     class="plus-minus"
-                    style="--state_opacity: {st.opacity}"
+                    class:digit-off={st.colorMode}
+                    class:digit-edit={editing}
                     role="button"
                     tabindex="0"
-                    on:click={updatedPlusMinus}
-                    on:keydown={updatedPlusMinus}
+                    onclick={updatedPlusMinus}
+                    onkeydown={updatedPlusMinus}
                 >
-                    {sign}
+                    {ch.sign_temp}
                 </div>
                 <div class="controls">
                     <div class="buttons-top">
-                        <ChevButtonTop on:click={() => increment(1)} />
+                        <ChevButtonTop onclick={() => increment(0, 1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonTop on:click={() => increment(0.1)} />
+                        <ChevButtonTop onclick={() => increment(1, 1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonTop on:click={() => increment(0.01)} />
+                        <ChevButtonTop onclick={() => increment(2, 1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonTop on:click={() => increment(0.001)} />
+                        <ChevButtonTop onclick={() => increment(3, 1)} />
                     </div>
 
-                    <div class="display {isPlusMinusPressed ? 'updating' : ''}">
-                        <!-- <div class="display updating"> -->
-                        <div
-                            class="digit"
-                            style="--state_opacity: {st.opacity}"
-                        >
-                            {ones}
-                        </div>
-                        <div class="short-spacer"></div>
-                        <div
-                            class="digit dot"
-                            style="--state_opacity: {st.opacity}"
-                        >
-                            .
-                        </div>
-                        <div class="short-spacer"></div>
-                        <div
-                            class="digit"
-                            style="--state_opacity: {st.opacity}"
-                        >
-                            {tens}
-                        </div>
-                        <div class="spacer"></div>
-                        <div
-                            class="digit"
-                            style="--state_opacity: {st.opacity}"
-                        >
-                            {hundreds}
-                        </div>
-                        <div class="spacer"></div>
-                        <div
-                            class="digit"
-                            style="--state_opacity: {st.opacity}"
-                        >
-                            {thousands}
-                        </div>
-                    </div>
+                    <Display
+                        onoff={st.colorMode}
+                        bind:editing
+                        bind:focusing
+                        bind:temp={ch.temp}
+                        {isPlusMinusPressed}
+                        invalid={!ch.valid}
+                        {handleSubmitButtonClick}
+                    ></Display>
 
                     <div class="buttons-bottom">
-                        <ChevButtonBottom on:click={() => increment(-1)} />
+                        <ChevButtonBottom onclick={() => increment(0, -1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonBottom on:click={() => increment(-0.1)} />
+                        <ChevButtonBottom onclick={() => increment(1, -1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonBottom on:click={() => increment(-0.01)} />
+                        <ChevButtonBottom onclick={() => increment(2, -1)} />
                         <div class="spacer-chev"></div>
-                        <ChevButtonBottom on:click={() => increment(-0.001)} />
+                        <ChevButtonBottom onclick={() => increment(3, -1)} />
                     </div>
                 </div>
                 <div class="voltage">V</div>
             </div>
+            {#if editing}
+                <div class="right-editing">
+                    <SubmitButton
+                        onclick={handleSubmitButtonClick}
+                        bind:this={submit_button}>Submit</SubmitButton
+                    >
+                    <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>
+                </div>
+            {:else}
+                <div class="right">
+                    {#if ch.valid}
+                        <Button onclick={switchState} redGreen={st.colorMode}
+                            >{st.action_string}</Button
+                        >
+                    {:else}
+                        <GeneralButton onclick={(e) => {focusing=true; editing=true;}}
+                            >Invalid</GeneralButton
+                        >
+                    {/if}
+                </div>
+            {/if}
         </div>
     {/if}
 </div>
 
 <style>
-    /* @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,400;8..144,500&display=swap'); */
-    /* @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz@8..144&display=swap'); */
     @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap");
-
 
     @keyframes placeHolderShimmer {
         0% {
@@ -462,10 +460,20 @@
         position: absolute;
     } */
 
-    .strip {
-        background-color: var(--heading-color);
-        position: relative;
-        height: 2.5px;
+    .heading-voltage {
+        color: var(--red-text);
+        font-size: 1.5rem;
+        letter-spacing: 0.58rem;
+        /* padding: 0.3rem 0.5rem; */
+        /* margin: 0;
+        margin-top: 0.2rem; */
+        /* margin-bottom: auto; */
+        /* opacity: 0.5; */
+        font-family: "Roboto Flex", sans-serif;
+        font-weight: 300;
+        margin: auto;
+        margin-left: 0;
+        margin-right: 0.7rem;
     }
 
     .animated {
@@ -487,9 +495,8 @@
     .top-left {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
-        /* padding: 5px 10px;
-        padding-right: 13px; */
+        /* justify-content: start; */
+        align-items: flex-end;
     }
 
     .top-right {
@@ -502,108 +509,140 @@
 
     .heading-input {
         color: var(--text-color);
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         letter-spacing: 0rem;
         /* padding: 0.7rem 0.0rem; */
-        padding-right: 2rem;
+        /* margin: 0; */
+        padding-right: 0rem;
+        /* margin-bottom: 3rem; */
+        padding-bottom: 0.15rem;
+        /* height: 78%; */
+        padding-right: 0rem;
+        margin-top: 0.15rem;
+        margin-bottom: 0.15rem;
+        margin-left: 0.5rem;
+
+        padding-top: 0.3rem;
+        color: var(--digits-color);
+        background-color: transparent;
+
+        border: none;
+        /* justify-content: left;
+        text-align: left; */
+        width: 75%;
+        /* min-height: 2.8rem; */
+        /* padding: 0; */
+        /* height: 80%; */
         /* padding: 0.0rem 0.5rem; */
         /* padding: 0; */
     }
 
-    .heading {
-        margin-right: auto;
-        margin-top: auto;
-        margin-bottom: auto;
-        padding: 0rem 0rem;
-        padding-right: 0.8rem;
-        padding-bottom: 0.20rem;
-        opacity: 0.5;
+    .input-to-label {
+        margin-left: 0rem;
         color: var(--text-color);
     }
 
-    /* .heading-label {
-        min-width: 230px;
-        padding-right: 0rem;
-        padding: 0.01rem 0.5rem;
-        border-radius: 0.2rem;
-        border: 1.5px solid var(--heading-color);
-    } */
-
-    /* .heading-label:hover {
-        background-color: var(--hover-heading-color);
-        border: 1.5px solid var(--inner-border-color);
-    } */
-
     input {
-        background-color: var(--display-color);
+        background-color: transparent;
         border-radius: 4px;
-        border: 1.5px solid var(--inner-border-color);
+        border: 1.5px solid var(--value-border-color);
         padding: 0rem 0.3rem;
         font-family: "Roboto Flex", sans-serif;
         font-weight: 300;
         font-size: 1.7rem;
         letter-spacing: 0.58rem;
         color: var(--digits-color);
-        transition: background-color 0.1s ease-in-out;
+        /* transition: background-color 0.1s ease-in-out; */
     }
 
-    .heading-input {
-        color: var(--digits-color);
-        background-color: var(--heading-color);
-        border: 1.5px solid var(--heading-color);
-        padding-bottom: 0.20rem;
+    /* Deactivate the chevrons that appear on input type=number */
+    /* input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
+
+    input[type="number"] {
+        appearance: textfield;
+        -moz-appearance: textfield;
+    }
+    input:focus {
+        outline: none;
+    } */
 
     .heading-input:hover {
         background-color: var(--hover-heading-color);
-        border: 1.5px solid var(--inner-border-color);
+        /* border: 1.5px solid var(--inner-border-color); */
     }
 
-    .heading-input:focus {
-        background-color: var(--hover-heading-color);
-        border: 1.5px solid var(--inner-border-color);
-    }
-
-    .digit {
+    .plus-minus {
+        width: 18px;
+        display: flex;
+        justify-content: center;
         font-size: 1.5rem;
+        color: var(--digits-color);
+        font-family: "Roboto Flex", sans-serif;
         font-weight: 300;
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-left: 0.2rem;
+        margin-right: 0.2rem;
+        border-radius: 4px;
+        /* opacity: var(--state_opacity); */
+    }
+
+    /* .digit {
+        width: 2rem;
+        font-size: 1.5rem;
         color: var(--digits-color);
         font-family: "Roboto Flex", sans-serif;
         font-weight: 300;
         font-size: 1.7rem;
         opacity: var(--state_opacity);
-    }
-
-    .dot {
-        margin-left: -0.03rem;
-        margin-right: -0.03rem;
-    }
-
-    /* .button-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        margin: 0.75rem;
+        border: none;
+        text-align: center;
+        letter-spacing: 0;
+        margin-left: 0;
+        margin-right: 0;
+        background-color: none;
     } */
 
-    .display {
+    /* .digit-off {
+        color: var(--digits-deactivated-color);
+    }
+
+    .invalid {
+        color: rgba(0, 0, 0, 0);
+    }
+
+    .digit-edit {
+        color: var(--edit-blue);
+        font-weight: 400;
+    } */
+
+    /* .dot {
+        margin-left: -0.7rem;
+        margin-right: -0.7rem;
+    } */
+
+    /* .display {
         position: relative;
         overflow: hidden;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        /* padding: 5px 10px;
-        padding-right: 13px; */
-        /* background-color: var(--display-color); */
         border-radius: 4px;
-        border: 1.5px solid var(--inner-border-color);
-        padding: 0rem 0.44rem;
+        border: 1.5px solid var(--value-border-color);
         transition: background-color 0.1s ease-in-out;
-        /* margin: -0.5rem 0rem; */
         background-color: var(--display-color);
-    }
+    } */
 
-    .display:after {
+    /* .display-focus {
+        background-color: var(--heading-color);
+        border: 1.5px solid var(--outer-border-color);
+    } */
+
+    /* .display:after {
         content: "";
         display: block;
         position: absolute;
@@ -616,10 +655,14 @@
         margin-top: -50%;
         opacity: 0;
         transition: all 0.4s;
-        background: var(--digits-color);
-    }
+        background: var(--digits-color); */
+    /* pointer-events: none is needed because we have
+        input elements inside the area that gets
+        the shimmer effect from this pseudo-element */
+    /* pointer-events: none;
+    } */
 
-    .display.updating:after {
+    /* .display.updating:after {
         padding: 0;
         margin: 0;
         opacity: 0.15;
@@ -628,15 +671,15 @@
 
     .spacer {
         width: 0.8rem;
-    }
+    } */
 
     .spacer-chev {
         width: 0.2rem;
     }
 
-    .short-spacer {
+    /* .short-spacer {
         width: 0rem;
-    }
+    } */
 
     .buttons-top {
         display: flex;
@@ -658,10 +701,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        /* padding: 0.5rem 0.3rem;
-        margin: 0.3rem 0.3rem; */
-        /* padding: 10px 10px; */
-        /* padding-right: 13px; */
     }
 
     .voltage {
@@ -676,100 +715,73 @@
         margin-right: 0.3rem;
     }
 
-    .plus-minus {
-        width: 18px;
-        display: flex;
-        justify-content: center;
-        font-size: 1.5rem;
-        font-weight: 300;
-        color: var(--digits-color);
-        font-family: "Roboto Flex", sans-serif;
-        font-weight: 300;
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-left: 0.2rem;
-        margin-right: 0.2rem;
-        border-radius: 4px;
-        opacity: var(--state_opacity);
-    }
-
     .plus-minus:hover {
-        cursor: pointer;
+        /* cursor: pointer; */
         background-color: var(--hover-body-color);
     }
 
-    .right {
+    .left {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 1rem 1rem;
-        padding-left: 0.2rem;
+        padding: 0.3rem 0rem;
+        padding-left: 1rem;
 
         /* flex: 10; */
         /* padding-right: 13px; */
     }
 
-    .left {
+    .right-editing {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-evenly;
         padding: 1rem 1rem;
         padding-right: 0.2rem;
-        width: 46%;
-        /* flex: 1; */
+        margin-right: 0.5rem;
+        width: 45%;
         /* padding-right: 13px; */
     }
 
-    .toggle_up {
-        transform: rotate(90deg);
-        margin-top: 0.17rem;
-        padding-top: 0.2rem;
-        transition: transform 0.2s ease-in-out;
+    .right {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding: 1rem 1rem;
+        padding-right: 0.2rem;
+        margin-right: 0.5rem;
+        width: 45%;
     }
 
-    .toggle_down {
-        transform: rotate(0);
-        margin-top: 0.1rem;
-        padding-top: 0.2rem;
-        transition: transform 0.2s ease-in-out;
-    }
-
-    .chevron {
-        /* margin-top: 0.01rem;
-        padding-top: 0.2rem; */
-        color: var(--icon-color);
-    }
-
-    .chevron:focus {
-        outline: none;
-    }
+    /* :root {
+    --module-border-color: 0, 0, 0;
+} */
 
     .bound-box {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
-        border: 1.3px solid var(--outer-border-color);
-        margin: 0.2rem 0rem;
+        /* box-shadow: 0 0 7px rgba(0, 0, 0, 0.05); */
+        /* border: 1.3px solid var(--outer-border-color); */
+        border-left: 1.3px solid var(--outer-border-color);
+        border-right: 1.3px solid var(--outer-border-color);
+        /* border-left: 1.3px solid rgba(var(--module-border-color), 0.1);
+        border-right: 1.3px solid rgba(var(--module-border-color), 0.1); */
+        border-bottom: 1.3px solid var(--divider-border-color);
+        /* margin: 0.2rem 0rem; */
     }
     .top-bar {
         display: flex;
+        /* position: relative; */
         flex-direction: row;
         background-color: var(--heading-color);
         border-bottom: 1.3px solid var(--inner-border-color);
         justify-content: space-between;
-        padding: 0.2rem 1rem;
-        padding-right: 13px;
-    }
-
-    .dot-menu {
-        padding: 0px 12px;
-        padding-top: 0.25rem;
-        color: var(--icon-color);
-    }
-
-    .dot-menu:hover {
-        cursor: pointer;
+        /* align-items: start; */
+        padding: 0rem 0rem;
+        padding-bottom: 0rem;
+        padding-right: 0px;
+        /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
+        padding-left: 0.7rem;
     }
 
     .main-controlls {
@@ -778,7 +790,7 @@
         background-color: var(--body-color);
         /* transform: scaleY(1);
         transition: all .5s ease-in-out; */
-        user-select: none;
+        /* user-select: none; */
         display: flex;
         flex-direction: row;
         /* justify-content: space-between; */
@@ -786,24 +798,7 @@
         transition: background-color 0.1s ease-in-out;
     }
 
-    /* .alter {
-
-        display: none;
-    } */
-
     .no_border {
         border: none;
     }
-
-    /* @media (min-width: 400px) {
-        .bound-box {
-            margin: 5px 20px 5px 5px;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .bound-box {
-            margin: 5px 5px 5px 5px;
-        }
-    } */
 </style>

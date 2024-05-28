@@ -1,22 +1,28 @@
-<script>
-  import { createEventDispatcher } from 'svelte';
-  export let uiStateStore;
+<script lang="ts">
+  // import { createEventDispatcher } from 'svelte';
+  // export let uiStateStore;
+  import { ui_state } from "../state/uiState.svelte";
 
-
-  const dispatch = createEventDispatcher();
-  
-  function handleClick() {
-    dispatch('submit');
+  interface Props {
+    onclick: (event: MouseEvent) => void;
   }
+
+  let { onclick }: Props = $props();
+
+  // const dispatch = createEventDispatcher();
+  
+  // function handleClick() {
+  //   dispatch('submit');
+  // }
 </script>
 
 
 <button
-  class="{ $uiStateStore.colorMode
+  class="{ ui_state.colorMode
       ? 'gray text-gray-500 hover:text-gray-400 border-gray-500 hover:bg-gray-900'
       : 'gray text-gray-500 bg-gray-50 border-gray-500 hover:bg-gray-100'
     } text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
-on:click={handleClick}>
+{onclick}>
   <slot />
 </button>
 

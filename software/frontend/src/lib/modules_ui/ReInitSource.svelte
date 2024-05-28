@@ -1,9 +1,9 @@
 <script>
   import SubmitButton from "../SubmitButton.svelte";
-  import { uiStateStore } from "../../stores/uiStateStore";
-  import EditPencil from "../EditPencil.svelte";
-  // import type { VsourceParams } from "../stores/voltageStore";
-  import { initializeVsouce } from "../../api"
+  import { ui_state } from "../../state/uiState.svelte";
+  import EditPencil from "../shared/EditPencil.svelte";
+  import { initializeVsource } from "../../api"
+  import { system_state } from "../../state/systemState.svelte";
 
   let ipEditable = false;
   let portEditable = false;
@@ -12,6 +12,7 @@
   let ipaddr = "10.7.0.193"
   let port = 8880
   let timeout = 5
+  let dev_mode = false
 
   function toggleIpEditable() {
     ipEditable = !ipEditable;
@@ -23,6 +24,16 @@
 
   function toggleTimeoutEditable() {
     timeoutEditable = !timeoutEditable;
+  }
+
+  function submit() {
+    console.log("dev mode: ", dev_mode)
+
+    system_state.dev_mode = dev_mode;
+
+    console.log("done")
+
+    initializeVsource({ipaddr, port, timeout, dev_mode})
   }
 
 
@@ -43,7 +54,7 @@
       <div class="input-params">
         <input type="text" bind:value={ipaddr} readonly={!ipEditable} class:non-editable={!ipEditable} />
         <div class="icon" on:click={toggleIpEditable} on:keydown={toggleIpEditable} role="button" tabindex="0">
-          <EditPencil darkMode={$uiStateStore.colorMode} />
+          <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
     </div>
@@ -53,7 +64,7 @@
       <div class="input-params">
         <input type="text" bind:value={port} readonly={!portEditable} class:non-editable={!portEditable} />
         <div class="icon" role="button" tabindex="0" on:click={togglePortEditable} on:keydown={togglePortEditable}>
-          <EditPencil darkMode={$uiStateStore.colorMode} />
+          <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
     </div>
@@ -63,18 +74,32 @@
       <div class="input-params">
         <input type="text" bind:value={timeout} readonly={!timeoutEditable} class:non-editable={!timeoutEditable} />
         <div class="icon" on:click={toggleTimeoutEditable} on:keydown={toggleTimeoutEditable} role="button" tabindex="0">
-          <EditPencil darkMode={$uiStateStore.colorMode} />
+          <EditPencil darkMode={ui_state.colorMode} />
         </div>
+      </div>
+    </div>
+
+    <div class="param">
+      <div class="label">Dev-Mode</div>
+      <div class="input-params">
+        <input class="check" type="checkbox" bind:checked={dev_mode} />
+        
       </div>
     </div>
 
 
     <br>
-    <SubmitButton {uiStateStore} on:submit={() => {initializeVsouce({ipaddr, port, timeout})}} >Re-Initialize</SubmitButton>
+    <SubmitButton onclick={submit} >Re-Initialize</SubmitButton>
   </div>
 </div>
 
 <style>
+
+  .check {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0.0rem;
+  }
 
   
   .non-editable {
@@ -106,6 +131,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 13rem;
   }
 
 
@@ -113,7 +139,7 @@
     font-size: 1.2rem;
     color: var(--text-color);
     margin: 0.3rem;
-    width: 1.1rem;
+    width: 10rem;
   }
 
   input {

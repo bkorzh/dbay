@@ -1,10 +1,12 @@
-<script>
-    // nooo! not for svelte 5! 
-    // import { text } from "svelte/internal";
+<script lang="ts">
+    interface MyProps {
+        onclick: () => void;
+    }
+    let { onclick }: MyProps = $props();
     
 </script>
 
-<button on:click>
+<button {onclick}>
     <div class="text"><slot></slot></div>
 </button>
 

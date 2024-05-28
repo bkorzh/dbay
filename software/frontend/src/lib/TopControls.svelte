@@ -5,101 +5,121 @@
 <script lang="ts">
   import LightDarkToggle from "./LightDarkToggle.svelte";
   import LightDarkToggleFG from "./LightDarkToggleFG.svelte";
-  import Hamburger from './Hamburger.svelte';
-  import { componentInstance } from "../stores/componentInstanceStore";
-  import { uiStateStore } from "../stores/uiStateStore";
+  import Hamburger from './shared/Hamburger.svelte';
+  import { componentInstance } from "../state/componentInstanceStore";
+  import { ui_state } from "../state/uiState.svelte";
   import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./MenuButton.svelte";
   import Button from "./Button.svelte";
   import { get } from 'svelte/store';
-  import { voltageStore, switch_on_off_system } from "../stores/voltageStore";
+  import { system_state, switch_on_off_system} from "../state/systemState.svelte";
+
+  import { updateSystemStatefromJson } from "./modules_dbay/index.svelte"
   import {requestFullStateUpdate} from "../api";
-  import type { SystemState } from "../stores/voltageStore";
+  import type { SystemState } from "../state/systemState.svelte";
   import {onMount} from "svelte";
 
-  let burgerMenu;
-  let menuLocation = { top: 0, left: 0 };
+  let burgerMenu: any;
+  let menuLocation = $state({ top: 0, left: 0 });
 
-  let showDropdown = false;
+  let showDropdown = $state(false);
+
+
+
   function toggleMenu() {
-    showDropdown = !showDropdown;
-    const rect = burgerMenu.getBoundingClientRect();
-    menuLocation = { 
-        top: rect.top + window.scrollY, 
-        left: rect.right + window.scrollX 
-    };
-  }
+        showDropdown = !showDropdown;
+        const rect = burgerMenu.getBoundingClientRect();
+        menuLocation = {
+            top: rect.top + window.scrollY,
+            left: rect.right + window.scrollX,
+        };
+    }
 
   let total_state: SystemState;
 
-  voltageStore.subscribe((state) => {
-    total_state = state;
-  });
+  // voltageStore.subscribe((state) => {
+  //   total_state = state;
+  // });
 
   async function allOn() {
     // const total_state = get(voltageStore);
     const modified_state = switch_on_off_system(total_state, true);
     const returned_state = await requestFullStateUpdate(modified_state);
-    voltageStore.set(returned_state);
+    updateSystemStatefromJson(returned_state)
   }
 
   async function allOff() {
     // const total_state = get(voltageStore);
     const modified_state = switch_on_off_system(total_state, false);
     const returned_state = await requestFullStateUpdate(modified_state);
-    voltageStore.set(returned_state);
+    // voltageStore.set(returned_state);
+    updateSystemStatefromJson(returned_state)
+
   }
 
   function addModule() {
-        uiStateStore.update((state) => {
-            state.show_module_adder = true;
-            return state;
-        });
+        // uiStateStore.update((state) => {
+        //     state.show_module_adder = true;
+        //     return state;
+        // });
+        ui_state.show_module_adder = true;
     }
 
   function showSourceReInit() {
     // console.log("showSourceReInit");
-    uiStateStore.update((state) => {
-      state.show_source_reinit = !state.show_source_reinit;
-      return state;
-    });
+    // uiStateStore.update((state) => {
+    //   state.show_source_reinit = !state.show_source_reinit;
+    //   return state;
+    // });
+    ui_state.show_source_reinit = !ui_state.show_source_reinit;
 
     // console.log("show_source_reinit: ", $uiStateStore.show_source_reinit);
 
   }
 
 
+  // onMount(() => {
+  //   componentInstance.subscribe(value => {
+  //     burgerMenu = value;
+  //     // Now you can use burgerMenu as a reference to the Hamburger component
+  //     // For example, you can get its location like this:
+  //     const rect = burgerMenu.getBoundingClientRect();
+  //     menuLocation = { 
+  //       top: rect.top + window.scrollY, 
+  //       left: rect.right + window.scrollX 
+  //   };
+  //   });
+  // });
+
+  let isMounted = false;
+
   onMount(() => {
-    componentInstance.subscribe(value => {
-      burgerMenu = value;
-      // Now you can use burgerMenu as a reference to the Hamburger component
-      // For example, you can get its location like this:
-      const rect = burgerMenu.getBoundingClientRect();
-      menuLocation = { 
-        top: rect.top + window.scrollY, 
-        left: rect.right + window.scrollX 
-    };
+        isMounted = true;
+        const rect = burgerMenu.getBoundingClientRect();
+        menuLocation = {
+            top: rect.top + window.scrollY,
+            left: rect.right + window.scrollX,
+        };
     });
-  });
 </script>
 
 <div class="bound-box">
   <div class="top-bar">
     <h1 class="heading">Device Bay Electronics System</h1>
     <LightDarkToggleFG />
-    <Hamburger onClick={toggleMenu}/>
+    <Hamburger onclick={toggleMenu} bind:burgerMenu/>
     {#if showDropdown}
       <!-- <Menu onClick={toggleMenu} menuVisible={showDropdown} /> -->
-      <MenuSlotted onClick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
-        <MenuButton on:click={addModule}>Add a Module</MenuButton>
-        <MenuButton on:click={showSourceReInit}>Re-Initialize Source</MenuButton>
+      <MenuSlotted onclick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
+        <MenuButton onclick={addModule}>Add a Module</MenuButton>
+        <MenuButton onclick={showSourceReInit}>Re-Initialize Source</MenuButton>
       </MenuSlotted>
     {/if}
   </div>
 
   <div class="button-bar">
-    <Button redGreen={true} {uiStateStore} on:click={allOn}>All On</Button>
-    <Button redGreen={false} {uiStateStore} on:click={allOff}>All Off</Button>
+    <Button redGreen={true} onclick={allOn}>All On</Button>
+    <Button redGreen={false} onclick={allOff}>All Off</Button>
   </div>
 </div>
 

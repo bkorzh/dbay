@@ -1,9 +1,10 @@
 <script>
     import SubmitButton from "../SubmitButton.svelte";
     import GeneralButton from "../GeneralButton.svelte";
-    import { uiStateStore } from "../../stores/uiStateStore";
+    import { ui_state } from "../../state/uiState.svelte";
     import {initializeModule} from "../../api";
-    import { voltageStore } from "../../stores/voltageStore";
+    import { system_state } from "../../state/systemState.svelte";
+    import { updateSystemStatefromJson } from "../modules_dbay/index.svelte";
 
     let selectedSlot = "";
     let selectedType = "";
@@ -11,16 +12,17 @@
     async function initialize() {
         console.log("submit button clicked");
         const response = await initializeModule(Number(selectedSlot), selectedType)
-        voltageStore.set(response);
+        updateSystemStatefromJson(response)
         selectedSlot = "";
         selectedType = "";
     }
 
     function finish_adding_modules() {
-        uiStateStore.update((state) => {
-            state.show_module_adder = false;
-            return state;
-        });
+        // uiStateStore.update((state) => {
+        //     state.show_module_adder = false;
+        //     return state;
+        // });
+        ui_state.show_module_adder = false;
     }
 </script>
 
@@ -52,11 +54,11 @@
                 <option value="1">16 Ch. Micro Coax (not implemented yet)</option>
             </select>
         </div>
-        <SubmitButton {uiStateStore} on:submit={initialize}
+        <SubmitButton onclick={initialize}
             >Add Module</SubmitButton
         >
         <br>
-        <GeneralButton {uiStateStore} on:submit={finish_adding_modules}
+        <GeneralButton onclick={finish_adding_modules}
             >Finish Adding Modules</GeneralButton>
     </div>
 </div>

@@ -1,31 +1,46 @@
-<script>
+<script lang="ts">
     import LightDarkToggle from "./LightDarkToggle.svelte";
     import { onMount, onDestroy } from "svelte";
-    import { uiStateStore } from "../stores/uiStateStore";
+    import { ui_state } from "../state/uiState.svelte";
 
-    export let onClick;
-    export let menuVisible;
-    export let location = { top: 0, left: 0 };
+    interface MyProps {
+        onclick: () => void;
+        menuVisible: boolean;
+        location: { top: number; left: number };
+    }
+    let { onclick, menuVisible, location }: MyProps = $props();
+
+    // export let onClick;
+    // export let menuVisible;
+    // export let location = { top: 0, left: 0 };
 
     // Compute the style string whenever `location` changes
-    $: style = `top: ${location.top}px; left: ${location.left - dropdownWidth}px;`;
+    // $: style = `top: ${location.top}px; left: ${location.left - dropdownWidth}px;`;
 
-    function handleKeyDown(event) {
+    function handleKeyDown(event: KeyboardEvent) {
         if (event.key === "Enter" || event.key === " ") {
-            onClick();
+            onclick();
         }
     }
 
-    let menu;
-    let closeButton;
-    let justOpened = true;
-    let dropdownWidth;
+    let menu: HTMLElement | null = $state(null);
+    let closeButton = $state();
+    let justOpened = $state(true);
+    let dropdownWidth: number = $state(0);
+
+    let style = $derived(
+        `top: ${location.top}px; left: ${location.left - dropdownWidth}px;`,
+    );
 
     onMount(() => {
         justOpened = true;
-        menu = document.querySelector(".dropdown");
-        closeButton = menu.querySelector(".close-button");
-        dropdownWidth = menu.offsetWidth;
+        menu = document.querySelector(".dropdown") as HTMLElement;
+        if (menu) {
+            closeButton = menu.querySelector(".close-button");
+            dropdownWidth = menu.offsetWidth;
+        } else {
+            console.log("menu not found");
+        }
 
         document.addEventListener("click", handleClickOutside);
     });
@@ -34,33 +49,36 @@
         document.removeEventListener("click", handleClickOutside);
     });
 
-    function handleClickOutside(event) {
-        const isClickInsideMenu = menu.contains(event.target);
-
-        if (menuVisible && !isClickInsideMenu && !justOpened) {
-            // close the menu
-            onClick();
+    function handleClickOutside(event: Event) {
+        const target = event.target as HTMLElement;
+        if (menu) {
+            const isClickInsideMenu = menu.contains(target);
+            if (menuVisible && !isClickInsideMenu && !justOpened) {
+                // close the menu
+                onclick();
+            }
         }
 
         justOpened = false;
     }
 
     function addModule() {
-        uiStateStore.update((state) => {
-            state.show_module_adder = true;
-            return state;
-        });
+        ui_state.show_module_adder = true;
         console.log("done");
-        console.log("module adder: ", $uiStateStore.show_module_adder)
+        console.log("module adder: ", ui_state.show_module_adder);
     }
-
 </script>
 
-<div class="dropdown" style={style}>
+<div class="dropdown" {style}>
     <div class="settings-top">
         <h3>Settings</h3>
 
-        <div class="close-buttom" on:click={onClick} on:keydown={handleKeyDown} role="button" tabindex="0">
+        <button
+            class="close-buttom"
+            {onclick}
+            onkeydown={handleKeyDown}
+            tabindex="0"
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
@@ -76,7 +94,7 @@
                     stroke-width=".8"
                 />
             </svg>
-        </div>
+        </button>
     </div>
 
     <div class="dd">
@@ -85,7 +103,6 @@
 </div>
 
 <style>
-
     /* li {
         padding: 0.2rem;
         display: flex;
@@ -93,8 +110,6 @@
         justify-content: space-between;
         align-items: left;
     } */
-
-    
 
     .close-buttom {
         color: var(--icon-color);

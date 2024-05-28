@@ -32,46 +32,70 @@ li {
   color: var(--text-color)
 }
 
+/* 
+--heading-color: #eaeff8;
+--heading-color: #2d2d32;
+*/
+
+
 :root {
-  --bg-color: #f1f1f1;
-  --text-color: #444444;
-  --icon-color: #acacac;
-  --heading-color: #f5f5f5;
-  --body-color: #FBFBFB;
+  --bg-color: #f7faff;
+  --text-color: #738494;
+  --icon-color: #99a8b7;
+  --heading-color: #edf3f9;
+  --body-color: #f4f9fd;
   --hl-text-color: #444444;
-  --inner-border-color: #ececec;
-  --outer-border-color: #e8e8e8;
-  --display-color: white;
-  --hover-body-color: #f3f3f3;
-  --hover-heading-color: #fafafa;
+  --inner-border-color: #f1f6fb;
+  --value-border-color: #f0f5fa;
+  --outer-border-color: #d7e0ed;
+  --divider-border-color: #cad7e8;
+  --display-color: #fbfcfe;
+  --hover-body-color: #ecf0fb;
+  --hover-heading-color: #000f3e0b;
   --digits-color: #090909;
+  --digits-deactivated-color: #d2dae8;
   --disabled-digits-color: #c7c7c7;
-  --module-header-color: #515154;
-  --module-border-color: #8b8b8d;
-  --module-icon-color: #f1f1f1;
-  --red-highlight: #f66f7c;
+  --module-header-color: #edf3f9;
+  --module-header-color-light: #e4eaf5;
+  --module-border-color: #d7e0ed;
+  --module-icon-color: #1d2225;
+  --red-highlight: #f8c6cb;
+  --edit-blue: #00499c;
+  --red-text: #712020;
 }
 
 .dark {
   --bg-color: #1b1b1b;
   --text-color: #9698aa;
   --icon-color: #7a7c89;
-  --heading-color: #2d2d32;
+  --heading-color: #2b2b2e;
   --body-color: #252528;
   --hl-text-color: #e7e7e7;
-  --inner-border-color: #33333b;
-  --outer-border-color: #292930;
+  --inner-border-color: #252528;
+  --outer-border-color: #34343c;
+  --divider-border-color: #3f3f49;
+  --value-border-color: #292930;
   --display-color: #292A2F;
   --hover-body-color: #2d2d32;
-  --hover-heading-color: rgb(57, 57, 66);
+  --hover-heading-color: #dde4f810;
   --digits-color: #f7f7f7;
-  --disabled-digits-color: #7a7c89;
-  --module-header-color: #484853;
-  --module-border-color: rgb(59, 59, 59);
+  --digits-deactivated-color: #46495a;
+  --module-header-color: #40404b;
+  --module-header-color-light: #3b3b41;
+  --module-border-color: #484853;
   --module-icon-color: #f1f1f1;
-  --red-highlight: #c70014;
+  --red-highlight: #60060f;
+  --edit-blue: #4b9fff;
+  --red-text: #d27878;
 }
 
 body {
   background-color: var(--bg-color);
+}
+
+:root {
+  --color-bg-light: #d1d5db; /* gray-300 */
+  --color-bg-dark: #6b7280; /* gray-500 */
+  --color-bg-toggle-light: #e5e7eb; /* gray-200 */
+  --color-bg-toggle-dark: #4b5563; /* gray-700 */
 }
