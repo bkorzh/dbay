@@ -32,6 +32,7 @@
         module_index: number;
         onChannelChange: (data: VsourceChange) => Promise<VsourceChange>;
         staticName?: boolean;
+        borders?: boolean;
     }
 
     let {
@@ -39,6 +40,7 @@
         module_index,
         onChannelChange,
         staticName = false,
+        borders = true,
     }: Props = $props();
 
     // if this component is mounted, then the vsource addon should exist
@@ -64,6 +66,7 @@
     );
 
     let showDropdown = $state(false);
+
     function toggleMenu() {
         showDropdown = !showDropdown;
         const rect = dotMenu.getBoundingClientRect();
@@ -86,7 +89,7 @@
     async function increment(index: number, value: number) {
         const scaling = [1, 0.1, 0.01, 0.001];
         const plus_minus = ch.sign_temp === "+" ? 1 : -1;
-        if (editing) {
+        if (ch.editing) {
             ch.temp[index] += value * plus_minus;
             validateRefresh(ch.temp);
             return;
@@ -102,17 +105,17 @@
     }
 
     function updatedPlusMinus() {
-        if (editing) {
+        if (ch.editing) {
             ch.sign_temp = ch.sign_temp === "+" ? "-" : "+";
             return;
         }
 
-        isPlusMinusPressed = true; //needed for the animation
+        ch.isPlusMinusPressed = true; //needed for the animation
 
         updateChannel({ voltage: -ch.bias_voltage });
 
         setTimeout(() => {
-            isPlusMinusPressed = false;
+            ch.isPlusMinusPressed = false;
         }, 1);
     }
 
@@ -145,12 +148,12 @@
     }
 
     // let alter = false;
-    let visible = $state(true);
+    // let visible = $state(true);
 
-    let editing = $state(false);
-    let isHovering = $state(false);
+    // let editing = $state(false);
+    // let isHovering = $state(false);
 
-    let isPlusMinusPressed = $state(false);
+    // let isPlusMinusPressed = $state(false);
 
     let isMounted = false;
     let heading_editing = false;
@@ -192,11 +195,11 @@
 
         validateUpdateVoltage(submitted_voltage);
 
-        editing = false;
-        focusing = false;
-        isPlusMinusPressed = true;
+        ch.editing = false;
+        ch.focusing = false;
+        ch.isPlusMinusPressed = true;
         setTimeout(() => {
-            isPlusMinusPressed = false;
+            ch.isPlusMinusPressed = false;
         }, 1);
     }
     function handleInputKeyDown(event: any) {
@@ -209,8 +212,10 @@
     // let tens_el = $state();
     // let hundreds_el = $state();
     // let thousands_el = $state();
-    let focusing = $state(false);
-    let submit_button = $state();
+
+
+    // let focusing = $state(false);
+    // let submit_button = $state();
 
     // let inputs = $derived([
     //     ones_el,
@@ -287,15 +292,15 @@
         ch.temp[2] = ch.hundreds;
         ch.temp[3] = ch.thousands;
         ch.sign_temp = ch.sign;
-        editing = false;
+        ch.editing = false;
     }
 
     function handleMouseEnter() {
-        isHovering = true;
+        ch.isHovering = true;
     }
 
     function handleMouseLeave() {
-        isHovering = false;
+        ch.isHovering = false;
     }
 </script>
 
@@ -303,6 +308,7 @@
     onmouseenter={handleMouseEnter}
     onmouseleave={handleMouseLeave}
     class="bound-box"
+    class:borders
     role="region"
 >
     <!-- notice how I use class:no_border here -->
@@ -310,13 +316,13 @@
     <div
         class="top-bar"
         class:animated={ch.measuring}
-        class:no_border={!visible}
+        class:no_border={!ch.visible}
     >
         <div class="top-left">
             {#if !staticName}
                 <ChannelChevron
-                    bind:down={visible}
-                    {isHovering}
+                    bind:down={ch.visible}
+                    isHovering = {ch.isHovering}
                     index={ch.index}
                 ></ChannelChevron>
             {/if}
@@ -338,7 +344,7 @@
         </div>
 
         <div class="top-right">
-            {#if !visible}
+            {#if !ch.visible}
                 <div
                     class="heading-voltage"
                     class:digit-off={st.colorMode}
@@ -372,13 +378,13 @@
             <!-- <ChannelChevron bind:down={visible}></ChannelChevron> -->
         </div>
     </div>
-    {#if visible}
+    {#if ch.visible}
         <div class="main-controlls">
             <div class="left">
                 <div
                     class="plus-minus"
                     class:digit-off={st.colorMode}
-                    class:digit-edit={editing}
+                    class:digit-edit={ch.editing}
                     role="button"
                     tabindex="0"
                     onclick={updatedPlusMinus}
@@ -399,10 +405,10 @@
 
                     <Display
                         onoff={st.colorMode}
-                        bind:editing
-                        bind:focusing
+                        bind:editing = {ch.editing}
+                        bind:focusing = {ch.focusing}
                         bind:temp={ch.temp}
-                        {isPlusMinusPressed}
+                        isPlusMinusPressed = {ch.isPlusMinusPressed}
                         invalid={!ch.valid}
                         {handleSubmitButtonClick}
                     ></Display>
@@ -419,11 +425,16 @@
                 </div>
                 <div class="voltage">V</div>
             </div>
-            {#if editing}
+            {#if ch.editing}
                 <div class="right-editing">
+                    <!-- <SubmitButton
+                        onclick={handleSubmitButtonClick}
+                        bind:this={submit_button}
+                        >Submit</SubmitButton
+                    > -->
                     <SubmitButton
                         onclick={handleSubmitButtonClick}
-                        bind:this={submit_button}>Submit</SubmitButton
+                        >Submit</SubmitButton
                     >
                     <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>
                 </div>
@@ -434,7 +445,7 @@
                             >{st.action_string}</Button
                         >
                     {:else}
-                        <GeneralButton onclick={(e) => {focusing=true; editing=true;}}
+                        <GeneralButton onclick={(e) => {ch.focusing=true; ch.editing=true;}}
                             >Invalid</GeneralButton
                         >
                     {/if}
@@ -527,20 +538,11 @@
         background-color: transparent;
 
         border: none;
-        /* justify-content: left;
-        text-align: left; */
         width: 75%;
-        /* min-height: 2.8rem; */
-        /* padding: 0; */
-        /* height: 80%; */
-        /* padding: 0.0rem 0.5rem; */
-        /* padding: 0; */
+
     }
 
-    .input-to-label {
-        margin-left: 0rem;
-        color: var(--text-color);
-    }
+    
 
     input {
         background-color: transparent;
@@ -553,6 +555,13 @@
         letter-spacing: 0.58rem;
         color: var(--digits-color);
         /* transition: background-color 0.1s ease-in-out; */
+    }
+
+    .input-to-label {
+        
+        margin-left: 0rem;
+        color: var(--text-color);
+        font-size: 1.5rem;
     }
 
     /* Deactivate the chevrons that appear on input type=number */
@@ -762,13 +771,15 @@
         justify-content: center;
         /* box-shadow: 0 0 7px rgba(0, 0, 0, 0.05); */
         /* border: 1.3px solid var(--outer-border-color); */
-        border-left: 1.3px solid var(--outer-border-color);
-        border-right: 1.3px solid var(--outer-border-color);
-        /* border-left: 1.3px solid rgba(var(--module-border-color), 0.1);
-        border-right: 1.3px solid rgba(var(--module-border-color), 0.1); */
-        border-bottom: 1.3px solid var(--divider-border-color);
         /* margin: 0.2rem 0rem; */
     }
+
+    .borders {
+        border-left: 1.3px solid var(--outer-border-color);
+        border-right: 1.3px solid var(--outer-border-color);
+        border-bottom: 1.3px solid var(--divider-border-color);
+    }
+
     .top-bar {
         display: flex;
         /* position: relative; */

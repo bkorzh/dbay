@@ -8,6 +8,7 @@
         focusing: boolean;
         isPlusMinusPressed: boolean;
         invalid: boolean;
+        spacing_small?: boolean;
         handleSubmitButtonClick: () => void;
     }
 
@@ -19,9 +20,19 @@
         isPlusMinusPressed,
         invalid,
         handleSubmitButtonClick,
+        spacing_small = false,
     }: Props = $props();
 
 
+    const sp = spacing_small ? {
+        // small spacing
+        spacer: -.75,
+        period_spacer: -0.65
+    } : {
+        // normal spacing
+        spacer: -0.17,
+        period_spacer: -0.39
+    }
 
     let ones_el = $state();
     let tens_el = $state();
@@ -116,13 +127,14 @@
     />
     <div
         class="short-spacer"
+        style="margin-left: {sp.period_spacer}rem; margin-right: {sp.period_spacer}rem;"
         onclick={(e) => inputFocus(e, 0)}
         onkeydown={(e) => inputFocus(e, 0)}
         role="button"
         tabindex="-1"
     ></div>
     <div
-        class="digit dot"
+        class="digit"
         onclick={(e) => inputFocus(e, 0)}
         onkeydown={(e) => inputFocus(e, 0)}
         class:invalid
@@ -135,6 +147,7 @@
     </div>
     <div
         class="short-spacer"
+        style="margin-left: {sp.period_spacer}rem; margin-right: {sp.period_spacer}rem;"
         onclick={(e) => inputFocus(e, 1)}
         onkeydown={(e) => inputFocus(e, 1)}
         role="button"
@@ -155,8 +168,10 @@
         tabindex="-1"
         maxlength="1"
     />
+    <!-- margin-left: {short_spacer}rem; margin-right: {short_spacer}rem; -->
     <div
         class="spacer"
+        style="margin-left: {sp.spacer}rem; margin-right: {sp.spacer}rem;"
         onclick={(e) => inputFocus(e, 1)}
         onkeydown={(e) => inputFocus(e, 1)}
         role="button"
@@ -179,6 +194,7 @@
     />
     <div
         class="spacer"
+        style="margin-left: {sp.spacer}rem; margin-right: {sp.spacer}rem;"
         onclick={(e) => inputFocus(e, 2)}
         onkeydown={(e) => inputFocus(e, 2)}
         role="button"
@@ -202,8 +218,7 @@
 </div>
 
 <style>
-
-input {
+    input {
         background-color: transparent;
         border-radius: 4px;
         border: 1.5px solid var(--value-border-color);
@@ -215,7 +230,6 @@ input {
         color: var(--digits-color);
         /* transition: background-color 0.1s ease-in-out; */
     }
-
 
     /* Deactivate the chevrons that appear on input type=number */
     input[type="number"]::-webkit-inner-spin-button,
@@ -255,10 +269,10 @@ input {
         background-color: none;
     }
 
-    .dot {
+    /* .dot {
         margin-left: -0.7rem;
         margin-right: -0.7rem;
-    }
+    } */
 
     .display {
         position: relative;

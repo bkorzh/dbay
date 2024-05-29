@@ -7,6 +7,9 @@ export class ChSourceStateClass implements ChSourceState {
   public activated: boolean = $state(false);
   public heading_text: string = $state("");
   public measuring: boolean = $state(false);
+
+
+
   public temp: Array<number> = $state([0, 0, 0, 0]);
   public sign_temp = $state("+");
 
@@ -18,6 +21,12 @@ export class ChSourceStateClass implements ChSourceState {
   tens = $derived(Math.floor(this.integer / 100) % 10);
   ones = $derived(Math.floor(this.integer / 1000) % 10)
   sign = $derived(this.bias_voltage < 0 ? "-" : "+");
+
+  public visible = $state(true);
+  public editing = $state(false);
+  public isHovering = $state(false);
+  public isPlusMinusPressed = $state(false);
+  public focusing = $state(false);
   
 
   constructor(data: ChSourceState) {
