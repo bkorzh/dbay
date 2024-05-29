@@ -3,14 +3,14 @@
 </script>
 
 <script lang="ts">
-  import LightDarkToggle from "./LightDarkToggle.svelte";
-  import LightDarkToggleFG from "./LightDarkToggleFG.svelte";
-  import Hamburger from './shared/Hamburger.svelte';
+  import LightDarkToggle from "./buttons/LightDarkToggle.svelte";
+  import LightDarkToggleFG from "./buttons/LightDarkToggleFG.svelte";
+  import Hamburger from './buttons/Hamburger.svelte';
   import { componentInstance } from "../state/componentInstanceStore";
   import { ui_state } from "../state/uiState.svelte";
   import MenuSlotted from "./MenuSlotted.svelte";
-  import MenuButton from "./MenuButton.svelte";
-  import Button from "./Button.svelte";
+  import MenuButton from "./buttons/MenuButton.svelte";
+  import Button from "./buttons/Button.svelte";
   import { get } from 'svelte/store';
   import { system_state, switch_on_off_system} from "../state/systemState.svelte";
 
@@ -76,20 +76,6 @@
     // console.log("show_source_reinit: ", $uiStateStore.show_source_reinit);
 
   }
-
-
-  // onMount(() => {
-  //   componentInstance.subscribe(value => {
-  //     burgerMenu = value;
-  //     // Now you can use burgerMenu as a reference to the Hamburger component
-  //     // For example, you can get its location like this:
-  //     const rect = burgerMenu.getBoundingClientRect();
-  //     menuLocation = { 
-  //       top: rect.top + window.scrollY, 
-  //       left: rect.right + window.scrollX 
-  //   };
-  //   });
-  // });
 
   let isMounted = false;
 

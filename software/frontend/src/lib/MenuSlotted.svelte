@@ -1,21 +1,17 @@
 <script lang="ts">
-    import LightDarkToggle from "./LightDarkToggle.svelte";
+    import LightDarkToggle from "./buttons/LightDarkToggle.svelte";
     import { onMount, onDestroy } from "svelte";
     import { ui_state } from "../state/uiState.svelte";
+    import type { Snippet } from 'svelte'
 
     interface MyProps {
         onclick: () => void;
         menuVisible: boolean;
         location: { top: number; left: number };
+        children: Snippet
     }
-    let { onclick, menuVisible, location }: MyProps = $props();
+    let { onclick, menuVisible, location, children }: MyProps = $props();
 
-    // export let onClick;
-    // export let menuVisible;
-    // export let location = { top: 0, left: 0 };
-
-    // Compute the style string whenever `location` changes
-    // $: style = `top: ${location.top}px; left: ${location.left - dropdownWidth}px;`;
 
     function handleKeyDown(event: KeyboardEvent) {
         if (event.key === "Enter" || event.key === " ") {
@@ -98,7 +94,7 @@
     </div>
 
     <div class="dd">
-        <slot></slot>
+        {@render children()}
     </div>
 </div>
 

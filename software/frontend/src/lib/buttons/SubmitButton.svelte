@@ -1,32 +1,29 @@
-
-
-
-<script lang='ts'>
-  import { ui_state } from "../state/uiState.svelte";
-
+<script lang="ts">
+  // import { createEventDispatcher } from 'svelte';
   // export let uiStateStore;
+  import { ui_state } from "../../state/uiState.svelte";
+
   interface Props {
-    redGreen: boolean;
     onclick: () => void;
   }
 
-  let { redGreen, onclick }: Props = $props();
+  let { onclick }: Props = $props();
+
+  // const dispatch = createEventDispatcher();
+  
+  // function handleClick() {
+  //   dispatch('submit');
+  // }
 </script>
 
 
-<button {onclick}
-  class="{redGreen
-    ? ui_state.colorMode
-      ? 'teal text-teal-500 hover:text-teal-400 border-teal-500 hover:bg-teal-900'
-      : 'teal text-teal-500 bg-teal-50 border-teal-500 hover:bg-teal-100'
-    : ui_state.colorMode
-      ? 'red text-red-500 hover:text-red-400 border-red-500 hover:bg-red-900'
-      : 'red text-red-500 bg-red-50 border-red-500 hover:bg-red-100'} 
-    text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
-
->
+<button
+  class="{ ui_state.colorMode
+      ? 'blue text-blue-500 hover:text-blue-400 border-blue-500 hover:bg-blue-900'
+      : 'blue text-blue-500 bg-blue-50 border-blue-500 hover:bg-blue-100'
+    } text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
+{onclick}>
   <slot />
-  <!-- my-2 ml-2 -->
 </button>
 
 
@@ -58,13 +55,13 @@
     transition: all 0.6s;
   }
 
-  .button.red:after {
-    background: #f36666;
+  .button.blue:after {
+    background: #666df3;
   }
 
-  .button.teal:after {
+  /* .button.blue:after {
     background: #26f4ba;
-  }
+  } */
 
   .button:active:after {
     padding: 0;

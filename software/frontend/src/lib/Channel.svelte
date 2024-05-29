@@ -1,11 +1,11 @@
 <script lang="ts">
     import { ui_state } from "../state/uiState.svelte";
     // import { voltageStore } from "../stores/voltageStore"
-    import Button from "./Button.svelte";
-    import ChevButtonTop from "./ChevButtonTop.svelte";
-    import ChevButtonBottom from "./ChevButtonBottom.svelte";
-    import SubmitButton from "./SubmitButton.svelte";
-    import GeneralButton from "./GeneralButton.svelte";
+    import Button from "./buttons/Button.svelte";
+    import ChevButtonTop from "./buttons/ChevButtonTop.svelte";
+    import ChevButtonBottom from "./buttons/ChevButtonBottom.svelte";
+    import SubmitButton from "./buttons/SubmitButton.svelte";
+    import GeneralButton from "./buttons/GeneralButton.svelte";
     import { requestChannelUpdate } from "../api";
 
     import type {
@@ -19,12 +19,12 @@
     import type { IModule } from "../state/systemState.svelte";
 
     import MenuSlotted from "./MenuSlotted.svelte";
-    import MenuButton from "./MenuButton.svelte";
+    import MenuButton from "./buttons/MenuButton.svelte";
 
     import { dac4D } from "./modules_dbay/dac4D_data.svelte";
     import { ChSourceStateClass } from "./addons";
-    import HorizontalDots from "./HorizontalDots.svelte";
-    import ChannelChevron from "./ChannelChevron.svelte";
+    import HorizontalDots from "./buttons/HorizontalDots.svelte";
+    import ChannelChevron from "./buttons/ChannelChevron.svelte";
     import Display from "./Display.svelte";
 
     interface Props {
@@ -188,7 +188,7 @@
         biasVoltage2DigitsTemp(v);
     }
 
-    function handleSubmitButtonClick() {
+    function onSubmit() {
         const submitted_voltage = parseFloat(
             `${ch.sign_temp}${ch.temp[0]}.${ch.temp[1]}${ch.temp[2]}${ch.temp[3]}`,
         );
@@ -204,86 +204,9 @@
     }
     function handleInputKeyDown(event: any) {
         if (event.key === "Enter") {
-            handleSubmitButtonClick();
+            onSubmit();
         }
     }
-
-    // let ones_el = $state();
-    // let tens_el = $state();
-    // let hundreds_el = $state();
-    // let thousands_el = $state();
-
-
-    // let focusing = $state(false);
-    // let submit_button = $state();
-
-    // let inputs = $derived([
-    //     ones_el,
-    //     tens_el,
-    //     hundreds_el,
-    //     thousands_el,
-    // ]) as HTMLInputElement[];
-
-    // let input_values = $derived([
-    //     ch.temp[0],
-    //     ch.temp[1],
-    //     ch.temp[2],
-    //     ch.temp[3],
-    // ]);
-
-    // function handleDisplayInput(event: Event, index: number) {
-    //     const target = event.target as HTMLInputElement;
-    //     if (isNaN(parseFloat(target.value)) || target.value.includes(".")) {
-    //         event.preventDefault();
-    //         target.value = ""; // Clear the input if the value is not a number
-    //     } else if (target.value.length > 0) {
-    //         if (index < inputs.length - 1) {
-    //             inputs[index + 1].value = ""; // Move the extra digit to the next input
-    //             inputs[index + 1].focus();
-    //         } else {
-    //             // this is for allowing the last input to change its single digit
-    //             // if another digit is entered before "Enter"
-    //             inputs[index].value = target.value[target.value.length - 1];
-    //             ch.temp[3] = parseFloat(
-    //                 inputs[index].value[target.value.length - 1],
-    //             );
-    //         }
-    //     }
-    // }
-
-    // function handleKeydown(event: KeyboardEvent, index: number) {
-    //     const target = event.target as HTMLInputElement;
-    //     // for any key other than 0-9, prevent the default action
-    //     if (!event.key.match(/[0-9]/)) {
-    //         event.preventDefault();
-    //     }
-    //     if (event.key === "Backspace" && target.value === "" && index > 0) {
-    //         if (index + 1 < inputs.length) {
-    //             inputs[index + 1].value = ""; // Clear the next input
-    //         }
-    //         inputs[index - 1].focus();
-    //     }
-    //     if (event.key === "Enter" && index === inputs.length - 1) {
-    //         target.blur();
-    //         handleSubmitButtonClick();
-    //     }
-    // }
-
-    // function inputFocus(event: Event, index?: number) {
-    //     const target = event.target as HTMLInputElement;
-    //     if (typeof index === "number") {
-    //         inputs[index].focus();
-    //     }
-    //     target.value = "";
-    //     focusing = true;
-    //     editing = true;
-    // }
-
-    // function inputBlur(event: Event, index: number) {
-    //     const target = event.target as HTMLInputElement;
-    //     focusing = false;
-    //     target.value = input_values[index].toString();
-    // }
 
     function exitEditing() {
         // edit the edit mode without changing the value. Return to the original bias voltage
@@ -302,6 +225,7 @@
     function handleMouseLeave() {
         ch.isHovering = false;
     }
+
 </script>
 
 <div
@@ -322,7 +246,7 @@
             {#if !staticName}
                 <ChannelChevron
                     bind:down={ch.visible}
-                    isHovering = {ch.isHovering}
+                    isHovering={ch.isHovering}
                     index={ch.index}
                 ></ChannelChevron>
             {/if}
@@ -403,15 +327,7 @@
                         <ChevButtonTop onclick={() => increment(3, 1)} />
                     </div>
 
-                    <Display
-                        onoff={st.colorMode}
-                        bind:editing = {ch.editing}
-                        bind:focusing = {ch.focusing}
-                        bind:temp={ch.temp}
-                        isPlusMinusPressed = {ch.isPlusMinusPressed}
-                        invalid={!ch.valid}
-                        {handleSubmitButtonClick}
-                    ></Display>
+                    <Display {ch} {onSubmit}></Display>
 
                     <div class="buttons-bottom">
                         <ChevButtonBottom onclick={() => increment(0, -1)} />
@@ -427,13 +343,7 @@
             </div>
             {#if ch.editing}
                 <div class="right-editing">
-                    <!-- <SubmitButton
-                        onclick={handleSubmitButtonClick}
-                        bind:this={submit_button}
-                        >Submit</SubmitButton
-                    > -->
-                    <SubmitButton
-                        onclick={handleSubmitButtonClick}
+                    <SubmitButton onclick={onSubmit}
                         >Submit</SubmitButton
                     >
                     <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>
@@ -445,8 +355,11 @@
                             >{st.action_string}</Button
                         >
                     {:else}
-                        <GeneralButton onclick={(e) => {ch.focusing=true; ch.editing=true;}}
-                            >Invalid</GeneralButton
+                        <GeneralButton
+                            onclick={(e) => {
+                                ch.focusing = true;
+                                ch.editing = true;
+                            }}>Invalid</GeneralButton
                         >
                     {/if}
                 </div>
@@ -539,10 +452,7 @@
 
         border: none;
         width: 75%;
-
     }
-
-    
 
     input {
         background-color: transparent;
@@ -558,7 +468,6 @@
     }
 
     .input-to-label {
-        
         margin-left: 0rem;
         color: var(--text-color);
         font-size: 1.5rem;
@@ -600,6 +509,10 @@
         /* opacity: var(--state_opacity); */
     }
 
+    .digit-off {
+        color: var(--digits-deactivated-color);
+    }
+
     /* .digit {
         width: 2rem;
         font-size: 1.5rem;
@@ -616,9 +529,7 @@
         background-color: none;
     } */
 
-    /* .digit-off {
-        color: var(--digits-deactivated-color);
-    }
+    /* 
 
     .invalid {
         color: rgba(0, 0, 0, 0);
@@ -686,9 +597,6 @@
         width: 0.2rem;
     }
 
-    /* .short-spacer {
-        width: 0rem;
-    } */
 
     .buttons-top {
         display: flex;

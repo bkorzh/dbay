@@ -6,10 +6,10 @@
 <script lang="ts">
     import { uiStateStore } from "../state/uiState.svelte";
     // import { voltageStore } from "../stores/voltageStore"
-    import Button from "./Button.svelte";
-    import ChevButtonTop from "./ChevButtonTop.svelte";
-    import ChevButtonBottom from "./ChevButtonBottom.svelte";
-    import SubmitButton from "./SubmitButton.svelte";
+    import Button from "./buttons/Button.svelte";
+    import ChevButtonTop from "./buttons/ChevButtonTop.svelte";
+    import ChevButtonBottom from "./buttons/ChevButtonBottom.svelte";
+    import SubmitButton from "./buttons/SubmitButton.svelte";
     // import { voltageStore } from "../stores/voltageStore";
     import { requestChannelUpdate } from "../api";
     import type { ChannelChange } from "../state/systemState.svelte";

@@ -1,25 +1,19 @@
 <script lang="ts">
+    import Channel from "./Channel.svelte";
+    import ChannelChevron from "./buttons/ChannelChevron.svelte";
+    import type { ChSourceStateClass } from "./addons";
+
 
     // used for displaying the voltage using multiple digits that may be individually edited
     interface Props {
-        onoff: boolean;
-        temp: number[];
-        editing: boolean;
-        focusing: boolean;
-        isPlusMinusPressed: boolean;
-        invalid: boolean;
+        ch: ChSourceStateClass
         spacing_small?: boolean;
-        handleSubmitButtonClick: () => void;
+        onSubmit: () => void;
     }
 
     let {
-        onoff,
-        temp = $bindable([0, 0, 0, 0]),
-        editing = $bindable(false),
-        focusing = $bindable(false),
-        isPlusMinusPressed,
-        invalid,
-        handleSubmitButtonClick,
+        ch,
+        onSubmit,
         spacing_small = false,
     }: Props = $props();
 
@@ -47,7 +41,7 @@
         thousands_el,
     ]) as HTMLInputElement[];
 
-    let input_values = $derived([temp[0], temp[1], temp[2], temp[3]]);
+    let input_values = $derived([ch.temp[0], ch.temp[1], ch.temp[2], ch.temp[3]]);
 
     function inputFocus(event: Event, index?: number) {
         const target = event.target as HTMLInputElement;
@@ -55,13 +49,13 @@
             inputs[index].focus();
         }
         target.value = "";
-        focusing = true;
-        editing = true;
+        ch.focusing = true;
+        ch.editing = true;
     }
 
     function inputBlur(event: Event, index: number) {
         const target = event.target as HTMLInputElement;
-        focusing = false;
+        ch.focusing = false;
         target.value = input_values[index].toString();
     }
 
@@ -78,7 +72,7 @@
                 // this is for allowing the last input to change its single digit
                 // if another digit is entered before "Enter"
                 inputs[index].value = target.value[target.value.length - 1];
-                temp[3] = parseFloat(
+                ch.temp[3] = parseFloat(
                     inputs[index].value[target.value.length - 1],
                 );
             }
@@ -99,24 +93,24 @@
         }
         if (event.key === "Enter" && index === inputs.length - 1) {
             target.blur();
-            handleSubmitButtonClick();
+            onSubmit();
         }
     }
 </script>
 
 <div
-    class="display {isPlusMinusPressed ? 'updating' : ''}"
-    class:display-focus={editing}
+    class="display {ch.isPlusMinusPressed ? 'updating' : ''}"
+    class:display-focus={ch.editing}
     role="button"
     tabindex="-1"
 >
     <input
         class="digit"
         type="number"
-        class:digit-off={onoff}
-        class:digit-edit={editing}
-        class:invalid
-        bind:value={temp[0]}
+        class:digit-off={!ch.activated}
+        class:digit-edit={ch.editing}
+        class:invalid = {!ch.valid}
+        bind:value={ch.temp[0]}
         oninput={(e) => handleDisplayInput(e, 0)}
         onkeydown={(e) => handleKeydown(e, 0)}
         onfocus={inputFocus}
@@ -137,11 +131,11 @@
         class="digit"
         onclick={(e) => inputFocus(e, 0)}
         onkeydown={(e) => inputFocus(e, 0)}
-        class:invalid
+        class:invalid = {!ch.valid}
         role="button"
         tabindex="-1"
-        class:digit-off={onoff}
-        class:digit-edit={editing}
+        class:digit-off={!ch.activated}
+        class:digit-edit={ch.editing}
     >
         .
     </div>
@@ -156,10 +150,10 @@
     <input
         class="digit"
         type="number"
-        class:digit-off={onoff}
-        class:digit-edit={editing}
-        class:invalid
-        bind:value={temp[1]}
+        class:digit-off={!ch.activated}
+        class:digit-edit={ch.editing}
+        class:invalid = {!ch.valid}
+        bind:value={ch.temp[1]}
         oninput={(e) => handleDisplayInput(e, 1)}
         onkeydown={(e) => handleKeydown(e, 1)}
         onfocus={inputFocus}
@@ -180,10 +174,10 @@
     <input
         class="digit"
         type="number"
-        class:digit-off={onoff}
-        class:digit-edit={editing}
-        class:invalid
-        bind:value={temp[2]}
+        class:digit-off={!ch.activated}
+        class:digit-edit={ch.editing}
+        class:invalid = {!ch.valid}
+        bind:value={ch.temp[2]}
         oninput={(e) => handleDisplayInput(e, 2)}
         onkeydown={(e) => handleKeydown(e, 2)}
         onfocus={inputFocus}
@@ -203,10 +197,10 @@
     <input
         class="digit"
         type="number"
-        class:digit-off={onoff}
-        class:digit-edit={editing}
-        class:invalid
-        bind:value={temp[3]}
+        class:digit-off={!ch.activated}
+        class:digit-edit={ch.editing}
+        class:invalid = {!ch.valid}
+        bind:value={ch.temp[3]}
         oninput={(e) => handleDisplayInput(e, 3)}
         onkeydown={(e) => handleKeydown(e, 3)}
         onfocus={inputFocus}

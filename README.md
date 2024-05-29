@@ -5,3 +5,5 @@
 </p>
 
 Repository for the Device Bay (DBay) Electronics System
+
+See the `README.md` files in the subfolders for detailed information. 

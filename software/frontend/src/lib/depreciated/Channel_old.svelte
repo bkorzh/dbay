@@ -4,28 +4,28 @@
 </script> -->
 
 <script lang="ts">
-    import { ui_state } from "../state/uiState.svelte";
+    import { ui_state } from "../../state/uiState.svelte";
     // import { voltageStore } from "../stores/voltageStore"
-    import Button from "./Button.svelte";
-    import ChevButtonTop from "./ChevButtonTop.svelte";
-    import ChevButtonBottom from "./ChevButtonBottom.svelte";
-    import SubmitButton from "./SubmitButton.svelte";
+    import Button from "../Button.svelte";
+    import ChevButtonTop from "../ChevButtonTop.svelte";
+    import ChevButtonBottom from "../ChevButtonBottom.svelte";
+    import SubmitButton from "../SubmitButton.svelte";
     import { get } from "svelte/store";
     // import { voltageStore } from "../stores/voltageStore";
-    import { requestChannelUpdate } from "../api";
+    import { requestChannelUpdate } from "../../api";
 
-    import type { VsourceChange } from "./addons/vsource/interface";
+    import type { VsourceChange } from "../addons/vsource/interface";
 
-    import App from "../App.svelte";
+    import App from "../../App.svelte";
     import { onMount } from "svelte";
 
-    import { system_state } from "../state/systemState.svelte";
-    import type { IModule } from "../state/systemState.svelte";
+    import { system_state } from "../../state/systemState.svelte";
+    import type { IModule } from "../../state/systemState.svelte";
 
-    import MenuSlotted from "./MenuSlotted.svelte";
-    import MenuButton from "./MenuButton.svelte";
+    import MenuSlotted from "../MenuSlotted.svelte";
+    import MenuButton from "../MenuButton.svelte";
 
-    import { dac4D } from "./modules_dbay/dac4D_data.svelte";
+    import { dac4D } from "../modules_dbay/dac4D_data.svelte";
 
     interface Props {
         index: number;

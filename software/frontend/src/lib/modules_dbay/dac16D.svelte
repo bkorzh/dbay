@@ -13,14 +13,14 @@
   } from "../addons/vsource/interface";
   import { requestChannelUpdate } from "../../api";
   import { ChSourceStateClass } from "../addons";
-  import ModuleChevron from "../ModuleChevron.svelte";
+  import ModuleChevron from "../buttons/ModuleChevron.svelte";
   import Display from "../Display.svelte";
 
-  import ChannelChevron from "../ChannelChevron.svelte";
-  import HorizontalDots from "../HorizontalDots.svelte";
+  import ChannelChevron from "../buttons/ChannelChevron.svelte";
+  import HorizontalDots from "../buttons/HorizontalDots.svelte";
   import MenuSlotted from "../MenuSlotted.svelte";
-  import MenuButton from "../MenuButton.svelte";
-  import VerticalDots from "../VerticalDots.svelte";
+  import MenuButton from "../buttons/MenuButton.svelte";
+  import VerticalDots from "../buttons/VerticalDots.svelte";
 
   interface MyProps {
     module_index: number;
@@ -45,9 +45,12 @@
   let visible = $state(true);
   let visible_all_channels = $state(true);
   let showDropdown = $state(false);
-  let dotMenu: HTMLElement;
 
-  let verticalDotMenu: HTMLElement;
+  // these become poiters to 
+  let dotMenu = $state() as HTMLElement;
+  let verticalDotMenu = $state() as HTMLElement;
+
+
   let menuLocation = $state({ top: 0, left: 0 });
 
   // function togglerRotateState() {
@@ -152,10 +155,10 @@
   async function onChannelChange(data: VsourceChange) {
     let returnData;
     if (system_state.valid) {
-          returnData = await requestChannelUpdate(data, "/dac16D/vsource/");
-        } else {
-          returnData = data;
-        }
+      returnData = await requestChannelUpdate(data, "/dac16D/vsource/");
+    } else {
+      returnData = data;
+    }
     return returnData;
   }
 
@@ -168,20 +171,9 @@
     };
   }
 
-  // function handleSubmitButtonClick() {
-  //       const submitted_voltage = parseFloat(
-  //           `${ch.sign_temp}${ch.temp[0]}.${ch.temp[1]}${ch.temp[2]}${ch.temp[3]}`,
-  //       );
-
-  //       validateUpdateVoltage(submitted_voltage);
-
-  //       ch.editing = false;
-  //       ch.focusing = false;
-  //       ch.isPlusMinusPressed = true;
-  //       setTimeout(() => {
-  //           ch.isPlusMinusPressed = false;
-  //       }, 1);
-  //   }
+  function showControls(i: number) {
+    show_dropdown[i] = true;
+  }
 </script>
 
 <div class="module-container">
@@ -190,107 +182,91 @@
     <div class="identifier">M{slot}:</div>
     <div class="identifier">16 Ch. Voltage Source</div>
   </div>
-  <div class="body">
-    {#if visible}
-      <div class="content">
-        <Channel
-          ch={c.shared_voltage}
-          {module_index}
-          onChannelChange={distributeChannelChange}
-          staticName={true}
-          borders={false}
-        />
 
-        <div class="top-bar" class:no_border={!visible_all_channels}>
-          <div class="top-left">
-            <input
-              class="heading-input input-to-label"
-              type="text"
-              value={"Set Individual Channels"}
-              tabindex="0"
-              disabled={true}
-            />
-          </div>
+  {#if visible}
+    <div class="content">
+      <Channel
+        ch={c.shared_voltage}
+        {module_index}
+        onChannelChange={distributeChannelChange}
+        staticName={true}
+        borders={false}
+      />
 
-          <div class="top-right">
-            <HorizontalDots
-              onclick={toggleMenu}
-              onkeydown={toggleMenu}
-              bind:dotMenu
-            ></HorizontalDots>
-            <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
-            <!-- where 'something' is both a boolean in javascript and a class -->
-            {#if showDropdown}
-              <MenuSlotted
-                onclick={toggleMenu}
-                menuVisible={showDropdown}
-                location={menuLocation}
-              >
-                <MenuButton
-                  onclick={() => {
-                    console.log("something");
-                  }}>Do Something</MenuButton
-                >
-              </MenuSlotted>
-            {/if}
-          </div>
+      <div class="top-bar" class:no_border={!visible_all_channels}>
+        <div class="top-left">
+          <input
+            class="heading-input input-to-label"
+            type="text"
+            value={"Set Individual Channels"}
+            tabindex="0"
+            disabled={true}
+          />
         </div>
 
-        <div class="individual-body">
-          {#each half_channel_list as ch, i}
-            <div class="side-by-side">
-              <div class="channel left">
-                <div class="ch-number">{i + 1}</div>
-                <Display
-                  onoff={!c.vsource.channels[i].activated}
-                  bind:temp={c.vsource.channels[i].temp}
-                  bind:editing={c.vsource.channels[i].editing}
-                  bind:focusing={c.vsource.channels[i].focusing}
-                  isPlusMinusPressed={c.vsource.channels[i].isPlusMinusPressed}
-                  invalid={!c.vsource.channels[i].valid}
-                  handleSubmitButtonClick={() => submit(i)}
-                  spacing_small={true}
-                ></Display>
-                <VerticalDots
-                  onclick={(e) => {
-                    show_dropdown[i] = true;
-                  }}
-                  onkeydown={(e) => {
-                    show_dropdown[i] = true;
-                  }}
-                  bind:dotMenu={verticalDotMenu}
-                ></VerticalDots>
-              </div>
-
-              <div class="channel">
-                <div class="ch-number">{i + 9}</div>
-                <Display
-                  onoff={!c.vsource.channels[i + 8].activated}
-                  bind:temp={c.vsource.channels[i + 8].temp}
-                  bind:editing={c.vsource.channels[i + 8].editing}
-                  bind:focusing={c.vsource.channels[i + 8].focusing}
-                  isPlusMinusPressed={c.vsource.channels[i + 8]
-                    .isPlusMinusPressed}
-                  invalid={!c.vsource.channels[i + 8].valid}
-                  handleSubmitButtonClick={() => submit(i + 8)}
-                  spacing_small={true}
-                ></Display>
-                <VerticalDots
-                  onclick={(e) => {
-                    show_dropdown[i + 8] = true;
-                  }}
-                  onkeydown={(e) => {
-                    show_dropdown[i + 8] = true;
-                  }}
-                  bind:dotMenu={verticalDotMenu}
-                ></VerticalDots>
-              </div>
-            </div>
-          {/each}
+        <div class="top-right">
+          <HorizontalDots
+            onclick={toggleMenu}
+            onkeydown={toggleMenu}
+            bind:dotMenu
+          ></HorizontalDots>
+          <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
+          <!-- where 'something' is both a boolean in javascript and a class -->
+          {#if showDropdown}
+            <MenuSlotted
+              onclick={toggleMenu}
+              menuVisible={showDropdown}
+              location={menuLocation}
+            >
+              <MenuButton
+                onclick={() => {
+                  console.log("something");
+                }}>Do Something</MenuButton
+              >
+            </MenuSlotted>
+          {/if}
         </div>
       </div>
-    {/if}
-  </div>
+
+      <div class="individual-body">
+        {#each half_channel_list as ch, i}
+          <div class="side-by-side">
+            <div class="channel left">
+              <div class="ch-number">{i + 1}</div>
+              <Display
+                ch={c.vsource.channels[i]}
+                onSubmit={() => submit(i)}
+                spacing_small={true}
+              ></Display>
+              <VerticalDots
+                onclick={(e) => showControls(i)}
+                onkeydown={(e) => showControls(i)}
+                bind:dotMenu={verticalDotMenu}
+              ></VerticalDots>
+            </div>
+
+            <div class="channel">
+              <div class="ch-number">{i + 9}</div>
+              <Display
+                ch={c.vsource.channels[i+8]}
+                onSubmit={() => submit(i + 8)}
+                spacing_small={true}
+              ></Display>
+              <VerticalDots
+                onclick={(e) => {
+                  show_dropdown[i + 8] = true;
+                }}
+                onkeydown={(e) => {
+                  show_dropdown[i + 8] = true;
+                }}
+                bind:dotMenu={verticalDotMenu}
+              ></VerticalDots>
+            </div>
+          </div>
+        {/each}
+      </div>
+    </div>
+  {/if}
 </div>
 
 <style>
@@ -393,21 +369,26 @@
     font-size: large;
   }
 
-  .body {
+  /* .body {
     background-color: var(--bg-color);
     box-sizing: border-box;
     display: flex;
-    flex-direction: row;
     border-left: 1.3px solid var(--module-border-color);
     border-right: 1.3px solid var(--module-border-color);
     border-bottom: 1.3px solid var(--module-border-color);
-  }
+  } */
 
   .content {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     width: 100%;
+    background-color: var(--bg-color);
+    box-sizing: border-box;
+    display: flex;
+    border-left: 1.3px solid var(--module-border-color);
+    border-right: 1.3px solid var(--module-border-color);
+    border-bottom: 1.3px solid var(--module-border-color);
   }
 
   .heading {

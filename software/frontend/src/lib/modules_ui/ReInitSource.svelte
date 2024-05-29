@@ -1,7 +1,7 @@
 <script>
-  import SubmitButton from "../SubmitButton.svelte";
+  import SubmitButton from "../buttons/SubmitButton.svelte";
   import { ui_state } from "../../state/uiState.svelte";
-  import EditPencil from "../shared/EditPencil.svelte";
+  import EditPencil from "../buttons/EditPencil.svelte";
   import { initializeVsource } from "../../api"
   import { system_state } from "../../state/systemState.svelte";
 

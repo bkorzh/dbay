@@ -9,7 +9,7 @@
   import { dac4D } from "./dac4D_data.svelte"
   import type { VsourceChange } from "../addons/vsource/interface";
   import { requestChannelUpdate } from "../../api";
-    import ModuleChevron from "../ModuleChevron.svelte";
+    import ModuleChevron from "../buttons/ModuleChevron.svelte";
   
 
   interface MyProps {

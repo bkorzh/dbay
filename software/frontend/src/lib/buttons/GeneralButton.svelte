@@ -1,7 +1,7 @@
 <script lang="ts">
   // import { createEventDispatcher } from 'svelte';
   // export let uiStateStore;
-  import { ui_state } from "../state/uiState.svelte";
+  import { ui_state } from "../../state/uiState.svelte";
 
   interface Props {
     onclick: (event: MouseEvent) => void;

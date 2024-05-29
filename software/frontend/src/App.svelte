@@ -3,7 +3,7 @@
   import TopControls from "./lib/TopControls.svelte";
   import { onMount, onDestroy } from "svelte";
   import { getFullState } from "./api";
-  import SubmitButton from "./lib/SubmitButton.svelte";
+  import SubmitButton from "./lib/buttons/SubmitButton.svelte";
   import { ui_state } from "./state/uiState.svelte";
   import type {IModule, JsonSystemState} from "./state/systemState.svelte"
   import Dac4D from "./lib/modules_dbay/dac4D.svelte";

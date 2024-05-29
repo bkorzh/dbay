@@ -1,6 +1,6 @@
 <script>
-    import SubmitButton from "../SubmitButton.svelte";
-    import GeneralButton from "../GeneralButton.svelte";
+    import SubmitButton from "../buttons/SubmitButton.svelte";
+    import GeneralButton from "../buttons/GeneralButton.svelte";
     import { ui_state } from "../../state/uiState.svelte";
     import {initializeModule} from "../../api";
     import { system_state } from "../../state/systemState.svelte";

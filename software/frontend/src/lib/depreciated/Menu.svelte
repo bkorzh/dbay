@@ -1,5 +1,5 @@
 <script>
-    import LightDarkToggle from "../LightDarkToggle.svelte";
+    import LightDarkToggle from "../buttons/LightDarkToggle.svelte";
     import { onMount, onDestroy } from "svelte";
     import { uiStateStore } from "../../stores/uiStateStore";
 
