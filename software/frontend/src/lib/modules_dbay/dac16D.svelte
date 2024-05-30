@@ -78,8 +78,7 @@
     data: VsourceChange,
     current_index: number
   ) {
-
-    console.log("current index: ", current_index)
+    console.log("current index: ", current_index);
     let new_voltage = data.bias_voltage;
     let new_activated = data.activated;
 
@@ -135,101 +134,70 @@
 
   {#if visible}
     <div class="content">
-      <Channel
-        ch={c.shared_voltage}
-        {module_index}
-        onChannelChange={distributeChannelChange}
-        staticName={c.shared_voltage.heading_text}
-        borders={false}
-      />
-
-      <!-- <div class="top-bar" class:no_border={!visible_all_channels}>
-        <div class="top-left">
-          <input
-            class="heading-input input-to-label"
-            type="text"
-            value={"Set Individual Channels"}
-            tabindex="0"
-            disabled={true}
-          />
-        </div>
-
-        <div class="top-right">
-          <HorizontalDots
-            onclick={toggleMenu}
-            onkeydown={toggleMenu}
-            bind:dotMenu
-          ></HorizontalDots>
-          {#if showDropdown}
-            <MenuSlotted
-              onclick={toggleMenu}
-              menuVisible={showDropdown}
-              location={menuLocation}
-            >
-              <MenuButton
-                onclick={() => {
-                  console.log("something");
-                }}>Do Something</MenuButton
-              >
-            </MenuSlotted>
-          {/if}
-        </div>
-      </div> -->
-
-
-
-      <ChannelBar
-        {onChannelChange}
-        bind:showDropdown
-        bind:down={visible_all_channels}
-        staticName="Set Individual Channels"
-        borderTop={true}
-      >
-        <MenuButton
-          onclick={() => {
-            console.log("something");
-          }}>Do Something</MenuButton
-        >
-      </ChannelBar>
-      {#if visible_all_channels}
-      <div class="individual-body">
-        {#each half_channel_list as ch, i}
-          <div class="side-by-side">
-            <div class="channel left">
-              <div class="ch-number">{i + 1}</div>
-              <Display
-                ch={c.vsource.channels[i]}
-                {onChannelChange}
-                spacing_small={true}
-              ></Display>
-              <VerticalDots
-                onclick={(e) => showControls(i)}
-                onkeydown={(e) => showControls(i)}
-                bind:dotMenu={verticalDotMenu}
-              ></VerticalDots>
-            </div>
-
-            <div class="channel">
-              <div class="ch-number">{i + 9}</div>
-              <Display
-                ch={c.vsource.channels[i + 8]}
-                {onChannelChange}
-                spacing_small={true}
-              ></Display>
-              <VerticalDots
-                onclick={(e) => {
-                  show_dropdown[i + 8] = true;
-                }}
-                onkeydown={(e) => {
-                  show_dropdown[i + 8] = true;
-                }}
-                bind:dotMenu={verticalDotMenu}
-              ></VerticalDots>
-            </div>
-          </div>
-        {/each}
+      <div class="box" transition:slide|global>
+        <Channel
+          ch={c.shared_voltage}
+          {module_index}
+          onChannelChange={distributeChannelChange}
+          staticName={c.shared_voltage.heading_text}
+          borders={false}
+        />
       </div>
-      {/if}
+
+      <div class="box" transition:slide|global>
+        <ChannelBar
+          {onChannelChange}
+          bind:showDropdown
+          bind:down={visible_all_channels}
+          staticName="Set Individual Channels"
+          borderTop={true}
+        >
+          <MenuButton
+            onclick={() => {
+              console.log("something");
+            }}>Do Something</MenuButton
+          >
+        </ChannelBar>
+        {#if visible_all_channels}
+          <div class="individual-body">
+            {#each half_channel_list as ch, i}
+              <div class="side-by-side">
+                <div class="channel left">
+                  <div class="ch-number">{i + 1}</div>
+                  <Display
+                    ch={c.vsource.channels[i]}
+                    {onChannelChange}
+                    spacing_small={true}
+                  ></Display>
+                  <VerticalDots
+                    onclick={(e) => showControls(i)}
+                    onkeydown={(e) => showControls(i)}
+                    bind:dotMenu={verticalDotMenu}
+                  ></VerticalDots>
+                </div>
+
+                <div class="channel">
+                  <div class="ch-number">{i + 9}</div>
+                  <Display
+                    ch={c.vsource.channels[i + 8]}
+                    {onChannelChange}
+                    spacing_small={true}
+                  ></Display>
+                  <VerticalDots
+                    onclick={(e) => {
+                      show_dropdown[i + 8] = true;
+                    }}
+                    onkeydown={(e) => {
+                      show_dropdown[i + 8] = true;
+                    }}
+                    bind:dotMenu={verticalDotMenu}
+                  ></VerticalDots>
+                </div>
+              </div>
+            {/each}
+          </div>
+        {/if}
+      </div>
     </div>
   {/if}
 </div>
@@ -240,7 +208,6 @@
     margin-left: 1rem;
     margin-right: 1rem;
   }
-
 
   .side-by-side {
     display: flex;
@@ -274,7 +241,6 @@
     color: var(--module-icon-color);
     font-size: large;
   }
-
 
   .content {
     box-sizing: border-box;

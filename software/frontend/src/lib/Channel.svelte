@@ -62,10 +62,6 @@
 </script>
 
 
-
-
-
-
 <div
     onmouseenter={handleMouseEnter}
     onmouseleave={handleMouseLeave}
@@ -91,14 +87,7 @@
 <style>
     @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100;8..144,200;8..144,300;8..144,400;8..144,500;8..144,600;8..144,700&display=swap");
 
-    @keyframes placeHolderShimmer {
-        0% {
-            background-position: -800px 0;
-        }
-        100% {
-            background-position: 800px 0;
-        }
-    }
+    
 
     .bound-box {
         display: flex;

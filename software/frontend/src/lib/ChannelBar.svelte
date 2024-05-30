@@ -143,6 +143,15 @@
 
 <style>
 
+@keyframes placeHolderShimmer {
+        0% {
+            background-position: -800px 0;
+        }
+        100% {
+            background-position: 800px 0;
+        }
+    }
+
 .heading-voltage {
         color: var(--red-text);
         font-size: 1.5rem;
