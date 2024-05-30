@@ -1,6 +1,8 @@
 import type { IVsourceAddon, ChSourceState, VsourceChange } from './interface';
 
 
+export type ChangerFunction = (data: VsourceChange) => Promise<VsourceChange>;
+
 export class ChSourceStateClass implements ChSourceState {
   public index: number;
   public bias_voltage: number = $state(0);
@@ -8,6 +10,7 @@ export class ChSourceStateClass implements ChSourceState {
   public heading_text: string = $state("");
   public measuring: boolean = $state(false);
 
+  public module_index: number;
 
 
   public temp: Array<number> = $state([0, 0, 0, 0]);
@@ -22,19 +25,67 @@ export class ChSourceStateClass implements ChSourceState {
   ones = $derived(Math.floor(this.integer / 1000) % 10)
   sign = $derived(this.bias_voltage < 0 ? "-" : "+");
 
-  public visible = $state(true);
+  // public visible = $state(true);
   public editing = $state(false);
   public isHovering = $state(false);
   public isPlusMinusPressed = $state(false);
   public focusing = $state(false);
-  
 
-  constructor(data: ChSourceState) {
+
+  constructor(data: ChSourceState, module_index: number) {
     this.index = data.index;
     this.bias_voltage = data.bias_voltage;
     this.activated = data.activated;
     this.heading_text = data.heading_text;
     this.measuring = data.measuring;
+    this.module_index = module_index;
+  }
+
+
+  public async validateUpdateVoltage(voltage: number, onChannelChange: ChangerFunction) {
+    if (voltage >= 5) {
+      voltage = 5;
+    }
+    if (voltage <= -5) {
+      voltage = -5;
+    }
+    this.updateChannel({ voltage: voltage }, onChannelChange);
+  }
+
+  public onSubmit(onChannelChange: ChangerFunction) {
+    const submitted_voltage = parseFloat(
+      `${this.sign_temp}${this.temp[0]}.${this.temp[1]}${this.temp[2]}${this.temp[3]}`,
+    );
+
+    this.validateUpdateVoltage(submitted_voltage, onChannelChange);
+
+    this.editing = false;
+    this.focusing = false;
+    this.isPlusMinusPressed = true;
+    setTimeout(() => {
+      this.isPlusMinusPressed = false;
+    }, 1);
+  }
+
+  public async updateChannel({
+    voltage = this.bias_voltage,
+    activated = this.activated,
+    heading_text = this.heading_text,
+    index = this.index,
+    measuring = this.measuring,
+  } = {}, onChannelChange: ChangerFunction) {
+
+
+    const data: VsourceChange = {
+      module_index: this.module_index,
+      bias_voltage: voltage,
+      activated,
+      heading_text,
+      index,
+      measuring,
+    };
+    const returnData = await onChannelChange(data);
+    this.setChannel(returnData);
   }
 
   public setChannel(data: VsourceChange) {
@@ -55,7 +106,7 @@ export class ChSourceStateClass implements ChSourceState {
 
   public setInvalid(): void {
     this.valid = false;
-    
+
     this.temp[3] = 0;
     this.temp[2] = 0;
     this.temp[1] = 0;
@@ -72,32 +123,34 @@ export class ChSourceStateClass implements ChSourceState {
 
 
 
-export class VsourceAddon implements IVsourceAddon{
+export class VsourceAddon implements IVsourceAddon {
   public channels: ChSourceStateClass[];
-    constructor(
-      channels?: Array<ChSourceState>, default_channel_number=4) {
-        const deflt = !channels || channels.length === 0;
-        this.channels = Array.from({length: deflt ? default_channel_number : channels.length}, (_, i) => {
 
-          if (deflt) {
-            return new ChSourceStateClass({
-              index: i + 1,
-              bias_voltage: 0,
-              activated: false,
-              heading_text: "channel " + (i + 1),
-              measuring: false
-            });
-          } else {
-            return new ChSourceStateClass(channels[i]);
-          }
-        });
-      }
-  
-      public switchOnOffAllChannels(onoff: boolean): void {
-        this.channels.forEach(channel => channel.activated = onoff);
-      }
 
-      public setAllChannelsVoltage(voltage: number): void {
-        this.channels.forEach(channel => channel.bias_voltage = voltage);
+  constructor(module_index: number, channels?: Array<ChSourceState>, default_channel_number = 4) {
+
+    const deflt = !channels || channels.length === 0;
+    this.channels = Array.from({ length: deflt ? default_channel_number : channels.length }, (_, i) => {
+
+      if (deflt) {
+        return new ChSourceStateClass({
+          index: i,
+          bias_voltage: 0,
+          activated: false,
+          heading_text: "channel " + (i + 1),
+          measuring: false
+        }, module_index);
+      } else {
+        return new ChSourceStateClass(channels[i], module_index);
       }
+    });
   }
+
+  public switchOnOffAllChannels(onoff: boolean): void {
+    this.channels.forEach(channel => channel.activated = onoff);
+  }
+
+  public setAllChannelsVoltage(voltage: number): void {
+    this.channels.forEach(channel => channel.bias_voltage = voltage);
+  }
+}

@@ -21,6 +21,7 @@
   import MenuSlotted from "../MenuSlotted.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
   import VerticalDots from "../buttons/VerticalDots.svelte";
+  import ChannelBar from "../ChannelBar.svelte";
 
   interface MyProps {
     module_index: number;
@@ -46,25 +47,20 @@
   let visible_all_channels = $state(true);
   let showDropdown = $state(false);
 
-  // these become poiters to 
+  // these become poiters to
   let dotMenu = $state() as HTMLElement;
   let verticalDotMenu = $state() as HTMLElement;
 
-
   let menuLocation = $state({ top: 0, left: 0 });
 
-  // function togglerRotateState() {
-  //   console.log("togglerRotateState");
-  //   visible = !visible;
-  // }
-
+  // single to all
   async function distributeChannelChange(data: VsourceChange) {
     let intermediate_data;
     if (system_state.valid) {
       // the /shared_voltage/ endpoint is a special case for the dac16D module
       intermediate_data = await requestChannelUpdate(
         data,
-        "/dac16D/shared_voltage/",
+        "/dac16D/shared_voltage/"
       );
     } else {
       intermediate_data = data;
@@ -77,10 +73,13 @@
     return intermediate_data;
   }
 
+  // all affect single
   async function checkValidAllChannel(
     data: VsourceChange,
-    current_index: number,
+    current_index: number
   ) {
+
+    console.log("current index: ", current_index)
     let new_voltage = data.bias_voltage;
     let new_activated = data.activated;
 
@@ -100,58 +99,6 @@
     return data;
   }
 
-  // you would check to see if every one of the 16 channels matches the 'set all' value
-  function submit(i: number) {
-    // console.log("submit on channel: ", index);
-
-    const submitted_voltage = parseFloat(
-      `${c.vsource.channels[i].sign_temp}${c.vsource.channels[i].temp[0]}.${c.vsource.channels[i].temp[1]}${c.vsource.channels[i].temp[2]}${c.vsource.channels[i].temp[3]}`,
-    );
-
-    validateUpdateVoltage(i, submitted_voltage);
-
-    c.vsource.channels[i].editing = false;
-    c.vsource.channels[i].focusing = false;
-    c.vsource.channels[i].isPlusMinusPressed = true;
-    setTimeout(() => {
-      c.vsource.channels[i].isPlusMinusPressed = false;
-    }, 1);
-  }
-
-  async function validateUpdateVoltage(i: number, voltage: number) {
-    if (voltage >= 5) {
-      voltage = 5;
-    }
-    if (voltage <= -5) {
-      voltage = -5;
-    }
-    updateChannel(i, { voltage: voltage });
-  }
-
-  async function updateChannel(
-    i: number,
-    {
-      voltage = c.vsource.channels[i].bias_voltage,
-      activated = c.vsource.channels[i].activated,
-      heading_text = c.vsource.channels[i].heading_text,
-      index = c.vsource.channels[i].index,
-      measuring = c.vsource.channels[i].measuring,
-    } = {},
-  ) {
-    const data: VsourceChange = {
-      module_index,
-      bias_voltage: voltage,
-      activated,
-      heading_text,
-      index,
-      measuring,
-    };
-    const returnData = await onChannelChange(data);
-
-    checkValidAllChannel(returnData, i);
-    c.vsource.channels[i].setChannel(returnData);
-  }
-
   async function onChannelChange(data: VsourceChange) {
     let returnData;
     if (system_state.valid) {
@@ -159,17 +106,20 @@
     } else {
       returnData = data;
     }
+
+    checkValidAllChannel(returnData, returnData.index);
+
     return returnData;
   }
 
-  function toggleMenu() {
-    showDropdown = !showDropdown;
-    const rect = dotMenu.getBoundingClientRect();
-    menuLocation = {
-      top: rect.top + window.scrollY,
-      left: rect.right + window.scrollX,
-    };
-  }
+  // function toggleMenu() {
+  //   showDropdown = !showDropdown;
+  //   const rect = dotMenu.getBoundingClientRect();
+  //   menuLocation = {
+  //     top: rect.top + window.scrollY,
+  //     left: rect.right + window.scrollX,
+  //   };
+  // }
 
   function showControls(i: number) {
     show_dropdown[i] = true;
@@ -189,11 +139,11 @@
         ch={c.shared_voltage}
         {module_index}
         onChannelChange={distributeChannelChange}
-        staticName={true}
+        staticName={c.shared_voltage.heading_text}
         borders={false}
       />
 
-      <div class="top-bar" class:no_border={!visible_all_channels}>
+      <!-- <div class="top-bar" class:no_border={!visible_all_channels}>
         <div class="top-left">
           <input
             class="heading-input input-to-label"
@@ -210,8 +160,6 @@
             onkeydown={toggleMenu}
             bind:dotMenu
           ></HorizontalDots>
-          <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
-          <!-- where 'something' is both a boolean in javascript and a class -->
           {#if showDropdown}
             <MenuSlotted
               onclick={toggleMenu}
@@ -226,8 +174,24 @@
             </MenuSlotted>
           {/if}
         </div>
-      </div>
+      </div> -->
 
+
+
+      <ChannelBar
+        {onChannelChange}
+        bind:showDropdown
+        bind:down={visible_all_channels}
+        staticName="Set Individual Channels"
+        borderTop={true}
+      >
+        <MenuButton
+          onclick={() => {
+            console.log("something");
+          }}>Do Something</MenuButton
+        >
+      </ChannelBar>
+      {#if visible_all_channels}
       <div class="individual-body">
         {#each half_channel_list as ch, i}
           <div class="side-by-side">
@@ -235,7 +199,7 @@
               <div class="ch-number">{i + 1}</div>
               <Display
                 ch={c.vsource.channels[i]}
-                onSubmit={() => submit(i)}
+                {onChannelChange}
                 spacing_small={true}
               ></Display>
               <VerticalDots
@@ -248,8 +212,8 @@
             <div class="channel">
               <div class="ch-number">{i + 9}</div>
               <Display
-                ch={c.vsource.channels[i+8]}
-                onSubmit={() => submit(i + 8)}
+                ch={c.vsource.channels[i + 8]}
+                {onChannelChange}
                 spacing_small={true}
               ></Display>
               <VerticalDots
@@ -265,6 +229,7 @@
           </div>
         {/each}
       </div>
+      {/if}
     </div>
   {/if}
 </div>
@@ -276,65 +241,6 @@
     margin-right: 1rem;
   }
 
-  .heading-input {
-    color: var(--text-color);
-    font-size: 1.5rem;
-    letter-spacing: 0rem;
-    /* padding: 0.7rem 0.0rem; */
-    /* margin: 0; */
-    padding-right: 0rem;
-    /* margin-bottom: 3rem; */
-    padding-bottom: 0.15rem;
-    /* height: 78%; */
-    padding-right: 0rem;
-    margin-top: 0.15rem;
-    margin-bottom: 0.15rem;
-    margin-left: 0.5rem;
-
-    padding-top: 0.3rem;
-    color: var(--digits-color);
-    background-color: transparent;
-
-    border: none;
-    width: 18rem;
-    /* width: 100%; */
-
-    border-radius: 4px;
-    border: 1.5px solid var(--value-border-color);
-    padding: 0rem 0.3rem;
-    font-family: "Roboto Flex", sans-serif;
-    font-weight: 300;
-    font-size: 1.5rem;
-    color: var(--digits-color);
-  }
-
-  .input-to-label {
-    margin-left: 0rem;
-    color: var(--text-color);
-  }
-
-  .top-bar {
-    display: flex;
-    /* position: relative; */
-    flex-direction: row;
-    background-color: var(--heading-color);
-    border-bottom: 1.3px solid var(--inner-border-color);
-    justify-content: space-between;
-    /* align-items: start; */
-    padding: 0rem 0rem;
-    padding-bottom: 0rem;
-    padding-right: 0px;
-    /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
-    padding-left: 0.7rem;
-    border-top: 1.3px solid var(--divider-border-color);
-  }
-
-  .top-left {
-    display: flex;
-    flex-direction: row;
-    /* justify-content: start; */
-    align-items: flex-end;
-  }
 
   .side-by-side {
     display: flex;
@@ -369,14 +275,6 @@
     font-size: large;
   }
 
-  /* .body {
-    background-color: var(--bg-color);
-    box-sizing: border-box;
-    display: flex;
-    border-left: 1.3px solid var(--module-border-color);
-    border-right: 1.3px solid var(--module-border-color);
-    border-bottom: 1.3px solid var(--module-border-color);
-  } */
 
   .content {
     box-sizing: border-box;

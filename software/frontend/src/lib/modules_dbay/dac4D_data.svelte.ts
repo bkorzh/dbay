@@ -10,6 +10,6 @@ export class dac4D implements IModule {
 
   constructor(data: JsonModule) {
     this.core = new CoreModule(data.core);
-    this.vsource = new VsourceAddon(data.vsource?.channels, 4)
+    this.vsource = new VsourceAddon(data.core.slot, data.vsource?.channels, 4)
   }
 }

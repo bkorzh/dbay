@@ -91,6 +91,12 @@ async def voltage_set(request: Request, change: VsourceChange):
     source_channel.heading_text = change.heading_text
     source_channel.measuring = change.measuring
 
+    #
+    #
+    # important! check index. I changed the vsource addon to count from 0 index instead of 1.
+    #
+    #
+
     if change.index >= 1 and change.index <= 4:
 
         # important! get the actual module slot. module.index is just an array index

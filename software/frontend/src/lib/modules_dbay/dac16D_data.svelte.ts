@@ -22,18 +22,19 @@ export class dac16D implements IModule {
 
   constructor(data: JsonModule) {
     this.core = new CoreModule(data.core);
-    this.vsource = new VsourceAddon(data.vsource?.channels, 16)
+    this.vsource = new VsourceAddon(data.core.slot, data.vsource?.channels, 16)
 
     // used to setting all channels to the same voltage.
 
     // if channels are set individually, this voltage value becomes irrelevant.
+    // the module slot is injected into each ChSourceState, which makes it easier for these low level objects to create valid messages for the backend.
     this.shared_voltage = new ChSourceStateClass({
       index: 0,
       bias_voltage: 0,
       activated: false,
       heading_text: "Set All Channels",
       measuring: false
-    });
+    }, data.core.slot);
   }
 
   
