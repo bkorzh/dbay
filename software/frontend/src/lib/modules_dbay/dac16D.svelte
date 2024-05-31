@@ -22,6 +22,7 @@
   import MenuButton from "../buttons/MenuButton.svelte";
   import VerticalDots from "../buttons/VerticalDots.svelte";
   import ChannelBar from "../ChannelBar.svelte";
+  import { VisibleState } from "../buttons/module_chevron";
 
   interface MyProps {
     module_index: number;
@@ -37,14 +38,11 @@
 
   let half_channel_list = channel_list.slice(0, 8);
 
-  // let temps = Array.from({length: 16}, (_, i) => $state([0,0,0,0]));
 
-  // class tempState {
-  //   public temp = $state([0, 0, 0, 0]);
-  // }
-
-  let visible = $state(true);
+  let visible = $state(VisibleState.DoubleDown);
+  let down_array = $state([true, true]);
   let visible_all_channels = $state(true);
+  let visible_ind_channels = $state(true);
   let showDropdown = $state(false);
 
   // these become poiters to
@@ -111,14 +109,32 @@
     return returnData;
   }
 
-  // function toggleMenu() {
-  //   showDropdown = !showDropdown;
-  //   const rect = dotMenu.getBoundingClientRect();
-  //   menuLocation = {
-  //     top: rect.top + window.scrollY,
-  //     left: rect.right + window.scrollX,
-  //   };
-  // }
+  function rotateState() {
+    if (visible === VisibleState.Collapsed) {
+      visible = VisibleState.Down;
+      down_array = [false, false]
+
+    } else if (visible === VisibleState.Down) {
+      visible = VisibleState.DoubleDown;
+      down_array = [true, true]
+
+    } else {
+      visible = VisibleState.Collapsed;
+
+    }
+  }
+
+  function onChevClick(i: number) {
+    down_array[i] = !down_array[i];
+    if (down_array.every((val) => val === true)) {
+      visible = VisibleState.DoubleDown;
+    }
+
+    // if all values of down_array are false, set visible to down
+    if (down_array.every((val) => val === false)) {
+      visible = VisibleState.Down;
+    }
+  }
 
   function showControls(i: number) {
     show_dropdown[i] = true;
@@ -127,7 +143,7 @@
 
 <div class="module-container">
   <div class="heading" class:closed={!visible}>
-    <ModuleChevron bind:visible></ModuleChevron>
+    <ModuleChevron bind:visible {rotateState}></ModuleChevron>
     <div class="identifier">M{slot}:</div>
     <div class="identifier">16 Ch. Voltage Source</div>
   </div>
@@ -141,6 +157,8 @@
           onChannelChange={distributeChannelChange}
           staticName={c.shared_voltage.heading_text}
           borders={false}
+          down = {down_array[0]}
+          onChevronClick={() => onChevClick(0)}
         />
       </div>
 
@@ -148,9 +166,10 @@
         <ChannelBar
           {onChannelChange}
           bind:showDropdown
-          bind:down={visible_all_channels}
+          down={down_array[1]}
           staticName="Set Individual Channels"
           borderTop={true}
+          onChevronClick = {() => onChevClick(1)}
         >
           <MenuButton
             onclick={() => {
@@ -158,8 +177,8 @@
             }}>Do Something</MenuButton
           >
         </ChannelBar>
-        {#if visible_all_channels}
-          <div class="individual-body">
+        {#if down_array[1]}
+          <div transition:slide|global class="individual-body">
             {#each half_channel_list as ch, i}
               <div class="side-by-side">
                 <div class="channel left">
@@ -247,7 +266,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: var(--bg-color);
+    background-color: var(--body-color);
     box-sizing: border-box;
     display: flex;
     border-left: 1.3px solid var(--module-border-color);

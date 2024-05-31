@@ -4,28 +4,27 @@ import type { IVsourceAddon, ChSourceState, VsourceChange } from './interface';
 export type ChangerFunction = (data: VsourceChange) => Promise<VsourceChange>;
 
 export class ChSourceStateClass implements ChSourceState {
+
+  // interface defined properties
   public index: number;
   public bias_voltage: number = $state(0);
   public activated: boolean = $state(false);
   public heading_text: string = $state("");
   public measuring: boolean = $state(false);
 
+  // module index
   public module_index: number;
 
-
+  // derived and computed properties
   public temp: Array<number> = $state([0, 0, 0, 0]);
   public sign_temp = $state("+");
-
   public valid = $state(true);
-
-  integer = $derived(Math.round(Math.abs(this.bias_voltage * 1000)));
-  thousands = $derived(this.integer % 10);
-  hundreds = $derived(Math.floor(this.integer / 10) % 10);
-  tens = $derived(Math.floor(this.integer / 100) % 10);
-  ones = $derived(Math.floor(this.integer / 1000) % 10)
-  sign = $derived(this.bias_voltage < 0 ? "-" : "+");
-
-  // public visible = $state(true);
+  public integer = $derived(Math.round(Math.abs(this.bias_voltage * 1000)));
+  public thousands = $derived(this.integer % 10);
+  public hundreds = $derived(Math.floor(this.integer / 10) % 10);
+  public tens = $derived(Math.floor(this.integer / 100) % 10);
+  public ones = $derived(Math.floor(this.integer / 1000) % 10)
+  public sign = $derived(this.bias_voltage < 0 ? "-" : "+");
   public editing = $state(false);
   public isHovering = $state(false);
   public isPlusMinusPressed = $state(false);

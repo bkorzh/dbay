@@ -5,12 +5,12 @@
     import { cubicInOut } from "svelte/easing";
 
     interface Props {
-        down: boolean;
         isHovering: boolean;
         index: number;
+        onChevronClick?: () => void
     }
 
-    let { down = $bindable(true), isHovering, index }: Props = $props();
+    let {isHovering, index, onChevronClick}: Props = $props();
 
     let toggle_up = $state(false);
     let toggle_down = $state(true);
@@ -18,10 +18,9 @@
     let hoverTimeout: number;
 
     function togglerRotateState() {
-        // alter = !alter;
+        if (onChevronClick) onChevronClick();
         toggle_up = !toggle_up;
         toggle_down = !toggle_down;
-        down = !down;
     }
 
 

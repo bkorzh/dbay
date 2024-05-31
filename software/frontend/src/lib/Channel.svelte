@@ -29,6 +29,7 @@
     import ChannelContent from "./ChannelContent.svelte";
     import type { ChangerFunction } from "./addons/vsource/vsource.svelte";
     import ChannelBar from "./ChannelBar.svelte";
+    import { slide } from "svelte/transition";
 
     interface Props {
         ch: ChSourceStateClass;
@@ -36,6 +37,8 @@
         onChannelChange: ChangerFunction;
         staticName?: string;
         borders?: boolean;
+        down: boolean;
+        onChevronClick: () => void;
     }
 
     let {
@@ -44,10 +47,13 @@
         onChannelChange,
         staticName,
         borders = true,
+        down,
+        onChevronClick,
     }: Props = $props();
-    
 
-    let down = $state(true);
+
+
+    // let down = $state(true);
 
     let showDropdown = $state(false);
 
@@ -71,7 +77,7 @@
 >
     <!-- notice how I use class:no_border here -->
     <!-- <div class="strip" class:animated={ch.measuring}></div> -->
-    <ChannelBar {ch} bind:showDropdown bind:down {onChannelChange} {staticName}>
+    <ChannelBar {ch} bind:showDropdown {down} {onChannelChange} {staticName} {onChevronClick}>
         <MenuButton
             onclick={() => {
                 ch.updateChannel({ measuring: !ch.measuring }, onChannelChange);
@@ -80,7 +86,10 @@
         >
     </ChannelBar>
     {#if down}
-        <ChannelContent {ch} {onChannelChange}></ChannelContent>
+        <div transition:slide|global class="slider">
+            <ChannelContent {ch} {onChannelChange}></ChannelContent>
+
+        </div>
     {/if}
 </div>
 

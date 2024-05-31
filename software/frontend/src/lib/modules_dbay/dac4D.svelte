@@ -1,56 +1,111 @@
-<script lang='ts'>
+<script lang="ts">
   import Channel from "../Channel.svelte";
   import { onMount } from "svelte";
   import { ui_state } from "../../state/uiState.svelte";
   // import { voltageStore } from "../../state/systemState.svelte";
   import { system_state } from "../../state/systemState.svelte";
-  import { slide } from 'svelte/transition';
-  import { blur } from 'svelte/transition';
-  import { dac4D } from "./dac4D_data.svelte"
+  import { slide } from "svelte/transition";
+  import { blur } from "svelte/transition";
+  import { dac4D } from "./dac4D_data.svelte";
   import type { VsourceChange } from "../addons/vsource/interface";
   import { requestChannelUpdate } from "../../api";
-    import ModuleChevron from "../buttons/ModuleChevron.svelte";
-  
+  import ModuleChevron from "../buttons/ModuleChevron.svelte";
+  import { VisibleState } from "../buttons/module_chevron";
 
   interface MyProps {
     module_index: number;
   }
   let { module_index }: MyProps = $props();
 
-  const this_component_data = system_state.data[module_index-1] as dac4D;
+  const this_component_data = system_state.data[module_index - 1] as dac4D;
 
+  let down_array = $state([true, true, true, true]);
 
-  let slot = $derived(system_state.data[module_index-1]?.core.slot);
-  let channel_list = [1,2,3,4]
-  let visible = $state(true);
+  let slot = $derived(system_state.data[module_index - 1]?.core.slot);
+  let channel_list = [1, 2, 3, 4];
+  let visible = $state(VisibleState.DoubleDown);
 
   async function onChannelChange(data: VsourceChange) {
     let returnData;
     if (system_state.valid) {
-          returnData = await requestChannelUpdate(data, "/dac4D/vsource/");
-        } else {
-          returnData = data;
-        }
+      returnData = await requestChannelUpdate(data, "/dac4D/vsource/");
+    } else {
+      returnData = data;
+    }
     return returnData;
   }
+
+  function rotateState() {
+    if (visible === VisibleState.Collapsed) {
+      visible = VisibleState.Down;
+      down_array = [false, false, false, false]
+
+    } else if (visible === VisibleState.Down) {
+      visible = VisibleState.DoubleDown;
+      down_array = [true, true, true, true]
+
+    } else {
+      visible = VisibleState.Collapsed;
+
+    }
+  }
+
+  // function setState(vs: VisibleState) {
+  //   visible = vs;
+  //   if (vs === VisibleState.DoubleDown) {
+  //     single_chevron = false;
+  //   } else {
+  //     single_chevron = true;
+  //   }
+  // }
+
+  // $effect(() => {
+  //   // if all values in down_array are true, set visible to double down
+  //   if (down_array.every((val) => val === true)) {
+  //     visible = VisibleState.DoubleDown;
+  //   }
+
+  //   // if all values of down_array are false, set visible to down
+  //   if (down_array.every((val) => val === false)) {
+  //     visible = VisibleState.Down;
+  //   }
+  // }
+  // );
+
+  function onChevClick(i: number) {
+    console.log("clicked!")
+    down_array[i] = !down_array[i];
+    if (down_array.every((val) => val === true)) {
+      visible = VisibleState.DoubleDown;
+    }
+
+    // if all values of down_array are false, set visible to down
+    if (down_array.every((val) => val === false)) {
+      visible = VisibleState.Down;
+    }
+    console.log("down array: ", down_array)
+  }
+
 </script>
 
-<div class="module-container" >
-  <div class="heading" class:closed = {!visible}>
-    <ModuleChevron bind:visible ></ModuleChevron>
+<div class="module-container">
+  <div class="heading" class:closed={!visible}>
+    <ModuleChevron bind:visible {rotateState}></ModuleChevron>
     <div class="identifier">M{slot}:</div>
     <div class="identifier">Voltage Source</div>
   </div>
   <div class="body">
-    {#if visible}
+    {#if !(visible == VisibleState.Collapsed)}
       <div class="content">
         {#each channel_list as _, i}
           <div transition:slide|global class="channel">
             <Channel
-            ch={this_component_data.vsource.channels[i]}
-            module_index={module_index}
-            {onChannelChange}
-          />
+              ch={this_component_data.vsource.channels[i]}
+              {module_index}
+              {onChannelChange}
+              down={down_array[i]}
+              onChevronClick = {() => onChevClick(i)}
+            />
           </div>
         {/each}
       </div>
@@ -59,7 +114,6 @@
 </div>
 
 <style>
-
   .identifier {
     margin-left: 10px;
     color: var(--module-icon-color);
@@ -80,10 +134,9 @@
     width: 100%;
   }
 
-
   .heading {
     display: flex;
-    
+
     flex-direction: row;
     /* justify-content: space-between; */
     background-color: var(--module-header-color);
@@ -102,7 +155,6 @@
   }
 
   .module-container {
-    
     display: flex;
     flex-direction: column;
     justify-content: center;

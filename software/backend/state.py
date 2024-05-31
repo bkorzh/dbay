@@ -5,13 +5,13 @@ from addons.vsense import IVsenseAddon
 from addons.vsource import ChSourceState
 from addons.vsense import ChSenseState
 
-class Module(BaseModel):
+class Core(BaseModel):
     slot: int
     type: str
     name: str
 
 class IModule(BaseModel):
-    module: Module
+    core: Core
     vsource: IVsourceAddon | None
     vsense: IVsenseAddon | None
 

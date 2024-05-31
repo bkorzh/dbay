@@ -17,9 +17,10 @@
         ch?: ChSourceStateClass;
         staticName?: string;
         borderTop?: boolean;
+        onChevronClick?: () => void;
     }
 
-    let { onChannelChange, showDropdown = $bindable(), children, down = $bindable(), ch, staticName, borderTop = false}: Props = $props();
+    let { onChannelChange, showDropdown = $bindable(), children, down, ch, staticName, borderTop = false, onChevronClick}: Props = $props();
 
 
     let immediate_text: string = $state("NaN");
@@ -85,7 +86,7 @@
         
         <!-- If it's a static label (not numbered), then always show the chevron -->
         <ChannelChevron
-            bind:down={down}
+            {onChevronClick}
             isHovering={ch ? (staticName ? true : ch.isHovering) : true}
             index={ch ? ch.index+1 : 0}
         ></ChannelChevron>
