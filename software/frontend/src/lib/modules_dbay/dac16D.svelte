@@ -24,6 +24,7 @@
   import ChannelBar from "../ChannelBar.svelte";
   import { VisibleState } from "../buttons/module_chevron";
   import ChannelContent from "../ChannelContent.svelte";
+  import Link from "../buttons/Link.svelte";
 
   interface MyProps {
     module_index: number;
@@ -188,6 +189,7 @@
                   <div class="channel" class:tab-parent={show_dropdown[i]}>
                   <div class="tab" class:popout={show_dropdown[i]}>
                     <div class="ch-number">{i + 1}</div>
+                    <Link activated={true} onclick = {() => console.log("clicked")}></Link>
                     <Display
                       ch={c.vsource.channels[i]}
                       {onChannelChange}
@@ -206,6 +208,7 @@
                   <div class="channel" class:tab-parent={show_dropdown[i+8]}>
                   <div class="tab" class:popout={show_dropdown[i + 8]}>
                     <div class="ch-number">{i + 9}</div>
+                    <Link activated={false} onclick = {() => console.log("clicked")}></Link>
                     <Display
                       ch={c.vsource.channels[i + 8]}
                       {onChannelChange}
@@ -280,8 +283,7 @@
   .tab {
     /* position: relative; */
     padding: 0.2rem;
-    padding-left: 0.7rem;
-    padding-right: 0.7rem;
+    
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     box-sizing: border-box;
@@ -371,25 +373,30 @@
 
   .individual-body {
     margin-top: 0.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    /* margin-left: 1rem;
+    margin-right: 1rem; */
   }
 
   .side-by-side {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
+    padding-left: 0.4rem;
+    padding-right: 0.2rem;
     /* padding: 0.1rem; */
   }
 
   .ch-number {
     /* margin-left: 10px; */
     margin: auto;
-    margin-right: 0.5rem;
+    /* margin-right: 0.5rem; */
     /* margin-left: 0.8rem; */
+    margin-right: 0.3rem;
+    padding-bottom: 0.1rem;
     color: var(--icon-color);
     font-size: large;
     min-width: 1.7rem;
+    text-align: right;
   }
 
   
