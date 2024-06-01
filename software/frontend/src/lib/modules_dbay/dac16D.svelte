@@ -23,6 +23,7 @@
   import VerticalDots from "../buttons/VerticalDots.svelte";
   import ChannelBar from "../ChannelBar.svelte";
   import { VisibleState } from "../buttons/module_chevron";
+  import ChannelContent from "../ChannelContent.svelte";
 
   interface MyProps {
     module_index: number;
@@ -37,7 +38,6 @@
   let channel_list = Array.from({ length: 16 }, (_, i) => i + 1);
 
   let half_channel_list = channel_list.slice(0, 8);
-
 
   let visible = $state(VisibleState.DoubleDown);
   let down_array = $state([true, true]);
@@ -112,15 +112,12 @@
   function rotateState() {
     if (visible === VisibleState.Collapsed) {
       visible = VisibleState.Down;
-      down_array = [false, false]
-
+      down_array = [false, false];
     } else if (visible === VisibleState.Down) {
       visible = VisibleState.DoubleDown;
-      down_array = [true, true]
-
+      down_array = [true, true];
     } else {
       visible = VisibleState.Collapsed;
-
     }
   }
 
@@ -137,7 +134,13 @@
   }
 
   function showControls(i: number) {
-    show_dropdown[i] = true;
+    // set all elemeents to false except the ith element
+    for (let j = 0; j < show_dropdown.length; j++) {
+      if (j !== i) {
+        show_dropdown[j] = false;
+      }
+    }
+    show_dropdown[i] = !show_dropdown[i];
   }
 </script>
 
@@ -157,7 +160,7 @@
           onChannelChange={distributeChannelChange}
           staticName={c.shared_voltage.heading_text}
           borders={false}
-          down = {down_array[0]}
+          down={down_array[0]}
           onChevronClick={() => onChevClick(0)}
         />
       </div>
@@ -169,7 +172,7 @@
           down={down_array[1]}
           staticName="Set Individual Channels"
           borderTop={true}
-          onChevronClick = {() => onChevClick(1)}
+          onChevronClick={() => onChevClick(1)}
         >
           <MenuButton
             onclick={() => {
@@ -182,37 +185,59 @@
             {#each half_channel_list as ch, i}
               <div class="side-by-side">
                 <div class="channel left">
-                  <div class="ch-number">{i + 1}</div>
-                  <Display
-                    ch={c.vsource.channels[i]}
-                    {onChannelChange}
-                    spacing_small={true}
-                  ></Display>
-                  <VerticalDots
-                    onclick={(e) => showControls(i)}
-                    onkeydown={(e) => showControls(i)}
-                    bind:dotMenu={verticalDotMenu}
-                  ></VerticalDots>
-                </div>
-
-                <div class="channel">
-                  <div class="ch-number">{i + 9}</div>
-                  <Display
-                    ch={c.vsource.channels[i + 8]}
-                    {onChannelChange}
-                    spacing_small={true}
-                  ></Display>
-                  <VerticalDots
-                    onclick={(e) => {
-                      show_dropdown[i + 8] = true;
-                    }}
-                    onkeydown={(e) => {
-                      show_dropdown[i + 8] = true;
-                    }}
-                    bind:dotMenu={verticalDotMenu}
-                  ></VerticalDots>
+                  <div class="channel" class:tab-parent={show_dropdown[i]}>
+                  <div class="tab" class:popout={show_dropdown[i]}>
+                    <div class="ch-number">{i + 1}</div>
+                    <Display
+                      ch={c.vsource.channels[i]}
+                      {onChannelChange}
+                      spacing_small={true}
+                    ></Display>
+                    <VerticalDots
+                      onclick={(e) => showControls(i)}
+                      onkeydown={(e) => showControls(i)}
+                      bind:dotMenu={verticalDotMenu}
+                    ></VerticalDots>
+                  </div>
                 </div>
               </div>
+
+                <div class="channel">
+                  <div class="channel" class:tab-parent={show_dropdown[i+8]}>
+                  <div class="tab" class:popout={show_dropdown[i + 8]}>
+                    <div class="ch-number">{i + 9}</div>
+                    <Display
+                      ch={c.vsource.channels[i + 8]}
+                      {onChannelChange}
+                      spacing_small={true}
+                    ></Display>
+                    <VerticalDots
+                      onclick={(e) => showControls(i + 8)}
+                      onkeydown={(e) => showControls(i + 8)}
+                      bind:dotMenu={verticalDotMenu}
+                    ></VerticalDots>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- {#if show_dropdown[i] || show_dropdown[i + 8]} -->
+              <div class="parent">
+                {#if show_dropdown[i]}
+                  <div class="white left" transition:slide|global>
+                    <ChannelContent ch={c.vsource.channels[i]} {onChannelChange}
+                    ></ChannelContent>
+                  </div>
+                {:else if show_dropdown[i + 8]}
+                  <div class="white right" transition:slide|global>
+                    <ChannelContent
+                      ch={c.vsource.channels[i + 8]}
+                      {onChannelChange}
+                    ></ChannelContent>
+                  </div>
+                {/if}
+              </div>
+              <!-- {/if} -->
             {/each}
           </div>
         {/if}
@@ -222,6 +247,128 @@
 </div>
 
 <style>
+  .parent {
+    position: relative;
+  }
+
+  .tab-parent {
+    position: relative;
+    opacity: 1;
+    
+  }
+
+  .channel {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .channel:after {
+    /* Initial state */
+    content: "";
+    position: relative;
+    top: 3px; /* Offset from the top */
+    left: 3px; /* Offset from the left */
+    width: 100%; /* Match the width of the element */
+    height: 100%; /* Match the height of the element */
+    background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
+    z-index: 5; /* Put the shadow behind the element */
+    opacity: 0; /* Start invisible */
+    transition: opacity 0.5s ease-in-out; /* Transition the opacity */
+    filter: blur(5px); 
+}
+
+  .tab {
+    /* position: relative; */
+    padding: 0.2rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid var(--body-color);
+    border-right: 1px solid var(--body-color);
+    border-left: 1px solid var(--body-color);
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+    background-color: transparent;
+    transition:
+      background-color 0.3s ease-in-out,
+      border-color 0.3s ease-in-out;
+  }
+
+  .popout {
+    position: relative;
+    z-index: 1;
+    background-color: var(--extra-light);
+    border-top: 1px solid var(--outer-border-color);
+    border-right: 1px solid var(--outer-border-color);
+    border-left: 1px solid var(--outer-border-color);
+    border-top-right-radius: 0.4rem;
+    border-top-left-radius: 0.4rem;
+    box-sizing: border-box;
+    z-index: 20;
+  }
+
+  .white {
+    position: relative;
+    z-index: 1;
+    background-color: var(--extra-light);
+    border: 1px solid var(--module-border-color);
+
+    /* border-top-left-radius: 0.4rem; */
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
+    border-color: var(--outer-border-color);
+    /* box-shadow: 0 0 12px rgba(0, 0, 0, 0.3); */
+    box-sizing: border-box;
+    z-index: 20;
+  }
+
+  .parent:after {
+    
+    opacity: 1;
+    content: "";
+    position: absolute;
+    top: 3px; /* Offset from the top */
+    left: 3px; /* Offset from the left */
+    width: 100%; /* Match the width of the element */
+    height: 100%; /* Match the height of the element */
+    background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
+    z-index: 5; /* Put the shadow behind the element */
+    filter: blur(5px); 
+  }
+
+  /* .popout-shadow {
+    position: relative;
+  } */
+
+  .tab-parent:after {
+    content: "";
+    position: absolute;
+    top: 3px; /* Offset from the top */
+    left: 3px; /* Offset from the left */
+    width: 100%; /* Match the width of the element */
+    height: 100%; /* Match the height of the element */
+    background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
+    z-index: 1; /* Put the shadow behind the element */
+    opacity: 1; /* Start invisible */
+    filter: blur(5px); 
+  }
+
+  /* .white:before {
+    background-color: white;
+  } */
+
+  .left {
+    border-top-right-radius: 0.4rem;
+  }
+
+  .right {
+    border-top-left-radius: 0.4rem;
+  }
+
   .individual-body {
     margin-top: 0.5rem;
     margin-left: 1rem;
@@ -232,24 +379,20 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0.25rem;
+    /* padding: 0.1rem; */
   }
 
   .ch-number {
     /* margin-left: 10px; */
-
     margin: auto;
     margin-right: 0.5rem;
-    margin-left: 0.8rem;
+    /* margin-left: 0.8rem; */
     color: var(--icon-color);
     font-size: large;
-    min-width: 1.8rem;
+    min-width: 1.7rem;
   }
 
-  .channel {
-    display: flex;
-    flex-direction: row;
-  }
+  
 
   /* .left {
     margin-right: 3rem;

@@ -188,7 +188,7 @@ python main.py
 ```
 
 ## Development Process
-To create the software for a new module, code in both the /frontend and /backend must be added. This is an iterative process that often begins with defining what structs or data packets will be sent and received from what endpoints (e.g. `/dac16D/vsource/`). Here's some steps that don't necessarily need to happen in this order:
+To create the software for a new module, code in both `/frontend` and `/backend` must be added. This is an iterative process that often begins with defining what structs or data packets will be sent and received from what endpoints (e.g. `/dac16D/vsource/`). Here's some steps that don't necessarily need to happen in this order:
 
 1. Create a new ui file `{module_name}.svelte` and core logic file `{module_name}_data.svelte.ts` in `frontend/src/lib/modules_dbay`. The `{module_name}_data.svelte.ts` may make use of the 'addon' classes defined in `frontend/src/lib/addons`. The `frontend/src/modules_day/index.svelte.ts` file must also be updated. Include the imports:
 
@@ -202,6 +202,15 @@ And add the new module/module_component to the `components` and `modules` object
 ## Module data structure. 
 
 Module state is defined with a simple hierarchy of dataclasses (python) or objects (javascript/typescript). It's easiest to see the basic structure in `backend/state.py`
+
+```python
+class IModule(BaseModel):
+    core: Core
+    vsource: IVsourceAddon | None
+    vsense: IVsenseAddon | None
+```
+
+Both `IVsourceAddon` and `IVsenseAddon` contain a list of channels, each of which has a number of associated properties like `index`, `heading_text`, and `activated`. 
 
 
 2. Create a new python file in `backend/modules/` with name `{module_name}.py`. This python file may import datastructures from `backend/addons`. It must define a `router` using `APIRouter(prefix="/{module_name}", ...)` imported from `fastapi`. This router must also be imported into the `main.py` file (e.g. with `from .modules import {module_name}`), and 'connected' with the rest of the application using `app.include_router({module_name}.router)`. 

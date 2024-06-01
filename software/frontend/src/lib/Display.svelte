@@ -129,7 +129,7 @@
         tabindex="-1"
     ></div>
     <div
-        class="digit"
+        class="digit dot"
         onclick={(e) => inputFocus(e, 0)}
         onkeydown={(e) => inputFocus(e, 0)}
         class:invalid = {!ch.valid}
@@ -262,11 +262,16 @@
         margin-left: 0;
         margin-right: 0;
         background-color: none;
+        /* height: 1.0rem; */
     }
 
     /* .dot {
         margin-left: -0.7rem;
         margin-right: -0.7rem;
+    } */
+
+    /* .dot {
+        height: 50%;
     } */
 
     .display {

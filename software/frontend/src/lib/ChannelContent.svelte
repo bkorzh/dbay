@@ -263,14 +263,14 @@
     .main-controlls {
         /* flex-grow: 1;
         flex-shrink: 1; */
-        background-color: var(--body-color);
+        /* background-color: var(--body-color); */
         /* transform: scaleY(1);
         transition: all .5s ease-in-out; */
         /* user-select: none; */
         display: flex;
         flex-direction: row;
         /* justify-content: space-between; */
-        background-color: var(--body-color);
+        /* background-color: var(--body-color); */
         transition: background-color 0.1s ease-in-out;
     }
 

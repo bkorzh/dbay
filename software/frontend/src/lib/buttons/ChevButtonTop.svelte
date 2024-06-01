@@ -23,7 +23,7 @@ function handleKeyDown(event) {
     position: relative;
     color: var(--icon-color);
     padding: 0.5rem 0.35rem;
-    background-color: var(--body-color);
+    /* background-color: var(--body-color); */
     transition: background-color 0.1s ease-in-out;
     border-radius: 0.2rem;
     -webkit-transition-duration: 0.1s;

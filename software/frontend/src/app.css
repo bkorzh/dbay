@@ -62,6 +62,7 @@ li {
   --red-highlight: #f8c6cb;
   --edit-blue: #00499c;
   --red-text: #712020;
+  --extra-light: #fbfdff;
 }
 
 .dark {
@@ -87,6 +88,7 @@ li {
   --red-highlight: #60060f;
   --edit-blue: #4b9fff;
   --red-text: #d27878;
+  --extra-light: #212124;
 }
 
 body {
