@@ -1,23 +1,36 @@
 
 
-from addons.vsource import VsourceChange, ChSourceState
-from DACVME_ctrl import VMECTRL
+from backend.addons.vsource import VsourceChange, ChSourceState
+from backend.DACVME_ctrl import VMECTRL
 from fastapi import Request
 from fastapi import APIRouter, Depends, HTTPException
 
-from ..state import system_state
-from ..location import BASE_DIR
+from backend.state import system_state
+from backend.location import BASE_DIR
 
 import os
 import csv
 from datetime import datetime
 from ..initialize import vsource
 
+from backend.state import system_state, IModule, Core, SystemState
+from backend.addons.vsource import IVsourceAddon, ChSourceState
+
 router = APIRouter(
     prefix="/dac4D",
     responses={404: {"description": "Not found"}},
 )
 
+
+
+
+def create_prototype(slot: int) -> IModule:
+
+    channels = [ChSourceState(index=i, bias_voltage=0, activated=True, heading_text=f"{i}th ch dac4D", measuring=False) for i in range(4) ]
+
+    dac4D_prototype = IModule(core=Core(slot=slot, type="dac4D", name="my dac4D"), vsource=IVsourceAddon(channels=channels))
+
+    return dac4D_prototype
 
 def write_state_to_csv(change: VsourceChange, changed_str):
     with open(os.path.join(BASE_DIR, "log.csv"), "a", newline="") as f:
@@ -53,7 +66,7 @@ def identify_change(change: VsourceChange, old_channel_state: ChSourceState):
         }
     )
 
-    board = system_state.data[change.module_index - 1].module.slot - 1
+    board = system_state.data[module - 1].core.slot - 1
 
     change_strings = [
         f"Module index {module} (slot {board}), channel {index}: {key} changed from {old_value} to {new_value}"
@@ -63,7 +76,7 @@ def identify_change(change: VsourceChange, old_channel_state: ChSourceState):
     return diff
 
 
-@router.put("/channel")
+@router.put("/vsource")
 async def voltage_set(request: Request, change: VsourceChange):
     # print(
     #     "module:",
@@ -83,9 +96,9 @@ async def voltage_set(request: Request, change: VsourceChange):
     # change.index starts at 1
     change.bias_voltage = round(change.bias_voltage, 4)
     identify_change(
-        change, system_state.data[change.module_index - 1].channels[change.index - 1]
+        change, system_state.data[change.module_index].vsource.channels[change.index]
     )
-    source_channel = system_state.data[change.module_index - 1].channels[
+    source_channel = system_state.data[change.module_index].channels[
         change.index - 1
     ]
     source_channel.heading_text = change.heading_text

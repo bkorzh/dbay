@@ -1,3 +1,6 @@
 .DS_Store
 
+**/__pycache__/
+
+
 software/backend/snspd_bias_control_old/

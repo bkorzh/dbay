@@ -3,7 +3,7 @@ import time
 import os
 from pathlib import Path
 
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -12,20 +12,22 @@ from fastapi.staticfiles import StaticFiles
 # from fastapi import fastApi
 from pydantic import BaseModel
 
-from .modules import dac4D
+from backend.modules import dac4D
 
 
 
 import asyncio
-import json
+# import json
 
-import csv
-from datetime import datetime
+# import csv
+# from datetime import datetime
 
 
-from state import system_state, IModule, Module, SystemState
-from location import BASE_DIR
-from initialize import vsource
+from backend.state import system_state, IModule, Core, SystemState
+from backend.addons.vsource import IVsourceAddon
+from backend.addons.vsense import IVsenseAddon
+from backend.location import BASE_DIR
+from backend.initialize import vsource
 
 
 
@@ -50,6 +52,11 @@ app = FastAPI()
 app.include_router(dac4D.router)
 
 
+3 = 2
+
+# important: you need to change how module_index is created (AND UPDATED) on the frontend. It should be the place in the array of the module. NOT the slot. 
+
+
 app.mount(
     "/dbay_control",
     StaticFiles(directory=Path(BASE_DIR, "dbay_control")),
@@ -64,27 +71,17 @@ async def return_index(request: Request):
 
     
 
-async def zero_out_module(module: Module):
-    for channel in range(len(module.channels)):
+async def zero_out_module(module: IModule):
+    for channel in range(len(module.vsource.channels)):
         await asyncio.sleep(0.01)
         if not system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
 
 
 @app.post("/initialize-module")
-async def state_set(request: Request, module_args: ModuleAddition):
+async def init_module(request: Request, module_args: ModuleAddition):
 
-    # system_activated = module_args.activated
-
-    # I should submit all the default voltages to the VME when a new module is added
-    new_module = IModule(
-        type=module_args.type,
-        slot=module_args.slot,
-        name="",
-        channels=[
-            Channel(index=i+1, bias_voltage=0, activated=False, heading_text="", measuring=False)
-            for i in range(4)
-        ],
-    )
+    
+    new_module = dac4D.create_prototype(module_args.slot)
 
     # Check if a module with the same slot already exists
     for i, module in enumerate(system_state.data):

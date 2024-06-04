@@ -3,5 +3,8 @@
 
 backend/__pycache__/
 frontend/__pycache__/
+addons/__pycache__/
+
+
 
 backend/dbay_control/
