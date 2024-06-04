@@ -32,7 +32,7 @@ export class dac16D implements IModule {
       index: 0,
       bias_voltage: 0,
       activated: false,
-      heading_text: "Set All Channels",
+      heading_text: "Set Linked Channels",
       measuring: false
     }, data.core.slot);
   }

@@ -97,6 +97,75 @@
             ch.onSubmit(onChannelChange);
         }
     }
+
+
+
+
+
+
+    let scrollable = $state(true);
+
+  const wheel = (node, options) => {
+    let { scrollable } = options;
+    const handler = e => {
+      // if the event comes from an input: then prevent default
+      if (e.target.tagName === "INPUT") {
+        e.preventDefault();
+        let idx = 0;
+        
+        switch (e.target) {
+            case ones_el:
+                idx = 0;
+                break;
+            case tens_el:
+                idx = 1;
+                break;
+            case hundreds_el:
+                idx = 2;
+                break;
+            case thousands_el:
+                idx = 3;
+                break;
+        }
+        if (e.deltaY < 0) {
+            scrollChange(idx, 1)
+        }
+        if (e.deltaY > 0) {
+            scrollChange(idx, -1)
+        }
+        return;
+      }
+    };
+
+    node.addEventListener('wheel', handler, { passive: false });
+
+    return {
+      update(options) {
+        scrollable = options.scrollable;
+      },
+      destroy() {
+        node.removeEventListener('wheel', handler, { passive: false });
+      }
+    };
+  };
+
+
+  async function scrollChange(index: number, value: number) {
+        const scaling = [1, 0.1, 0.01, 0.001];
+        const plus_minus = ch.sign_temp === "+" ? 1 : -1;
+
+        // if (ch.editing) {
+        //     ch.temp[index] += value * plus_minus;
+        //     validateTemp(ch.temp);
+        //     return;
+        // }
+
+        let new_bias_voltage =
+            Math.round((ch.bias_voltage + scaling[index] * value) * 1000) /
+            1000;
+        ch.validateUpdateVoltage(new_bias_voltage, onChannelChange);
+    }
+
 </script>
 
 <div
@@ -104,7 +173,9 @@
     class:display-focus={ch.editing}
     role="button"
     tabindex="-1"
+    use:wheel={{scrollable}}
 >
+    
     <input
         class="digit"
         type="number"
@@ -116,6 +187,7 @@
         onkeydown={(e) => handleKeydown(e, 0)}
         onfocus={inputFocus}
         onblur={(e) => inputBlur(e, 0)}
+        
         bind:this={ones_el}
         tabindex="-1"
         maxlength="1"
@@ -211,6 +283,8 @@
         maxlength="1"
     />
 </div>
+
+
 
 <style>
     input {

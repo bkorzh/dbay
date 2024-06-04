@@ -40,6 +40,17 @@ export class ChSourceStateClass implements ChSourceState {
     this.module_index = module_index;
   }
 
+  public currentStateAsChange(): VsourceChange {
+    return {
+      index: this.index,
+      module_index: this.module_index,
+      bias_voltage: this.bias_voltage,
+      activated: this.activated,
+      heading_text: this.heading_text,
+      measuring: this.measuring,
+    };
+  }
+
 
   public async validateUpdateVoltage(voltage: number, onChannelChange: ChangerFunction) {
     if (voltage >= 5) {
@@ -106,12 +117,12 @@ export class ChSourceStateClass implements ChSourceState {
   public setInvalid(): void {
     this.valid = false;
 
-    this.temp[3] = 0;
-    this.temp[2] = 0;
-    this.temp[1] = 0;
-    this.temp[0] = 0;
-    this.sign_temp = "+";
-    this.activated = false;
+    // this.temp[3] = 0;
+    // this.temp[2] = 0;
+    // this.temp[1] = 0;
+    // this.temp[0] = 0;
+    // this.sign_temp = "+";
+    // this.activated = false;
   }
 
   public setValid(data: VsourceChange): void {

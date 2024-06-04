@@ -11,6 +11,7 @@
         VsourceChange,
     } from "./addons/vsource/interface";
     import type { ChangerFunction } from "./addons/vsource/vsource.svelte";
+  import PlusMinus from "./PlusMinus.svelte";
 
     interface Props {
         ch: ChSourceStateClass;
@@ -71,20 +72,7 @@
         ch.updateChannel({ activated: !ch.activated }, onChannelChange);
     }
 
-    function updatedPlusMinus() {
-        if (ch.editing) {
-            ch.sign_temp = ch.sign_temp === "+" ? "-" : "+";
-            return;
-        }
-
-        ch.isPlusMinusPressed = true; //needed for the animation
-
-        ch.updateChannel({ voltage: -ch.bias_voltage }, onChannelChange);
-
-        setTimeout(() => {
-            ch.isPlusMinusPressed = false;
-        }, 1);
-    }
+    
 
     function handleInputKeyDown(event: any) {
         if (event.key === "Enter") {
@@ -105,7 +93,7 @@
 
 <div class="main-controlls">
     <div class="left">
-        <div
+        <!-- <div
             class="plus-minus"
             class:digit-off={st.colorMode}
             class:digit-edit={ch.editing}
@@ -115,7 +103,10 @@
             onkeydown={updatedPlusMinus}
         >
             {ch.sign_temp}
-        </div>
+        </div> -->
+        <PlusMinus {ch} {onChannelChange}></PlusMinus>
+        <div class="spacer-chev"></div>
+        <div class="spacer-chev"></div>
         <div class="controls">
             <div class="buttons-top">
                 <ChevButtonTop onclick={() => increment(0, 1)} />
@@ -168,21 +159,6 @@
 
 <style>
 
-.plus-minus {
-        width: 18px;
-        display: flex;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: var(--digits-color);
-        font-family: "Roboto Flex", sans-serif;
-        font-weight: 300;
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-left: 0.2rem;
-        margin-right: 0.2rem;
-        border-radius: 4px;
-        /* opacity: var(--state_opacity); */
-    }
 
 
     .spacer-chev {
@@ -243,10 +219,13 @@
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        padding: 1rem 1rem;
-        padding-right: 0.2rem;
+        padding: 0rem 1rem;
         margin-right: 0.5rem;
         width: 45%;
+        padding-right: 1.5rem;
+        padding-top: 0;
+        padding-bottom: 0;
+        /* padding-left: 5rem; */
         /* padding-right: 13px; */
     }
 
@@ -258,6 +237,7 @@
         padding-right: 0.2rem;
         margin-right: 0.5rem;
         width: 45%;
+        padding-right: 1.5rem;
     }
 
     .main-controlls {
@@ -269,17 +249,14 @@
         /* user-select: none; */
         display: flex;
         flex-direction: row;
+        flex-grow: 1;
+        justify-content: space-around;
+        /* align-items: space-between; */
+        /* align-items: center; */
         /* justify-content: space-between; */
         /* background-color: var(--body-color); */
         transition: background-color 0.1s ease-in-out;
     }
 
-    .digit-off {
-        color: var(--digits-deactivated-color);
-    }
-
-    .digit-edit {
-        color: var(--edit-blue);
-        font-weight: 400;
-    }
+    
 </style>

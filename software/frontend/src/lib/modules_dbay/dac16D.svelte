@@ -25,6 +25,8 @@
   import { VisibleState } from "../buttons/module_chevron";
   import ChannelContent from "../ChannelContent.svelte";
   import Link from "../buttons/Link.svelte";
+  import PlusMinus from "../PlusMinus.svelte";
+  import NumberedHoveredDotMenu from "../buttons/NumberedHoveredDotMenu.svelte";
 
   interface MyProps {
     module_index: number;
@@ -33,6 +35,7 @@
   let slot = $derived(system_state.data[module_index - 1]?.core.slot);
 
   let show_dropdown = $state(Array.from({ length: 16 }, (_, i) => false));
+  let link_enabled = $state(Array.from({ length: 16 }, (_, i) => false));
 
   const c = system_state.data[module_index - 1] as dac16D;
 
@@ -66,7 +69,10 @@
     }
 
     c.vsource.channels.forEach((channel: ChSourceStateClass) => {
-      channel.setChannel(intermediate_data);
+      if (link_enabled[channel.index]) {
+        channel.setChannel(intermediate_data);
+      }
+      // channel.setChannel(intermediate_data);
     });
 
     return intermediate_data;
@@ -81,20 +87,30 @@
     let new_voltage = data.bias_voltage;
     let new_activated = data.activated;
 
-    // if the equality is broken, then set the shared_voltage to invalid
-    for (let i = 0; i < c.vsource.channels.length; i++) {
-      if (i !== current_index) {
-        if (
-          c.vsource.channels[i].bias_voltage !== new_voltage ||
-          c.vsource.channels[i].activated !== new_activated
-        ) {
-          c.shared_voltage.setInvalid();
-          return data;
+    // only do any validation if the channel currently edited is linked
+    if (link_enabled[current_index]) {
+      for (let i = 0; i < c.vsource.channels.length; i++) {
+        // if the new channel that is edited or newly included does not
+        // match every other linked channel, then set the shared_voltage to invalid
+        if (link_enabled[i] && i !== current_index) {
+          // console.log("checking channel: ", i, "with ", current_index);
+          if (
+            c.vsource.channels[i].bias_voltage !== new_voltage ||
+            c.vsource.channels[i].activated !== new_activated
+          ) {
+            // console.log(
+            //   "setting invalid because this does not match other linked"
+            // );
+            c.shared_voltage.setInvalid();
+            return data;
+          }
         }
       }
+
+      // console.log("setting valid");
+      c.shared_voltage.setValid(data);
+      return data;
     }
-    c.shared_voltage.setValid(data);
-    return data;
   }
 
   async function onChannelChange(data: VsourceChange) {
@@ -143,6 +159,37 @@
     }
     show_dropdown[i] = !show_dropdown[i];
   }
+
+  function changeLinkState(i: number) {
+    link_enabled[i] = !link_enabled[i];
+
+    // the added channel might break the link and set the "set all linked" feature to invalid.
+    if (link_enabled[i]) {
+      const edited_channel_data = c.vsource.channels[i].currentStateAsChange();
+      checkValidAllChannel(edited_channel_data, i);
+    }
+  }
+
+  function handleMouseEnter(i: number) {
+    c.vsource.channels[i].isHovering = true;
+  }
+
+  function handleMouseLeave(i: number) {
+    c.vsource.channels[i].isHovering = false;
+  }
+
+  // let offset_width_1 = $state(0);
+  // let client_width_1 = $state(0);
+
+  // $effect(() => {
+  //   console.log("offset width: ", offset_width_1);
+  //   console.log("client width: ", client_width_1);
+  // });
+
+  let parent_width = $state(0);
+  let left_width = $state(0);
+  let right_width = $state(0);
+  let vl_width = $state(0);
 </script>
 
 <div class="module-container">
@@ -184,55 +231,106 @@
         {#if down_array[1]}
           <div transition:slide|global class="individual-body">
             {#each half_channel_list as ch, i}
-              <div class="side-by-side">
-                <div class="channel left">
+              <div class="side-by-side" bind:clientWidth={parent_width}>
+                <div class="channel left" bind:clientWidth={left_width}>
                   <div class="channel" class:tab-parent={show_dropdown[i]}>
-                  <div class="tab" class:popout={show_dropdown[i]}>
-                    <div class="ch-number">{i + 1}</div>
-                    <Link activated={true} onclick = {() => console.log("clicked")}></Link>
-                    <Display
-                      ch={c.vsource.channels[i]}
-                      {onChannelChange}
-                      spacing_small={true}
-                    ></Display>
-                    <VerticalDots
-                      onclick={(e) => showControls(i)}
-                      onkeydown={(e) => showControls(i)}
-                      bind:dotMenu={verticalDotMenu}
-                    ></VerticalDots>
+                    <div
+                      class="tab"
+                      role="cell"
+                      tabindex="0"
+                      onmouseenter={() => handleMouseEnter(i)}
+                      onmouseleave={() => handleMouseLeave(i)}
+                      class:popout={show_dropdown[i]}
+                    >
+                      <!-- <div class="ch-number">{i + 1}</div> -->
+                      <NumberedHoveredDotMenu
+                        isHovering={c.vsource.channels[i].isHovering}
+                        index={i}
+                        onclick={(e) => showControls(i)}
+                        onkeydown={(e) => showControls(i)}
+                        bind:dotMenu={verticalDotMenu}
+                      ></NumberedHoveredDotMenu>
+
+                      <PlusMinus ch={c.vsource.channels[i]} {onChannelChange}
+                      ></PlusMinus>
+                      <Display
+                        ch={c.vsource.channels[i]}
+                        {onChannelChange}
+                        spacing_small={true}
+                      ></Display>
+                      <Link
+                        activated={link_enabled[i]}
+                        onclick={() => changeLinkState(i)}
+                      ></Link>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-                <div class="channel">
-                  <div class="channel" class:tab-parent={show_dropdown[i+8]}>
-                  <div class="tab" class:popout={show_dropdown[i + 8]}>
-                    <div class="ch-number">{i + 9}</div>
-                    <Link activated={false} onclick = {() => console.log("clicked")}></Link>
-                    <Display
-                      ch={c.vsource.channels[i + 8]}
-                      {onChannelChange}
-                      spacing_small={true}
-                    ></Display>
-                    <VerticalDots
-                      onclick={(e) => showControls(i + 8)}
-                      onkeydown={(e) => showControls(i + 8)}
-                      bind:dotMenu={verticalDotMenu}
-                    ></VerticalDots>
-                  </div>
+                <div class="vl" bind:clientWidth={vl_width}></div>
+
+                <div class="channel right" bind:clientWidth={right_width}>
+                  <div class="channel" class:tab-parent={show_dropdown[i + 8]}>
+                    <div
+                      class="tab"
+                      role="cell"
+                      tabindex="0"
+                      onmouseenter={() => handleMouseEnter(i + 8)}
+                      onmouseleave={() => handleMouseLeave(i + 8)}
+                      class:popout={show_dropdown[i + 8]}
+                    >
+                      <!-- <div class="ch-number">{i + 9}</div> -->
+                      <NumberedHoveredDotMenu
+                        isHovering={c.vsource.channels[i + 8].isHovering}
+                        index={i + 8}
+                        onclick={(e) => showControls(i + 8)}
+                        onkeydown={(e) => showControls(i + 8)}
+                        bind:dotMenu={verticalDotMenu}
+                      ></NumberedHoveredDotMenu>
+
+                      <PlusMinus
+                        ch={c.vsource.channels[i + 8]}
+                        {onChannelChange}
+                      ></PlusMinus>
+                      <Display
+                        ch={c.vsource.channels[i + 8]}
+                        {onChannelChange}
+                        spacing_small={true}
+                      ></Display>
+                      <Link
+                        activated={link_enabled[i + 8]}
+                        onclick={() => changeLinkState(i + 8)}
+                      ></Link>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <!-- {#if show_dropdown[i] || show_dropdown[i + 8]} -->
-              <div class="parent">
+              <div class="parent" style="margin-left: {(parent_width -
+                left_width -
+                right_width -
+                vl_width) /
+                6 +
+                1.6}px; margin-right: {(parent_width -
+                left_width -
+                right_width -
+                vl_width) /
+                6 +
+                1.6}px;">
                 {#if show_dropdown[i]}
-                  <div class="white left" transition:slide|global>
+                  <div
+                    class="white left"
+                    transition:slide|global
+                    
+                  >
                     <ChannelContent ch={c.vsource.channels[i]} {onChannelChange}
                     ></ChannelContent>
                   </div>
                 {:else if show_dropdown[i + 8]}
-                  <div class="white right" transition:slide|global>
+                  <div
+                    class="white right"
+                    transition:slide|global
+                  >
                     <ChannelContent
                       ch={c.vsource.channels[i + 8]}
                       {onChannelChange}
@@ -250,19 +348,32 @@
 </div>
 
 <style>
+  .vl {
+    border-left: 1px solid var(--module-border-color);
+    /* flex-grow: 1; */
+    /* height: 38px; */
+    align-items: stretch;
+    /* position: absolute; */
+    left: 90%;
+    margin-left: 0px;
+    top: 9px;
+    /* width: 3px; */
+  }
   .parent {
     position: relative;
+    box-sizing: border-box;
   }
 
   .tab-parent {
     position: relative;
     opacity: 1;
-    
   }
 
   .channel {
     display: flex;
     flex-direction: row;
+    /* border box */
+    box-sizing: border-box;
   }
 
   .channel:after {
@@ -277,13 +388,13 @@
     z-index: 5; /* Put the shadow behind the element */
     opacity: 0; /* Start invisible */
     transition: opacity 0.5s ease-in-out; /* Transition the opacity */
-    filter: blur(5px); 
-}
+    filter: blur(5px);
+  }
 
   .tab {
     /* position: relative; */
     padding: 0.2rem;
-    
+
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     box-sizing: border-box;
@@ -329,7 +440,6 @@
   }
 
   .parent:after {
-    
     opacity: 1;
     content: "";
     position: absolute;
@@ -339,7 +449,7 @@
     height: 100%; /* Match the height of the element */
     background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
     z-index: 5; /* Put the shadow behind the element */
-    filter: blur(5px); 
+    filter: blur(5px);
   }
 
   /* .popout-shadow {
@@ -356,7 +466,7 @@
     background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
     z-index: 1; /* Put the shadow behind the element */
     opacity: 1; /* Start invisible */
-    filter: blur(5px); 
+    filter: blur(5px);
   }
 
   /* .white:before {
@@ -381,25 +491,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    padding-left: 0.4rem;
+    padding-left: 0.2rem;
     padding-right: 0.2rem;
     /* padding: 0.1rem; */
   }
-
-  .ch-number {
-    /* margin-left: 10px; */
-    margin: auto;
-    /* margin-right: 0.5rem; */
-    /* margin-left: 0.8rem; */
-    margin-right: 0.3rem;
-    padding-bottom: 0.1rem;
-    color: var(--icon-color);
-    font-size: large;
-    min-width: 1.7rem;
-    text-align: right;
-  }
-
-  
 
   /* .left {
     margin-right: 3rem;

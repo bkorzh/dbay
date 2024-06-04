@@ -23,7 +23,6 @@
     document.body.classList.toggle("dark-mode");
   }
 
-
   let serverNotResponding = $state(false);
   // let serverNotInitialized = false;
   let num_modules = 0;
@@ -64,7 +63,49 @@
     // Clear the interval when the component is destroyed
     clearInterval(intervalId);
   });
+
+  // $effect(() => {
+  //   console.log("scrollY: ", scrollY);
+  //   // if (scrollY > 0) {
+  //   //   console.log("scrollY: ", scrollY);
+  //   // }
+  // });
+
+
+  // let scrollable = $state(true);
+
+  // wheel = (node, options) => {
+  //   let { scrollable } = options;
+  //   console.log("scrollable: ", scrollable);
+
+  //   const handler = e => {
+  //     // console.log("inside handler")
+  //     // console.log(e)
+
+  //     // if the event comes from an input: then prevent default
+
+  //     if (e.target.tagName === "INPUT") {
+  //       e.preventDefault();
+  //       console.log("input")
+  //       return;
+  //     }
+  //     // if (!scrollable) e.preventDefault();
+  //   };
+
+  //   node.addEventListener('wheel', handler, { passive: false });
+
+  //   return {
+  //     update(options) {
+  //       scrollable = options.scrollable;
+  //     },
+  //     destroy() {
+  //       node.removeEventListener('wheel', handler, { passive: false });
+  //     }
+  //   };
+  // };
 </script>
+
+<!-- <svelte:window use:wheel={{scrollable}}/> -->
 
 <div class="container-main">
   <div class="main-bar">

@@ -1,36 +1,29 @@
-
-
 <script lang="ts">
-interface Props {
-  activated: boolean;
-  onclick: (e: MouseEvent) => void;
-}
-
-let { activated, onclick }: Props = $props();
-
-function handleKeyDown(event: KeyboardEvent) {
-  if (event.key === "Enter" || event.key === " ") {
-    const target = event.target as HTMLElement;
-    target.click();
+  interface Props {
+    activated: boolean;
+    onclick: (e: MouseEvent) => void;
   }
-}
 
+  let { activated, onclick }: Props = $props();
 
-
+  function handleKeyDown(event: KeyboardEvent) {
+    if (event.key === "Enter" || event.key === " ") {
+      const target = event.target as HTMLElement;
+      target.click();
+    }
+  }
 </script>
 
-
-<div class="container">
+<div class="container" {onclick} onkeydown={handleKeyDown}
+role="button"
+    tabindex="0">
   <svg
     width="15"
     height="17"
     viewBox="0 0 98 192"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    role="button"
-    tabindex="0"
-    onclick={onclick}
-    onkeydown={handleKeyDown}
+
   >
     <path
       class="outer"
@@ -65,7 +58,7 @@ function handleKeyDown(event: KeyboardEvent) {
   }
 
   .container:active {
-    transform: scale(0.90);
+    transform: scale(0.9);
   }
 
   .container:focus {
