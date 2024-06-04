@@ -31,7 +31,10 @@ ch2 = ChSourceState(index=1, bias_voltage=0, activated=True, heading_text="2nd c
 ch3 = ChSourceState(index=2, bias_voltage=0, activated=False, heading_text="3rd ch dac4D", measuring=False)
 ch4 = ChSourceState(index=3, bias_voltage=0, activated=False, heading_text="4th ch dac4D", measuring=False)
 
+data = [IModule(core=Core(slot=i, type="empty", name="empty")) for i in range(8)]
+
+data[3] = IModule(core=Core(slot=3, type="dac4D", name="my dac4D"), vsource=IVsourceAddon(channels=[ch1, ch2, ch3, ch4]))
 
 # create default state
-module_1 = IModule(core=Core(slot=3, type="dac4D", name="my dac4D"), vsource=IVsourceAddon(channels=[ch1, ch2, ch3, ch4]))
-system_state = SystemState(data=[module_1], valid=True, dev_mode=False)
+# module_1 = IModule(core=Core(slot=3, type="dac4D", name="my dac4D"), vsource=IVsourceAddon(channels=[ch1, ch2, ch3, ch4]))
+system_state = SystemState(data=data, valid=True, dev_mode=False)

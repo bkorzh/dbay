@@ -19,7 +19,6 @@
   import { system_state } from "./state/systemState.svelte";
 
   function toggleDarkMode() {
-    console.log("toggleDarkMode");
     document.body.classList.toggle("dark-mode");
   }
 
@@ -35,10 +34,10 @@
     try {
       const json_state: JsonSystemState = await getFullState();
       // if the server responds, but the data field is empty, then the server is not initialized
-      if (json_state.data.length === 0) {
+      if (json_state.data.every(module => module.core.type === "empty")) {
         ui_state.show_module_adder = true; // reactive
-
       }
+
       updateSystemStatefromJson(json_state);
 
       // Start the interval
@@ -53,9 +52,12 @@
       updateSystemStatetoFallback();
     }
     num_modules = system_state.data.length;
-    module_idx = Array.from({ length: num_modules }, (_, i) => i + 1);
-    // console.log("module_idx: ", module_idx);
-    // console.log("component_array: ", component_array);
+
+    for (let i = 0; i < num_modules; i++) {
+      if (system_state.data[i].core.type !== "empty") {
+        module_idx.push(i);
+      }
+    }
 
   });
 
@@ -136,8 +138,10 @@
     {/if}
 
     {#if module_idx}
-      {#each module_idx as idx}
-        <svelte:component this={component_array[idx-1]} module_index={idx}/>
+      {#each module_idx as idx, i}
+      <!-- module_idx has numbers for filled slots. e.g [0, 3, 5] -->
+      <!-- i counts from 0 to (one minus number of filled slots). e.g. [0, 1, 2] -->
+        <svelte:component this={component_array[i]} module_index={idx}/>
       {/each}
     {:else}
       <div class="basic-block">Loading...</div>

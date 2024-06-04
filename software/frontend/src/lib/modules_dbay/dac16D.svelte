@@ -32,12 +32,12 @@
     module_index: number;
   }
   let { module_index }: MyProps = $props();
-  let slot = $derived(system_state.data[module_index - 1]?.core.slot);
+  let slot = $derived(system_state.data[module_index]?.core.slot);
 
   let show_dropdown = $state(Array.from({ length: 16 }, (_, i) => false));
   let link_enabled = $state(Array.from({ length: 16 }, (_, i) => false));
 
-  const c = system_state.data[module_index - 1] as dac16D;
+  const c = system_state.data[module_index] as dac16D;
 
   let channel_list = Array.from({ length: 16 }, (_, i) => i + 1);
 
@@ -195,7 +195,7 @@
 <div class="module-container">
   <div class="heading" class:closed={!visible}>
     <ModuleChevron bind:visible {rotateState}></ModuleChevron>
-    <div class="identifier">M{slot}:</div>
+    <div class="identifier">M{slot+1}:</div>
     <div class="identifier">16 Ch. Voltage Source</div>
   </div>
 

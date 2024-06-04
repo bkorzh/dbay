@@ -3,6 +3,8 @@
 import { default as dac4D_component } from './dac4D.svelte'
 import { dac4D } from './dac4D_data.svelte'
 
+import { empty } from './empty_data.svelte'
+
 // import { default as dac4D_old_component } from '../depreciated/dac4D_old.svelte'
 // import { dac4D_old } from '../depreciated/dac4D_old_data.svelte'
 
@@ -33,6 +35,7 @@ const components: any = {
 }
 
 const modules: ModulesDict = {
+  empty,
   dac4D,
   // dac4D_old,
   dac16D,
@@ -59,10 +62,14 @@ function getComponent(name: any): ComponentType {
 
 
 export function createComponentArray(module_list: IModule[]): any {
-    return module_list.map((module) => {
-        const component = getComponent(module.core.type)
-        return component
-    })
+    const components = [];
+    for (const module of module_list) {
+        if (module.core.type !== "empty") {
+            const component = getComponent(module.core.type);
+            components.push(component);
+        }
+    }
+    return components;
 }
 
 
@@ -78,11 +85,15 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
 }
 
 export function updateSystemStatetoFallback() {
-  const module_1: dac4D = new dac4D({core: {slot: 1, type: "dac4D", name: "my 4ch module 1"}});
-  // const module_2: dac4D_old = new dac4D_old({core: {slot: 2, type: "dac4D_old", name: "my 4ch module 1"}});
-  const module_2: dac16D = new dac16D({core: {slot: 3, type: "dac16D", name: "my 4ch module 1"}});
-  const module_3: dac16D = new dac16D({core: {slot: 4, type: "dac16D", name: "my 4ch module 1"}});
-  system_state.data = [module_1, module_2, module_3];
+  const module_0: dac4D = new dac4D({core: {slot: 0, type: "dac4D", name: "my 4ch module 1"}});
+  const module_1: empty = new empty({core: {slot: 1, type: "empty", name: "empty"}});
+  const module_2: dac16D = new dac16D({core: {slot: 2, type: "dac16D", name: "my 16ch module 1"}});
+  const module_3: dac16D = new dac16D({core: {slot: 3, type: "dac16D", name: "my 16ch module"}});
+  const module_4: empty = new empty({core: {slot: 4, type: "empty", name: "empty"}});
+  const module_5: dac16D = new dac16D({core: {slot: 5, type: "dac16D", name: "my 16ch module"}});
+  const module_6: empty = new empty({core: {slot: 6, type: "empty", name: "empty"}});
+  const module_7: empty = new empty({core: {slot: 7, type: "empty", name: "empty"}});
+  system_state.data = [module_0, module_1, module_2, module_3, module_4, module_5, module_6, module_7];
   system_state.valid = false;
   system_state.dev_mode = true;
 }

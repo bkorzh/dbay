@@ -17,11 +17,11 @@
   }
   let { module_index }: MyProps = $props();
 
-  const this_component_data = system_state.data[module_index - 1] as dac4D;
+  const this_component_data = system_state.data[module_index] as dac4D;
 
   let down_array = $state([true, true, true, true]);
 
-  let slot = $derived(system_state.data[module_index - 1]?.core.slot);
+  let slot = $derived(system_state.data[module_index]?.core.slot);
   let channel_list = [1, 2, 3, 4];
   let visible = $state(VisibleState.DoubleDown);
 
@@ -91,7 +91,7 @@
 <div class="module-container">
   <div class="heading" class:closed={!visible}>
     <ModuleChevron bind:visible {rotateState}></ModuleChevron>
-    <div class="identifier">M{slot}:</div>
+    <div class="identifier">M{slot+1}:</div>
     <div class="identifier">Voltage Source</div>
   </div>
   <div class="body">
