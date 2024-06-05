@@ -11,7 +11,7 @@ from backend.location import BASE_DIR
 import os
 import csv
 from datetime import datetime
-from ..initialize import vsource
+from backend.initialize import vsource
 
 from backend.state import system_state, IModule, Core, SystemState
 from backend.addons.vsource import IVsourceAddon, ChSourceState
@@ -48,25 +48,26 @@ def write_state_to_csv(change: VsourceChange, changed_str):
         )
 
 def identify_change(change: VsourceChange, old_channel_state: ChSourceState):
-    change_dict = change.dict()
-    old_channel_state = old_channel_state.dict()
+    change_dict = change.model_dump()
+    old_channel_state_dict = old_channel_state.model_dump()
     module = change_dict["module_index"]
     index = change_dict["index"]
     del change_dict["module_index"]
     diff = {
-        key: (value, old_channel_state.get(key))
+        key: (value, old_channel_state_dict.get(key))
         for key, value in change_dict.items()
-        if old_channel_state.get(key) != value
+        if old_channel_state_dict.get(key) != value
     }
     diff.update(
         {
             key: (None, value)
-            for key, value in old_channel_state.items()
+            for key, value in old_channel_state_dict.items()
             if key not in change_dict
         }
     )
 
-    board = system_state.data[module - 1].core.slot - 1
+    # board = system_state.data[module - 1].core.slot - 1
+    board = change.module_index
 
     change_strings = [
         f"Module index {module} (slot {board}), channel {index}: {key} changed from {old_value} to {new_value}"
@@ -78,29 +79,12 @@ def identify_change(change: VsourceChange, old_channel_state: ChSourceState):
 
 @router.put("/vsource")
 async def voltage_set(request: Request, change: VsourceChange):
-    # print(
-    #     "module:",
-    #     change.module_index,
-    #     "channel: ",
-    #     change.index,
-    #     " voltage: ",
-    #     change.bias_voltage,
-    #     " activated: ",
-    #     change.activated,
-    #     " heading_text: ",
-    #     change.heading_text,
-    #     " module_index: ",
-    #     change.module_index,
-    # )
 
-    # change.index starts at 1
     change.bias_voltage = round(change.bias_voltage, 4)
     identify_change(
         change, system_state.data[change.module_index].vsource.channels[change.index]
     )
-    source_channel = system_state.data[change.module_index].channels[
-        change.index - 1
-    ]
+    source_channel = system_state.data[change.module_index].vsource.channels[change.index]
     source_channel.heading_text = change.heading_text
     source_channel.measuring = change.measuring
 
@@ -110,32 +94,48 @@ async def voltage_set(request: Request, change: VsourceChange):
     #
     #
 
-    if change.index >= 1 and change.index <= 4:
+    if change.index >= 0 and change.index <= 3:
 
         # important! get the actual module slot. module.index is just an array index
         # "board" is 0 - 7, "slot" is 1 - 8
-        board = system_state.data[change.module_index - 1].slot - 1
+
+        board = change.module_index
+
+        assert board == system_state.data[change.module_index].core.slot
+        # board = system_state.data[change.module_index - 1].slot - 1
+
+
+        print("system state dev mode: ", system_state.dev_mode)
 
         if change.activated == False:
             print("turning off ", change.index, "or already off")
             source_channel.bias_voltage = change.bias_voltage
             source_channel.activated = False
 
-            # !!!! update!
+            
 
-            if not system_state.dev_mode: vsource.setChVol(board, change.index-1, 0)
+            if not system_state.dev_mode: vsource.setChVol(board, change.index, 0)
+
+            print(source_channel)
+            print(system_state.data[change.module_index].vsource.channels[change.index])
             return change
         else:  # turning on or already on
-            print("turning on ", change.index-1, "or already on")
+            print("turning on ", change.index, "or already on")
             source_channel.bias_voltage = change.bias_voltage
 
+            print("what??")
             if source_channel.activated == False:
 
                 source_channel.activated = True
 
             # ch, voltage = source.setVoltage(change.channel, change.voltage)
-            if not system_state.dev_mode: vsource.setChVol(board, change.index-1, change.bias_voltage)
+            if not system_state.dev_mode: vsource.setChVol(board, change.index, change.bias_voltage)
+            print("what who")
+            print(source_channel)
+            print(system_state.data[change.module_index].vsource.channels[change.index])
 
             return change
+        
+
     else:
         raise HTTPException(status_code=404, detail="Channel not 1-4")

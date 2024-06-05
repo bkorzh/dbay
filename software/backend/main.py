@@ -53,7 +53,7 @@ app.include_router(dac4D.router)
 
 
 ##########
-3 = 2
+# 3 = 2
 # important: you need to change how module_index is created (AND UPDATED) on the frontend. It should be the place in the array of the module. NOT the slot. 
 
 
@@ -112,6 +112,8 @@ async def vsource_set_state(params: VsourceParams):
 
 @app.get("/full-state")
 async def state():
+
+    print(system_state.data[3].vsource.channels[0])
     return system_state
 
 
@@ -120,6 +122,8 @@ async def state_set(request: Request, state: SystemState):
     print("updating full state")
     global system_state
     system_state = state
+
+    
     return system_state
 
 

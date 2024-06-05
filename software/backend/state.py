@@ -5,6 +5,10 @@ from backend.addons.vsense import IVsenseAddon
 from backend.addons.vsource import ChSourceState
 # from backend.addons.vsense import ChSenseState
 
+from backend.location import BASE_DIR
+import os
+import json
+
 class Core(BaseModel):
     slot: int
     type: str
@@ -35,6 +39,10 @@ data = [IModule(core=Core(slot=i, type="empty", name="empty")) for i in range(8)
 
 data[3] = IModule(core=Core(slot=3, type="dac4D", name="my dac4D"), vsource=IVsourceAddon(channels=[ch1, ch2, ch3, ch4]))
 
-# create default state
-# module_1 = IModule(core=Core(slot=3, type="dac4D", name="my dac4D"), vsource=IVsourceAddon(channels=[ch1, ch2, ch3, ch4]))
-system_state = SystemState(data=data, valid=True, dev_mode=False)
+
+
+# load dev mode setting. If true, python does not acctually send UDP messages to the rack. 
+with open(os.path.join(BASE_DIR, "vsource_params.json"), "r") as f:
+    vsource_params = json.load(f)
+
+system_state = SystemState(data=data, valid=True, dev_mode=vsource_params["dev_mode"])

@@ -73,13 +73,22 @@ export function createComponentArray(module_list: IModule[]): any {
 }
 
 
-export function updateSystemStatefromJson(parsed: JsonSystemState) {
+export function createSystemStatefromJson(parsed: JsonSystemState) {
   const data = parsed.data.map((item: any) => {
     // depending on the type of module, we need dynamically create the module objects
     const module = new modules[item.core.type](item);
     return module as IModule
   });
   system_state.data = data;
+  system_state.valid = parsed.valid;
+  system_state.dev_mode = parsed.dev_mode;
+}
+
+
+export function updateSystemStatefromJson(parsed: JsonSystemState) {
+  for (let i = 0; i < parsed.data.length; i++) {
+    system_state.data[i].update(parsed.data[i]);
+  }
   system_state.valid = parsed.valid;
   system_state.dev_mode = parsed.dev_mode;
 }

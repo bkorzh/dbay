@@ -7,6 +7,7 @@ export interface IModule {
   core: CoreModule;
   vsource?: VsourceAddon; // VsourceAddon is a class that implements the IVsourceAddon interface...
   vsense?: VsenseAddon;
+  update(data: JsonModule): void;
 }
 
 export interface JsonModule {
@@ -33,6 +34,13 @@ export class CoreModule implements JsonCoreModule {
       this.type = data.type;
       this.name = data.name;
   }
+
+  update(data: JsonCoreModule): void {
+    this.slot = data.slot;
+    this.name = data.name;
+    this.type = data.type;
+  }
+
 }
 
 
@@ -49,6 +57,14 @@ export class SystemStateClass implements SystemState {
 
   constructor(data: Array<IModule>, valid: boolean, dev_mode: boolean) {
     this.data = data;
+    this.valid = valid;
+    this.dev_mode = dev_mode;
+  }
+
+  update(data: Array<IModule>, valid: boolean, dev_mode: boolean) {
+    for (let i = 0; i < data.length; i++) {
+      data[i].update(data[i]);
+    }
     this.valid = valid;
     this.dev_mode = dev_mode;
   }

@@ -14,7 +14,7 @@
 
   import { createComponentArray } from "./lib/modules_dbay/index.svelte";
 
-  import { updateSystemStatefromJson, updateSystemStatetoFallback } from "./lib/modules_dbay/index.svelte";
+  import { createSystemStatefromJson, updateSystemStatefromJson, updateSystemStatetoFallback } from "./lib/modules_dbay/index.svelte";
 
   import { system_state } from "./state/systemState.svelte";
 
@@ -38,7 +38,7 @@
         ui_state.show_module_adder = true; // reactive
       }
 
-      updateSystemStatefromJson(json_state);
+      createSystemStatefromJson(json_state);
 
       // Start the interval
       intervalId = setInterval(async () => {

@@ -23,19 +23,25 @@
     let { onChannelChange, showDropdown = $bindable(), children, down, ch, staticName, borderTop = false, onChevronClick}: Props = $props();
 
 
-    let immediate_text: string = $state("NaN");
+    // let immediate_text: string = $state("NaN");
 
-    if (ch) {
-        immediate_text = ch.heading_text
-    }
+    // if (ch) {
+    //     immediate_text = ch.heading_text
+    // }
 
-    if (staticName) {
-        immediate_text = staticName
-    }
+    // if (staticName) {
+    //     immediate_text = staticName
+    // }
+
+    // let immediate_text = $state(ch ? ch.heading_text : staticName || "NaN");
+
+    // if (!ch) {
+    //     let immediate_text = staticName || "NaN";
+    // }
 
 
 
-    let heading_editing = false;
+    // let heading_editing = false;
     let isEditing = false;
     let isMounted = false;
 
@@ -45,14 +51,19 @@
 
     function handleInput(event: Event) {
         let target = event.target as HTMLInputElement;
-        immediate_text = target.value;
+
+        if (ch) ch.immediate_text = target.value;
     }
 
     function handleKeyDown(event: KeyboardEvent) {
         if (event.key === "Enter") {
             isEditing = false;
-            if (ch) ch.updateChannel({ heading_text: immediate_text }, onChannelChange);
+            if (ch) ch.updateChannel({ heading_text: ch.immediate_text }, onChannelChange);
+            const target  = event.target as HTMLInputElement;
+            target.blur();
         }
+
+        
     }
 
     function toggleMenu() {
@@ -91,26 +102,33 @@
             index={ch ? ch.index+1 : 0}
         ></ChannelChevron>
 
-
-        <input
-            class="heading-input"
-            class:input-to-label={!!staticName}
-            class:wide-input={!ch}
-            type="text"
-            value={immediate_text}
-            oninput={handleInput}
-            onfocus={() => (heading_editing = true)}
-            onblur={() => {
-                heading_editing = false;
-                if (ch) ch.updateChannel(
-                    { heading_text: immediate_text },
-                    onChannelChange,
-                );
-            }}
-            onkeydown={handleKeyDown}
-            tabindex="0"
-            disabled={!!staticName}
-        />
+        
+            
+        {#if staticName}
+            <div class="heading-input input-to-label wide-input">{staticName}</div>
+        {:else}
+                {#if ch}
+                    <input
+                        class="heading-input"
+                        type="text"
+                        value={ch.immediate_text}
+                        oninput={handleInput}
+                        onfocus={() => (ch.heading_editing = true)}
+                        onblur={() => {
+                            ch.heading_editing = false;
+                            if (ch) ch.updateChannel(
+                                { heading_text: ch.immediate_text },
+                                onChannelChange,
+                            );
+                        }}
+                        onkeydown={handleKeyDown}
+                        tabindex="0"
+                        disabled={!!staticName}
+                    />
+            {:else}
+                <div class="heading-input input-to-label  wide-input">NaN</div>
+            {/if}
+        {/if}
         <!-- the double not (!!) converts the [string | undefined] to boolean -->
     </div>
 

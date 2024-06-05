@@ -12,4 +12,9 @@ export class dac4D implements IModule {
     this.core = new CoreModule(data.core);
     this.vsource = new VsourceAddon(data.core.slot, data.vsource?.channels, 4)
   }
+
+  public update(data: JsonModule): void {
+    this.core.update(data.core);
+    this.vsource.update(data.core.slot, data.vsource.channels);
+  }
 }

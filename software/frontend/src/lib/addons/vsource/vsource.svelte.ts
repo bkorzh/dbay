@@ -30,6 +30,9 @@ export class ChSourceStateClass implements ChSourceState {
   public isPlusMinusPressed = $state(false);
   public focusing = $state(false);
 
+  public heading_editing = $state(false);
+  public immediate_text = $state("");
+
 
   constructor(data: ChSourceState, module_index: number) {
     this.index = data.index;
@@ -38,6 +41,17 @@ export class ChSourceStateClass implements ChSourceState {
     this.heading_text = data.heading_text;
     this.measuring = data.measuring;
     this.module_index = module_index;
+    this.voltageToTemp();
+  }
+
+  public update(data: ChSourceState, module_index: number) {
+    this.index = data.index;
+    this.bias_voltage = data.bias_voltage;
+    this.activated = data.activated;
+    this.heading_text = data.heading_text;
+    this.measuring = data.measuring;
+    this.module_index = module_index;
+    this.voltageToTemp();
   }
 
   public currentStateAsChange(): VsourceChange {
@@ -107,11 +121,17 @@ export class ChSourceStateClass implements ChSourceState {
 
     // updating bias voltage should update temp and sign_temp, but temp and sign_temp
     // are allowed to get out of sync with bias_voltage (during edit mode of <Channel>)
+    this.voltageToTemp();
+  }
+
+  public voltageToTemp(): void {
     this.temp[3] = this.thousands;
     this.temp[2] = this.hundreds;
     this.temp[1] = this.tens;
     this.temp[0] = this.ones;
     this.sign_temp = this.sign;
+    
+    if (!this.heading_editing) this.immediate_text = this.heading_text;
   }
 
   public setInvalid(): void {
@@ -154,6 +174,12 @@ export class VsourceAddon implements IVsourceAddon {
         return new ChSourceStateClass(channels[i], module_index);
       }
     });
+  }
+
+  public update(module_index: number, channels: Array<ChSourceState>): void {
+    for (let i = 0; i < this.channels.length; i++) {
+      this.channels[i].update(channels[i], module_index);
+    }
   }
 
   public switchOnOffAllChannels(onoff: boolean): void {

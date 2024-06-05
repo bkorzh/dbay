@@ -9,4 +9,8 @@ export class empty implements IModule {
     this.core = new CoreModule(data.core);
 
   }
+
+  public update(data: JsonModule): void {
+    this.core.update(data.core);
+  }
 }
