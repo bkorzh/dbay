@@ -99,13 +99,6 @@
 </div>
 
 <style>
-    /* li {
-        padding: 0.2rem;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: left;
-    } */
 
     .close-buttom {
         color: var(--icon-color);
@@ -116,12 +109,12 @@
         position: absolute;
         /* top: 100%; */
         /* left: 0; */
-        z-index: 1;
+        z-index: 10000;
         background-color: white;
 
         border: 1px solid var(--outer-border-color);
 
-        /* border-radius: 5px; */
+        border-radius: 6px;
         box-shadow: 0 0 7px rgba(0, 0, 0, 0.05);
         background-color: var(--body-color);
     }
@@ -140,6 +133,7 @@
 
     h3 {
         padding-left: 0.5rem;
+        font-size: 1.1rem;
     }
 
     .settings-top {

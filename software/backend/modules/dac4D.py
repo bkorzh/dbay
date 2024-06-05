@@ -105,7 +105,7 @@ async def voltage_set(request: Request, change: VsourceChange):
         # board = system_state.data[change.module_index - 1].slot - 1
 
 
-        print("system state dev mode: ", system_state.dev_mode)
+        # print("system state dev mode: ", system_state.dev_mode)
 
         if change.activated == False:
             print("turning off ", change.index, "or already off")

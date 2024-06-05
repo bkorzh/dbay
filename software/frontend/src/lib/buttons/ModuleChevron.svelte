@@ -68,7 +68,7 @@
 
 <style>
   .chevron {
-    margin-top: 0.25rem;
+    /* margin-top: 0.25rem; */
     margin-left: 0.2rem;
     color: var(--icon-color);
   }

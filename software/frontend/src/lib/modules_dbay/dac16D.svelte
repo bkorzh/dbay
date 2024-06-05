@@ -27,6 +27,7 @@
   import Link from "../buttons/Link.svelte";
   import PlusMinus from "../PlusMinus.svelte";
   import NumberedHoveredDotMenu from "../buttons/NumberedHoveredDotMenu.svelte";
+  import ModuleHeading from "../ModuleHeading.svelte";
 
   interface MyProps {
     module_index: number;
@@ -107,8 +108,7 @@
         }
       }
 
-      // console.log("setting valid");
-      c.shared_voltage.setValid(data);
+      c.shared_voltage.setValid(data, true);
       return data;
     }
   }
@@ -178,13 +178,6 @@
     c.vsource.channels[i].isHovering = false;
   }
 
-  // let offset_width_1 = $state(0);
-  // let client_width_1 = $state(0);
-
-  // $effect(() => {
-  //   console.log("offset width: ", offset_width_1);
-  //   console.log("client width: ", client_width_1);
-  // });
 
   let parent_width = $state(0);
   let left_width = $state(0);
@@ -192,12 +185,21 @@
   let vl_width = $state(0);
 </script>
 
+{#snippet menu_buttons()}
+  <MenuButton onclick={() => console.log("undefined dac16")}>undefined</MenuButton>
+{/snippet}
+
+
+
 <div class="module-container">
-  <div class="heading" class:closed={!visible}>
-    <ModuleChevron bind:visible {rotateState}></ModuleChevron>
-    <div class="identifier">M{slot+1}:</div>
-    <div class="identifier">16 Ch. Voltage Source</div>
-  </div>
+  <ModuleHeading m = {c} 
+    visible={visible} 
+    rotateState={rotateState} 
+    {module_index} 
+    name={"16 Ch. Voltage Source"} 
+    {menu_buttons}
+    icon_name="./dac16D_icon.svg"
+    ></ModuleHeading>
 
   {#if visible}
     <div class="content">

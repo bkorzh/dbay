@@ -39,8 +39,6 @@ export class dac16D implements IModule {
 
   public update(data: JsonModule): void {
     this.core.update(data.core);
-    this.vsource.update(data.core.slot, data.vsource.channels);
+    if (data.vsource) this.vsource.update(data.core.slot, data.vsource.channels);
   }
-
-  
 }

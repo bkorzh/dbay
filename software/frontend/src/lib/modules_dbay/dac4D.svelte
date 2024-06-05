@@ -11,6 +11,8 @@
   import { requestChannelUpdate } from "../../api";
   import ModuleChevron from "../buttons/ModuleChevron.svelte";
   import { VisibleState } from "../buttons/module_chevron";
+  import ModuleHeading from "../ModuleHeading.svelte";
+  import MenuButton from "../buttons/MenuButton.svelte";
 
   interface MyProps {
     module_index: number;
@@ -21,7 +23,7 @@
 
   let down_array = $state([true, true, true, true]);
 
-  let slot = $derived(system_state.data[module_index]?.core.slot);
+  // let module_ = $derived(system_state.data[module_index]?.core.slot);
   let channel_list = [1, 2, 3, 4];
   let visible = $state(VisibleState.DoubleDown);
 
@@ -50,27 +52,6 @@
     }
   }
 
-  // function setState(vs: VisibleState) {
-  //   visible = vs;
-  //   if (vs === VisibleState.DoubleDown) {
-  //     single_chevron = false;
-  //   } else {
-  //     single_chevron = true;
-  //   }
-  // }
-
-  // $effect(() => {
-  //   // if all values in down_array are true, set visible to double down
-  //   if (down_array.every((val) => val === true)) {
-  //     visible = VisibleState.DoubleDown;
-  //   }
-
-  //   // if all values of down_array are false, set visible to down
-  //   if (down_array.every((val) => val === false)) {
-  //     visible = VisibleState.Down;
-  //   }
-  // }
-  // );
 
   function onChevClick(i: number) {
     console.log("clicked!")
@@ -88,25 +69,35 @@
 
 </script>
 
+
+{#snippet menu_buttons()}
+  <MenuButton onclick={() => console.log("undefined")}>undefined</MenuButton>
+{/snippet}
+
 <div class="module-container">
-  <div class="heading" class:closed={!visible}>
-    <ModuleChevron bind:visible {rotateState}></ModuleChevron>
-    <div class="identifier">M{slot+1}:</div>
-    <div class="identifier">Voltage Source</div>
-  </div>
+
+  <ModuleHeading m = {this_component_data} 
+    visible={visible} 
+    rotateState={rotateState} 
+    {module_index} 
+    name={"Voltage Source"} 
+    {menu_buttons}
+    icon_name="./dac4D_icon.svg"
+    ></ModuleHeading>
+
   <div class="body">
     {#if !(visible == VisibleState.Collapsed)}
       <div class="content">
         {#each channel_list as _, i}
           <div transition:slide|global class="channel">
-            <Channel
-              ch={this_component_data.vsource.channels[i]}
-              {module_index}
-              {onChannelChange}
-              down={down_array[i]}
-              onChevronClick = {() => onChevClick(i)}
-            />
-          </div>
+                    <Channel
+                      ch={this_component_data.vsource.channels[i]}
+                      {module_index}
+                      {onChannelChange}
+                      down={down_array[i]}
+                      onChevronClick = {() => onChevClick(i)}
+                    />
+                          </div>
         {/each}
       </div>
     {/if}
@@ -114,11 +105,7 @@
 </div>
 
 <style>
-  .identifier {
-    margin-left: 10px;
-    color: var(--module-icon-color);
-    font-size: large;
-  }
+  
 
   .body {
     background-color: var(--bg-color);
@@ -133,26 +120,7 @@
     flex-direction: column;
     width: 100%;
   }
-
-  .heading {
-    display: flex;
-
-    flex-direction: row;
-    /* justify-content: space-between; */
-    background-color: var(--module-header-color);
-    padding: 0.3rem;
-    color: var(--text-color);
-    font-size: 1.3rem;
-    border: 1.3px solid var(--module-border-color);
-    /* border-bottom: none; */
-    border-top-left-radius: 0.4rem;
-    border-top-right-radius: 0.4rem;
-  }
-
-  .closed {
-    border-bottom-left-radius: 0.4rem;
-    border-bottom-right-radius: 0.4rem;
-  }
+  
 
   .module-container {
     display: flex;

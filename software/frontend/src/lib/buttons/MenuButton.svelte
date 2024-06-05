@@ -13,9 +13,12 @@
 
 <style>
 
-
+    .text {
+        font-size: 1.1rem;
+    }
     
     button {
+        
         /* margin: 0.2rem; */
         padding: 0.25rem;
         display: flex;

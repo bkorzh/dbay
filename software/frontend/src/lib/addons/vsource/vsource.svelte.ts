@@ -112,10 +112,10 @@ export class ChSourceStateClass implements ChSourceState {
     this.setChannel(returnData);
   }
 
-  public setChannel(data: VsourceChange) {
+  public setChannel(data: VsourceChange, static_heading = false) {
     this.bias_voltage = data.bias_voltage;
     this.activated = data.activated;
-    this.heading_text = data.heading_text;
+    if (!static_heading) this.heading_text = data.heading_text;
     this.measuring = data.measuring;
     this.valid = true;
 
@@ -145,9 +145,9 @@ export class ChSourceStateClass implements ChSourceState {
     // this.activated = false;
   }
 
-  public setValid(data: VsourceChange): void {
+  public setValid(data: VsourceChange, static_heading=false): void {
     this.valid = true;
-    this.setChannel(data);
+    this.setChannel(data, static_heading);
   }
 }
 
