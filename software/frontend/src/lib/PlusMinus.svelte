@@ -41,7 +41,7 @@
   
 
   .plus-minus {
-    width: 8px;
+    width: 15px;
     display: flex;
     justify-content: center;
     font-size: 1.5rem;
@@ -53,6 +53,7 @@
     margin-left: 0.2rem;
     margin-right: 0.2rem;
     border-radius: 4px;
+    border: 1.3px solid transparent;
     /* opacity: var(--state_opacity); */
   }
 
@@ -64,4 +65,10 @@
     color: var(--edit-blue);
     font-weight: 400;
   }
+
+  .plus-minus:hover {
+        cursor: pointer;
+        border: 1.3px solid var(--hover-body-color);
+        background-color: var(--hover-body-color);
+    }
 </style>

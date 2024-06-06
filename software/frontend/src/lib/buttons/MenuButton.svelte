@@ -1,13 +1,15 @@
 <script lang="ts">
+    import type { Snippet } from "svelte";
     interface MyProps {
         onclick: () => void;
+        children: Snippet;
     }
-    let { onclick }: MyProps = $props();
+    let { onclick, children }: MyProps = $props();
     
 </script>
 
 <button {onclick}>
-    <div class="text"><slot></slot></div>
+    <div class="text">{@render children()}</div>
 </button>
 
 

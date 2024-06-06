@@ -349,20 +349,22 @@
     } */
 
     .display {
+        /* border-box */
+        box-sizing: border-box;
         position: relative;
         overflow: hidden;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         border-radius: 4px;
-        border: 1.5px solid var(--value-border-color);
+        border: 1.3px solid var(--value-border-color);
         transition: background-color 0.1s ease-in-out;
         background-color: var(--display-color);
     }
 
     .display-focus {
         background-color: var(--heading-color);
-        border: 1.5px solid var(--outer-border-color);
+        border: 1.3px solid var(--outer-border-color);
     }
 
     .display:after {
@@ -412,4 +414,5 @@
         color: var(--edit-blue);
         font-weight: 400;
     }
+
 </style>

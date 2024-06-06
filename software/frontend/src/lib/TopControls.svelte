@@ -19,7 +19,7 @@
   import type { SystemState } from "../state/systemState.svelte";
   import {onMount} from "svelte";
 
-  let burgerMenu: any;
+  let burgerMenu: any = $state();
   let menuLocation = $state({ top: 0, left: 0 });
 
   let showDropdown = $state(false);

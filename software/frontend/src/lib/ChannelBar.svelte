@@ -45,7 +45,7 @@
     let isEditing = false;
     let isMounted = false;
 
-    let dotMenu: HTMLElement;
+    let dotMenu = $state() as unknown as HTMLElement;
     let menuLocation = $state({ top: 0, left: 0 });
     // let showDropdown = $state(false);
 

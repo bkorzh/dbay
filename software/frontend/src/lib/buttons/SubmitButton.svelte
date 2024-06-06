@@ -2,12 +2,14 @@
   // import { createEventDispatcher } from 'svelte';
   // export let uiStateStore;
   import { ui_state } from "../../state/uiState.svelte";
+  import type { Snippet } from "svelte";
 
   interface Props {
     onclick: () => void;
+    children: Snippet;
   }
 
-  let { onclick }: Props = $props();
+  let { onclick, children }: Props = $props();
 
   // const dispatch = createEventDispatcher();
   
@@ -23,7 +25,7 @@
       : 'blue text-blue-500 bg-blue-50 border-blue-500 hover:bg-blue-100'
     } text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
 {onclick}>
-  <slot />
+  {@render children()}
 </button>
 
 

@@ -71,7 +71,7 @@
 
 
 {#snippet menu_buttons()}
-  <MenuButton onclick={() => console.log("undefined")}>undefined</MenuButton>
+  <MenuButton onclick={() => console.log("todo")}>undefined</MenuButton>
 {/snippet}
 
 <div class="module-container">

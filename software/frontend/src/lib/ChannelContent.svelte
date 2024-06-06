@@ -105,8 +105,8 @@
             {ch.sign_temp}
         </div> -->
         <PlusMinus {ch} {onChannelChange}></PlusMinus>
-        <div class="spacer-chev"></div>
-        <div class="spacer-chev"></div>
+        <!-- <div class="spacer-chev"></div>
+        <div class="spacer-chev"></div> -->
         <div class="controls">
             <div class="buttons-top">
                 <ChevButtonTop onclick={() => increment(0, 1)} />
@@ -197,11 +197,6 @@
         margin-bottom: auto;
         margin-left: 0.3rem;
         margin-right: 0.3rem;
-    }
-
-    .plus-minus:hover {
-        /* cursor: pointer; */
-        background-color: var(--hover-body-color);
     }
 
     .left {

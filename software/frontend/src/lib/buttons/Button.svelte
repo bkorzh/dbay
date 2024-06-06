@@ -2,15 +2,17 @@
 
 
 <script lang='ts'>
+  import type { Snippet } from "svelte";
   import { ui_state } from "../../state/uiState.svelte";
 
   // export let uiStateStore;
   interface Props {
     redGreen: boolean;
     onclick: () => void;
+    children: Snippet;
   }
 
-  let { redGreen, onclick }: Props = $props();
+  let { redGreen, onclick, children }: Props = $props();
 </script>
 
 
@@ -25,7 +27,7 @@
     text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
 
 >
-  <slot />
+  {@render children()}
   <!-- my-2 ml-2 -->
 </button>
 

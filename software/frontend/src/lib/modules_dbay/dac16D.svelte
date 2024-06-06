@@ -36,7 +36,7 @@
   let slot = $derived(system_state.data[module_index]?.core.slot);
 
   let show_dropdown = $state(Array.from({ length: 16 }, (_, i) => false));
-  let link_enabled = $state(Array.from({ length: 16 }, (_, i) => false));
+  let link_enabled = $state(Array.from({ length: 16 }, (_, i) => true));
 
   const c = system_state.data[module_index] as dac16D;
 
@@ -168,6 +168,16 @@
       const edited_channel_data = c.vsource.channels[i].currentStateAsChange();
       checkValidAllChannel(edited_channel_data, i);
     }
+
+    // the removed link might bring the linked channels back into a synchronized state
+    // find first item in link_enabled that's true. The way I've written checkValidAllChannel,
+    // it needs to be passed data on one connected channel. 
+    let first_true = link_enabled.findIndex((val) => val === true);
+    if (first_true !== -1) {
+      const edited_channel_data = c.vsource.channels[first_true].currentStateAsChange();
+      checkValidAllChannel(edited_channel_data, first_true);
+    }
+
   }
 
   function handleMouseEnter(i: number) {
@@ -186,7 +196,7 @@
 </script>
 
 {#snippet menu_buttons()}
-  <MenuButton onclick={() => console.log("undefined dac16")}>undefined</MenuButton>
+  <MenuButton onclick={() => console.log("todo")}>undefined</MenuButton>
 {/snippet}
 
 
@@ -502,11 +512,6 @@
     margin-right: 3rem;
   } */
 
-  .identifier {
-    margin-left: 10px;
-    color: var(--module-icon-color);
-    font-size: large;
-  }
 
   .content {
     box-sizing: border-box;
@@ -521,25 +526,6 @@
     border-bottom: 1.3px solid var(--module-border-color);
   }
 
-  .heading {
-    display: flex;
-
-    flex-direction: row;
-    /* justify-content: space-between; */
-    background-color: var(--module-header-color);
-    padding: 0.3rem;
-    color: var(--text-color);
-    font-size: 1.3rem;
-    border: 1.3px solid var(--module-border-color);
-    /* border-bottom: none; */
-    border-top-left-radius: 0.4rem;
-    border-top-right-radius: 0.4rem;
-  }
-
-  .closed {
-    border-bottom-left-radius: 0.4rem;
-    border-bottom-right-radius: 0.4rem;
-  }
 
   .module-container {
     display: flex;
