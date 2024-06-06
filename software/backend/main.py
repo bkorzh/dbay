@@ -1,6 +1,4 @@
 import uvicorn
-import time
-import os
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -14,7 +12,8 @@ from pydantic import BaseModel
 
 from backend.modules import dac4D
 
-
+from backend.logging import get_logger
+logger = get_logger(__name__)
 
 import asyncio
 # import json
@@ -22,12 +21,15 @@ import asyncio
 # import csv
 # from datetime import datetime
 
-
-from backend.state import system_state, IModule, Core, SystemState
-from backend.addons.vsource import IVsourceAddon
-from backend.addons.vsense import IVsenseAddon
+from backend.initialize import UdpControl, global_controller, system_state
+from backend.state import IModule, SystemState
+# from backend.addons.vsource import IVsourceAddon
+# from backend.addons.vsense import IVsenseAddon
 from backend.location import BASE_DIR
-from backend.initialize import vsource
+from backend.modules import dac4D
+
+
+
 
 
 
@@ -48,9 +50,9 @@ class VsourceParams(BaseModel):
 
 
 
+
 app = FastAPI()
 app.include_router(dac4D.router)
-
 
 ##########
 # 3 = 2
@@ -58,10 +60,11 @@ app.include_router(dac4D.router)
 
 
 app.mount(
-    "/dbay_control",
+    "/dbay_control/",
     StaticFiles(directory=Path(BASE_DIR, "dbay_control")),
-    name="dbay_control",
+    name="",
 )
+
 
 
 
@@ -77,6 +80,7 @@ async def zero_out_module(module: IModule):
         if not system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
 
 
+# TODO
 @app.post("/initialize-module")
 async def init_module(request: Request, module_args: ModuleAddition):
 
@@ -85,7 +89,7 @@ async def init_module(request: Request, module_args: ModuleAddition):
 
     # Check if a module with the same slot already exists
     for i, module in enumerate(system_state.data):
-        if module.slot == module_args.slot:
+        if module.core.slot == module_args.slot:
             # Replace the existing module
             system_state.data[i] = new_module
             break
@@ -105,25 +109,24 @@ async def vsource_set_state(params: VsourceParams):
 
     system_state.dev_mode = params.dev_mode
 
-    global vsource
-    vsource = VMECTRL(params.ipaddr, params.port)
-    print("source reinitialized")
+    global_controller.udp_control = UdpControl(params.ipaddr, params.port, params.dev_mode)
+
+    logger.info("udp control re-initialized with params: {}".format(params.model_dump()))
     return params
 
 @app.get("/full-state")
 async def state():
 
-    print(system_state.data[3].vsource.channels[0])
+    print(system_state.model_dump())
+
     return system_state
 
 
 @app.put("/full-state")
 async def state_set(request: Request, state: SystemState):
-    print("updating full state")
+    logger.info("full state updated")
     global system_state
     system_state = state
-
-    
     return system_state
 
 

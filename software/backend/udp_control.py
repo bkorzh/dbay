@@ -4,8 +4,7 @@ import select
 
 
 
-class VMECTRL:
-
+class UdpControl:
 
     def __init__(self, ip: str, port: int, dev_mode: bool, timeout: int = 1):    
         self._ip = ip
@@ -47,39 +46,3 @@ class VMECTRL:
                 return "Error: {}".format(str(e))
         else:
             return '+ok\n'
-        
-        
-
-    def setDACVol(self, board: int, dacchan: int, voltage: float) -> str:
-        message = ""
-        if board <0 or board > 7:
-            return "error, board out of range"
-        if dacchan <0 or dacchan > 15:
-            return "error, channel out of range"
-        if  voltage < -10  or voltage > 10:
-            return "error, voltage out of range"
-        else:
-            message = "SetDAC "+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
-        
-        return self.send_message(message)
-
-    def setChVol(self, board: int, diffchan: int, voltage: float):
-        if board <0 or board > 7:
-            print("error, board out of range")
-            return -1
-        if diffchan <0 or diffchan > 7:
-            print("error, channel out of range")
-            return -1
-        if  voltage < -20  or voltage > 20:
-            return "error, voltage out of range"
-        else:
-            r1 = self.setDACVol(board, diffchan*2, voltage/2)
-            r2 = self.setDACVol(board, diffchan*2+1, -voltage/2)
-            # r1 = self.setDACVol(board, diffchan, voltage)
-            # r2 = '+ok\n'
-            print(r1)
-            print(r2)
-            if r1 == '+ok\n' and r2 == '+ok\n':
-                return 0
-            else: 
-                return -1
