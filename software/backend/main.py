@@ -11,26 +11,28 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from backend.modules import dac4D
-
+from typing import Literal, Union, Type, Any, Callable
+from typing import cast
 from backend.logging import get_logger
 logger = get_logger(__name__)
 
 import asyncio
-# import json
+import importlib
+
+from backend.udp_control import parent_udp, UDP
 
 # import csv
 # from datetime import datetime
 
-from backend.initialize import UdpControl, global_controller, system_state
+from backend.initialize import global_state
 from backend.state import IModule, SystemState
 # from backend.addons.vsource import IVsourceAddon
 # from backend.addons.vsense import IVsenseAddon
 from backend.location import BASE_DIR
-from backend.modules import dac4D
 
-
-
-
+# from state import load_modules_from_directory
+# from importlib import import_module
+# import os
 
 
 class ModuleAddition(BaseModel):
@@ -77,39 +79,25 @@ async def return_index(request: Request):
 async def zero_out_module(module: IModule):
     for channel in range(len(module.vsource.channels)):
         await asyncio.sleep(0.01)
-        if not system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
+        if not global_state.system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
 
 
-# TODO
+
 @app.post("/initialize-module")
-async def init_module(request: Request, module_args: ModuleAddition):
+async def init_module(request: Request, addition_args: ModuleAddition):
 
+    global_state.add_module(addition_args.type, addition_args.slot)
     
-    new_module = dac4D.create_prototype(module_args.slot)
-
-    # Check if a module with the same slot already exists
-    for i, module in enumerate(system_state.data):
-        if module.core.slot == module_args.slot:
-            # Replace the existing module
-            system_state.data[i] = new_module
-            break
-    else:
-        # Append the new module if no existing module was found
-        system_state.data.append(new_module)
-
-    # Zero out the new module
-    asyncio.create_task(zero_out_module(new_module))
-
-    system_state.data = sorted(system_state.data, key=lambda x: x.slot)
-    return system_state
+    return global_state.system_state
 
 
 @app.post("/initialize-vsource")
 async def vsource_set_state(params: VsourceParams):
 
-    system_state.dev_mode = params.dev_mode
+    global_state.system_state.dev_mode = params.dev_mode
+    udp = UDP(params.ipaddr, params.port, params.dev_mode)
 
-    global_controller.udp_control = UdpControl(params.ipaddr, params.port, params.dev_mode)
+    parent_udp.udp = udp
 
     logger.info("udp control re-initialized with params: {}".format(params.model_dump()))
     return params
@@ -117,17 +105,21 @@ async def vsource_set_state(params: VsourceParams):
 @app.get("/full-state")
 async def state():
 
-    print(system_state.model_dump())
+    # print(system_state.model_dump())
+    # thing = cast(dac4D, global_state.system_state.data[3])
 
-    return system_state
+
+    # print(global_state.system_state.data[3].vsource
+
+    return global_state.system_state
 
 
 @app.put("/full-state")
 async def state_set(request: Request, state: SystemState):
     logger.info("full state updated")
-    global system_state
-    system_state = state
-    return system_state
+
+    global_state.system_state = state
+    return global_state.system_state
 
 
 if __name__ == "__main__":

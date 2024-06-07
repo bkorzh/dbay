@@ -13,6 +13,7 @@
   import { VisibleState } from "../buttons/module_chevron";
   import ModuleHeading from "../ModuleHeading.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
+  import dac4D_icon from "/dac4D_icon.svg";
 
   interface MyProps {
     module_index: number;
@@ -82,7 +83,7 @@
     {module_index} 
     name={"Voltage Source"} 
     {menu_buttons}
-    icon_name="./dac4D_icon.svg"
+    icon_name={dac4D_icon}
     ></ModuleHeading>
 
   <div class="body">

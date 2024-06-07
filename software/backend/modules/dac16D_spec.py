@@ -1,33 +1,33 @@
 from backend.state import IModule, Core
 from backend.addons.vsource import IVsourceAddon, ChSourceState
 from typing import Literal
-from backend.udp_control import Controller, ParentUDP
-
 from backend.logging import get_logger
+from backend.udp_control import Controller, ParentUDP
 logger = get_logger(__name__)
 
 
 
-class dac4D(IModule):
-    module_type: Literal["dac4D"] = "dac4D"
+class dac16D(IModule):
+    module_type: Literal["dac16D"] = "dac16D"
     core: Core
     vsource: IVsourceAddon
 
 
 def create_prototype(slot: int):
-    channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac4D", measuring=False) for i in range(4)]
-    return dac4D(core=Core(slot=slot, type="dac4D", name="empty"), vsource=IVsourceAddon(channels=channels))
+    channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac16D", measuring=False) for i in range(16)]
+    return dac16D(core=Core(slot=slot, type="dac4D", name="empty"), vsource=IVsourceAddon(channels=channels))
 
 
 
-class dac4DController(Controller):
+
+class dac16DController(Controller):
     def __init__(self, parent_udp: ParentUDP, module_slot: int):
-        super().__init__(parent_udp, "dac4D")
+        super().__init__(parent_udp, "dac16D")
         self.module_slot = module_slot
 
         # Resource acquisition is initialization (RAII)
         self.setDevice(self.module_slot)
-        
+
 
     def sendVS(self, board: int, dacchan: int, voltage: float) -> str:
         pass
@@ -43,6 +43,16 @@ class dac4DController(Controller):
         else:
             message = "DAC4D VSD"+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
         
+        return self.parent_udp.udp.send_message(message)
+    
+    def sendVSB(self, board: int, voltage: float) -> str:
+        message = ""
+        if board <0 or board > 7:
+            return "error, board out of range"
+        if  voltage < 0  or voltage > 8:
+            return "error, voltage out of range"
+        else:
+            message = "DAC4D VSB"+ str(board) + " " + str(voltage) + "\n"
         return self.parent_udp.udp.send_message(message)
 
     def setChVol(self, board: int, diffchan: int, voltage: float):
@@ -66,5 +76,14 @@ class dac4DController(Controller):
             else: 
                 return -1
             
+    def readV(self, board: int):
+        message = ""
+        if board <0 or board > 7:
+            return "error, board out of range"
+        else:
+            message = "DAC4D VSD"+ str(board) + "\n"
+        
+        return self.parent_udp.udp.send_message(message)
+            
 
-# udp_dac4d = UDPdac4D(global_controller.udp_control)
+# udp_dac16d = UDPdac16D(global_controller.udp_control)

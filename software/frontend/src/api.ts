@@ -31,6 +31,7 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            console.log(response)
             return response.json();
         });
 }

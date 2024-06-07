@@ -27,12 +27,14 @@
   let num_modules = 0;
   let module_idx: number[] = $state([]);
   let intervalId: number;
+  let json_state: JsonSystemState
 
   let component_array = $derived(createComponentArray(system_state.data))
 
   onMount(async () => {
     try {
-      const json_state: JsonSystemState = await getFullState();
+      json_state = await getFullState();
+      console.log("initial json state: ", json_state)
       // if the server responds, but the data field is empty, then the server is not initialized
       if (json_state.data.every(module => module.core.type === "empty")) {
         ui_state.show_module_adder = true; // reactive
@@ -42,12 +44,15 @@
 
       // Start the interval
       intervalId = setInterval(async () => {
-        const json_state = await getFullState();
+        
+        json_state = await getFullState();
+        console.log("interval json state: ", json_state)
         updateSystemStatefromJson(json_state); // this seems costly
       }, 1000); // 1000 milliseconds = 1 second
 
       // if no response, server is not available. Use fallback state for testing
     } catch (error) {
+      console.log("error!", error);
       serverNotResponding = true;
       updateSystemStatetoFallback();
     }

@@ -76,6 +76,7 @@ export function createComponentArray(module_list: IModule[]): any {
 export function createSystemStatefromJson(parsed: JsonSystemState) {
   const data = parsed.data.map((item: any) => {
     // depending on the type of module, we need dynamically create the module objects
+    console.log("the type of the module is: ", item.core.type)
     const module = new modules[item.core.type](item);
     return module as IModule
   });

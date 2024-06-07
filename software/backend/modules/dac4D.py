@@ -1,9 +1,8 @@
 
 
 from backend.addons.vsource import VsourceChange, ChSourceState
-from backend.udp_control import UdpControl
 from fastapi import Request
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 
 from backend.location import BASE_DIR
 
@@ -11,18 +10,17 @@ from backend.location import BASE_DIR
 import os
 import csv
 from datetime import datetime
-from backend.initialize import global_controller
+from backend.initialize import global_state
 
-from backend.state import IModule, Core
-from backend.addons.vsource import IVsourceAddon, ChSourceState
+from backend.addons.vsource import ChSourceState
 
 from typing import cast
 from backend.logging import get_logger
 
+from backend.modules.dac4D_spec import dac4D, dac4DController
 
-from backend.initialize import system_state
 
-from backend.modules.dac4D_spec import dac4D
+from backend.initialize import global_state
 
 
 logger = get_logger(__name__)
@@ -31,47 +29,6 @@ router = APIRouter(
     prefix="/dac4D",
     responses={404: {"description": "Not found"}},
 )
-
-
-class UDPdac4D:
-    def __init__(self, udp: UdpControl):
-        self.udp = udp
-
-    def setDACVol(self, board: int, dacchan: int, voltage: float) -> str:
-        message = ""
-        if board <0 or board > 7:
-            return "error, board out of range"
-        if dacchan <0 or dacchan > 15:
-            return "error, channel out of range"
-        if  voltage < -10  or voltage > 10:
-            return "error, voltage out of range"
-        else:
-            message = "SetDAC "+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
-        
-        return self.udp.send_message(message)
-
-    def setChVol(self, board: int, diffchan: int, voltage: float):
-        if board <0 or board > 7:
-            logger.error("error, board out of range")
-            return -1
-        if diffchan <0 or diffchan > 7:
-            logger.error("error, channel out of range")
-            return -1
-        if  voltage < -20  or voltage > 20:
-            return "error, voltage out of range"
-        else:
-            r1 = self.setDACVol(board, diffchan*2, voltage/2)
-            r2 = self.setDACVol(board, diffchan*2+1, -voltage/2)
-            logger.debug(f"UDPdac4D: {r1}")
-            logger.debug(f"UDPdac4D: {r2}")
-            if r1 == '+ok\n' and r2 == '+ok\n':
-                return 0
-            else: 
-                return -1
-            
-
-udp_dac4d = UDPdac4D(global_controller.udp_control)
-
 
 
 
@@ -119,11 +76,20 @@ def identify_change(change: VsourceChange, old_channel_state: ChSourceState):
     return diff
 
 
-@router.put("/vsource")
+@router.put("/vsource/")
 async def voltage_set(request: Request, change: VsourceChange):
 
-    assert isinstance(system_state.data[change.module_index] , dac4D)
-    dac_4d: dac4D = cast(dac4D, system_state.data[change.module_index])
+    try:
+        assert global_state.system_state.data[change.module_index].core.type == "dac4D" # type: ignore
+
+
+    except AssertionError:
+        logger.error("Module not dac4D")
+        raise HTTPException(status_code=404, detail="Module not dac4D")
+    
+    assert board == global_state.system_state.data[change.module_index].core.slot # type: ignore
+
+    dac_4d = cast(dac4D, global_state.system_state.data[change.module_index]) # type: ignore
     change.bias_voltage = round(change.bias_voltage, 4)
 
 
@@ -131,22 +97,27 @@ async def voltage_set(request: Request, change: VsourceChange):
         change, dac_4d.vsource.channels[change.index]
     )
 
-    
 
     source_channel = dac_4d.vsource.channels[change.index]
     source_channel.heading_text = change.heading_text
     source_channel.measuring = change.measuring
 
-    if change.index >= 0 and change.index <= 3:
-        board = change.module_index
+    slot = change.module_index
+    dac4d_controller = cast(dac4DController, global_state.controllers[slot])
 
-        assert board == system_state.data[change.module_index].core.slot
+    if change.index >= 0 and change.index <= 3:
+        
+
+        
 
         if change.activated == False:
             logger.info(f"turning off {change.index} or already off")
             source_channel.bias_voltage = change.bias_voltage
             source_channel.activated = False
-            udp_dac4d.setChVol(board, change.index, 0)
+            
+            
+            dac4d_controller.setChVol(slot, change.index, 0)
+
             logger.info(f"dac_4d.vsource.channels[change.index]: {dac_4d.vsource.channels[change.index]}")
             return change
         
@@ -155,7 +126,8 @@ async def voltage_set(request: Request, change: VsourceChange):
             source_channel.bias_voltage = change.bias_voltage
             if source_channel.activated == False:
                 source_channel.activated = True
-            udp_dac4d.setChVol(board, change.index, change.bias_voltage)
+
+            dac4d_controller.setChVol(slot, change.index, change.bias_voltage)
             return change
         
 
