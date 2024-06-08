@@ -7,7 +7,7 @@ export interface IModule {
   core: CoreModule;
   vsource?: VsourceAddon; // VsourceAddon is a class that implements the IVsourceAddon interface...
   vsense?: VsenseAddon;
-  update(data: JsonModule): void;
+  update: (data: JsonModule) => void;
 }
 
 export interface JsonModule {
@@ -15,7 +15,6 @@ export interface JsonModule {
   vsource?: IVsourceAddon;
   vsense?: IVsenseAddon;
 }
-
 
 
 export interface JsonCoreModule {
@@ -56,7 +55,7 @@ export class SystemStateClass implements SystemState {
   dev_mode: boolean = $state(false);
 
   constructor(data: Array<IModule>, valid: boolean, dev_mode: boolean) {
-    this.data = data;
+    data.forEach(item => this.data.push(item));
     this.valid = valid;
     this.dev_mode = dev_mode;
   }
@@ -113,7 +112,9 @@ export function switch_on_off_system(system: SystemState, onoff: boolean): Syste
 
 // export const 
 
-export let system_state: SystemState = new SystemStateClass([], false, false);
+
+
+export let system_state: SystemStateClass = new SystemStateClass([], false, false);
 
 
 

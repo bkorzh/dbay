@@ -12,11 +12,12 @@
   import BasicContainer from "./lib/BasicContainer.svelte";
   import ReInitSource from "./lib/modules_ui/ReInitSource.svelte";
 
-  import { createComponentArray } from "./lib/modules_dbay/index.svelte";
+  import { ComponentManager } from "./lib/modules_dbay/index.svelte";
 
   import { createSystemStatefromJson, updateSystemStatefromJson, updateSystemStatetoFallback } from "./lib/modules_dbay/index.svelte";
 
   import { system_state } from "./state/systemState.svelte";
+  import { manager } from "./lib/modules_dbay/index.svelte";
 
   function toggleDarkMode() {
     document.body.classList.toggle("dark-mode");
@@ -25,11 +26,13 @@
   let serverNotResponding = $state(false);
   // let serverNotInitialized = false;
   let num_modules = 0;
-  let module_idx: number[] = $state([]);
+  
   let intervalId: number;
   let json_state: JsonSystemState
 
-  let component_array = $derived(createComponentArray(system_state.data))
+  // let component_array = $derived(createComponentArray(system_state.data))
+  
+
 
   onMount(async () => {
     try {
@@ -47,6 +50,7 @@
         
         json_state = await getFullState();
         console.log("interval json state: ", json_state)
+        console.log("system_state: ", system_state.data)
         updateSystemStatefromJson(json_state); // this seems costly
       }, 1000); // 1000 milliseconds = 1 second
 
@@ -58,11 +62,7 @@
     }
     num_modules = system_state.data.length;
 
-    for (let i = 0; i < num_modules; i++) {
-      if (system_state.data[i].core.type !== "empty") {
-        module_idx.push(i);
-      }
-    }
+    
 
   });
 
@@ -71,12 +71,16 @@
     clearInterval(intervalId);
   });
 
-  // $effect(() => {
-  //   console.log("scrollY: ", scrollY);
-  //   // if (scrollY > 0) {
-  //   //   console.log("scrollY: ", scrollY);
-  //   // }
-  // });
+  $effect(() => {
+    console.log("system_state inside effect: ", system_state.data)
+    // if (scrollY > 0) {
+    //   console.log("scrollY: ", scrollY);
+    // }
+  });
+
+  $effect(() => {
+    console.log("manager.module_idx inside effect: ", manager.module_idx)
+  });
 
 
   // let scrollable = $state(true);
@@ -142,11 +146,11 @@
       </BasicContainer>
     {/if}
 
-    {#if module_idx}
-      {#each module_idx as idx, i}
+    {#if manager.module_idx}
+      {#each manager.module_idx as idx, i}
       <!-- module_idx has numbers for filled slots. e.g [0, 3, 5] -->
       <!-- i counts from 0 to (one minus number of filled slots). e.g. [0, 1, 2] -->
-        <svelte:component this={component_array[i]} module_index={idx}/>
+        <svelte:component this={manager.component_array[i]} module_index={idx}/>
       {/each}
     {:else}
       <div class="basic-block">Loading...</div>

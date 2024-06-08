@@ -109,7 +109,7 @@
   
 
   .body {
-    background-color: var(--bg-color);
+    background-color: var(--body-color);
     box-sizing: border-box;
     display: flex;
     flex-direction: row;

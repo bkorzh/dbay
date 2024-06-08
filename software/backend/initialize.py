@@ -17,6 +17,8 @@ from typing import Literal, Union, Type, Any, Callable
 from typing import cast
 from pydantic import BaseModel
 
+from backend.modules.dac4D_spec import dac4DController
+
 
 # # create a default testing state
 # data: list[Any]  = [Empty(core=Core(slot=i, type="empty", name="empty")) for i in range(8)]
@@ -65,11 +67,13 @@ class GlobalState:
 
         modules = self.load_modules_from_directory('modules')
         # get the create_prototype() function from a module file, like dac4D_spec.create_prototype()
+
+        print("module_type", module_type)
         creator = cast(Callable[[int], BaseModel], modules[module_type].create_prototype)
-        controller_class = cast(Type[Controller], getattr(modules[module_type], f'{module_type}Controller'))
+        controller_class = cast(Type[dac4DController], getattr(modules[module_type], f'{module_type}Controller'))
 
         model = creator(slot)
-        controller_instance = controller_class(parent_udp, module_type)
+        controller_instance = controller_class(parent_udp, slot)
 
         self.system_state.data[slot] = model # type: ignore
         self.controllers[slot] = controller_instance

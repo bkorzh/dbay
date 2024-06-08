@@ -70,7 +70,9 @@ class Controller:
 
     def setDevice(self, board: int) -> str:
         message = ""
-        if board <0 or board > 7:
+
+        print("this is board")
+        if board < 0 or board > 7:
             return "error, board out of range"
         else:
             message = "SETDEV" + str(board) + str(self.module_type) + "\n"

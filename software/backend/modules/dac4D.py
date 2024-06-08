@@ -87,7 +87,9 @@ async def voltage_set(request: Request, change: VsourceChange):
         logger.error("Module not dac4D")
         raise HTTPException(status_code=404, detail="Module not dac4D")
     
-    assert board == global_state.system_state.data[change.module_index].core.slot # type: ignore
+
+    slot = change.module_index
+    assert slot == global_state.system_state.data[change.module_index].core.slot # type: ignore
 
     dac_4d = cast(dac4D, global_state.system_state.data[change.module_index]) # type: ignore
     change.bias_voltage = round(change.bias_voltage, 4)
@@ -102,7 +104,7 @@ async def voltage_set(request: Request, change: VsourceChange):
     source_channel.heading_text = change.heading_text
     source_channel.measuring = change.measuring
 
-    slot = change.module_index
+    
     dac4d_controller = cast(dac4DController, global_state.controllers[slot])
 
     if change.index >= 0 and change.index <= 3:

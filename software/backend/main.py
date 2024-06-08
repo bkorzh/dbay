@@ -56,9 +56,6 @@ class VsourceParams(BaseModel):
 app = FastAPI()
 app.include_router(dac4D.router)
 
-##########
-# 3 = 2
-# important: you need to change how module_index is created (AND UPDATED) on the frontend. It should be the place in the array of the module. NOT the slot. 
 
 
 app.mount(
@@ -110,6 +107,8 @@ async def state():
 
 
     # print(global_state.system_state.data[3].vsource
+
+    print(global_state.system_state)
 
     return global_state.system_state
 

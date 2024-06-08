@@ -16,7 +16,7 @@ class dac4D(IModule):
 
 def create_prototype(slot: int):
     channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac4D", measuring=False) for i in range(4)]
-    return dac4D(core=Core(slot=slot, type="dac4D", name="empty"), vsource=IVsourceAddon(channels=channels))
+    return dac4D(core=Core(slot=slot, type="dac4D", name="my dac4D module"), vsource=IVsourceAddon(channels=channels))
 
 
 
@@ -26,6 +26,8 @@ class dac4DController(Controller):
         self.module_slot = module_slot
 
         # Resource acquisition is initialization (RAII)
+
+        print("this is module slot in dac4D controller", self.module_slot)
         self.setDevice(self.module_slot)
         
 

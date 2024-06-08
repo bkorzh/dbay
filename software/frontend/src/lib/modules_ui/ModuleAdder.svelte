@@ -39,19 +39,19 @@
         >
             <select bind:value={selectedSlot} style="height: 2.6rem; width: 100%">
                 <option value="" selected>Select module slot</option>
-                <option value="1">Slot 1</option>
-                <option value="2">Slot 2</option>
-                <option value="3">Slot 3</option>
-                <option value="4">Slot 4</option>
-                <option value="5">Slot 5</option>
-                <option value="6">Slot 6</option>
-                <option value="7">Slot 7</option>
-                <option value="8">Slot 8</option>
+                <option value="0">Slot 1</option>
+                <option value="1">Slot 2</option>
+                <option value="2">Slot 3</option>
+                <option value="3">Slot 4</option>
+                <option value="4">Slot 5</option>
+                <option value="5">Slot 6</option>
+                <option value="6">Slot 7</option>
+                <option value="7">Slot 8</option>
             </select>
             <select bind:value={selectedType} style="height: 2.6rem; width: 100%">
                 <option value="" selected>Select module type</option>
-                <option value="1">4 Ch. Triax</option>
-                <option value="1">16 Ch. Micro Coax (not implemented yet)</option>
+                <option value="dac4D">4 ch. differential</option>
+                <option value="dac16D">dac16D - 16 ch. differential </option>
             </select>
         </div>
         <SubmitButton onclick={initialize}
