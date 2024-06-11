@@ -102,14 +102,6 @@ async def vsource_set_state(params: VsourceParams):
 @app.get("/full-state")
 async def state():
 
-    # print(system_state.model_dump())
-    # thing = cast(dac4D, global_state.system_state.data[3])
-
-
-    # print(global_state.system_state.data[3].vsource
-
-    print(global_state.system_state)
-
     return global_state.system_state
 
 

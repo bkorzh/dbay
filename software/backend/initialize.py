@@ -54,7 +54,7 @@ class GlobalState:
     def load_modules_from_directory(directory: str) -> dict[str, Type[Any]]:
         modules: dict[str, Any] = {}
         for filename in os.listdir(directory):
-            print(filename)
+            # print(filename)
             if filename.endswith('_spec.py') and filename != '__init__.py':
                 module_name = filename[:-8]  # remove '_spec.py' from filename
                 module = importlib.import_module(f'.{module_name}_spec', package=f"backend.{directory}")
@@ -68,7 +68,7 @@ class GlobalState:
         modules = self.load_modules_from_directory('modules')
         # get the create_prototype() function from a module file, like dac4D_spec.create_prototype()
 
-        print("module_type", module_type)
+        # print("module_type", module_type)
         creator = cast(Callable[[int], BaseModel], modules[module_type].create_prototype)
         controller_class = cast(Type[dac4DController], getattr(modules[module_type], f'{module_type}Controller'))
 

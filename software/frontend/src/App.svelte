@@ -147,7 +147,7 @@
     {/if}
 
     {#if manager.module_idx}
-      {#each manager.module_idx as idx, i}
+      {#each manager.module_idx as idx, i (idx)}
       <!-- module_idx has numbers for filled slots. e.g [0, 3, 5] -->
       <!-- i counts from 0 to (one minus number of filled slots). e.g. [0, 1, 2] -->
         <svelte:component this={manager.component_array[i]} module_index={idx}/>
