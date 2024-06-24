@@ -1,10 +1,8 @@
-import type { IVsourceAddon, ChSourceState, VsourceChange } from './interface';
-
+import type { IVsourceAddon, ChSourceState, VsourceChange } from "./interface";
 
 export type ChangerFunction = (data: VsourceChange) => Promise<VsourceChange>;
 
 export class ChSourceStateClass implements ChSourceState {
-
   // interface defined properties
   public index: number;
   public bias_voltage: number = $state(0);
@@ -23,16 +21,18 @@ export class ChSourceStateClass implements ChSourceState {
   public thousands = $derived(this.integer % 10);
   public hundreds = $derived(Math.floor(this.integer / 10) % 10);
   public tens = $derived(Math.floor(this.integer / 100) % 10);
-  public ones = $derived(Math.floor(this.integer / 1000) % 10)
+  public ones = $derived(Math.floor(this.integer / 1000) % 10);
   public sign = $derived(this.bias_voltage < 0 ? "-" : "+");
-  public editing = $state(false);
   public isHovering = $state(false);
   public isPlusMinusPressed = $state(false);
   public focusing = $state(false);
 
+  // editing locks. Prevent server updates to fields currently being edited
   public heading_editing = $state(false);
-  public immediate_text = $state("");
+  public editing = $state(false);
 
+
+  public immediate_text = $state("");
 
   constructor(data: ChSourceState, module_index: number) {
     this.index = data.index;
@@ -65,8 +65,10 @@ export class ChSourceStateClass implements ChSourceState {
     };
   }
 
-
-  public async validateUpdateVoltage(voltage: number, onChannelChange: ChangerFunction) {
+  public async validateUpdateVoltage(
+    voltage: number,
+    onChannelChange: ChangerFunction
+  ) {
     if (voltage >= 5) {
       voltage = 5;
     }
@@ -78,7 +80,7 @@ export class ChSourceStateClass implements ChSourceState {
 
   public onSubmit(onChannelChange: ChangerFunction) {
     const submitted_voltage = parseFloat(
-      `${this.sign_temp}${this.temp[0]}.${this.temp[1]}${this.temp[2]}${this.temp[3]}`,
+      `${this.sign_temp}${this.temp[0]}.${this.temp[1]}${this.temp[2]}${this.temp[3]}`
     );
 
     this.validateUpdateVoltage(submitted_voltage, onChannelChange);
@@ -91,15 +93,16 @@ export class ChSourceStateClass implements ChSourceState {
     }, 1);
   }
 
-  public async updateChannel({
-    voltage = this.bias_voltage,
-    activated = this.activated,
-    heading_text = this.heading_text,
-    index = this.index,
-    measuring = this.measuring,
-  } = {}, onChannelChange: ChangerFunction) {
-
-
+  public async updateChannel(
+    {
+      voltage = this.bias_voltage,
+      activated = this.activated,
+      heading_text = this.heading_text,
+      index = this.index,
+      measuring = this.measuring,
+    } = {},
+    onChannelChange: ChangerFunction
+  ) {
     const data: VsourceChange = {
       module_index: this.module_index,
       bias_voltage: voltage,
@@ -125,12 +128,14 @@ export class ChSourceStateClass implements ChSourceState {
   }
 
   public voltageToTemp(): void {
-    this.temp[3] = this.thousands;
-    this.temp[2] = this.hundreds;
-    this.temp[1] = this.tens;
-    this.temp[0] = this.ones;
-    this.sign_temp = this.sign;
-    
+    if (!this.editing) {
+      this.temp[3] = this.thousands;
+      this.temp[2] = this.hundreds;
+      this.temp[1] = this.tens;
+      this.temp[0] = this.ones;
+      this.sign_temp = this.sign;
+    }
+
     if (!this.heading_editing) this.immediate_text = this.heading_text;
   }
 
@@ -145,48 +150,57 @@ export class ChSourceStateClass implements ChSourceState {
     // this.activated = false;
   }
 
-  public setValid(data: VsourceChange, static_heading=false): void {
+  public setValid(data: VsourceChange, static_heading = false): void {
     this.valid = true;
     this.setChannel(data, static_heading);
   }
 }
 
-
-
 export class VsourceAddon implements IVsourceAddon {
   public channels: ChSourceStateClass[];
 
-
-  constructor(module_index: number, channels?: Array<ChSourceState>, default_channel_number = 4) {
-
+  constructor(
+    module_index: number,
+    channels?: Array<ChSourceState>,
+    default_channel_number = 4
+  ) {
     const deflt = !channels || channels.length === 0;
-    this.channels = Array.from({ length: deflt ? default_channel_number : channels.length }, (_, i) => {
-
-      if (deflt) {
-        return new ChSourceStateClass({
-          index: i,
-          bias_voltage: 0,
-          activated: false,
-          heading_text: "channel " + (i + 1),
-          measuring: false
-        }, module_index);
-      } else {
-        return new ChSourceStateClass(channels[i], module_index);
+    this.channels = Array.from(
+      { length: deflt ? default_channel_number : channels.length },
+      (_, i) => {
+        if (deflt) {
+          return new ChSourceStateClass(
+            {
+              index: i,
+              bias_voltage: 0,
+              activated: false,
+              heading_text: "channel " + (i + 1),
+              measuring: false,
+            },
+            module_index
+          );
+        } else {
+          return new ChSourceStateClass(channels[i], module_index);
+        }
       }
-    });
+    );
   }
 
   public update(module_index: number, channels: Array<ChSourceState>): void {
+
+    // I need to figure out how to check for an invalid shared channel state here, because someone editing
+    // the state could invalidate it. 
+
     for (let i = 0; i < this.channels.length; i++) {
       this.channels[i].update(channels[i], module_index);
     }
   }
 
   public switchOnOffAllChannels(onoff: boolean): void {
-    this.channels.forEach(channel => channel.activated = onoff);
+    this.channels.forEach((channel) => (channel.activated = onoff));
   }
 
   public setAllChannelsVoltage(voltage: number): void {
-    this.channels.forEach(channel => channel.bias_voltage = voltage);
+    this.channels.forEach((channel) => (channel.bias_voltage = voltage));
   }
 }

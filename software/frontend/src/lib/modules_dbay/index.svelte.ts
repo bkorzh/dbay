@@ -178,6 +178,9 @@ export function updateSystemStatetoFallback() {
   ];
   system_state.valid = false;
   system_state.dev_mode = true;
+
+  manager.createComponentArray(system_state.data);
+  manager.updateModuleIdx(system_state.data.length);
 }
 
 // I need to make the TotalState.data as an object and find a way to connect the data of that object to the component.

@@ -1335,3 +1335,1522 @@
 2024-06-11 15:24:18,308 - backend.modules.dac4D - INFO - Changes: ['Module index 3 (slot 3), channel 0: activated changed from True to False']
 2024-06-11 15:24:18,309 - backend.modules.dac4D - INFO - turning off 0 or already off
 2024-06-11 15:24:18,309 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.0 activated=False heading_text='0th ch dac4D' measuring=False
+2024-06-17 19:25:40,839 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from False to True']
+2024-06-17 19:25:40,848 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:41,718 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-06-17 19:25:41,718 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:41,785 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-06-17 19:25:41,785 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:41,851 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-06-17 19:25:41,852 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:41,919 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.3 to 0.4']
+2024-06-17 19:25:41,920 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,210 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.4 to 0.41']
+2024-06-17 19:25:42,210 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,269 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.41 to 0.42']
+2024-06-17 19:25:42,269 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,336 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.42 to 0.43']
+2024-06-17 19:25:42,336 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,386 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.43 to 0.44']
+2024-06-17 19:25:42,386 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,752 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.44 to 0.441']
+2024-06-17 19:25:42,752 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,799 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.441 to 0.442']
+2024-06-17 19:25:42,800 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,859 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.442 to 0.443']
+2024-06-17 19:25:42,859 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:42,969 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.443 to 0.444']
+2024-06-17 19:25:42,970 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:44,312 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.444 to 1.444']
+2024-06-17 19:25:44,313 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:44,370 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.444 to 2.444']
+2024-06-17 19:25:44,370 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:47,914 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 2.444 to 3.444']
+2024-06-17 19:25:47,914 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:48,010 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 3.444 to 4.444']
+2024-06-17 19:25:48,010 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:49,934 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.444 to 5.0']
+2024-06-17 19:25:49,935 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:49,983 - backend.modules.dac4D - INFO - Changes: []
+2024-06-17 19:25:49,983 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:50,049 - backend.modules.dac4D - INFO - Changes: []
+2024-06-17 19:25:50,049 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:50,671 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 5.0 to 4.0']
+2024-06-17 19:25:50,671 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:50,737 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.0 to 3.0']
+2024-06-17 19:25:50,738 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:50,808 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 3.0 to 2.0']
+2024-06-17 19:25:50,808 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:51,139 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 2.0 to 1.0']
+2024-06-17 19:25:51,140 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:51,209 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.0 to 0.0']
+2024-06-17 19:25:51,210 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:51,754 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.0 to 1.0']
+2024-06-17 19:25:51,755 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:52,111 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.0 to 2.0']
+2024-06-17 19:25:52,111 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:52,800 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 2.0 to 1.9']
+2024-06-17 19:25:52,800 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:52,878 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.9 to 1.8']
+2024-06-17 19:25:52,879 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:53,028 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.8 to 1.7']
+2024-06-17 19:25:53,029 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:53,469 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.7 to 1.6']
+2024-06-17 19:25:53,469 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:53,489 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.6 to 1.5']
+2024-06-17 19:25:53,489 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:54,085 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.5 to 1.501']
+2024-06-17 19:25:54,085 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:54,334 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.501 to 1.511']
+2024-06-17 19:25:54,334 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:54,419 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.511 to 1.521']
+2024-06-17 19:25:54,419 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:54,721 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.521 to 1.531']
+2024-06-17 19:25:54,721 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:54,772 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.531 to 1.541']
+2024-06-17 19:25:54,772 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:55,103 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.541 to 1.542']
+2024-06-17 19:25:55,103 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:55,170 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.542 to 1.543']
+2024-06-17 19:25:55,170 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:55,504 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.543 to 1.544']
+2024-06-17 19:25:55,504 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:55,520 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.544 to 1.545']
+2024-06-17 19:25:55,520 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:56,226 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.545 to -1.545']
+2024-06-17 19:25:56,227 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:56,721 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -1.545 to 1.545']
+2024-06-17 19:25:56,722 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:57,546 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.545 to 1.645']
+2024-06-17 19:25:57,546 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:57,711 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.645 to 1.745']
+2024-06-17 19:25:57,712 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:57,998 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.745 to 1.755']
+2024-06-17 19:25:57,998 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:58,137 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.755 to 1.765']
+2024-06-17 19:25:58,138 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:58,732 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.765 to 1.766']
+2024-06-17 19:25:58,733 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:58,888 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.766 to 1.767']
+2024-06-17 19:25:58,888 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:25:59,735 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from True to False']
+2024-06-17 19:25:59,735 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-17 19:25:59,735 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=1.767 activated=False heading_text='1th ch dac4D' measuring=False
+2024-06-17 19:26:00,192 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from False to True']
+2024-06-17 19:26:00,192 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:26:01,315 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: measuring changed from False to True']
+2024-06-17 19:26:01,315 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-17 19:26:07,111 - backend.modules.dac4D - INFO - Changes: ['Module index 2 (slot 2), channel 1: measuring changed from True to False']
+2024-06-17 19:26:07,111 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:38:14,804 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: activated changed from False to True']
+2024-06-18 10:38:14,812 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,268 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:38:17,269 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,286 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:38:17,287 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,344 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:38:17,344 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,403 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.3 to 0.4']
+2024-06-18 10:38:17,404 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,768 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.4 to 0.41']
+2024-06-18 10:38:17,769 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,806 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.41 to 0.42']
+2024-06-18 10:38:17,806 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,865 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.42 to 0.43']
+2024-06-18 10:38:17,865 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:17,946 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.43 to 0.44']
+2024-06-18 10:38:17,947 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:18,265 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.44 to 0.441']
+2024-06-18 10:38:18,266 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:18,334 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.441 to 0.442']
+2024-06-18 10:38:18,335 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:18,389 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.442 to 0.443']
+2024-06-18 10:38:18,390 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:18,499 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.443 to 0.444']
+2024-06-18 10:38:18,499 - backend.modules.dac16D - INFO - turning on 0 or already on
+2024-06-18 10:38:43,401 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 11: activated changed from False to True']
+2024-06-18 10:38:46,574 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 11: activated changed from False to True']
+2024-06-18 10:38:59,198 - backend.util - INFO - Changes: []
+2024-06-18 10:38:59,198 - backend.modules.dac16D - INFO - turning off 3 or already off
+2024-06-18 10:38:59,199 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.0 activated=False heading_text='3th ch dac16D' measuring=False
+2024-06-18 10:39:00,409 - backend.util - INFO - Changes: []
+2024-06-18 10:39:00,410 - backend.modules.dac16D - INFO - turning off 3 or already off
+2024-06-18 10:39:00,410 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.0 activated=False heading_text='3th ch dac16D' measuring=False
+2024-06-18 10:39:02,631 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: activated changed from False to True']
+2024-06-18 10:39:02,632 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:03,560 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:39:03,561 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:03,605 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:39:03,606 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:03,913 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.2 to 0.21']
+2024-06-18 10:39:03,914 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:04,099 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.21 to 0.22']
+2024-06-18 10:39:04,100 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:04,178 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.22 to 0.23']
+2024-06-18 10:39:04,179 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:04,551 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.23 to 0.231']
+2024-06-18 10:39:04,551 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:04,627 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.231 to 0.232']
+2024-06-18 10:39:04,627 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:39:07,629 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 4: activated changed from False to True']
+2024-06-18 10:40:10,604 - backend.util - INFO - Changes: ['Module index 4 (slot 4), channel 2: activated changed from False to True']
+2024-06-18 10:40:10,615 - backend.modules.dac16D - INFO - turning on 2 or already on
+2024-06-18 10:40:13,546 - backend.util - INFO - Changes: ['Module index 4 (slot 4), channel 12: activated changed from False to True']
+2024-06-18 10:40:53,754 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: activated changed from False to True']
+2024-06-18 10:40:53,756 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:40:56,024 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: activated changed from False to True']
+2024-06-18 10:40:56,024 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:56,024 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:56,846 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:40:56,847 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:56,847 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:56,903 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:40:56,903 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:56,903 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:57,006 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:40:57,006 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:57,007 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:57,118 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.3 to 0.4']
+2024-06-18 10:40:57,119 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:57,119 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,181 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.4 to 0.41']
+2024-06-18 10:40:58,181 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,181 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,331 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.41 to 0.42']
+2024-06-18 10:40:58,331 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,331 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,403 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.42 to 0.43']
+2024-06-18 10:40:58,403 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,403 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,689 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.43 to 0.431']
+2024-06-18 10:40:58,690 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,690 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,722 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.431 to 0.432']
+2024-06-18 10:40:58,722 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,722 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,770 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.432 to 0.433']
+2024-06-18 10:40:58,770 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,770 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:58,822 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.433 to 0.434']
+2024-06-18 10:40:58,823 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:58,823 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:40:59,969 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 0.434 to 1.434']
+2024-06-18 10:40:59,969 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:40:59,969 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:41:00,009 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 1.434 to 2.434']
+2024-06-18 10:41:00,009 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:41:00,009 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:41:25,783 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: activated changed from False to True']
+2024-06-18 10:41:25,783 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,420 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:41:26,420 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,472 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:41:26,473 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,531 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:41:26,532 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,595 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.3 to 0.4']
+2024-06-18 10:41:26,596 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,865 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.4 to 0.41']
+2024-06-18 10:41:26,865 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,905 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.41 to 0.42']
+2024-06-18 10:41:26,905 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:26,969 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.42 to 0.43']
+2024-06-18 10:41:26,969 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,273 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.43 to 0.431']
+2024-06-18 10:41:27,273 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,334 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.431 to 0.432']
+2024-06-18 10:41:27,334 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,393 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.432 to 0.433']
+2024-06-18 10:41:27,393 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,481 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.433 to 0.434']
+2024-06-18 10:41:27,481 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,839 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.434 to 0.435']
+2024-06-18 10:41:27,840 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,875 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.435 to 0.436']
+2024-06-18 10:41:27,876 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:41:27,933 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.436 to 0.437']
+2024-06-18 10:41:27,934 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 10:42:04,039 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 2.434 to -2.434']
+2024-06-18 10:42:04,041 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:42:04,041 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:42:10,329 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from -2.434 to 2.434']
+2024-06-18 10:42:10,329 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:42:10,329 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:42:11,241 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from 2.434 to -2.434']
+2024-06-18 10:42:11,241 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:42:11,241 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:42:12,027 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 13: bias_voltage changed from -2.434 to 2.434']
+2024-06-18 10:42:12,027 - backend.modules.dac16D - INFO - turning on 13 or already on
+2024-06-18 10:42:12,027 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:42:15,740 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:42:15,741 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:15,790 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:42:15,791 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:15,869 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:42:15,870 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,208 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.3 to 0.31']
+2024-06-18 10:42:16,208 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,275 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.31 to 0.32']
+2024-06-18 10:42:16,275 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,323 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.32 to 0.33']
+2024-06-18 10:42:16,323 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,409 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.33 to 0.34']
+2024-06-18 10:42:16,410 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,710 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.34 to 0.341']
+2024-06-18 10:42:16,710 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,757 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.341 to 0.342']
+2024-06-18 10:42:16,757 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:16,825 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.342 to 0.343']
+2024-06-18 10:42:16,825 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:17,340 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 0.343 to 1.343']
+2024-06-18 10:42:17,340 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:17,381 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 1.343 to 2.343']
+2024-06-18 10:42:17,381 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:17,471 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 2.343 to 3.343']
+2024-06-18 10:42:17,471 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:18,103 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 3.343 to 3.443']
+2024-06-18 10:42:18,103 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:18,251 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 3.443 to 3.543']
+2024-06-18 10:42:18,251 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:18,646 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 3.543 to 3.553']
+2024-06-18 10:42:18,647 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:18,799 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 3.553 to 3.563']
+2024-06-18 10:42:18,800 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:19,087 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 3.563 to 3.564']
+2024-06-18 10:42:19,088 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:42:19,229 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: bias_voltage changed from 3.564 to 3.565']
+2024-06-18 10:42:19,230 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-18 10:44:04,699 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: activated changed from False to True']
+2024-06-18 10:44:04,710 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,309 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:44:05,309 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,341 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:44:05,341 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,391 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:44:05,391 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,525 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.3 to 0.31']
+2024-06-18 10:44:05,525 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,691 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.31 to 0.32']
+2024-06-18 10:44:05,692 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,708 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.32 to 0.33']
+2024-06-18 10:44:05,708 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,747 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.33 to 0.34']
+2024-06-18 10:44:05,747 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,808 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.34 to 0.35']
+2024-06-18 10:44:05,809 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:05,847 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.35 to 0.36']
+2024-06-18 10:44:05,848 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:06,142 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.36 to 0.361']
+2024-06-18 10:44:06,142 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:06,174 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.361 to 0.362']
+2024-06-18 10:44:06,174 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:06,190 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.362 to 0.363']
+2024-06-18 10:44:06,191 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:06,236 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.363 to 0.364']
+2024-06-18 10:44:06,236 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:06,707 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.364 to 0.374']
+2024-06-18 10:44:06,707 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:06,757 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.374 to 0.384']
+2024-06-18 10:44:06,758 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:07,124 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.384 to 0.484']
+2024-06-18 10:44:07,125 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:07,157 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.484 to 0.584']
+2024-06-18 10:44:07,157 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:44:07,224 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.584 to 0.684']
+2024-06-18 10:44:07,225 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:46:47,315 - backend.util - INFO - Changes: []
+2024-06-18 10:46:47,316 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-18 10:46:47,316 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.0 activated=False heading_text='' measuring=False
+2024-06-18 10:46:50,016 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 2: heading_text changed from  to Peacoq']
+2024-06-18 10:46:50,016 - backend.modules.dac4D - INFO - turning off 2 or already off
+2024-06-18 10:46:50,016 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=2 bias_voltage=0.0 activated=False heading_text='Peacoq' measuring=False
+2024-06-18 10:46:50,017 - backend.util - INFO - Changes: []
+2024-06-18 10:46:50,017 - backend.modules.dac4D - INFO - turning off 2 or already off
+2024-06-18 10:46:50,018 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=2 bias_voltage=0.0 activated=False heading_text='Peacoq' measuring=False
+2024-06-18 10:46:55,316 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: heading_text changed from  to NbN Detector 2']
+2024-06-18 10:46:55,316 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-06-18 10:46:55,316 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.0 activated=False heading_text='NbN Detector 2' measuring=False
+2024-06-18 10:48:59,029 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: activated changed from False to True']
+2024-06-18 10:48:59,031 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:49:04,238 - backend.util - INFO - Changes: []
+2024-06-18 10:49:04,239 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:49:09,649 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: bias_voltage changed from 0.0 to 0.553']
+2024-06-18 10:49:09,649 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 10:50:16,988 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: activated changed from False to True']
+2024-06-18 10:50:16,990 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:18,910 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:50:18,911 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:19,008 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:50:19,009 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:19,168 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:50:19,169 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:19,327 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.3 to 0.4']
+2024-06-18 10:50:19,328 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:19,465 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.4 to 0.5']
+2024-06-18 10:50:19,465 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:19,667 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.5 to 0.51']
+2024-06-18 10:50:19,667 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:19,852 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.51 to 0.52']
+2024-06-18 10:50:19,852 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:20,022 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.52 to 0.53']
+2024-06-18 10:50:20,022 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:20,211 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.53 to 0.531']
+2024-06-18 10:50:20,211 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:20,377 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.531 to 0.532']
+2024-06-18 10:50:20,377 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:20,561 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.532 to 0.542']
+2024-06-18 10:50:20,561 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:20,723 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.542 to 0.642']
+2024-06-18 10:50:20,724 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:20,883 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.642 to 0.652']
+2024-06-18 10:50:20,884 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:21,572 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 0.652 to 1.652']
+2024-06-18 10:50:21,572 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:21,723 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 1.652 to 2.652']
+2024-06-18 10:50:21,723 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:21,844 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 2.652 to 3.652']
+2024-06-18 10:50:21,845 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:50:27,212 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 10:50:27,213 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:27,213 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:27,213 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.1 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:27,377 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 10:50:27,378 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:27,378 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:27,378 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.2 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:27,537 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 10:50:27,537 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:27,538 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:27,538 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.3 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:27,820 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.3 to 0.31']
+2024-06-18 10:50:27,821 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:27,821 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:27,821 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.31 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:27,984 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.31 to 0.32']
+2024-06-18 10:50:27,984 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:27,984 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:27,984 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.32 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:28,213 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.32 to 0.321']
+2024-06-18 10:50:28,213 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:28,214 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:28,214 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.321 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:28,380 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.321 to 0.322']
+2024-06-18 10:50:28,381 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:28,381 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:28,381 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.322 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:28,843 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.322 to 0.332']
+2024-06-18 10:50:28,843 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:28,843 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:28,843 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.332 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:28,910 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.332 to 0.342']
+2024-06-18 10:50:28,910 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:28,911 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:28,911 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.342 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:29,303 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: bias_voltage changed from 0.342 to 0.442']
+2024-06-18 10:50:29,303 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-18 10:50:29,304 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:50:29,304 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.442 activated=False heading_text='10th ch dac16D' measuring=False
+2024-06-18 10:50:29,866 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 10: activated changed from False to True']
+2024-06-18 10:50:29,867 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-18 10:50:29,867 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 10:51:44,593 - backend.util - INFO - Changes: []
+2024-06-18 10:51:44,595 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 10:51:46,974 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 4: bias_voltage changed from 3.652 to 3.002']
+2024-06-18 10:51:46,974 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-18 14:56:15,211 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: activated changed from False to True']
+2024-06-18 14:56:15,212 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:15,909 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 14:56:15,909 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:15,952 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 14:56:15,953 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,011 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 14:56:16,012 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,088 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.3 to 0.4']
+2024-06-18 14:56:16,088 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,393 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.4 to 0.41']
+2024-06-18 14:56:16,393 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,441 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.41 to 0.42']
+2024-06-18 14:56:16,442 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,473 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.42 to 0.43']
+2024-06-18 14:56:16,473 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,558 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.43 to 0.44']
+2024-06-18 14:56:16,558 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,822 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.44 to 0.441']
+2024-06-18 14:56:16,822 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,886 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.441 to 0.442']
+2024-06-18 14:56:16,886 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,905 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.442 to 0.443']
+2024-06-18 14:56:16,905 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,922 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.443 to 0.444']
+2024-06-18 14:56:16,922 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:16,990 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.444 to 0.445']
+2024-06-18 14:56:16,990 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:19,081 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.445 to 1.445']
+2024-06-18 14:56:19,082 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:19,168 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 1.445 to 2.445']
+2024-06-18 14:56:19,169 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:19,688 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 2.445 to 3.445']
+2024-06-18 14:56:19,689 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:20,626 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 3.445 to 3.545']
+2024-06-18 14:56:20,626 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:20,825 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 3.545 to 3.645']
+2024-06-18 14:56:20,825 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:21,006 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 3.645 to 3.745']
+2024-06-18 14:56:21,006 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:56:21,473 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 3.745 to 3.645']
+2024-06-18 14:56:21,474 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 14:59:55,942 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: activated changed from False to True']
+2024-06-18 14:59:55,942 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:56,601 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 14:59:56,601 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:56,633 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 14:59:56,633 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:56,667 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 14:59:56,668 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:56,705 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.3 to 0.4']
+2024-06-18 14:59:56,705 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:56,735 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.4 to 0.5']
+2024-06-18 14:59:56,735 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,085 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.5 to 0.51']
+2024-06-18 14:59:57,085 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,103 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.51 to 0.52']
+2024-06-18 14:59:57,103 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,134 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.52 to 0.53']
+2024-06-18 14:59:57,134 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,218 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.53 to 0.54']
+2024-06-18 14:59:57,219 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,502 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.54 to 0.541']
+2024-06-18 14:59:57,502 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,519 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.541 to 0.542']
+2024-06-18 14:59:57,519 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,551 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.542 to 0.543']
+2024-06-18 14:59:57,551 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,582 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.543 to 0.544']
+2024-06-18 14:59:57,582 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:57,633 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.544 to 0.545']
+2024-06-18 14:59:57,633 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:59,229 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 0.545 to 1.545']
+2024-06-18 14:59:59,229 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:59,285 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 1.545 to 2.545']
+2024-06-18 14:59:59,286 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:59,334 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 2.545 to 3.545']
+2024-06-18 14:59:59,334 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 14:59:59,372 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 3.545 to 4.545']
+2024-06-18 14:59:59,372 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 15:00:00,227 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 4.545 to -4.545']
+2024-06-18 15:00:00,228 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 15:00:00,772 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from -4.545 to 4.545']
+2024-06-18 15:00:00,772 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 15:00:04,412 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from 4.545 to -4.545']
+2024-06-18 15:00:04,413 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 15:00:04,924 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 1: bias_voltage changed from -4.545 to 4.545']
+2024-06-18 15:00:04,925 - backend.modules.dac16D - INFO - turning on 1 or already on
+2024-06-18 15:00:23,361 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: activated changed from False to True']
+2024-06-18 15:00:23,361 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:23,361 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,352 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.0 to 0.1']
+2024-06-18 15:00:25,352 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,353 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,383 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.1 to 0.2']
+2024-06-18 15:00:25,384 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,384 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,418 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.2 to 0.3']
+2024-06-18 15:00:25,418 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,418 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,739 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.3 to 0.31']
+2024-06-18 15:00:25,740 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,740 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,786 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.31 to 0.32']
+2024-06-18 15:00:25,786 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,786 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,820 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.32 to 0.33']
+2024-06-18 15:00:25,820 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,821 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:25,904 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.33 to 0.34']
+2024-06-18 15:00:25,904 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:25,904 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:26,153 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.34 to 0.341']
+2024-06-18 15:00:26,154 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:26,154 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:26,183 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.341 to 0.342']
+2024-06-18 15:00:26,183 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:26,183 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:26,200 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.342 to 0.343']
+2024-06-18 15:00:26,201 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:26,201 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:26,234 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.343 to 0.344']
+2024-06-18 15:00:26,234 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:26,234 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 15:00:26,302 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 14: bias_voltage changed from 0.344 to 0.345']
+2024-06-18 15:00:26,302 - backend.modules.dac16D - INFO - turning on 14 or already on
+2024-06-18 15:00:26,302 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-18 17:09:21,443 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: heading_text changed from  to NbN 1']
+2024-06-18 17:09:21,445 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-06-18 17:09:21,446 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.0 activated=False heading_text='NbN 1' measuring=False
+2024-06-18 17:09:26,476 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: heading_text changed from  to NbN 2']
+2024-06-18 17:09:26,476 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 17:09:28,147 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 3.645 to -3.645']
+2024-06-18 17:09:28,147 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-18 17:09:33,749 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: heading_text changed from  to NbN 3']
+2024-06-18 17:09:33,750 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 17:09:34,499 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: bias_voltage changed from 0.553 to -0.553']
+2024-06-18 17:09:34,499 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-18 17:09:40,425 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 3: heading_text changed from  to NbN 4']
+2024-06-18 17:09:40,426 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-06-18 17:09:40,426 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.0 activated=False heading_text='NbN 4' measuring=False
+2024-06-24 12:19:45,374 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: activated changed from False to True']
+2024-06-24 12:19:45,386 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:45,977 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 12:19:45,978 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:45,993 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.1 to 0.2']
+2024-06-24 12:19:45,993 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,043 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.2 to 0.3']
+2024-06-24 12:19:46,043 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,094 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.3 to 0.4']
+2024-06-24 12:19:46,094 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,377 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.4 to 0.41']
+2024-06-24 12:19:46,377 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,427 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.41 to 0.42']
+2024-06-24 12:19:46,427 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,462 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.42 to 0.43']
+2024-06-24 12:19:46,462 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,494 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.43 to 0.44']
+2024-06-24 12:19:46,494 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,542 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.44 to 0.45']
+2024-06-24 12:19:46,542 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,812 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.45 to 0.451']
+2024-06-24 12:19:46,812 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,844 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.451 to 0.452']
+2024-06-24 12:19:46,844 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,861 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.452 to 0.453']
+2024-06-24 12:19:46,861 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,910 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.453 to 0.454']
+2024-06-24 12:19:46,910 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:46,964 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.454 to 0.455']
+2024-06-24 12:19:46,965 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:50,234 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.455 to 0.555']
+2024-06-24 12:19:50,234 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:50,366 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.555 to 0.655']
+2024-06-24 12:19:50,366 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:50,488 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.655 to 0.755']
+2024-06-24 12:19:50,488 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:50,604 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.755 to 0.855']
+2024-06-24 12:19:50,604 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,012 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.855 to 1.855']
+2024-06-24 12:19:52,013 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,075 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 1.855 to 2.855']
+2024-06-24 12:19:52,075 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,160 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 2.855 to 3.855']
+2024-06-24 12:19:52,161 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,243 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 3.855 to 4.855']
+2024-06-24 12:19:52,243 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,649 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.855 to 4.955']
+2024-06-24 12:19:52,649 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,727 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.955 to 5.0']
+2024-06-24 12:19:52,727 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:52,811 - backend.util - INFO - Changes: []
+2024-06-24 12:19:52,811 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:53,145 - backend.util - INFO - Changes: []
+2024-06-24 12:19:53,145 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:53,353 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 5.0 to 4.99']
+2024-06-24 12:19:53,353 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:54,563 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.99 to 4.98']
+2024-06-24 12:19:54,566 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:54,579 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.98 to 4.97']
+2024-06-24 12:19:54,580 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:54,626 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.97 to 4.96']
+2024-06-24 12:19:54,627 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:54,677 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.96 to 4.95']
+2024-06-24 12:19:54,677 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:55,325 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.95 to 4.85']
+2024-06-24 12:19:55,325 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:55,417 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.85 to 4.75']
+2024-06-24 12:19:55,417 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:55,562 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.75 to 4.65']
+2024-06-24 12:19:55,562 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:55,724 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.65 to 4.55']
+2024-06-24 12:19:55,725 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:19:55,779 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 4.55 to 4.45']
+2024-06-24 12:19:55,779 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:22:40,062 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:22:40,077 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,331 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,331 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,331 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,332 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,332 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,332 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,332 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:23:04,332 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,961 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,971 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,971 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,971 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,972 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,972 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,972 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:45,972 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,181 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,181 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,181 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,419 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,419 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,420 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,420 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,420 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,420 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,420 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,420 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,586 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,932 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,932 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,932 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,932 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,932 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,932 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,933 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:47,933 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,070 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,071 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,494 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,645 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,645 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,646 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,646 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,646 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,646 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,646 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:48,646 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:54,734 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: activated changed from True to False']
+2024-06-24 12:24:54,734 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 12:24:54,735 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-24 12:24:54,735 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:24:54,735 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=0.322 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:25:00,573 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: activated changed from True to False']
+2024-06-24 12:25:00,574 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 12:25:00,574 - backend.modules.dac16D - INFO - turning off 4 or already off
+2024-06-24 12:25:00,574 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=4 bias_voltage=0.322 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:25:06,025 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 5: activated changed from True to False']
+2024-06-24 12:25:06,025 - backend.modules.dac16D - INFO - change.index: 5
+2024-06-24 12:25:06,025 - backend.modules.dac16D - INFO - turning off 5 or already off
+2024-06-24 12:25:06,025 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=5 bias_voltage=0.322 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:25:08,618 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,618 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,618 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,618 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,618 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,618 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,619 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,964 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,964 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,965 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,965 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,965 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,965 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:08,965 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,138 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,138 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,138 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,138 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,138 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,138 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,139 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,510 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,510 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,510 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,510 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,510 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,510 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:09,680 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,120 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,564 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,738 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,738 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,739 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,739 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,739 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,739 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:10,739 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,179 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,179 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,180 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,938 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:11,938 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,103 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,432 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,432 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,433 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,433 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,433 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,433 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,433 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,598 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,598 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,598 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,599 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,599 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,599 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:12,599 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,323 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,323 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,324 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,324 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,324 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,324 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:14,324 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:15,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,367 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,367 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,368 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,473 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,474 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,474 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,474 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,474 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,474 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:17,474 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:18,032 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:25,146 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,412 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,413 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,413 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,413 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,413 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,413 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:27,413 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,802 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,802 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,802 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,802 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,803 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,803 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:25:31,803 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,112 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,124 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,865 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,866 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,866 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,866 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,866 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,866 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,867 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,867 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:46,919 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,039 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,396 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,397 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,445 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,446 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,529 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,530 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,530 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,530 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,530 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,530 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,530 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,531 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,629 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,629 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,629 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,629 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,629 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,630 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,630 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,630 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,883 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,883 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,883 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,883 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,884 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,884 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,884 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,884 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:47,927 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:48,080 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,769 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,769 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,769 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,769 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,769 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,769 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,770 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,770 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,937 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:58,938 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,416 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,417 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,417 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,417 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,417 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,417 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,418 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,418 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:26:59,562 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,046 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,046 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,046 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,046 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,046 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,046 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,047 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:02,047 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:03,837 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:08,711 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,508 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:27:09,509 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,990 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,993 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,993 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,993 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,993 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,994 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,994 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:21,994 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:22,466 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 8: bias_voltage changed from 0.365 to -0.635']
+2024-06-24 12:31:22,466 - backend.modules.dac16D - INFO - change.index: 8
+2024-06-24 12:31:22,466 - backend.modules.dac16D - INFO - turning off 8 or already off
+2024-06-24 12:31:22,466 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:22,467 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=8 bias_voltage=-0.635 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:31:22,495 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 8: bias_voltage changed from -0.635 to -1.635']
+2024-06-24 12:31:22,495 - backend.modules.dac16D - INFO - change.index: 8
+2024-06-24 12:31:22,496 - backend.modules.dac16D - INFO - turning off 8 or already off
+2024-06-24 12:31:22,496 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:22,496 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=8 bias_voltage=-1.635 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:31:36,942 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:36,943 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,114 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,114 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,315 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,315 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,632 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,632 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,714 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:38,715 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:41,810 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:41,810 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:42,253 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:42,254 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:43,025 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:43,026 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:43,757 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:43,757 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,034 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,034 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,231 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,232 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,629 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,630 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,783 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:31:45,783 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:31,998 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:32,000 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:53,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,216 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,217 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,374 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,375 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,894 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:55,895 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,086 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,086 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,086 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,086 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,086 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,086 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,087 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,087 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,325 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,325 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,326 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,326 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,326 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,326 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,326 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:32:56,326 - backend.modules.dac16D_spec - ERROR - error, channel out of range
+2024-06-24 12:44:12,134 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.242 to 0.342']
+2024-06-24 12:44:12,151 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:12,151 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:12,218 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.342 to 0.442']
+2024-06-24 12:44:12,218 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:12,218 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:12,669 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.442 to 0.452']
+2024-06-24 12:44:12,669 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:12,669 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:12,752 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.452 to 0.462']
+2024-06-24 12:44:12,753 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:12,753 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:13,102 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.462 to 0.463']
+2024-06-24 12:44:13,103 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:13,103 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:13,186 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.463 to 0.464']
+2024-06-24 12:44:13,187 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:13,187 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:13,252 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.464 to 0.465']
+2024-06-24 12:44:13,252 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:13,253 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:13,351 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 11: bias_voltage changed from 0.465 to 0.466']
+2024-06-24 12:44:13,351 - backend.modules.dac16D - INFO - change.index: 11
+2024-06-24 12:44:13,351 - backend.modules.dac16D - INFO - turning on 11 or already on
+2024-06-24 12:44:13,936 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.242 to 0.252']
+2024-06-24 12:44:13,937 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:13,937 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:14,016 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.252 to 0.262']
+2024-06-24 12:44:14,017 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:14,017 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:14,579 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.262 to 0.362']
+2024-06-24 12:44:14,580 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:14,581 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:14,615 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.362 to 0.462']
+2024-06-24 12:44:14,615 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:14,615 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:14,736 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.462 to 0.562']
+2024-06-24 12:44:14,736 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:14,736 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:15,165 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.562 to 0.563']
+2024-06-24 12:44:15,165 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:15,165 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:15,233 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.563 to 0.564']
+2024-06-24 12:44:15,233 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:15,233 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:15,315 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.564 to 0.565']
+2024-06-24 12:44:15,315 - backend.modules.dac16D - INFO - change.index: 3
+2024-06-24 12:44:15,315 - backend.modules.dac16D - INFO - turning on 3 or already on
+2024-06-24 12:44:59,915 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 2: activated changed from False to True']
+2024-06-24 12:44:59,916 - backend.modules.dac16D - INFO - change.index: 2
+2024-06-24 12:44:59,916 - backend.modules.dac16D - INFO - turning on 2 or already on
+2024-06-24 12:45:03,096 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 2: activated changed from True to False']
+2024-06-24 12:45:03,097 - backend.modules.dac16D - INFO - change.index: 2
+2024-06-24 12:45:03,097 - backend.modules.dac16D - INFO - turning off 2 or already off
+2024-06-24 12:45:03,097 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=2 bias_voltage=3.688 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:45:04,802 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 3.688 to 3.687']
+2024-06-24 12:45:04,803 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 12:45:04,803 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-24 12:45:04,803 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=3.687 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:45:04,826 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 3.687 to 3.686']
+2024-06-24 12:45:04,827 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 12:45:04,838 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-24 12:45:04,844 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=3.686 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:45:04,862 - backend.util - INFO - Changes: []
+2024-06-24 12:45:04,862 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 12:45:04,862 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-24 12:45:04,862 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=3.686 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:45:04,863 - backend.util - INFO - Changes: []
+2024-06-24 12:45:04,863 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 12:45:04,864 - backend.modules.dac16D - INFO - turning off 10 or already off
+2024-06-24 12:45:04,864 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=10 bias_voltage=3.686 activated=False heading_text='Set Linked Channels' measuring=False
+2024-06-24 12:46:01,852 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: activated changed from False to True']
+2024-06-24 12:46:01,854 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:02,701 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 12:46:02,702 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:02,769 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.1 to 0.2']
+2024-06-24 12:46:02,770 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:02,835 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.2 to 0.3']
+2024-06-24 12:46:02,835 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:03,102 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.3 to 0.31']
+2024-06-24 12:46:03,102 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:03,168 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.31 to 0.32']
+2024-06-24 12:46:03,169 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:03,235 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.32 to 0.33']
+2024-06-24 12:46:03,236 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:03,289 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: bias_voltage changed from 0.33 to 0.34']
+2024-06-24 12:46:03,290 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:46:05,975 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 0: heading_text changed from  to Peacoq']
+2024-06-24 12:46:05,976 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:51:44,194 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: activated changed from False to True']
+2024-06-24 12:51:44,195 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:44,963 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 12:51:44,963 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:44,987 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.1 to 0.2']
+2024-06-24 12:51:44,987 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:45,038 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.2 to 0.3']
+2024-06-24 12:51:45,039 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:45,107 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.3 to 0.4']
+2024-06-24 12:51:45,107 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:45,816 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.4 to 0.41']
+2024-06-24 12:51:45,817 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:45,855 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.41 to 0.42']
+2024-06-24 12:51:45,856 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:45,887 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.42 to 0.43']
+2024-06-24 12:51:45,887 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:45,957 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.43 to 0.44']
+2024-06-24 12:51:45,957 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:46,274 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.44 to 0.441']
+2024-06-24 12:51:46,275 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:46,323 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.441 to 0.442']
+2024-06-24 12:51:46,323 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:46,389 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.442 to 0.443']
+2024-06-24 12:51:46,389 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:46,503 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.443 to 0.444']
+2024-06-24 12:51:46,503 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:46,773 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.444 to 0.454']
+2024-06-24 12:51:46,774 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:51:46,806 - backend.util - INFO - Changes: ['Module index 0 (slot 0), channel 2: bias_voltage changed from 0.454 to 0.464']
+2024-06-24 12:51:46,806 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:58:17,406 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 2: activated changed from False to True']
+2024-06-24 12:58:17,410 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-06-24 12:58:18,029 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 1: activated changed from False to True']
+2024-06-24 12:58:18,030 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 12:58:18,391 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: activated changed from False to True']
+2024-06-24 12:58:18,392 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:19,118 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: activated changed from False to True']
+2024-06-24 12:58:19,119 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:19,565 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 2: activated changed from True to False']
+2024-06-24 12:58:19,566 - backend.modules.dac4D - INFO - turning off 2 or already off
+2024-06-24 12:58:19,566 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=2 bias_voltage=0.0 activated=False heading_text='' measuring=False
+2024-06-24 12:58:20,179 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 1: activated changed from True to False']
+2024-06-24 12:58:20,180 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 12:58:20,180 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.0 activated=False heading_text='' measuring=False
+2024-06-24 12:58:23,551 - backend.util - INFO - Changes: []
+2024-06-24 12:58:23,551 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:25,300 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 12:58:25,300 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:25,401 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.1 to 0.2']
+2024-06-24 12:58:25,401 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:25,763 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.2 to 0.21']
+2024-06-24 12:58:25,763 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:25,894 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.21 to 0.22']
+2024-06-24 12:58:25,894 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:26,034 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.22 to 0.23']
+2024-06-24 12:58:26,034 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:26,245 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.23 to 0.33']
+2024-06-24 12:58:26,245 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:26,569 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.33 to 0.331']
+2024-06-24 12:58:26,570 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:27,140 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.331 to 0.341']
+2024-06-24 12:58:27,140 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:27,243 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.341 to 0.351']
+2024-06-24 12:58:27,243 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:27,417 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.351 to 0.361']
+2024-06-24 12:58:27,417 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 12:58:29,462 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 12:58:29,463 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:29,602 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.1 to 0.11']
+2024-06-24 12:58:29,602 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:29,908 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.11 to 0.111']
+2024-06-24 12:58:29,909 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:30,030 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.111 to 0.112']
+2024-06-24 12:58:30,030 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:30,198 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.112 to 0.122']
+2024-06-24 12:58:30,198 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:31,035 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.122 to 0.132']
+2024-06-24 12:58:31,035 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:31,085 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 3: bias_voltage changed from 0.132 to 0.142']
+2024-06-24 12:58:31,086 - backend.modules.dac4D - INFO - turning on 3 or already on
+2024-06-24 12:58:51,010 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 1: heading_text changed from  to Peacoq']
+2024-06-24 12:58:51,012 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 12:58:51,013 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.0 activated=False heading_text='Peacoq' measuring=False
+2024-06-24 12:58:57,572 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 2: heading_text changed from  to NbN Detector']
+2024-06-24 12:58:57,573 - backend.modules.dac4D - INFO - turning off 2 or already off
+2024-06-24 12:58:57,573 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=2 bias_voltage=0.0 activated=False heading_text='NbN Detector' measuring=False
+2024-06-24 13:00:27,253 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: heading_text changed from  to dfgdfg']
+2024-06-24 13:00:27,254 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:19,337 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.0 to 0.331']
+2024-06-24 13:11:19,347 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-06-24 13:11:19,347 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.331 activated=False heading_text='' measuring=False
+2024-06-24 13:11:20,818 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: activated changed from False to True']
+2024-06-24 13:11:20,818 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:21,469 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.331 to 0.431']
+2024-06-24 13:11:21,469 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:21,626 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.431 to 0.531']
+2024-06-24 13:11:21,627 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:21,889 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.531 to 0.532']
+2024-06-24 13:11:21,890 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:22,028 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.532 to 0.533']
+2024-06-24 13:11:22,029 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:22,550 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.533 to 0.543']
+2024-06-24 13:11:22,551 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:22,679 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.543 to 0.553']
+2024-06-24 13:11:22,679 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:23,093 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 0.553 to 1.553']
+2024-06-24 13:11:23,093 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:23,241 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 1.553 to 2.553']
+2024-06-24 13:11:23,241 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:23,514 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 2.553 to 2.563']
+2024-06-24 13:11:23,515 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:23,683 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 2.563 to 2.573']
+2024-06-24 13:11:23,684 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:27,387 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: bias_voltage changed from 2.573 to 0.231']
+2024-06-24 13:11:27,387 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:11:46,167 - backend.util - INFO - Changes: []
+2024-06-24 13:11:46,167 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:13:36,261 - backend.util - INFO - Changes: []
+2024-06-24 13:13:36,262 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:30:34,008 - backend.util - INFO - Changes: []
+2024-06-24 13:30:34,010 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:30:34,011 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.0 activated=False heading_text='' measuring=False
+2024-06-24 13:30:35,478 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: activated changed from False to True']
+2024-06-24 13:30:35,479 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,172 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 13:30:36,172 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,189 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-06-24 13:30:36,189 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,289 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-06-24 13:30:36,289 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,407 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.3 to 0.31']
+2024-06-24 13:30:36,407 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,657 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.31 to 0.32']
+2024-06-24 13:30:36,658 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,690 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.32 to 0.33']
+2024-06-24 13:30:36,691 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,741 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.33 to 0.34']
+2024-06-24 13:30:36,741 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:36,790 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.34 to 0.35']
+2024-06-24 13:30:36,791 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:37,086 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.35 to 0.351']
+2024-06-24 13:30:37,086 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:37,134 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.351 to 0.352']
+2024-06-24 13:30:37,134 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:37,174 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.352 to 0.353']
+2024-06-24 13:30:37,174 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:30:37,224 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.353 to 0.354']
+2024-06-24 13:30:37,224 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:32:18,767 - backend.util - INFO - Changes: []
+2024-06-24 13:32:18,768 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:32:23,858 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: heading_text changed from  to sdfsdf']
+2024-06-24 13:32:23,858 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:32:28,329 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: heading_text changed from sdfsdf to ']
+2024-06-24 13:32:28,330 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:33:08,704 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: measuring changed from False to True']
+2024-06-24 13:33:08,706 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:33:11,647 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 0: measuring changed from True to False']
+2024-06-24 13:33:11,647 - backend.modules.dac4D - INFO - turning on 0 or already on
+2024-06-24 13:33:14,493 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: activated changed from True to False']
+2024-06-24 13:33:14,493 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:14,493 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.354 activated=False heading_text='' measuring=False
+2024-06-24 13:33:16,784 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.354 to 0.454']
+2024-06-24 13:33:16,784 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:16,785 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.454 activated=False heading_text='' measuring=False
+2024-06-24 13:33:16,852 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.454 to 0.554']
+2024-06-24 13:33:16,853 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:16,853 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.554 activated=False heading_text='' measuring=False
+2024-06-24 13:33:17,224 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.554 to 0.564']
+2024-06-24 13:33:17,224 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:17,224 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.564 activated=False heading_text='' measuring=False
+2024-06-24 13:33:17,281 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.564 to 0.574']
+2024-06-24 13:33:17,281 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:17,281 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.574 activated=False heading_text='' measuring=False
+2024-06-24 13:33:17,347 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.574 to 0.584']
+2024-06-24 13:33:17,347 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:17,347 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.584 activated=False heading_text='' measuring=False
+2024-06-24 13:33:18,221 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.584 to -0.584']
+2024-06-24 13:33:18,222 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-06-24 13:33:18,222 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-0.584 activated=False heading_text='' measuring=False
+2024-06-24 13:33:19,018 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: activated changed from False to True']
+2024-06-24 13:33:19,018 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:19,622 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from -0.584 to -0.484']
+2024-06-24 13:33:19,622 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:19,776 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from -0.484 to -0.384']
+2024-06-24 13:33:19,777 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:20,052 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from -0.384 to -0.383']
+2024-06-24 13:33:20,053 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:20,489 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from -0.383 to 0.617']
+2024-06-24 13:33:20,489 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:20,626 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 0.617 to 1.617']
+2024-06-24 13:33:20,626 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:20,770 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 1.617 to 2.617']
+2024-06-24 13:33:20,771 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:21,200 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 2.617 to 2.627']
+2024-06-24 13:33:21,201 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:21,386 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 2.627 to 2.637']
+2024-06-24 13:33:21,386 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:21,537 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 2.637 to 2.647']
+2024-06-24 13:33:21,537 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 13:33:21,884 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: bias_voltage changed from 2.647 to 2.648']
+2024-06-24 13:33:21,885 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-06-24 15:36:07,455 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.0 to 0.1']
+2024-06-24 15:36:07,474 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:07,474 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:07,475 - backend.util - INFO - Changes: []
+2024-06-24 15:36:07,475 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:07,475 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:07,530 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.1 to 0.2']
+2024-06-24 15:36:07,530 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:07,530 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:07,580 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.2 to 0.3']
+2024-06-24 15:36:07,580 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:07,580 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:07,663 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.3 to 0.4']
+2024-06-24 15:36:07,663 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:07,663 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:08,195 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.4 to 0.41']
+2024-06-24 15:36:08,195 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:08,195 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:08,317 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.41 to 0.42']
+2024-06-24 15:36:08,318 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:08,318 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:08,364 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.42 to 0.43']
+2024-06-24 15:36:08,365 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:08,365 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:08,447 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.43 to 0.44']
+2024-06-24 15:36:08,447 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:08,448 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:12,022 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.44 to 0.441']
+2024-06-24 15:36:12,022 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:12,023 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:12,098 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.441 to 0.442']
+2024-06-24 15:36:12,098 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:12,098 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:12,204 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.442 to 0.443']
+2024-06-24 15:36:12,205 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:12,205 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:12,296 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 4: bias_voltage changed from 0.443 to 0.444']
+2024-06-24 15:36:12,297 - backend.modules.dac16D - INFO - change.index: 4
+2024-06-24 15:36:12,297 - backend.modules.dac16D - INFO - turning on 4 or already on
+2024-06-24 15:36:12,947 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.0 to 0.01']
+2024-06-24 15:36:12,948 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:12,948 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:13,005 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.01 to 0.02']
+2024-06-24 15:36:13,005 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:13,005 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:13,051 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.02 to 0.03']
+2024-06-24 15:36:13,051 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:13,052 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:13,529 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.03 to 0.04']
+2024-06-24 15:36:13,529 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:13,529 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:13,595 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.04 to 0.041']
+2024-06-24 15:36:13,596 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:13,596 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:13,663 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.041 to 0.042']
+2024-06-24 15:36:13,663 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:13,663 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:14,028 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.042 to 0.043']
+2024-06-24 15:36:14,028 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:14,028 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:14,095 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.043 to 0.044']
+2024-06-24 15:36:14,095 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:14,095 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:14,546 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.044 to 0.054']
+2024-06-24 15:36:14,546 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:14,546 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:14,629 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.054 to 0.064']
+2024-06-24 15:36:14,629 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:14,629 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:14,685 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 6: bias_voltage changed from 0.064 to 0.074']
+2024-06-24 15:36:14,685 - backend.modules.dac16D - INFO - change.index: 6
+2024-06-24 15:36:14,686 - backend.modules.dac16D - INFO - turning on 6 or already on
+2024-06-24 15:36:15,431 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.0 to 0.01']
+2024-06-24 15:36:15,432 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:15,432 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-24 15:36:15,461 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.01 to 0.02']
+2024-06-24 15:36:15,462 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:15,462 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-24 15:36:15,830 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.02 to 0.12']
+2024-06-24 15:36:15,830 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:15,830 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-24 15:36:15,880 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.12 to 0.22']
+2024-06-24 15:36:15,881 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:15,881 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-24 15:36:16,370 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.22 to 0.221']
+2024-06-24 15:36:16,370 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:16,370 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-24 15:36:16,415 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.221 to 0.222']
+2024-06-24 15:36:16,415 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:16,416 - backend.modules.dac16D - INFO - turning on 10 or already on
+2024-06-24 15:36:16,464 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 10: bias_voltage changed from 0.222 to 0.223']
+2024-06-24 15:36:16,464 - backend.modules.dac16D - INFO - change.index: 10
+2024-06-24 15:36:16,464 - backend.modules.dac16D - INFO - turning on 10 or already on

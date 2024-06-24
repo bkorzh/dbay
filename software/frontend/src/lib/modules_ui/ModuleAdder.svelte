@@ -50,8 +50,8 @@
             </select>
             <select bind:value={selectedType} style="height: 2.6rem; width: 100%">
                 <option value="" selected>Select module type</option>
-                <option value="dac4D">4 ch. differential</option>
-                <option value="dac16D">dac16D - 16 ch. differential </option>
+                <option value="dac4D">dac4D: 4 ch. differential</option>
+                <option value="dac16D">dac16D: 16 ch. differential </option>
             </select>
         </div>
         <SubmitButton onclick={initialize}

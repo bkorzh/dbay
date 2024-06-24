@@ -15,6 +15,10 @@ export interface ChSourceState {
 export interface IVsourceAddon {
   channels: ChSourceState[];
 }
+export interface SharedVsourceChange {
+  change: VsourceChange;
+  link_enabled: boolean[];
+}
 export interface VsourceChange {
   module_index: number;
   index: number;

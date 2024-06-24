@@ -10,8 +10,9 @@
   import type {
     ChSourceState,
     VsourceChange,
+    SharedVsourceChange,
   } from "../addons/vsource/interface";
-  import { requestChannelUpdate } from "../../api";
+  import { requestSharedChannelUpdate, requestChannelUpdate } from "../../api";
   import { ChSourceStateClass } from "../addons";
   import ModuleChevron from "../buttons/ModuleChevron.svelte";
   import Display from "../Display.svelte";
@@ -46,7 +47,7 @@
   let half_channel_list = channel_list.slice(0, 8);
 
   let visible = $state(VisibleState.DoubleDown);
-  let down_array = $state([true, true]);
+  let down_array = $state([true, true, true]);
   let visible_all_channels = $state(true);
   let visible_ind_channels = $state(true);
   let showDropdown = $state(false);
@@ -60,30 +61,36 @@
   // single to all
   async function distributeChannelChange(data: VsourceChange) {
     let intermediate_data;
+
+    let shared_data: SharedVsourceChange = {
+      change: data,
+      link_enabled: link_enabled,
+    };
+
     if (system_state.valid) {
       // the /shared_voltage/ endpoint is a special case for the dac16D module
-      intermediate_data = await requestChannelUpdate(
-        data,
-        "/dac16D/shared_voltage/"
+      intermediate_data = await requestSharedChannelUpdate(
+        shared_data,
+        "/dac16D/vsource_shared/",
       );
     } else {
-      intermediate_data = data;
+      intermediate_data = shared_data;
     }
 
     c.vsource.channels.forEach((channel: ChSourceStateClass) => {
-      if (link_enabled[channel.index]) {
-        channel.setChannel(intermediate_data);
+      if (intermediate_data.link_enabled[channel.index]) {
+        channel.setChannel(intermediate_data.change);
       }
       // channel.setChannel(intermediate_data);
     });
 
-    return intermediate_data;
+    return intermediate_data.change;
   }
 
   // all affect single
   async function checkValidAllChannel(
     data: VsourceChange,
-    current_index: number
+    current_index: number,
   ) {
     console.log("current index: ", current_index);
     let new_voltage = data.bias_voltage;
@@ -130,10 +137,10 @@
   function rotateState() {
     if (visible === VisibleState.Collapsed) {
       visible = VisibleState.Down;
-      down_array = [false, false];
+      down_array = [false, false, false];
     } else if (visible === VisibleState.Down) {
       visible = VisibleState.DoubleDown;
-      down_array = [true, true];
+      down_array = [true, true, true];
     } else {
       visible = VisibleState.Collapsed;
     }
@@ -172,13 +179,40 @@
 
     // the removed link might bring the linked channels back into a synchronized state
     // find first item in link_enabled that's true. The way I've written checkValidAllChannel,
-    // it needs to be passed data on one connected channel. 
+    // it needs to be passed data on one connected channel.
     let first_true = link_enabled.findIndex((val) => val === true);
     if (first_true !== -1) {
-      const edited_channel_data = c.vsource.channels[first_true].currentStateAsChange();
+      const edited_channel_data =
+        c.vsource.channels[first_true].currentStateAsChange();
       checkValidAllChannel(edited_channel_data, first_true);
     }
+  }
 
+  function linkAll() {
+    for (let i = 0; i < 16; i++) {
+      link_enabled[i] = true;
+    }
+
+    if (link_enabled[0]) {
+      const edited_channel_data = c.vsource.channels[0].currentStateAsChange();
+      checkValidAllChannel(edited_channel_data, 0);
+    }
+  }
+
+  function unlinkAll() {
+    for (let i = 0; i < 16; i++) {
+      link_enabled[i] = false;
+    }
+
+    const fake_change: VsourceChange = {
+      module_index,
+      index: 0,
+      bias_voltage: 0,
+      activated: true,
+      heading_text: "fake",
+      measuring: false,
+    };
+    c.shared_voltage.setValid(fake_change, true);
   }
 
   function handleMouseEnter(i: number) {
@@ -188,7 +222,6 @@
   function handleMouseLeave(i: number) {
     c.vsource.channels[i].isHovering = false;
   }
-
 
   let parent_width = $state(0);
   let left_width = $state(0);
@@ -200,17 +233,16 @@
   <MenuButton onclick={() => console.log("todo")}>undefined</MenuButton>
 {/snippet}
 
-
-
 <div class="module-container">
-  <ModuleHeading m = {c} 
-    visible={visible} 
-    rotateState={rotateState} 
-    {module_index} 
-    name={"16 Ch. Voltage Source"} 
+  <ModuleHeading
+    m={c}
+    {visible}
+    {rotateState}
+    {module_index}
+    name={"16 Ch. Voltage Source"}
     {menu_buttons}
     icon_name={dac16D_icon}
-    ></ModuleHeading>
+  ></ModuleHeading>
 
   {#if visible}
     <div class="content">
@@ -235,11 +267,8 @@
           borderTop={true}
           onChevronClick={() => onChevClick(1)}
         >
-          <MenuButton
-            onclick={() => {
-              console.log("something");
-            }}>Do Something</MenuButton
-          >
+          <MenuButton onclick={linkAll}>Link all channels</MenuButton>
+          <MenuButton onclick={unlinkAll}>Unlink all channels</MenuButton>
         </ChannelBar>
         {#if down_array[1]}
           <div transition:slide|global class="individual-body">
@@ -319,31 +348,27 @@
               </div>
 
               <!-- {#if show_dropdown[i] || show_dropdown[i + 8]} -->
-              <div class="parent" style="margin-left: {(parent_width -
-                left_width -
-                right_width -
-                vl_width) /
-                6 +
-                1.6}px; margin-right: {(parent_width -
-                left_width -
-                right_width -
-                vl_width) /
-                6 +
-                1.6}px;">
+              <div
+                class="parent"
+                style="margin-left: {(parent_width -
+                  left_width -
+                  right_width -
+                  vl_width) /
+                  6 +
+                  1.6}px; margin-right: {(parent_width -
+                  left_width -
+                  right_width -
+                  vl_width) /
+                  6 +
+                  1.6}px;"
+              >
                 {#if show_dropdown[i]}
-                  <div
-                    class="white left"
-                    transition:slide|global
-                    
-                  >
+                  <div class="white left" transition:slide|global>
                     <ChannelContent ch={c.vsource.channels[i]} {onChannelChange}
                     ></ChannelContent>
                   </div>
                 {:else if show_dropdown[i + 8]}
-                  <div
-                    class="white right"
-                    transition:slide|global
-                  >
+                  <div class="white right" transition:slide|global>
                     <ChannelContent
                       ch={c.vsource.channels[i + 8]}
                       {onChannelChange}
@@ -356,11 +381,87 @@
           </div>
         {/if}
       </div>
+
+      <div class="box" transition:slide|global>
+        <ChannelBar
+          {onChannelChange}
+          bind:showDropdown
+          down={down_array[2]}
+          staticName="Supply Voltages"
+          borderTop={true}
+          onChevronClick={() => onChevClick(2)}
+        >
+          <MenuButton onclick={() => console.log("undefined")}
+            >undefined</MenuButton
+          >
+        </ChannelBar>
+        {#if down_array[2]}
+          <div transition:slide|global class="supply-body">
+            <div class="side-by-side" bind:clientWidth={parent_width}>
+
+              <div class="channel right label">VSB1</div>
+
+              <div class="channel left" bind:clientWidth={left_width}>
+                <div class="channel">
+                  <div
+                    class="tab"
+                    role="cell"
+                    tabindex="0"
+                    class:popout={false}
+                  >
+                    <!-- <div class="ch-number">{i + 9}</div> -->
+                    <NumberedHoveredDotMenu
+                      isHovering={true}
+                      index={0}
+                      onclick={(e) => console.log("todo")}
+                      onkeydown={(e) => console.log("todo")}
+                      bind:dotMenu={verticalDotMenu}
+                    ></NumberedHoveredDotMenu>
+
+                    <PlusMinus ch={c.vsb} {onChannelChange}></PlusMinus>
+                    <Display ch={c.vsb} {onChannelChange} spacing_small={true}
+                    ></Display>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="side-by-side">
+              <div class="channel right">VR</div>
+              <div class="channel left">
+                <div class="channel">
+                  <NumberedHoveredDotMenu
+                    isHovering={true}
+                    index={0}
+                    onclick={(e) => console.log("todo")}
+                    onkeydown={(e) => console.log("todo")}
+                    bind:dotMenu={verticalDotMenu}
+                  ></NumberedHoveredDotMenu>
+
+                  <PlusMinus ch={c.vsb} {onChannelChange}></PlusMinus>
+                  <Display ch={c.vsb} {onChannelChange} spacing_small={true}
+                  ></Display>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        {/if}
+      </div>
     </div>
   {/if}
 </div>
 
 <style>
+
+  .label {
+    /* margin: auto; */
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    /* margin-left: 3rem; */
+  }
+
   .vl {
     border-left: 1px solid var(--module-border-color);
     /* flex-grow: 1; */
@@ -495,7 +596,8 @@
   }
 
   .individual-body {
-    margin-top: 0.5rem;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
     /* margin-left: 1rem;
     margin-right: 1rem; */
   }
@@ -513,7 +615,6 @@
     margin-right: 3rem;
   } */
 
-
   .content {
     box-sizing: border-box;
     display: flex;
@@ -526,7 +627,6 @@
     border-right: 1.3px solid var(--module-border-color);
     border-bottom: 1.3px solid var(--module-border-color);
   }
-
 
   .module-container {
     display: flex;

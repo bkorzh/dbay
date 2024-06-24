@@ -1,7 +1,7 @@
 from backend.state import IModule, Core
 from backend.addons.vsource import IVsourceAddon, ChSourceState
 from typing import Literal
-from backend.logging import get_logger
+from backend.server_logging import get_logger
 from backend.udp_control import Controller, ParentUDP
 logger = get_logger(__name__)
 
@@ -15,7 +15,7 @@ class dac16D(IModule):
 
 def create_prototype(slot: int):
     channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac16D", measuring=False) for i in range(16)]
-    return dac16D(core=Core(slot=slot, type="dac4D", name="my dac16D module"), vsource=IVsourceAddon(channels=channels))
+    return dac16D(core=Core(slot=slot, type="dac16D", name="my dac16D module"), vsource=IVsourceAddon(channels=channels))
 
 
 
@@ -38,11 +38,11 @@ class dac16DController(Controller):
         if board <0 or board > 7:
             return "error, board out of range"
         if dacchan <0 or dacchan > 15:
-            return "error, channel out of range"
+            return f"error, channel out of range. channel: {dacchan}"
         if  voltage < -10  or voltage > 10:
             return "error, voltage out of range"
         else:
-            message = "DAC4D VSD"+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
+            message = "DAC16D VSD"+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
         
         return self.parent_udp.udp.send_message(message)
     
@@ -53,15 +53,12 @@ class dac16DController(Controller):
         if  voltage < 0  or voltage > 8:
             return "error, voltage out of range"
         else:
-            message = "DAC4D VSB"+ str(board) + " " + str(voltage) + "\n"
+            message = "DAC16D VSB"+ str(board) + " " + str(voltage) + "\n"
         return self.parent_udp.udp.send_message(message)
 
     def setChVol(self, board: int, diffchan: int, voltage: float):
         if board <0 or board > 7:
             logger.error("error, board out of range")
-            return -1
-        if diffchan <0 or diffchan > 7:
-            logger.error("error, channel out of range")
             return -1
         if  voltage < -20  or voltage > 20:
             return "error, voltage out of range"
@@ -70,7 +67,7 @@ class dac16DController(Controller):
             # r2 = self.setDACVol(board, diffchan*2+1, -voltage/2)
             r1 = self.sendVSD(board, diffchan, voltage)
 
-            logger.debug(f"UDPdac4D: {r1}")
+            logger.debug(f"UDPdac16D: {r1}")
             # logger.debug(f"UDPdac4D: {r2}")
             if r1 == '+ok\n':
                 return 0
@@ -82,7 +79,7 @@ class dac16DController(Controller):
         if board <0 or board > 7:
             return "error, board out of range"
         else:
-            message = "DAC4D VSD"+ str(board) + "\n"
+            message = "DAC16D VSD"+ str(board) + "\n"
         
         return self.parent_udp.udp.send_message(message)
             

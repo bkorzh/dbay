@@ -11,9 +11,10 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from backend.modules import dac4D
+from backend.modules import dac16D
 from typing import Literal, Union, Type, Any, Callable
 from typing import cast
-from backend.logging import get_logger
+from backend.server_logging import get_logger
 logger = get_logger(__name__)
 
 import asyncio
@@ -55,6 +56,7 @@ class VsourceParams(BaseModel):
 
 app = FastAPI()
 app.include_router(dac4D.router)
+app.include_router(dac16D.router)
 
 
 

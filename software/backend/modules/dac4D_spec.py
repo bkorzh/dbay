@@ -3,7 +3,7 @@ from backend.addons.vsource import IVsourceAddon, ChSourceState
 from typing import Literal
 from backend.udp_control import Controller, ParentUDP
 
-from backend.logging import get_logger
+from backend.server_logging import get_logger
 logger = get_logger(__name__)
 
 
@@ -15,7 +15,7 @@ class dac4D(IModule):
 
 
 def create_prototype(slot: int):
-    channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac4D", measuring=False) for i in range(4)]
+    channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text="", measuring=False) for i in range(4)]
     return dac4D(core=Core(slot=slot, type="dac4D", name="my dac4D module"), vsource=IVsourceAddon(channels=channels))
 
 
@@ -39,7 +39,7 @@ class dac4DController(Controller):
         if board <0 or board > 7:
             return "error, board out of range"
         if dacchan <0 or dacchan > 15:
-            return "error, channel out of range"
+            return f"error, channel out of range. channel: {dacchan}"
         if  voltage < -10  or voltage > 10:
             return "error, voltage out of range"
         else:
@@ -50,9 +50,6 @@ class dac4DController(Controller):
     def setChVol(self, board: int, diffchan: int, voltage: float):
         if board <0 or board > 7:
             logger.error("error, board out of range")
-            return -1
-        if diffchan <0 or diffchan > 7:
-            logger.error("error, channel out of range")
             return -1
         if  voltage < -20  or voltage > 20:
             return "error, voltage out of range"

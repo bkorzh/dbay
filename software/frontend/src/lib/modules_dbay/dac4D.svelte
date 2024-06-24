@@ -26,7 +26,12 @@
 
   // let module_ = $derived(system_state.data[module_index]?.core.slot);
   let channel_list = [1, 2, 3, 4];
-  let visible = $state(VisibleState.DoubleDown);
+  // let visible = $state(VisibleState.DoubleDown);
+
+  let visible = $state(
+    Number(localStorage.getItem("visible" + module_index)) ||
+      VisibleState.DoubleDown,
+  );
 
   async function onChannelChange(data: VsourceChange) {
     let returnData;
@@ -41,21 +46,20 @@
   function rotateState() {
     if (visible === VisibleState.Collapsed) {
       visible = VisibleState.Down;
-      down_array = [false, false, false, false]
-
+      down_array = [false, false, false, false];
     } else if (visible === VisibleState.Down) {
       visible = VisibleState.DoubleDown;
-      down_array = [true, true, true, true]
-
+      down_array = [true, true, true, true];
     } else {
       visible = VisibleState.Collapsed;
-
     }
+
+    // Store the visible state in localStorage
+    localStorage.setItem("visible" + module_index, visible.toString());
   }
 
-
   function onChevClick(i: number) {
-    console.log("clicked!")
+    console.log("clicked!");
     down_array[i] = !down_array[i];
     if (down_array.every((val) => val === true)) {
       visible = VisibleState.DoubleDown;
@@ -65,40 +69,38 @@
     if (down_array.every((val) => val === false)) {
       visible = VisibleState.Down;
     }
-    console.log("down array: ", down_array)
+    console.log("down array: ", down_array);
   }
-
 </script>
-
 
 {#snippet menu_buttons()}
   <MenuButton onclick={() => console.log("todo")}>undefined</MenuButton>
 {/snippet}
 
 <div class="module-container">
-
-  <ModuleHeading m = {this_component_data} 
-    visible={visible} 
-    rotateState={rotateState} 
-    {module_index} 
-    name={"Voltage Source"} 
+  <ModuleHeading
+    m={this_component_data}
+    {visible}
+    {rotateState}
+    {module_index}
+    name={"Voltage Source"}
     {menu_buttons}
     icon_name={dac4D_icon}
-    ></ModuleHeading>
+  ></ModuleHeading>
 
   <div class="body">
     {#if !(visible == VisibleState.Collapsed)}
       <div class="content">
         {#each channel_list as _, i}
           <div transition:slide|global class="channel">
-                    <Channel
-                      ch={this_component_data.vsource.channels[i]}
-                      {module_index}
-                      {onChannelChange}
-                      down={down_array[i]}
-                      onChevronClick = {() => onChevClick(i)}
-                    />
-                          </div>
+            <Channel
+              ch={this_component_data.vsource.channels[i]}
+              {module_index}
+              {onChannelChange}
+              down={down_array[i]}
+              onChevronClick={() => onChevClick(i)}
+            />
+          </div>
         {/each}
       </div>
     {/if}
@@ -106,8 +108,6 @@
 </div>
 
 <style>
-  
-
   .body {
     background-color: var(--body-color);
     box-sizing: border-box;
@@ -121,7 +121,6 @@
     flex-direction: column;
     width: 100%;
   }
-  
 
   .module-container {
     display: flex;

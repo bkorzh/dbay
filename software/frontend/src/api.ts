@@ -1,6 +1,6 @@
 
 
-import type { VsourceChange } from './lib/addons/vsource/interface';
+import type { SharedVsourceChange, VsourceChange } from './lib/addons/vsource/interface';
 
 
 import type { SystemState } from './state/systemState.svelte';
@@ -58,6 +58,10 @@ export function initializeVsource(params: VMEParams) {
 
 
 export function requestChannelUpdate(dst: VsourceChange, endpoint: string): Promise<VsourceChange>{
+    return fetchWithConfig(endpoint, "PUT", dst);
+}
+
+export function requestSharedChannelUpdate(dst: SharedVsourceChange, endpoint: string): Promise<SharedVsourceChange>{
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 

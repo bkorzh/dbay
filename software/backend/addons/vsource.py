@@ -25,6 +25,10 @@ class VsourceChange(BaseModel):
     heading_text: str
     measuring: bool
 
+class SharedVsourceChange(BaseModel):
+    change: VsourceChange # the change to apply
+    link_enabled: list[bool] # the channels to apply the change to
+
 
 
 
