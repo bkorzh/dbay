@@ -2,22 +2,33 @@
     import Channel from "./Channel.svelte";
     import ChannelChevron from "./buttons/ChannelChevron.svelte";
     import type { ChSourceStateClass } from "./addons";
-    import type { ChangerFunction } from "./addons/vsource/vsource.svelte";
+    import type { ChangerFunction, EffectFunction } from "./addons/vsource/vsource.svelte";
 
 
     // used for displaying the voltage using multiple digits that may be individually edited
     interface Props {
         ch: ChSourceStateClass
         spacing_small?: boolean;
-        onChannelChange: ChangerFunction;
+        onChannelChange?: ChangerFunction;
+        effect?: EffectFunction
     }
 
     let {
         ch,
         spacing_small = false,
         onChannelChange,
+        effect
     }: Props = $props();
 
+
+    // optional overrides
+    if (onChannelChange) {
+        ch.onChannelChange = onChannelChange;
+    }
+    if (effect) {
+        ch.effect = effect;
+    }
+    
 
     const sp = spacing_small ? {
         // small spacing

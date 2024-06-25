@@ -10,15 +10,27 @@
         ChSourceState,
         VsourceChange,
     } from "./addons/vsource/interface";
-    import type { ChangerFunction } from "./addons/vsource/vsource.svelte";
-  import PlusMinus from "./PlusMinus.svelte";
+    import type { ChangerFunction, EffectFunction } from "./addons/vsource/vsource.svelte";
+    import PlusMinus from "./PlusMinus.svelte";
 
     interface Props {
         ch: ChSourceStateClass;
-        onChannelChange: ChangerFunction;
+        onChannelChange?: ChangerFunction;
+        effect?: EffectFunction;
     }
 
-    let { ch, onChannelChange }: Props = $props();
+    let { ch, onChannelChange, effect }: Props = $props();
+
+
+    // optional overrides
+    if (onChannelChange) {
+        ch.onChannelChange = onChannelChange;
+    }
+    if (effect) {
+        ch.effect = effect;
+    }
+
+
 
     let st = $derived(
         ch.activated
@@ -47,7 +59,7 @@
         let new_bias_voltage =
             Math.round((ch.bias_voltage + scaling[index] * value) * 1000) /
             1000;
-        ch.validateUpdateVoltage(new_bias_voltage, onChannelChange);
+        ch.validateUpdateVoltage(new_bias_voltage);
     }
 
 
@@ -69,14 +81,14 @@
     }
 
     function switchState() {
-        ch.updateChannel({ activated: !ch.activated }, onChannelChange);
+        ch.updateChannel({ activated: !ch.activated });
     }
 
     
 
     function handleInputKeyDown(event: any) {
         if (event.key === "Enter") {
-            ch.onSubmit(onChannelChange);
+            ch.onSubmit();
         }
     }
 
@@ -104,7 +116,7 @@
         >
             {ch.sign_temp}
         </div> -->
-        <PlusMinus {ch} {onChannelChange}></PlusMinus>
+        <PlusMinus {ch}></PlusMinus>
         <!-- <div class="spacer-chev"></div>
         <div class="spacer-chev"></div> -->
         <div class="controls">
@@ -118,7 +130,7 @@
                 <ChevButtonTop onclick={() => increment(3, 1)} />
             </div>
 
-            <Display {ch} {onChannelChange}></Display>
+            <Display {ch}></Display>
 
             <div class="buttons-bottom">
                 <ChevButtonBottom onclick={() => increment(0, -1)} />

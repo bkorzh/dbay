@@ -4,10 +4,9 @@
 
   interface Props {
     ch: ChSourceStateClass;
-    onChannelChange: ChangerFunction;
   }
 
-  let { ch, onChannelChange }: Props = $props();
+  let { ch }: Props = $props();
 
   function updatedPlusMinus() {
     if (ch.editing) {
@@ -17,7 +16,7 @@
 
     ch.isPlusMinusPressed = true; //needed for the animation
 
-    ch.updateChannel({ voltage: -ch.bias_voltage }, onChannelChange);
+    ch.updateChannel({ voltage: -ch.bias_voltage });
 
     setTimeout(() => {
       ch.isPlusMinusPressed = false;

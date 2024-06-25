@@ -27,31 +27,45 @@
   import ChannelChevron from "./buttons/ChannelChevron.svelte";
   import Display from "./Display.svelte";
   import ChannelContent from "./ChannelContent.svelte";
-  import type { ChangerFunction } from "./addons/vsource/vsource.svelte";
+  import type { ChangerFunction, EffectFunction } from "./addons/vsource/vsource.svelte";
   import ChannelBar from "./ChannelBar.svelte";
   import { slide } from "svelte/transition";
 
   interface Props {
     ch: ChSourceStateClass;
     module_index: number;
-    onChannelChange: ChangerFunction;
+    down: boolean;
     staticName?: string;
     borders?: boolean;
-    down: boolean;
     onChevronClick: () => void;
+    onChannelChange?: ChangerFunction;
+    effect?: EffectFunction;
   }
 
   let {
     ch,
     module_index,
-    onChannelChange,
     staticName,
     borders = true,
     down,
     onChevronClick,
+    onChannelChange,
+    effect,
   }: Props = $props();
 
   // let down = $state(true);
+
+
+  // override the onChannelChange function if it is passed as a prop
+  if (onChannelChange) {
+    ch.onChannelChange = onChannelChange;
+  }
+
+  // override the effect function if it is passed as a prop. Used for updating other parts
+  // of a module after a channel has finished updating. 
+  if (effect) {
+    ch.effect = effect;
+  }
 
   let showDropdown = $state(false);
 
@@ -77,20 +91,19 @@
     {ch}
     bind:showDropdown
     {down}
-    {onChannelChange}
     {staticName}
     {onChevronClick}
   >
     <MenuButton
       onclick={() => {
-        ch.updateChannel({ measuring: !ch.measuring }, onChannelChange);
+        ch.updateChannel({ measuring: !ch.measuring });
         showDropdown = !showDropdown;
       }}>Toggle Measurement Mode</MenuButton
     >
   </ChannelBar>
   {#if down}
     <div transition:slide|global class="slider">
-      <ChannelContent {ch} {onChannelChange}></ChannelContent>
+      <ChannelContent {ch}></ChannelContent>
     </div>
   {/if}
 </div>

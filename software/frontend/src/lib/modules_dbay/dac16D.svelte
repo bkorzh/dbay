@@ -38,7 +38,7 @@
   let slot = $derived(system_state.data[module_index]?.core.slot);
 
   let show_dropdown = $state(Array.from({ length: 16 }, (_, i) => false));
-  let link_enabled = $state(Array.from({ length: 16 }, (_, i) => true));
+  // let link_enabled = $state(Array.from({ length: 16 }, (_, i) => true));
 
   const c = system_state.data[module_index] as dac16D;
 
@@ -64,7 +64,7 @@
 
     let shared_data: SharedVsourceChange = {
       change: data,
-      link_enabled: link_enabled,
+      link_enabled: c.link_enabled,
     };
 
     if (system_state.valid) {
@@ -87,51 +87,15 @@
     return intermediate_data.change;
   }
 
-  // all affect single
-  async function checkValidAllChannel(
-    data: VsourceChange,
-    current_index: number,
-  ) {
-    console.log("current index: ", current_index);
-    let new_voltage = data.bias_voltage;
-    let new_activated = data.activated;
-
-    // only do any validation if the channel currently edited is linked
-    if (link_enabled[current_index]) {
-      for (let i = 0; i < c.vsource.channels.length; i++) {
-        // if the new channel that is edited or newly included does not
-        // match every other linked channel, then set the shared_voltage to invalid
-        if (link_enabled[i] && i !== current_index) {
-          // console.log("checking channel: ", i, "with ", current_index);
-          if (
-            c.vsource.channels[i].bias_voltage !== new_voltage ||
-            c.vsource.channels[i].activated !== new_activated
-          ) {
-            // console.log(
-            //   "setting invalid because this does not match other linked"
-            // );
-            c.shared_voltage.setInvalid();
-            return data;
-          }
-        }
-      }
-
-      c.shared_voltage.setValid(data, true);
-      return data;
-    }
+  async function individualChannelChange(data: VsourceChange) {
+    let return_data;
+    return_data = system_state.valid ? await requestChannelUpdate(data, "/dac16D/vsource/") : data;
+    c.validateLinks();
+    return return_data;
   }
 
-  async function onChannelChange(data: VsourceChange) {
-    let returnData;
-    if (system_state.valid) {
-      returnData = await requestChannelUpdate(data, "/dac16D/vsource/");
-    } else {
-      returnData = data;
-    }
-
-    checkValidAllChannel(returnData, returnData.index);
-
-    return returnData;
+  async function vsbChange(data: VsourceChange) {
+    return system_state.valid ? await requestChannelUpdate(data, "/dac16D/vsb/") : data;
   }
 
   function rotateState() {
@@ -169,50 +133,47 @@
   }
 
   function changeLinkState(i: number) {
-    link_enabled[i] = !link_enabled[i];
+    c.link_enabled[i] = !c.link_enabled[i];
 
-    // the added channel might break the link and set the "set all linked" feature to invalid.
-    if (link_enabled[i]) {
-      const edited_channel_data = c.vsource.channels[i].currentStateAsChange();
-      checkValidAllChannel(edited_channel_data, i);
-    }
+    c.validateLinks();
+    // // the added channel might break the link and set the "set all linked" feature to invalid.
+    // if (link_enabled[i]) {
+    //   const edited_channel_data = c.vsource.channels[i].currentStateAsChange();
+    //   checkValidAllChannel(edited_channel_data, i);
+    // }
 
-    // the removed link might bring the linked channels back into a synchronized state
-    // find first item in link_enabled that's true. The way I've written checkValidAllChannel,
-    // it needs to be passed data on one connected channel.
-    let first_true = link_enabled.findIndex((val) => val === true);
-    if (first_true !== -1) {
-      const edited_channel_data =
-        c.vsource.channels[first_true].currentStateAsChange();
-      checkValidAllChannel(edited_channel_data, first_true);
-    }
+    // // the removed link might bring the linked channels back into a synchronized state
+    // // find first item in link_enabled that's true. The way I've written checkValidAllChannel,
+    // // it needs to be passed data on one connected channel.
+    // let first_true = link_enabled.findIndex((val) => val === true);
+    // if (first_true !== -1) {
+    //   const edited_channel_data =
+    //     c.vsource.channels[first_true].currentStateAsChange();
+    //   checkValidAllChannel(edited_channel_data, first_true);
+    // }
   }
 
   function linkAll() {
     for (let i = 0; i < 16; i++) {
-      link_enabled[i] = true;
+      c.link_enabled[i] = true;
     }
-
-    if (link_enabled[0]) {
-      const edited_channel_data = c.vsource.channels[0].currentStateAsChange();
-      checkValidAllChannel(edited_channel_data, 0);
-    }
+    c.validateLinks();
   }
 
   function unlinkAll() {
     for (let i = 0; i < 16; i++) {
-      link_enabled[i] = false;
+      c.link_enabled[i] = false;
     }
-
-    const fake_change: VsourceChange = {
-      module_index,
-      index: 0,
-      bias_voltage: 0,
-      activated: true,
-      heading_text: "fake",
-      measuring: false,
-    };
-    c.shared_voltage.setValid(fake_change, true);
+    c.validateLinks();
+    // const fake_change: VsourceChange = {
+    //   module_index,
+    //   index: 0,
+    //   bias_voltage: 0,
+    //   activated: true,
+    //   heading_text: "fake",
+    //   measuring: false,
+    // };
+    // c.shared_voltage.setValid(fake_change, true);
   }
 
   function handleMouseEnter(i: number) {
@@ -250,17 +211,16 @@
         <Channel
           ch={c.shared_voltage}
           {module_index}
-          onChannelChange={distributeChannelChange}
+          down={down_array[0]}
           staticName={c.shared_voltage.heading_text}
           borders={false}
-          down={down_array[0]}
           onChevronClick={() => onChevClick(0)}
+          onChannelChange={distributeChannelChange}
         />
       </div>
 
       <div class="box" transition:slide|global>
         <ChannelBar
-          {onChannelChange}
           bind:showDropdown
           down={down_array[1]}
           staticName="Set Individual Channels"
@@ -293,15 +253,15 @@
                         bind:dotMenu={verticalDotMenu}
                       ></NumberedHoveredDotMenu>
 
-                      <PlusMinus ch={c.vsource.channels[i]} {onChannelChange}
-                      ></PlusMinus>
+                      <PlusMinus ch={c.vsource.channels[i]}></PlusMinus>
                       <Display
                         ch={c.vsource.channels[i]}
-                        {onChannelChange}
                         spacing_small={true}
+                        onChannelChange={individualChannelChange}
+                        effect={c.validateLinks}
                       ></Display>
                       <Link
-                        activated={link_enabled[i]}
+                        activated={c.link_enabled[i]}
                         onclick={() => changeLinkState(i)}
                       ></Link>
                     </div>
@@ -329,17 +289,15 @@
                         bind:dotMenu={verticalDotMenu}
                       ></NumberedHoveredDotMenu>
 
-                      <PlusMinus
-                        ch={c.vsource.channels[i + 8]}
-                        {onChannelChange}
-                      ></PlusMinus>
+                      <PlusMinus ch={c.vsource.channels[i + 8]}></PlusMinus>
                       <Display
                         ch={c.vsource.channels[i + 8]}
-                        {onChannelChange}
                         spacing_small={true}
+                        onChannelChange={individualChannelChange}
+                        effect={c.validateLinks}
                       ></Display>
                       <Link
-                        activated={link_enabled[i + 8]}
+                        activated={c.link_enabled[i + 8]}
                         onclick={() => changeLinkState(i + 8)}
                       ></Link>
                     </div>
@@ -364,19 +322,17 @@
               >
                 {#if show_dropdown[i]}
                   <div class="white left" transition:slide|global>
-                    <ChannelContent ch={c.vsource.channels[i]} {onChannelChange}
-                    ></ChannelContent>
+                    <!-- onChannelChange -> individualChannelChange and the effect
+                     where already injected into c.vsource.channels[i]. No need to do it here -->
+                    <ChannelContent ch={c.vsource.channels[i]}></ChannelContent>
                   </div>
                 {:else if show_dropdown[i + 8]}
                   <div class="white right" transition:slide|global>
-                    <ChannelContent
-                      ch={c.vsource.channels[i + 8]}
-                      {onChannelChange}
+                    <ChannelContent ch={c.vsource.channels[i + 8]}
                     ></ChannelContent>
                   </div>
                 {/if}
               </div>
-              <!-- {/if} -->
             {/each}
           </div>
         {/if}
@@ -384,7 +340,6 @@
 
       <div class="box" transition:slide|global>
         <ChannelBar
-          {onChannelChange}
           bind:showDropdown
           down={down_array[2]}
           staticName="Supply Voltages"
@@ -398,7 +353,6 @@
         {#if down_array[2]}
           <div transition:slide|global class="supply-body">
             <div class="side-by-side" bind:clientWidth={parent_width}>
-
               <div class="channel right label">VSB1</div>
 
               <div class="channel left" bind:clientWidth={left_width}>
@@ -418,32 +372,13 @@
                       bind:dotMenu={verticalDotMenu}
                     ></NumberedHoveredDotMenu>
 
-                    <PlusMinus ch={c.vsb} {onChannelChange}></PlusMinus>
-                    <Display ch={c.vsb} {onChannelChange} spacing_small={true}
+                    <PlusMinus ch={c.vsb}></PlusMinus>
+                    <Display ch={c.vsb} onChannelChange={vsbChange} spacing_small={true}
                     ></Display>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- <div class="side-by-side">
-              <div class="channel right">VR</div>
-              <div class="channel left">
-                <div class="channel">
-                  <NumberedHoveredDotMenu
-                    isHovering={true}
-                    index={0}
-                    onclick={(e) => console.log("todo")}
-                    onkeydown={(e) => console.log("todo")}
-                    bind:dotMenu={verticalDotMenu}
-                  ></NumberedHoveredDotMenu>
-
-                  <PlusMinus ch={c.vsb} {onChannelChange}></PlusMinus>
-                  <Display ch={c.vsb} {onChannelChange} spacing_small={true}
-                  ></Display>
-                </div>
-              </div>
-            </div> -->
           </div>
         {/if}
       </div>
@@ -452,26 +387,20 @@
 </div>
 
 <style>
-
   .label {
-    /* margin: auto; */
     text-align: center;
     font-size: 1.2rem;
     margin-top: auto;
     margin-bottom: auto;
-    /* margin-left: 3rem; */
+    color: var(--text-color);
   }
 
   .vl {
     border-left: 1px solid var(--module-border-color);
-    /* flex-grow: 1; */
-    /* height: 38px; */
     align-items: stretch;
-    /* position: absolute; */
     left: 90%;
     margin-left: 0px;
     top: 9px;
-    /* width: 3px; */
   }
   .parent {
     position: relative;
@@ -486,32 +415,29 @@
   .channel {
     display: flex;
     flex-direction: row;
-    /* border box */
     box-sizing: border-box;
   }
 
   .channel:after {
-    /* Initial state */
     content: "";
     position: relative;
-    top: 3px; /* Offset from the top */
-    left: 3px; /* Offset from the left */
-    width: 100%; /* Match the width of the element */
-    height: 100%; /* Match the height of the element */
-    background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
-    z-index: 5; /* Put the shadow behind the element */
-    opacity: 0; /* Start invisible */
-    transition: opacity 0.5s ease-in-out; /* Transition the opacity */
+    top: 3px;
+    left: 3px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.05);
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
     filter: blur(5px);
   }
 
   .tab {
-    /* position: relative; */
+    box-sizing: border-box;
     padding: 0.2rem;
-
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
-    box-sizing: border-box;
+    
     display: flex;
     flex-direction: row;
     border-top: 1px solid var(--body-color);

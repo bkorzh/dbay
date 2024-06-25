@@ -33,6 +33,7 @@
       VisibleState.DoubleDown,
   );
 
+  // used to override the onChannelChange function specified in ChSourceStateClass
   async function onChannelChange(data: VsourceChange) {
     let returnData;
     if (system_state.valid) {
@@ -96,9 +97,9 @@
             <Channel
               ch={this_component_data.vsource.channels[i]}
               {module_index}
-              {onChannelChange}
               down={down_array[i]}
               onChevronClick={() => onChevClick(i)}
+              {onChannelChange}
             />
           </div>
         {/each}

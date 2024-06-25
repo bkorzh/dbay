@@ -1,6 +1,10 @@
 import type { IVsourceAddon, ChSourceState, VsourceChange } from "./interface";
+import { system_state } from "../../../state/systemState.svelte";
+import { requestChannelUpdate } from "../../../api";
+
 
 export type ChangerFunction = (data: VsourceChange) => Promise<VsourceChange>;
+export type EffectFunction = () => void;
 
 export class ChSourceStateClass implements ChSourceState {
   // interface defined properties
@@ -31,6 +35,20 @@ export class ChSourceStateClass implements ChSourceState {
   public heading_editing = $state(false);
   public editing = $state(false);
 
+
+  // default onChannelChange function. Can be overridden by a module. 
+  public async onChannelChange(data: VsourceChange) {
+    let returnData;
+    if (system_state.valid) {
+      returnData = await requestChannelUpdate(data, "/vsource/");
+    } else {
+      returnData = data;
+    }
+    return returnData;
+  }
+
+  // default effect function. Can be overridden by a module
+  public effect(): void {}
 
   public immediate_text = $state("");
 
@@ -67,7 +85,6 @@ export class ChSourceStateClass implements ChSourceState {
 
   public async validateUpdateVoltage(
     voltage: number,
-    onChannelChange: ChangerFunction
   ) {
     if (voltage >= 5) {
       voltage = 5;
@@ -75,15 +92,15 @@ export class ChSourceStateClass implements ChSourceState {
     if (voltage <= -5) {
       voltage = -5;
     }
-    this.updateChannel({ voltage: voltage }, onChannelChange);
+    const result = this.updateChannel({ voltage: voltage });
   }
 
-  public onSubmit(onChannelChange: ChangerFunction) {
+  public onSubmit() {
     const submitted_voltage = parseFloat(
-      `${this.sign_temp}${this.temp[0]}.${this.temp[1]}${this.temp[2]}${this.temp[3]}`
+      `${this.sign_temp}${this.temp[0]}.${this.temp[1]}${this.temp[2]}${this.temp[3]}`,
     );
 
-    this.validateUpdateVoltage(submitted_voltage, onChannelChange);
+    this.validateUpdateVoltage(submitted_voltage);
 
     this.editing = false;
     this.focusing = false;
@@ -101,7 +118,6 @@ export class ChSourceStateClass implements ChSourceState {
       index = this.index,
       measuring = this.measuring,
     } = {},
-    onChannelChange: ChangerFunction
   ) {
     const data: VsourceChange = {
       module_index: this.module_index,
@@ -111,8 +127,9 @@ export class ChSourceStateClass implements ChSourceState {
       index,
       measuring,
     };
-    const returnData = await onChannelChange(data);
+    const returnData = await this.onChannelChange(data);
     this.setChannel(returnData);
+    this.effect();
   }
 
   public setChannel(data: VsourceChange, static_heading = false) {
@@ -162,7 +179,7 @@ export class VsourceAddon implements IVsourceAddon {
   constructor(
     module_index: number,
     channels?: Array<ChSourceState>,
-    default_channel_number = 4
+    default_channel_number = 4,
   ) {
     const deflt = !channels || channels.length === 0;
     this.channels = Array.from(
@@ -177,19 +194,18 @@ export class VsourceAddon implements IVsourceAddon {
               heading_text: "channel " + (i + 1),
               measuring: false,
             },
-            module_index
+            module_index,
           );
         } else {
           return new ChSourceStateClass(channels[i], module_index);
         }
-      }
+      },
     );
   }
 
   public update(module_index: number, channels: Array<ChSourceState>): void {
-
     // I need to figure out how to check for an invalid shared channel state here, because someone editing
-    // the state could invalidate it. 
+    // the state could invalidate it.
 
     for (let i = 0; i < this.channels.length; i++) {
       this.channels[i].update(channels[i], module_index);
