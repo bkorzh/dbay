@@ -7,6 +7,7 @@
 //#include "LTC268x.h"
 //#include "PCA9557.h"
 #include "dbay_4triacDAC.h"
+#include "dbay_32DAC.h"
 
 #define MAX_MSG_LENGTH 1024
 #define LEN(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
@@ -203,9 +204,11 @@ int reset(){
 }
 
 int setdevicetype( int channel, char *devtypestr){
-  if( channel <0 || channel >= MAXMODULES) return -1;
   
-  
+  if( channel <0 || channel >= MAXMODULES){
+    Serial.print("channel out of range");
+    return -1;
+  }
   deviceType devtype=dbayDev::deviceTypeFromString(devtypestr);
   
   Serial.print("deviceType: ");Serial.println(devtype);
@@ -213,31 +216,42 @@ int setdevicetype( int channel, char *devtypestr){
   if(boardsactive[channel] == 0){
     Serial.println("board is not active");
     return -1;
-  }else if(module[channel] == nullptr){
-    switch(devtype){
-      case NODEV: 
+  }else switch(devtype){
+    case NODEV:
+      Serial.println("NODEV selected"); 
+      return 0;
+      break;
+    case DAC4D: 
+      if(module[channel] == nullptr){
+        Serial.println("DAC4D created");
+        module[channel] = new dbay4triacDAC(BASE_ADDR+channel, &Wire);         
+        return 0;
+        break;
+      }else if( module[channel]->thisDeviceType != devtype){
+        Serial.println("DAC4D replaced");
+        delete module[channel];
+        module[channel] = new dbay4triacDAC(BASE_ADDR+channel, &Wire);
+        return 0;
+        break;
+      }else return 0;
+    case DAC16D:
+      if(module[channel] == nullptr){
+        Serial.println("DAC16D created");
+        module[channel] = new dbay32DAC(BASE_ADDR+channel, &Wire);         
+        return 0;
+        break;
+      }else if( module[channel]->thisDeviceType != devtype){
+          Serial.println("DAC16D replaced");
+          delete module[channel];
+          module[channel] = new dbay32DAC(BASE_ADDR+channel, &Wire);
           return 0;
           break;
-      case DAC4D: 
-         Serial.println("DAC4D created");
-         module[channel] = new dbay4triacDAC(BASE_ADDR+channel, &Wire);
-         return 0;
-         break;
-    }
-  }else return -1;/*if( module[channel]->thisDeviceType != devtype){
-    delete module[channel];
-    switch(devtype){
-      case NODEV: 
-          return 0;
-          break;
-      case DAC4D: 
-          Serial.println("DAC4D replaced");
-         module[channel] = new dbay4triacDAC(BASE_ADDR+channel, &Wire);
-         return 0;
-         break;
-    }
-  }else */
-  
+      }else return 0;
+    default:
+      Serial.println("wrong devtype");
+      return -1;
+      break;
+  }
 }
 
 
@@ -316,6 +330,85 @@ int do_command(char *cmd, float *value){
             }else if(module[board]->SetVoltageDiff(channel, voltage))return -1;          
         }
 
+    }else if (!strcmp(tokens[0], "DAC16D")){
+        if (ntok != 5 && ntok !=4 && ntok !=3) {
+            sprintf(err, "DAC16D command expects 4, 3 or 2 arguments: type help for details");
+            return -1;
+        }
+        if(ntok ==5){
+             if(!strcmp(tokens[1], "VS")){
+                if(mystrtoi(tokens[2],&board)) {
+                  sprintf(err, "expected argument 1 to be integer but got '%s'", tokens[2]);
+                  return -1;
+                }else if(mystrtoi(tokens[3],&channel)) {
+                  sprintf(err, "expected argument 2 to be integer but got '%s'", tokens[3]);
+                  return -1;
+                }else if (mystrtod(tokens[4],&voltage)) {
+                  sprintf(err, "expected argument 3 to be double but got '%s'", tokens[4]);
+                  return -1;
+                }else if(module[board] == nullptr){
+                  sprintf(err, "DAC4D, VS, board is not initialized yet. Use SETDEV.");
+                  return -1;
+                }else if(strcmp(module[board]->deviceTypeToString() , "DAC16D")){
+                  sprintf(err, "Calling DAC16D command but board is initialized as '%s'", module[board]->deviceTypeToString());
+                  return -1;
+                }else if(module[board]->SetVoltage(channel, voltage))return -1;
+            }else if(!strcmp(tokens[1], "VSD")){
+                if(mystrtoi(tokens[2],&board)) {
+                  sprintf(err, "expected argument 1 to be integer but got '%s'", tokens[2]);
+                  return -1;
+                }else if(mystrtoi(tokens[3],&channel)) {
+                  sprintf(err, "expected argument 2 to be integer but got '%s'", tokens[3]);
+                  return -1;
+                }else if (mystrtod(tokens[4],&voltage)) {
+                  sprintf(err, "expected argument 3 to be double but got '%s'", tokens[4]);
+                  return -1;
+                }else if(module[board] == nullptr){
+                  sprintf(err, "DAC16D, VSD, board is not initialized yet. Use SETDEV.");
+                  return -1;
+                }else if(strcmp(module[board]->deviceTypeToString() , "DAC16D")){
+                  sprintf(err, "Calling DAC16D command but board is initialized as '%s'", module[board]->deviceTypeToString());
+                  return -1;
+                }else if(module[board]->SetVoltageDiff(channel, voltage))return -1;          
+            }      
+        }else if(ntok ==4){
+            if(!strcmp(tokens[1], "VSB")){
+                if(mystrtoi(tokens[2],&board)) {
+                    sprintf(err, "expected argument 1 to be integer but got '%s'", tokens[2]);
+                    return -1;
+                }else if (mystrtod(tokens[3],&voltage)) {
+                     sprintf(err, "expected argument 2 to be double but got '%s'", tokens[4]);
+                     return -1;
+                }else if(module[board] == nullptr){
+                  sprintf(err, "DAC16D, VSB, board is not initialized yet. Use SETDEV.");
+                  return -1;
+                }else if(strcmp(module[board]->deviceTypeToString() , "DAC16D")){
+                  sprintf(err, "Calling DAC16D command but board is initialized as '%s'", module[board]->deviceTypeToString());
+                  return -1;
+                }else if(module[board]->SetBase(voltage))return -1; 
+            }         
+        }else if(ntok == 3){
+            if(!strcmp(tokens[1], "VR")){
+                if(mystrtoi(tokens[2],&board)) {
+                    sprintf(err, "expected argument 1 to be integer but got '%s'", tokens[2]);
+                    return -1;
+                }else if(module[board] == nullptr){
+                  sprintf(err, "DAC16D, VSB, board is not initialized yet. Use SETDEV.");
+                  return -1;
+                }else if(strcmp(module[board]->deviceTypeToString() , "DAC16D")){
+                  sprintf(err, "Calling DAC16D command but board is initialized as '%s'", module[board]->deviceTypeToString());
+                  return -1;
+                }else{
+                  //Serial.println("hey");
+                    double chP = module[board]->ReadVoltage(0);
+                    double chN = module[board]->ReadVoltage(1);
+                    
+                    *value = (float)(chP-chN);
+                    return 2;
+                }
+
+            }
+        }
     }else if (!strcmp(tokens[0], "debug")) {
           if (ntok != 2) {
               sprintf(err, "debug command expects 1 argument: debug [on/off]");
@@ -326,7 +419,6 @@ int do_command(char *cmd, float *value){
               sprintf(err, "expected argument 1 to be yes/no but got '%s'", tokens[1]);
               return -1;
           }
-  
           debug = ison;
     }else if (!strcmp(tokens[0], "reset")) {
           
@@ -367,7 +459,7 @@ void setup()
 {
   Serial.begin(9600);
   if (debug)Serial.println("init");
-  
+  SPI.begin();
   Wire.begin();
   
 //pinMode(18, INPUT_PULLUP);

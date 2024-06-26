@@ -51,7 +51,7 @@
 /******************* Macros and Constants Definitions *************************/
 /******************************************************************************/
 
-#define SPIBAUD 100000
+#define SPIBAUD 10000
 #define SPIMODE SPI_MODE3
 
 
