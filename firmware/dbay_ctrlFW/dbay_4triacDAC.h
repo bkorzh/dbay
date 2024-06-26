@@ -16,7 +16,7 @@ class dbay4triacDAC : public dbayDev{
   
     dbay4triacDAC(int address, TwoWire *bus);
     ~dbay4triacDAC();
-    int reset();
+    int reset() override;
     int SetVoltage (int channel, double voltage) override;
     int SetVoltageDiff(int diffchannel, double voltage) override;
 

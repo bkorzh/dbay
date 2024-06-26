@@ -28,7 +28,7 @@ class dbayDev {
     ~dbayDev();
     char* deviceTypeToString();
     static deviceType deviceTypeFromString(char* devtypestr);
-    int reset();
+    virtual int reset();
     
     enum deviceType thisDeviceType;
     bool debug;
@@ -37,6 +37,8 @@ class dbayDev {
     
     virtual int SetVoltage(int channel, double voltage){return 0;}
     virtual int SetVoltageDiff(int diffchannel, double voltage){return 0;}
+    virtual double ReadVoltage(int channel){return 0;}
+    virtual int SetBase(double voltage){return 0;}
 
   protected:
     int i2cadress;

@@ -53,13 +53,13 @@ ltc268x::ltc268x(   enum ltc268x_device_id       dev_id,
    
 
 
-      // Set the address pin HIGH so we don't talk to multiple chips at once. 
+  // Set the address pin HIGH so we don't talk to multiple chips at once. 
 
-      if (!_BoardSel->digitalWrite(_PCA9557busDAC_CS,HIGH)) {
-          sprintf(_err, "Error setting address pin for board %i HIGH\n", BoardSel->boardN);
-          Serial.print(_err);
-          //rv = -1;
-      }      
+  if (!_BoardSel->digitalWrite(_PCA9557busDAC_CS,HIGH)) {
+      sprintf(_err, "Error setting address pin for board %i HIGH\n", BoardSel->boardN);
+      Serial.print(_err);
+      //rv = -1;
+  }      
 
 
       
@@ -80,30 +80,31 @@ ltc268x::ltc268x(   enum ltc268x_device_id       dev_id,
   ret = this->set_pwr_dac(pwd_dac_setting);
   if (ret < 0)
     goto error;
-
+  delay(10);
   /* Enable dither/toggle */
   ret = this->set_dither_toggle(dither_toggle_en);
   if (ret < 0)
     goto error;
-
+   delay(10);
   for (channel = 0; channel < this->num_channels; channel++) {
     /* Setup channel span */
     ret = this->set_span(channel, crt_range[channel]);
     if (ret < 0)
       goto error;
+       delay(10);
      /* Serial.print("ctr_range i :");
     Serial.println( crt_range[channel]);*/
     /* Set dither phase */
     ret = this->set_dither_phase(channel, dither_phase[channel]);
     if (ret < 0)
       goto error;
-
+     delay(10);
     /* Set dither period */
     ret = this->set_dither_period(channel,
             dither_period[channel]);
     if (ret < 0)
       goto error;
-
+       delay(10);
     ret = this->set_dither_mode(channel, dither_mode[channel]);
     if (ret < 0)
       goto error;
@@ -112,6 +113,7 @@ ltc268x::ltc268x(   enum ltc268x_device_id       dev_id,
     ret = this->select_tg_dith_clk(channel, clk_input[channel]);
     if (ret < 0)
       goto error;
+       delay(10);
   }
 
   /* Update all dac channels */
@@ -144,15 +146,25 @@ int32_t ltc268x::spi_write(uint8_t reg, uint16_t data){
   ret=0;
   //ret = no_os_spi_write_and_read(dev->spi_desc, buf, 3);
   _BoardSel->digitalWrite(_PCA9557busDAC_CS, LOW);
+  delay(1);
   SPI.beginTransaction(SPISettings(SPIBAUD, MSBFIRST, SPIMODE));
   //for (int i=2;  i >= 0; i--){
   for (int i=0;  i < 3; i++){
-    //DEBUG_PRINTELN("data sent over SPI " + String(buf[i],HEX));
+    //DEBUG_PRINTELN
+    Serial.println(buf[i],HEX);
     //rx_array[i] = 
     SPI.transfer(buf[i]);    //! 2) Read and send byte array
   }
   SPI.endTransaction();
   _BoardSel->digitalWrite(_PCA9557busDAC_CS, HIGH);
+  //delay(1);
+ /* SPI.beginTransaction(SPISettings(SPIBAUD, MSBFIRST, SPIMODE));
+  for (int i=0;  i < 3; i++){
+  SPI.transfer(0xF);    //! 2) Read and send byte array
+  }
+  SPI.endTransaction();
+  _BoardSel->digitalWrite(_PCA9557busDAC_CS, HIGH);
+  */
   return ret;
 }
 
@@ -218,6 +230,7 @@ int32_t ltc268x::spi_update_bits(uint8_t reg, uint16_t mask, uint16_t val)
  */
 int32_t ltc268x::set_pwr_dac(uint16_t setting)
 {
+  Serial.println("set_pwr_dac");
   int32_t ret;
 
   ret = this->spi_write(LTC268X_CMD_POWERDOWN_REG, setting);
@@ -238,6 +251,7 @@ int32_t ltc268x::set_pwr_dac(uint16_t setting)
  */
 int32_t ltc268x::set_dither_toggle(uint16_t setting)
 {
+  Serial.println("set_dither_toggle");
   int32_t ret;
 
   ret = this->spi_write(LTC268X_CMD_TOGGLE_DITHER_EN_REG, setting);
@@ -257,6 +271,7 @@ int32_t ltc268x::set_dither_toggle(uint16_t setting)
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_dither_mode(uint8_t channel,bool en){
+  Serial.println("set_dither_mode");
   uint16_t val = 0;
   int32_t ret;
 
@@ -285,12 +300,16 @@ int32_t ltc268x::set_dither_mode(uint8_t channel,bool en){
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_span(uint8_t channel, enum ltc268x_voltage_range range){
+  Serial.println("set_span");
   int32_t ret;
 
   if (channel >= this->num_channels)
     return -ENOENT;
 
   ret = this->spi_update_bits(LTC268X_CMD_CH_SETTING(channel, this->dev_id), LTC268X_CH_SPAN_MSK, LTC268X_CH_SPAN(range));
+  /*Serial.print("reg: ");Serial.print(LTC268X_CMD_CH_SETTING(channel, this->dev_id),HEX);
+  Serial.print("\t mask: ");Serial.print(LTC268X_CH_SPAN_MSK, HEX);
+  Serial.print("\t value: ");Serial.println(LTC268X_CH_SPAN(range), HEX);*/
   if (ret < 0)
     return ret;
 
@@ -307,6 +326,7 @@ int32_t ltc268x::set_span(uint8_t channel, enum ltc268x_voltage_range range){
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_dither_phase(uint8_t channel, enum  ltc268x_dither_phase phase){
+  Serial.println("set_dither_phase");
   int32_t ret;
   if (channel >= this->num_channels)
     return -ENOENT;
@@ -328,6 +348,7 @@ int32_t ltc268x::set_dither_phase(uint8_t channel, enum  ltc268x_dither_phase ph
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_dither_period(uint8_t channel, enum  ltc268x_dither_period period){
+  Serial.println("set_dither_period");
   int32_t ret;
 
   if (channel >= this->num_channels)
@@ -445,7 +466,9 @@ int32_t ltc268x::set_voltage(uint8_t channel, float voltage){
   range_offset = ltc268x_span_tbl[this->crt_range[channel]].min;
   v_ref = ltc268x_span_tbl[this->crt_range[channel]].max -
     ltc268x_span_tbl[this->crt_range[channel]].min;
-   
+    Serial.println("set voltage:");
+   //Serial.print("min: ");Serial.println(ltc268x_span_tbl[this->crt_range[channel]].min);
+   //Serial.print("max: ");Serial.println(ltc268x_span_tbl[this->crt_range[channel]].max);
    /*Serial.print("channel: ");Serial.println(channel);
    Serial.print("voltage: ");Serial.println(voltage);
    Serial.print("range offset: ");Serial.println(range_offset);
@@ -456,7 +479,7 @@ int32_t ltc268x::set_voltage(uint8_t channel, float voltage){
     code = 0xFFFF;
 
   this->dac_code[channel] = code;
-  Serial.print("code: ");Serial.println(code);
+  //Serial.print("code: ");Serial.println(code);
   /* Write to the Data Register of the DAC. */
   return this->spi_write(LTC268X_CMD_CH_CODE_UPDATE(channel, this->dev_id), code);
 }

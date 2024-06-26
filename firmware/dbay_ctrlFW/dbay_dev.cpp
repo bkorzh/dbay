@@ -36,5 +36,7 @@ deviceType dbayDev::deviceTypeFromString(char* devtypestr){
     return deviceType::NODEV;
   }else if (!strcmp(devtypestr, "DAC4D")){
      return deviceType::DAC4D;
+  }else if (!strcmp(devtypestr, "DAC16D")){
+     return deviceType::DAC16D;
   }else return deviceType::NODEV;
 }
