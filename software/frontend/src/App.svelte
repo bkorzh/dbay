@@ -49,8 +49,6 @@
       intervalId = setInterval(async () => {
         
         json_state = await getFullState();
-        console.log("interval json state: ", json_state)
-        console.log("system_state: ", system_state.data)
         updateSystemStatefromJson(json_state); // this seems costly
       }, 1000); // 1000 milliseconds = 1 second
 

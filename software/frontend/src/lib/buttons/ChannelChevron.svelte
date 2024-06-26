@@ -7,21 +7,25 @@
     interface Props {
         isHovering: boolean;
         index: number;
+        down: boolean;
         onChevronClick?: () => void
     }
 
-    let {isHovering, index, onChevronClick}: Props = $props();
+    let {isHovering, index, down, onChevronClick}: Props = $props();
 
-    let toggle_up = $state(false);
-    let toggle_down = $state(true);
+    // let toggle_up = $state(false);
+    // let toggle_down = $state(true);
     let isConsistentHovering = $state(false);
     let hoverTimeout: number;
 
     function togglerRotateState() {
         if (onChevronClick) onChevronClick();
-        toggle_up = !toggle_up;
-        toggle_down = !toggle_down;
+        // toggle_up = !toggle_up;
+        // toggle_down = !toggle_down;
     }
+
+    let toggle_up = $derived(!down);
+    let toggle_down = $derived(down);
 
 
     $effect(() => {

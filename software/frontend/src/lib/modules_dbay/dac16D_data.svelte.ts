@@ -23,10 +23,10 @@ export class dac16D implements IModule {
 
   public link_enabled = $state(Array.from({ length: 16 }, (_, i) => true));
 
-  public validateLinks(): void {
-    // first true link_enabled
-    let first_true_index = this.link_enabled.findIndex((val) => val === true);
 
+  // written as an arrow function to bind the 'this' context to the class instance.
+  validateLinks = (): void => {
+    let first_true_index = this.link_enabled.findIndex((val) => val === true);
     if (first_true_index === -1) {
       console.log("No linked channels. Loading dummy state");
       const dummy_state: VsourceChange = {

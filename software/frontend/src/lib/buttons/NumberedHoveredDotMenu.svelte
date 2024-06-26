@@ -129,7 +129,7 @@
     margin: auto;
     /* margin-right: 0.5rem; */
     /* margin-left: 0.8rem; */
-    margin-right: 0.3rem;
+    margin-right: 0.1rem;
     padding-bottom: 0.1rem;
     color: var(--icon-color);
     font-size: large;

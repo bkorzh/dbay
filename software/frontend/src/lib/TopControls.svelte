@@ -15,9 +15,10 @@
   import { system_state, switch_on_off_system} from "../state/systemState.svelte";
 
   import { updateSystemStatefromJson } from "./modules_dbay/index.svelte"
-  import {requestFullStateUpdate} from "../api";
+  // import {requestFullStateUpdate} from "../api";
   import type { SystemState } from "../state/systemState.svelte";
   import {onMount} from "svelte";
+
 
   let burgerMenu: any = $state();
   let menuLocation = $state({ top: 0, left: 0 });
@@ -35,25 +36,22 @@
         };
     }
 
-  let total_state: SystemState;
+  // let total_state: SystemState;
 
-  // voltageStore.subscribe((state) => {
-  //   total_state = state;
-  // });
 
   async function allOn() {
     // const total_state = get(voltageStore);
-    const modified_state = switch_on_off_system(total_state, true);
-    const returned_state = await requestFullStateUpdate(modified_state);
-    updateSystemStatefromJson(returned_state)
+    switch_on_off_system(system_state, true);
+    // const returned_state = await requestFullStateUpdate(modified_state);
+    // updateSystemStatefromJson(returned_state)
   }
 
   async function allOff() {
     // const total_state = get(voltageStore);
-    const modified_state = switch_on_off_system(total_state, false);
-    const returned_state = await requestFullStateUpdate(modified_state);
-    // voltageStore.set(returned_state);
-    updateSystemStatefromJson(returned_state)
+    switch_on_off_system(system_state, false);
+    // const returned_state = await requestFullStateUpdate(modified_state);
+    // // voltageStore.set(returned_state);
+    // updateSystemStatefromJson(returned_state)
 
   }
 

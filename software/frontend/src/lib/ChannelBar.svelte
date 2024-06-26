@@ -102,6 +102,7 @@
     <!-- If it's a static label (not numbered), then always show the chevron -->
     <ChannelChevron
       {onChevronClick}
+      {down}
       isHovering={ch ? (staticName ? true : ch.isHovering) : true}
       index={ch ? ch.index + 1 : 0}
     ></ChannelChevron>
@@ -167,11 +168,6 @@
     color: var(--red-text);
     font-size: 1.5rem;
     letter-spacing: 0.58rem;
-    /* padding: 0.3rem 0.5rem; */
-    /* margin: 0;
-        margin-top: 0.2rem; */
-    /* margin-bottom: auto; */
-    /* opacity: 0.5; */
     font-family: "Roboto Flex", sans-serif;
     font-weight: 300;
     margin: auto;
@@ -198,7 +194,6 @@
   .top-left {
     display: flex;
     flex-direction: row;
-    /* justify-content: start; */
     align-items: flex-end;
   }
 
@@ -206,20 +201,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* padding: 5px 10px;
-        padding-right: 13px; */
   }
 
   .heading-input {
     color: var(--text-color);
     font-size: 1.5rem;
     letter-spacing: 0rem;
-    /* padding: 0.7rem 0.0rem; */
-    /* margin: 0; */
     padding-right: 0rem;
-    /* margin-bottom: 3rem; */
     padding-bottom: 0.15rem;
-    /* height: 78%; */
     padding-right: 0rem;
     margin-top: 0.15rem;
     margin-bottom: 0.15rem;
@@ -243,12 +232,10 @@
     font-size: 1.7rem;
     letter-spacing: 0.58rem;
     color: var(--digits-color);
-    /* transition: background-color 0.1s ease-in-out; */
   }
 
   .heading-input:hover {
     background-color: var(--hover-heading-color);
-    /* border: 1.5px solid var(--inner-border-color); */
   }
 
   .input-to-label {
@@ -271,16 +258,13 @@
 
   .top-bar {
     display: flex;
-    /* position: relative; */
     flex-direction: row;
     background-color: var(--heading-color);
     border-bottom: 1.3px solid var(--inner-border-color);
     justify-content: space-between;
-    /* align-items: start; */
     padding: 0rem 0rem;
     padding-bottom: 0rem;
     padding-right: 0px;
-    /* box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5); */
     padding-left: 0.7rem;
   }
 

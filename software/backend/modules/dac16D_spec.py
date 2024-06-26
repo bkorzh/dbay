@@ -1,5 +1,6 @@
 from backend.state import IModule, Core
 from backend.addons.vsource import IVsourceAddon, ChSourceState
+from backend.addons.vsense import ChSenseState
 from typing import Literal
 from backend.server_logging import get_logger
 from backend.udp_control import Controller, ParentUDP
@@ -11,11 +12,15 @@ class dac16D(IModule):
     module_type: Literal["dac16D"] = "dac16D"
     core: Core
     vsource: IVsourceAddon
+    vsb: ChSourceState
+    vr: ChSenseState
 
 
 def create_prototype(slot: int):
     channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac16D", measuring=False) for i in range(16)]
-    return dac16D(core=Core(slot=slot, type="dac16D", name="my dac16D module"), vsource=IVsourceAddon(channels=channels))
+    vsb = ChSourceState(index=0, bias_voltage=0, activated=False, heading_text="dac16D vsb", measuring=False)
+    vr = ChSenseState(index=0, voltage=0, measuring=False, name="dac16D vr")
+    return dac16D(core=Core(slot=slot, type="dac16D", name="my dac16D module"), vsource=IVsourceAddon(channels=channels), vsb=vsb, vr=vr)
 
 
 

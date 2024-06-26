@@ -31,7 +31,7 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            console.log(response)
+            // console.log(response)
             return response.json();
         });
 }
@@ -42,9 +42,9 @@ export function getFullState(): Promise<JsonSystemState> {
     return fetchWithConfig("/full-state", "GET");
 }
 
-export function requestFullStateUpdate(state: SystemState): Promise<SystemState> {
-    return fetchWithConfig("/full-state", "PUT", state);
-}
+// export function requestFullStateUpdate(state: SystemState): Promise<SystemState> {
+//     return fetchWithConfig("/full-state", "PUT", state);
+// }
 
 export function initializeState(channel_number: number) {
     return fetchWithConfig("/initialize", "POST", { channel_number });

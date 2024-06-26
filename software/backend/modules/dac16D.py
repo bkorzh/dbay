@@ -1,5 +1,6 @@
 from backend.addons.vsource import VsourceChange, SharedVsourceChange
-from fastapi import Request
+from backend.addons.vsense import ChSenseState
+from fastapi import Request, WebSocket
 from fastapi import APIRouter, HTTPException
 from backend.initialize import global_state
 from typing import cast
@@ -7,6 +8,8 @@ from backend.server_logging import get_logger
 from backend.modules.dac16D_spec import dac16D, dac16DController
 from backend.initialize import global_state
 from backend.util import identify_change
+import asyncio 
+import random
 
 
 logger = get_logger(__name__)
@@ -46,6 +49,20 @@ async def voltage_set_shared(request: Request, shared_change: SharedVsourceChang
 
     return shared_change
 
+@router.put("/vsb/")
+async def voltage_set_vsb(request: Request, change: VsourceChange):
+    pass
+
+
+@router.websocket("/ws_vsense/")
+async def websocket_vsense_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        number = random.randint(0, 100)/100
+        logger.info(f"Received data: {number}")
+        vsense_state = ChSenseState(index=0, voltage=number, measuring=True, name="dac16D vr")
+        await websocket.send_text(vsense_state.model_dump_json())
+        await asyncio.sleep(0.1)
 
 @router.put("/vsource/")
 async def voltage_set(request: Request, change: VsourceChange):

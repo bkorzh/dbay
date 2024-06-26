@@ -117,7 +117,6 @@ export function createSystemStatefromJson(parsed: JsonSystemState) {
 
 export function updateSystemStatefromJson(parsed: JsonSystemState) {
   let j = 0
-  console.log("in the updater")
   for (let i = 0; i < parsed.data.length; i++) {
     if (parsed.data[i].core.type !== system_state.data[i].core.type) {
       console.log("DEVIATION FOUND")

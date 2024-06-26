@@ -70,6 +70,7 @@ export class ChSourceStateClass implements ChSourceState {
     this.measuring = data.measuring;
     this.module_index = module_index;
     this.voltageToTemp();
+    this.effect();
   }
 
   public currentStateAsChange(): VsourceChange {
@@ -213,10 +214,10 @@ export class VsourceAddon implements IVsourceAddon {
   }
 
   public switchOnOffAllChannels(onoff: boolean): void {
-    this.channels.forEach((channel) => (channel.activated = onoff));
+    this.channels.forEach((channel) => {channel.updateChannel({ activated: onoff })});
   }
 
   public setAllChannelsVoltage(voltage: number): void {
-    this.channels.forEach((channel) => (channel.bias_voltage = voltage));
+    this.channels.forEach((channel) => {channel.updateChannel({ voltage: voltage })});
   }
 }

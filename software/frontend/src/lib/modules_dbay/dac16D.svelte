@@ -40,6 +40,8 @@
   let show_dropdown = $state(Array.from({ length: 16 }, (_, i) => false));
   // let link_enabled = $state(Array.from({ length: 16 }, (_, i) => true));
 
+  let vsb_popout = $state(false);
+
   const c = system_state.data[module_index] as dac16D;
 
   let channel_list = Array.from({ length: 16 }, (_, i) => i + 1);
@@ -50,7 +52,9 @@
   let down_array = $state([true, true, true]);
   let visible_all_channels = $state(true);
   let visible_ind_channels = $state(true);
-  let showDropdown = $state(false);
+
+  let showDropdown_1 = $state(false);
+  let showDropdown_2 = $state(false);
 
   // these become poiters to
   let dotMenu = $state() as HTMLElement;
@@ -89,13 +93,17 @@
 
   async function individualChannelChange(data: VsourceChange) {
     let return_data;
-    return_data = system_state.valid ? await requestChannelUpdate(data, "/dac16D/vsource/") : data;
+    return_data = system_state.valid
+      ? await requestChannelUpdate(data, "/dac16D/vsource/")
+      : data;
     c.validateLinks();
     return return_data;
   }
 
   async function vsbChange(data: VsourceChange) {
-    return system_state.valid ? await requestChannelUpdate(data, "/dac16D/vsb/") : data;
+    return system_state.valid
+      ? await requestChannelUpdate(data, "/dac16D/vsb/")
+      : data;
   }
 
   function rotateState() {
@@ -136,21 +144,6 @@
     c.link_enabled[i] = !c.link_enabled[i];
 
     c.validateLinks();
-    // // the added channel might break the link and set the "set all linked" feature to invalid.
-    // if (link_enabled[i]) {
-    //   const edited_channel_data = c.vsource.channels[i].currentStateAsChange();
-    //   checkValidAllChannel(edited_channel_data, i);
-    // }
-
-    // // the removed link might bring the linked channels back into a synchronized state
-    // // find first item in link_enabled that's true. The way I've written checkValidAllChannel,
-    // // it needs to be passed data on one connected channel.
-    // let first_true = link_enabled.findIndex((val) => val === true);
-    // if (first_true !== -1) {
-    //   const edited_channel_data =
-    //     c.vsource.channels[first_true].currentStateAsChange();
-    //   checkValidAllChannel(edited_channel_data, first_true);
-    // }
   }
 
   function linkAll() {
@@ -165,15 +158,6 @@
       c.link_enabled[i] = false;
     }
     c.validateLinks();
-    // const fake_change: VsourceChange = {
-    //   module_index,
-    //   index: 0,
-    //   bias_voltage: 0,
-    //   activated: true,
-    //   heading_text: "fake",
-    //   measuring: false,
-    // };
-    // c.shared_voltage.setValid(fake_change, true);
   }
 
   function handleMouseEnter(i: number) {
@@ -188,6 +172,17 @@
   let left_width = $state(0);
   let right_width = $state(0);
   let vl_width = $state(0);
+
+  $effect(() => {
+    console.log("parent_width: ", parent_width);
+    console.log("left_width: ", left_width);
+    console.log("right_width: ", right_width);
+    console.log("vl_width: ", vl_width);
+  });
+
+  let popout_margin_size = $derived(
+    (parent_width - left_width - right_width - vl_width) / 6 - 0.3,
+  );
 </script>
 
 {#snippet menu_buttons()}
@@ -221,7 +216,7 @@
 
       <div class="box" transition:slide|global>
         <ChannelBar
-          bind:showDropdown
+          bind:showDropdown={showDropdown_1}
           down={down_array[1]}
           staticName="Set Individual Channels"
           borderTop={true}
@@ -308,17 +303,7 @@
               <!-- {#if show_dropdown[i] || show_dropdown[i + 8]} -->
               <div
                 class="parent"
-                style="margin-left: {(parent_width -
-                  left_width -
-                  right_width -
-                  vl_width) /
-                  6 +
-                  1.6}px; margin-right: {(parent_width -
-                  left_width -
-                  right_width -
-                  vl_width) /
-                  6 +
-                  1.6}px;"
+                style="margin-left: {popout_margin_size}px; margin-right: {popout_margin_size}px;"
               >
                 {#if show_dropdown[i]}
                   <div class="white left" transition:slide|global>
@@ -340,7 +325,7 @@
 
       <div class="box" transition:slide|global>
         <ChannelBar
-          bind:showDropdown
+          bind:showDropdown={showDropdown_2}
           down={down_array[2]}
           staticName="Supply Voltages"
           borderTop={true}
@@ -352,32 +337,47 @@
         </ChannelBar>
         {#if down_array[2]}
           <div transition:slide|global class="supply-body">
-            <div class="side-by-side" bind:clientWidth={parent_width}>
+            <div class="side-by-side">
               <div class="channel right label">VSB1</div>
 
-              <div class="channel left" bind:clientWidth={left_width}>
+              <div class="channel left">
                 <div class="channel">
                   <div
                     class="tab"
                     role="cell"
                     tabindex="0"
-                    class:popout={false}
+                    class:popout={vsb_popout}
                   >
                     <!-- <div class="ch-number">{i + 9}</div> -->
                     <NumberedHoveredDotMenu
                       isHovering={true}
                       index={0}
-                      onclick={(e) => console.log("todo")}
-                      onkeydown={(e) => console.log("todo")}
+                      onclick={(e) => (vsb_popout = !vsb_popout)}
+                      onkeydown={(e) => (vsb_popout = !vsb_popout)}
                       bind:dotMenu={verticalDotMenu}
                     ></NumberedHoveredDotMenu>
 
                     <PlusMinus ch={c.vsb}></PlusMinus>
-                    <Display ch={c.vsb} onChannelChange={vsbChange} spacing_small={true}
+                    <Display
+                      ch={c.vsb}
+                      onChannelChange={vsbChange}
+                      spacing_small={true}
                     ></Display>
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="parent"
+              style="margin-left: {popout_margin_size}px; margin-right: {popout_margin_size}px;"
+            >
+              {#if vsb_popout}
+                <div class="white left" transition:slide|global>
+                  <!-- onChannelChange -> individualChannelChange and the effect
+                     where already injected into c.vsource.channels[i]. No need to do it here -->
+                  <ChannelContent ch={c.vsb}></ChannelContent>
+                </div>
+              {/if}
             </div>
           </div>
         {/if}
@@ -396,6 +396,7 @@
   }
 
   .vl {
+    box-sizing: border-box;
     border-left: 1px solid var(--module-border-color);
     align-items: stretch;
     left: 90%;
@@ -408,6 +409,7 @@
   }
 
   .tab-parent {
+    box-sizing: border-box;
     position: relative;
     opacity: 1;
   }
@@ -437,7 +439,7 @@
     padding: 0.2rem;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
-    
+
     display: flex;
     flex-direction: row;
     border-top: 1px solid var(--body-color);
@@ -483,8 +485,8 @@
     opacity: 1;
     content: "";
     position: absolute;
-    top: 3px; /* Offset from the top */
-    left: 3px; /* Offset from the left */
+    top: 3px;
+    left: 3px;
     width: 100%; /* Match the width of the element */
     height: 100%; /* Match the height of the element */
     background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
@@ -499,8 +501,8 @@
   .tab-parent:after {
     content: "";
     position: absolute;
-    top: 3px; /* Offset from the top */
-    left: 3px; /* Offset from the left */
+    top: 3px;
+    left: 3px;
     width: 100%; /* Match the width of the element */
     height: 100%; /* Match the height of the element */
     background-color: rgba(0, 0, 0, 0.05); /* Set the shadow color */
@@ -532,8 +534,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    padding-left: 0.2rem;
-    padding-right: 0.2rem;
+    padding-left: 0px;
+    padding-right: 0px;
     /* padding: 0.1rem; */
   }
 
