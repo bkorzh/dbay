@@ -36,6 +36,10 @@ from backend.location import BASE_DIR
 # import os
 
 
+import mimetypes
+mimetypes.init()
+
+
 class ModuleAddition(BaseModel):
     slot: int
     type: str
@@ -71,6 +75,7 @@ app.mount(
 
 @app.get("/", response_class=HTMLResponse)
 async def return_index(request: Request):
+    mimetypes.add_type('application/javascript', '.js')
     return FileResponse(Path(BASE_DIR, "dbay_control", "index.html"))
 
     

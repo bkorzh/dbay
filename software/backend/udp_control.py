@@ -5,6 +5,8 @@ import os
 import json
 from backend.location import BASE_DIR
 
+# from server_logging impor
+
 class UDP:
     def __init__(self, ip: str, port: int, dev_mode: bool, timeout: int = 1):    
         self._ip = ip
@@ -20,6 +22,9 @@ class UDP:
         if not self.dev_mode:
             try:
                 # Send the message to the target IP and port
+                
+                
+                
                 self._udp_socket.sendto(message.encode(), (self._ip, self._port))
                 # Initialize a counter for failed attempts
                 failed_attempts = 0
@@ -75,5 +80,5 @@ class Controller:
         if board < 0 or board > 7:
             return "error, board out of range"
         else:
-            message = "SETDEV" + str(board) + str(self.module_type) + "\n"
+            message = "SETDEV " + str(board) + " " + str(self.module_type) + "\n"
         return self.parent_udp.udp.send_message(message)

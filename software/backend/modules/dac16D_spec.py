@@ -27,7 +27,7 @@ def create_prototype(slot: int):
 
 class dac16DController(Controller):
     def __init__(self, parent_udp: ParentUDP, module_slot: int):
-        super().__init__(parent_udp, "dac16D")
+        super().__init__(parent_udp, "DAC16D")
         self.module_slot = module_slot
 
         # Resource acquisition is initialization (RAII)
@@ -47,7 +47,7 @@ class dac16DController(Controller):
         if  voltage < -10  or voltage > 10:
             return "error, voltage out of range"
         else:
-            message = "DAC16D VSD"+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
+            message = "DAC16D VSD "+ str(board) + " " + str(dacchan) + " " + str(voltage) + "\n"
         
         return self.parent_udp.udp.send_message(message)
     
