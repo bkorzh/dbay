@@ -5,6 +5,6 @@ backend/__pycache__/
 frontend/__pycache__/
 addons/__pycache__/
 
-
+backend/env/
 
 backend/dbay_control/
