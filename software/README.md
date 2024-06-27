@@ -65,12 +65,12 @@ If you don't plan to customize the voltage source user interface or back-end web
 Download:
 
 ```
-docker pull sansseriff/vsource_control
+docker pull sansseriff/dbay
 ```
 
 Run:
 ```
-docker run -d --restart unless-stopped --name vsource_control_container --log-opt max-size=10m --log-opt max-file=3 -p 80:80 sansseriff/vsource_control
+docker run -d --restart unless-stopped --name dbay_container --log-opt max-size=10m --log-opt max-file=3 -p 80:80 sansseriff/dbay
 ```
 
 The user interface should now be visible by typing `0.0.0.0` into the browser of the computer running docker. If docker was installed on a remote host computer on the same network, view the UI by directing the browser to the ip address of the host computer. 
@@ -89,13 +89,13 @@ In order to customize and rebuild the frontend javascript and html, you will nee
 When the code is ready to go, run this command in the root directory to build the container, using the instructions present in the local `Dockerfile`; 
 
 ```
-docker build -t vsource_control .
+docker build -t dbay .
 ```
 
 Then run the built container image:
 
 ```
-docker run -d --restart unless-stopped --name vsource_control_container -p 80:80 vsource_control 
+docker run -d --restart unless-stopped --name dbay_container -p 80:80 dbay 
 ```
 
 The user interface should now be visible by typing `0.0.0.0` into the browser of the computer running docker. If docker was installed on a remote host computer on the same network, view the UI by directing the browser to the ip address of the host computer. 
@@ -108,25 +108,25 @@ The user interface should now be visible by typing `0.0.0.0` into the browser of
 
 ### Build command:
 ```console
-docker build -t vsource_control .
+docker build -t dbay .
 ```
 
 run command:
 ### to make a new container from updated image:
 ```console
-docker run -d --restart unless-stopped --name vsource_control_container -p 80:80 vsource_control 
+docker run -d --restart unless-stopped --name dbay_container -p 80:80 dbay 
 ```
 
 
 ### to run existing container
 ```console
-docker run -d -p 80:80 vsource_control -d --restart unless-stopped
+docker run -d -p 80:80 dbay -d --restart unless-stopped
 ```
 
 
 ### Stop and remove existing container:
 ```console
-docker rm -f vsource_control_container
+docker rm -f dbay_container
 ```
 
 ### remove 'dangling' images. 
@@ -140,7 +140,7 @@ docker image prune
 
 Note: if you're changing something like CSS, you might need to rebuild the container with no cache. The docker rebuid process is iterative and might not 'notice' that a particular file needs to be updated:
 ```console
-docker build -t vsource_control . --no-cache
+docker build -t dbay . --no-cache
 ```
 ### to see the console outputs of the container (including outputs from python's `print()`)
 1. get the container id:
@@ -243,13 +243,13 @@ docker buildx use mybuilder
 docker buildx inspect --bootstrap
 
 # build the image and pull it to the local docker desktop (?) 
-docker buildx build --platform linux/amd64 -t sansseriff/vsource_control . --load
+docker buildx build --platform linux/amd64 -t sansseriff/dbay . --load
 ```
 
 Then with the docker desktop utility, publish the image to dockerhub. This way works without signing issues. If I used the --push option for that last command, then the built container had signing issues. I would get this error when trying to pull:
 
 ```
-Trying to pull repository docker.io/sansseriff/vsource_control ... 
+Trying to pull repository docker.io/sansseriff/dbay ... 
 missing signature key
 ```
 
