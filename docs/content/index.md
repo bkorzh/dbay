@@ -1,6 +1,4 @@
 ---
-title: Custom Title
+title: Welcome to the Device Bay documentation
 ---
-
-This is my linked note
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+This is some latex
