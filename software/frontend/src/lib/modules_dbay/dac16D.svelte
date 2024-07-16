@@ -373,8 +373,6 @@
             >
               {#if vsb_popout}
                 <div class="white left" transition:slide|global>
-                  <!-- onChannelChange -> individualChannelChange and the effect
-                     where already injected into c.vsource.channels[i]. No need to do it here -->
                   <ChannelContent ch={c.vsb}></ChannelContent>
                 </div>
               {/if}
