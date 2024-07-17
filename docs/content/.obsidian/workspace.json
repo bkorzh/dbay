@@ -37,9 +37,9 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Development/Software frontend and backend.md",
+                "file": "Quickstart/Install and run.md",
                 "mode": "source",
-                "source": false
+                "source": true
               }
             }
           }
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Development/Software frontend and backend.md",
+                "file": "Quickstart/Install and run.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Development/Software frontend and backend.md",
+                "file": "Quickstart/Install and run.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Development/Software frontend and backend.md"
+                "file": "Quickstart/Install and run.md"
               }
             }
           }
@@ -173,12 +173,12 @@
   },
   "active": "16281a94e4f76a83",
   "lastOpenFiles": [
-    "Development/Development.md",
+    "Development/Software frontend and backend.md",
     "Quickstart/Install and run.md",
+    "Development/Development.md",
     "Modules/16 Channel Differential (dac16D).md",
     "Modules/4 Channel Differential (dac4D).md",
     "Development/Tutorial - creating a new module.md",
-    "Development/Software frontend and backend.md",
     "index.md",
     "attachments/IMG_20240620_121948.jpg",
     "Development/Index.md",
