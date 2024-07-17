@@ -25,7 +25,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
       - name: Copy files to Quartz content directory
-        run: |
+        run: | # move snippets css to quartz scss file
+          cp docs/content/.obsidian/snippets/main.css docs/quartz/styles/additions.scss
           cp -r docs/* sites/docs/
       - name: Install Dependencies
         run: | 
