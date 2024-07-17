@@ -13,13 +13,38 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Quickstart/Install and run.md",
+                "file": "Development/Development.md",
+                "mode": "source",
+                "source": true
+              }
+            }
+          },
+          {
+            "id": "04e6a903914cf8de",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Development/Software frontend and backend.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "16281a94e4f76a83",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Development/Software frontend and backend.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -85,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Quickstart/Install and run.md",
+                "file": "Development/Software frontend and backend.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Quickstart/Install and run.md",
+                "file": "Development/Software frontend and backend.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Quickstart/Install and run.md"
+                "file": "Development/Software frontend and backend.md"
               }
             }
           }
@@ -146,15 +171,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "e6f078461eabe924",
+  "active": "16281a94e4f76a83",
   "lastOpenFiles": [
     "Development/Development.md",
-    "index.md",
-    "Modules/4 Channel Differential (dac4D).md",
+    "Quickstart/Install and run.md",
     "Modules/16 Channel Differential (dac16D).md",
+    "Modules/4 Channel Differential (dac4D).md",
+    "Development/Tutorial - creating a new module.md",
+    "Development/Software frontend and backend.md",
+    "index.md",
     "attachments/IMG_20240620_121948.jpg",
     "Development/Index.md",
-    "Quickstart/Install and run.md",
     "attachments/dac16D_icon.svg",
     "attachments/dac4D_icon.svg",
     "attachments/4_channel_vsource_hr.png",
