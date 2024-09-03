@@ -5,6 +5,7 @@
     import {initializeModule} from "../../api";
     import { system_state } from "../../state/systemState.svelte";
     import { updateSystemStatefromJson } from "../modules_dbay/index.svelte";
+    import CaretIcon from "../buttons/CaretIcon.svelte";
 
     let selectedSlot = "";
     let selectedType = "";
@@ -36,7 +37,8 @@
         <!-- <div class="warning">Server not initialized. Add a module:</div> -->
         <div
             style="display: flex; flex-direction: column; justify-content: space-between;"
-        >
+        >   
+        <div class="select-wrapper">
             <select bind:value={selectedSlot} style="height: 2.6rem; width: 100%">
                 <option value="" selected>Select module slot</option>
                 <option value="0">Slot 1</option>
@@ -48,11 +50,16 @@
                 <option value="6">Slot 7</option>
                 <option value="7">Slot 8</option>
             </select>
+            <CaretIcon />
+        </div>
+        <div class="select-wrapper">
             <select bind:value={selectedType} style="height: 2.6rem; width: 100%">
                 <option value="" selected>Select module type</option>
                 <option value="dac4D">dac4D: 4 ch. differential</option>
                 <option value="dac16D">dac16D: 16 ch. differential </option>
             </select>
+            <CaretIcon />
+            </div>
         </div>
         <SubmitButton onclick={initialize}
             >Add Module</SubmitButton
@@ -65,6 +72,11 @@
 
 <style>
     
+    .select-wrapper {
+        position: relative; /* This makes it the positioned ancestor */
+        display: inline-block;
+        width: 100%;
+    }
 
     .basic-block {
         display: flex;
@@ -113,8 +125,12 @@
     }
 
     select {
-        /* margin: 0.5rem; */
+        -webkit-appearance: none; /* Remove default Safari styling */
+        -moz-appearance: none; /* Remove default Firefox styling */
+        appearance: none; /* Remove default styling for other browsers */
+        background: none; /* Remove default background */
         margin-bottom: 1rem;
+        padding: 0.5rem;
         border: 1.5px solid var(--inner-border-color);
         background-color: var(--display-color);
         color: var(--text-color);

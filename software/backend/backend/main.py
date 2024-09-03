@@ -15,6 +15,7 @@ from backend.modules import dac16D
 from typing import Literal, Union, Type, Any, Callable
 from typing import cast
 from backend.server_logging import get_logger
+from fastapi.middleware.cors import CORSMiddleware
 logger = get_logger(__name__)
 
 import asyncio
@@ -54,6 +55,9 @@ class VsourceParams(BaseModel):
     port: int
     dev_mode: bool
 
+# NOTE: if dev_mode is true and there's no VME rack to connect to, the fetch requests will take longer and there will be a 
+# hard to debug delay in the frontend! 
+
 
 
 
@@ -61,6 +65,20 @@ class VsourceParams(BaseModel):
 app = FastAPI()
 app.include_router(dac4D.router)
 app.include_router(dac16D.router)
+
+origins = [
+    "http://localhost:5173",
+    "http://localhost:4173",
+    "tauri://localhost", # this fixed it! With this line, the Tauri app can now access the FastAPI server
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 
@@ -80,10 +98,10 @@ async def return_index(request: Request):
 
     
 
-async def zero_out_module(module: IModule):
-    for channel in range(len(module.vsource.channels)):
-        await asyncio.sleep(0.01)
-        if not global_state.system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
+# async def zero_out_module(module: IModule):
+#     for channel in range(len(module.vsource.channels)):
+#         await asyncio.sleep(0.01)
+#         if not global_state.system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
 
 
 

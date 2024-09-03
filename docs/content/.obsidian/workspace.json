@@ -42,9 +42,33 @@
                 "source": true
               }
             }
+          },
+          {
+            "id": "5162e8524372f1b0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Development/Development.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "20f0bcb81a10a999",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Tauri.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -110,7 +134,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Quickstart/Install and run.md",
+                "file": "Tauri.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +151,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Quickstart/Install and run.md",
+                "file": "Tauri.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +174,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Quickstart/Install and run.md"
+                "file": "Tauri.md"
               }
             }
           }
@@ -171,15 +195,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "16281a94e4f76a83",
+  "active": "20f0bcb81a10a999",
   "lastOpenFiles": [
-    "Development/Software frontend and backend.md",
-    "Quickstart/Install and run.md",
     "Development/Development.md",
+    "Tauri.md",
+    "Quickstart/Install and run.md",
+    "index.md",
+    "Development/Software frontend and backend.md",
     "Modules/16 Channel Differential (dac16D).md",
     "Modules/4 Channel Differential (dac4D).md",
     "Development/Tutorial - creating a new module.md",
-    "index.md",
     "attachments/IMG_20240620_121948.jpg",
     "Development/Index.md",
     "attachments/dac16D_icon.svg",

@@ -16,6 +16,9 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
     const controller = new AbortController();
     const signal = controller.signal;
 
+    // Specify the base URL of the different server
+    const baseUrl = "http://127.0.0.1:8000";
+
     const config: RequestInit = {
         method,
         signal,
@@ -26,12 +29,28 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    return fetch(url, config)
+    let isTauriorVite = false;
+
+    if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
+        isTauriorVite = true;
+    }
+
+    const fullUrl = isTauriorVite ? `${baseUrl}${url}` : url;
+
+    console.log("import meta evn:", import.meta.env.DEV)
+
+    // console.log("using full url:", fullUrl)
+    // if (window.__TAURI_INTERNALS__) {
+    //     console.log("current running in tauri")
+    // }
+
+
+    return fetch(fullUrl, config)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            // console.log(response)
+            // console.log("returning!")
             return response.json();
         });
 }
