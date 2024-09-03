@@ -60,7 +60,7 @@
   }
 
   function onChevClick(i: number) {
-    console.log("clicked!");
+    // console.log("clicked!");
     down_array[i] = !down_array[i];
     if (down_array.every((val) => val === true)) {
       visible = VisibleState.DoubleDown;
@@ -70,7 +70,7 @@
     if (down_array.every((val) => val === false)) {
       visible = VisibleState.Down;
     }
-    console.log("down array: ", down_array);
+    // console.log("down array: ", down_array);
   }
 </script>
 

@@ -120,7 +120,7 @@
     let { scrollable } = options;
     const handler = e => {
       // if the event comes from an input: then prevent default
-      if (e.target.tagName === "INPUT") {
+      if (e.target.tagName === "INPUT" && ( e.altKey || e.ctrlKey)) {
         e.preventDefault();
         let idx = 0;
         
@@ -138,6 +138,7 @@
                 idx = 3;
                 break;
         }
+        console.log(e.deltaY);
         if (e.deltaY < 0) {
             scrollChange(idx, 1)
         }

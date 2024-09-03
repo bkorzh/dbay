@@ -173,12 +173,16 @@
   let right_width = $state(0);
   let vl_width = $state(0);
 
-  $effect(() => {
-    console.log("parent_width: ", parent_width);
-    console.log("left_width: ", left_width);
-    console.log("right_width: ", right_width);
-    console.log("vl_width: ", vl_width);
-  });
+  // used for debugging the annoying and fancy method for 
+  // making the popout voltage controls. This pops up when
+  // you click the vertical dots in the "Set Individual Channels"
+  // section. 
+  // $effect(() => {
+  //   console.log("parent_width: ", parent_width);
+  //   console.log("left_width: ", left_width);
+  //   console.log("right_width: ", right_width);
+  //   console.log("vl_width: ", vl_width);
+  // });
 
   let popout_margin_size = $derived(
     (parent_width - left_width - right_width - vl_width) / 6 - 0.3,

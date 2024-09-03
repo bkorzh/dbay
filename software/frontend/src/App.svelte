@@ -37,7 +37,7 @@
   onMount(async () => {
     try {
       json_state = await getFullState();
-      console.log("initial json state: ", json_state)
+      // console.log("initial json state: ", json_state)
       // if the server responds, but the data field is empty, then the server is not initialized
       if (json_state.data.every(module => module.core.type === "empty")) {
         ui_state.show_module_adder = true; // reactive
@@ -69,16 +69,16 @@
     clearInterval(intervalId);
   });
 
-  $effect(() => {
-    console.log("system_state inside effect: ", system_state.data)
-    // if (scrollY > 0) {
-    //   console.log("scrollY: ", scrollY);
-    // }
-  });
+  // $effect(() => {
+  //   console.log("system_state inside effect: ", system_state.data)
+  //   // if (scrollY > 0) {
+  //   //   console.log("scrollY: ", scrollY);
+  //   // }
+  // });
 
-  $effect(() => {
-    console.log("manager.module_idx inside effect: ", manager.module_idx)
-  });
+  // $effect(() => {
+  //   console.log("manager.module_idx inside effect: ", manager.module_idx)
+  // });
 
 
   // let scrollable = $state(true);

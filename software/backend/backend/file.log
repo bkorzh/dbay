@@ -3982,3 +3982,890 @@
 2024-09-02 17:28:17,485 - backend.modules.dac4D - INFO - turning on 2 or already on
 2024-09-02 17:28:17,485 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 2 0.345
 
+2024-09-02 18:16:06,189 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from False to True']
+2024-09-02 18:16:06,200 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:06,200 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.0
+
+2024-09-02 18:16:07,032 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-09-02 18:16:07,032 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,032 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.1
+
+2024-09-02 18:16:07,085 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-09-02 18:16:07,085 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,085 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.2
+
+2024-09-02 18:16:07,137 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-09-02 18:16:07,137 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,138 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.3
+
+2024-09-02 18:16:07,176 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.3 to 0.4']
+2024-09-02 18:16:07,176 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,176 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.4
+
+2024-09-02 18:16:07,484 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.4 to 0.41']
+2024-09-02 18:16:07,484 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,484 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.41
+
+2024-09-02 18:16:07,513 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.41 to 0.42']
+2024-09-02 18:16:07,513 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,514 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.42
+
+2024-09-02 18:16:07,552 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.42 to 0.43']
+2024-09-02 18:16:07,552 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,552 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.43
+
+2024-09-02 18:16:07,882 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.43 to 0.431']
+2024-09-02 18:16:07,882 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,883 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.431
+
+2024-09-02 18:16:07,903 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.431 to 0.432']
+2024-09-02 18:16:07,903 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,903 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.432
+
+2024-09-02 18:16:07,939 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.432 to 0.433']
+2024-09-02 18:16:07,940 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:07,940 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.433
+
+2024-09-02 18:16:08,314 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.433 to 0.443']
+2024-09-02 18:16:08,314 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:08,315 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.443
+
+2024-09-02 18:16:08,324 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.443 to 0.453']
+2024-09-02 18:16:08,324 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:08,324 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.453
+
+2024-09-02 18:16:08,352 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.453 to 0.463']
+2024-09-02 18:16:08,352 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:08,352 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.463
+
+2024-09-02 18:16:08,794 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.463 to 0.563']
+2024-09-02 18:16:08,794 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:08,794 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.563
+
+2024-09-02 18:16:08,827 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.563 to 0.663']
+2024-09-02 18:16:08,827 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:08,827 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.663
+
+2024-09-02 18:16:08,854 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.663 to 0.763']
+2024-09-02 18:16:08,854 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:08,855 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.763
+
+2024-09-02 18:16:09,382 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.763 to 1.763']
+2024-09-02 18:16:09,382 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:09,382 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 1.763
+
+2024-09-02 18:16:09,414 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.763 to 2.763']
+2024-09-02 18:16:09,414 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:09,414 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 2.763
+
+2024-09-02 18:16:09,471 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 2.763 to 3.763']
+2024-09-02 18:16:09,472 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:09,472 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 3.763
+
+2024-09-02 18:16:09,786 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 3.763 to 4.763']
+2024-09-02 18:16:09,787 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:09,787 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.763
+
+2024-09-02 18:16:09,814 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.763 to 5.0']
+2024-09-02 18:16:09,815 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:09,815 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 5.0
+
+2024-09-02 18:16:10,319 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 5.0 to 4.9']
+2024-09-02 18:16:10,320 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,320 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.9
+
+2024-09-02 18:16:10,348 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.9 to 4.8']
+2024-09-02 18:16:10,348 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,348 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.8
+
+2024-09-02 18:16:10,387 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.8 to 4.7']
+2024-09-02 18:16:10,387 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,387 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.7
+
+2024-09-02 18:16:10,416 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.7 to 4.6']
+2024-09-02 18:16:10,416 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,417 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.6
+
+2024-09-02 18:16:10,447 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.6 to 4.5']
+2024-09-02 18:16:10,447 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,447 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.5
+
+2024-09-02 18:16:10,860 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.5 to 4.49']
+2024-09-02 18:16:10,860 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,860 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.49
+
+2024-09-02 18:16:10,911 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.49 to 4.48']
+2024-09-02 18:16:10,911 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,911 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.48
+
+2024-09-02 18:16:10,941 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.48 to 4.47']
+2024-09-02 18:16:10,941 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,941 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.47
+
+2024-09-02 18:16:10,968 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.47 to 4.46']
+2024-09-02 18:16:10,968 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,968 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.46
+
+2024-09-02 18:16:10,998 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.46 to 4.45']
+2024-09-02 18:16:10,998 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:10,998 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.45
+
+2024-09-02 18:16:11,060 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.45 to 4.44']
+2024-09-02 18:16:11,061 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:11,061 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.44
+
+2024-09-02 18:16:11,549 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.44 to 4.439']
+2024-09-02 18:16:11,549 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:11,549 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.439
+
+2024-09-02 18:16:11,571 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.439 to 4.438']
+2024-09-02 18:16:11,571 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:11,571 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.438
+
+2024-09-02 18:16:11,616 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.438 to 4.437']
+2024-09-02 18:16:11,616 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:11,616 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.437
+
+2024-09-02 18:16:32,491 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.437 to 4.537']
+2024-09-02 18:16:32,491 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:32,491 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.537
+
+2024-09-02 18:16:32,686 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.537 to 4.637']
+2024-09-02 18:16:32,686 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:32,686 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.637
+
+2024-09-02 18:16:32,945 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.637 to 4.647']
+2024-09-02 18:16:32,945 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:32,946 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.647
+
+2024-09-02 18:16:33,096 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.647 to 4.657']
+2024-09-02 18:16:33,096 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:33,096 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.657
+
+2024-09-02 18:16:33,456 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.657 to 4.667']
+2024-09-02 18:16:33,456 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:33,456 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.667
+
+2024-09-02 18:16:33,726 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.667 to 4.767']
+2024-09-02 18:16:33,726 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:33,727 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.767
+
+2024-09-02 18:16:33,861 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.767 to 4.867']
+2024-09-02 18:16:33,861 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:33,861 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.867
+
+2024-09-02 18:16:34,298 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.867 to 4.857']
+2024-09-02 18:16:34,299 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:34,299 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.857
+
+2024-09-02 18:16:34,440 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.857 to 4.847']
+2024-09-02 18:16:34,440 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:34,440 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.847
+
+2024-09-02 18:16:34,838 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.847 to 4.846']
+2024-09-02 18:16:34,838 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:34,838 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.846
+
+2024-09-02 18:16:35,400 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.846 to 4.847']
+2024-09-02 18:16:35,401 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:35,401 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.847
+
+2024-09-02 18:16:36,037 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from True to False']
+2024-09-02 18:16:36,037 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:16:36,038 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:16:36,038 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.847 activated=False heading_text='' measuring=False
+2024-09-02 18:16:37,100 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from False to True']
+2024-09-02 18:16:37,101 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:37,101 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.847
+
+2024-09-02 18:16:44,879 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: heading_text changed from  to Peacoq']
+2024-09-02 18:16:44,879 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:44,879 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.847
+
+2024-09-02 18:16:44,882 - backend.util - INFO - Changes: []
+2024-09-02 18:16:44,882 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-02 18:16:44,882 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 4.847
+
+2024-09-02 18:16:53,857 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 2: heading_text changed from  to Other detector']
+2024-09-02 18:16:53,858 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-09-02 18:16:53,858 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 2 0.345
+
+2024-09-02 18:16:53,859 - backend.util - INFO - Changes: []
+2024-09-02 18:16:53,860 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-09-02 18:16:53,860 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 2 0.345
+
+2024-09-02 18:16:58,382 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: heading_text changed from  to Something else']
+2024-09-02 18:16:58,383 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:16:58,383 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:16:58,383 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.0 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:16:58,384 - backend.util - INFO - Changes: []
+2024-09-02 18:16:58,384 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:16:58,384 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:16:58,384 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.0 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,050 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.0 to 0.1']
+2024-09-02 18:17:04,050 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,051 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,051 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.1 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,089 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.1 to 0.2']
+2024-09-02 18:17:04,089 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,089 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,089 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.2 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,116 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.2 to 0.3']
+2024-09-02 18:17:04,117 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,117 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,117 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.3 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,153 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.3 to 0.4']
+2024-09-02 18:17:04,154 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,154 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,154 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.4 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,207 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.4 to 0.41']
+2024-09-02 18:17:04,207 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,207 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,207 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.41 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,440 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.41 to 0.42']
+2024-09-02 18:17:04,440 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,440 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,440 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.42 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,469 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.42 to 0.43']
+2024-09-02 18:17:04,469 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,470 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,470 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.43 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,471 - backend.util - INFO - Changes: []
+2024-09-02 18:17:04,471 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,471 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,471 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.43 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,493 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.43 to 0.44']
+2024-09-02 18:17:04,493 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,493 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,493 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.44 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,808 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.44 to 0.441']
+2024-09-02 18:17:04,808 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,808 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,809 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.441 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,836 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.441 to 0.442']
+2024-09-02 18:17:04,836 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,836 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,836 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.442 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,853 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.442 to 0.443']
+2024-09-02 18:17:04,853 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,853 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,854 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.443 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,909 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.443 to 0.444']
+2024-09-02 18:17:04,909 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,909 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,909 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.444 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,911 - backend.util - INFO - Changes: []
+2024-09-02 18:17:04,911 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,911 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,911 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.444 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,912 - backend.util - INFO - Changes: []
+2024-09-02 18:17:04,912 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,912 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,912 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.444 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:04,940 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.444 to 0.445']
+2024-09-02 18:17:04,940 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:04,940 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:04,940 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.445 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:05,296 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.445 to 0.455']
+2024-09-02 18:17:05,296 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:05,296 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:05,296 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.455 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:05,303 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.455 to 0.465']
+2024-09-02 18:17:05,303 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:05,304 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:05,304 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.465 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:05,335 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.465 to 0.475']
+2024-09-02 18:17:05,335 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:05,335 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:05,335 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.475 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:05,339 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 3: bias_voltage changed from 0.475 to 0.485']
+2024-09-02 18:17:05,339 - backend.modules.dac4D - INFO - turning off 3 or already off
+2024-09-02 18:17:05,339 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 3 0
+
+2024-09-02 18:17:05,339 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=3 bias_voltage=0.485 activated=False heading_text='Something else' measuring=False
+2024-09-02 18:17:44,717 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from True to False']
+2024-09-02 18:17:44,718 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:17:44,718 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:17:44,718 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.847 activated=False heading_text='Peacoq' measuring=False
+2024-09-02 18:17:47,003 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: measuring changed from False to True']
+2024-09-02 18:17:47,003 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:17:47,003 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:17:47,004 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.847 activated=False heading_text='Peacoq' measuring=True
+2024-09-02 18:24:52,523 - backend.util - INFO - Changes: ['Module index 5 (slot 5), channel 0: bias_voltage changed from 0.0 to -0.01']
+2024-09-02 18:24:52,524 - backend.modules.dac16D - INFO - change.index: 0
+2024-09-02 18:24:52,524 - backend.modules.dac16D - INFO - turning off 0 or already off
+2024-09-02 18:24:52,524 - backend.modules.dac16D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=-0.01 activated=False heading_text='0th ch dac16D' measuring=False
+2024-09-02 18:29:21,939 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.0 to 0.332']
+2024-09-02 18:29:21,953 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:29:21,953 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:29:21,954 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.332 activated=False heading_text='' measuring=False
+2024-09-02 18:34:23,633 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.332 to 0.232']
+2024-09-02 18:34:23,644 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:23,645 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:23,645 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.232 activated=False heading_text='' measuring=False
+2024-09-02 18:34:23,654 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.232 to 0.132']
+2024-09-02 18:34:23,654 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:23,654 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:23,654 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.132 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,064 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.132 to 0.232']
+2024-09-02 18:34:24,065 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,065 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,065 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.232 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,090 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.232 to 0.332']
+2024-09-02 18:34:24,090 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,090 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,090 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.332 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,173 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.332 to 0.432']
+2024-09-02 18:34:24,174 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,174 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,174 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.432 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,444 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.432 to 0.532']
+2024-09-02 18:34:24,445 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,445 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,445 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.532 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,464 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.532 to 0.632']
+2024-09-02 18:34:24,464 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,464 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,465 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.632 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,494 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.632 to 0.732']
+2024-09-02 18:34:24,494 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,494 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,494 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.732 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,561 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.732 to 0.832']
+2024-09-02 18:34:24,561 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,561 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,561 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.832 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,658 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.832 to 0.732']
+2024-09-02 18:34:24,659 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,659 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,659 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.732 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,688 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.732 to 0.632']
+2024-09-02 18:34:24,688 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,688 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,689 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.632 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,727 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.632 to 0.532']
+2024-09-02 18:34:24,728 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,728 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,728 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.532 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,749 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.532 to 0.432']
+2024-09-02 18:34:24,750 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,750 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,750 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.432 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,947 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.432 to 0.532']
+2024-09-02 18:34:24,948 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,948 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,948 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.532 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,952 - backend.util - INFO - Changes: []
+2024-09-02 18:34:24,952 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,953 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,953 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.532 activated=False heading_text='' measuring=False
+2024-09-02 18:34:24,990 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.532 to 0.632']
+2024-09-02 18:34:24,990 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:24,990 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:24,991 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.632 activated=False heading_text='' measuring=False
+2024-09-02 18:34:25,587 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.632 to 0.622']
+2024-09-02 18:34:25,587 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:25,588 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:25,588 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.622 activated=False heading_text='' measuring=False
+2024-09-02 18:34:25,621 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.622 to 0.612']
+2024-09-02 18:34:25,621 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:25,621 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:25,621 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.612 activated=False heading_text='' measuring=False
+2024-09-02 18:34:25,680 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.612 to 0.602']
+2024-09-02 18:34:25,681 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:25,681 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:25,681 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.602 activated=False heading_text='' measuring=False
+2024-09-02 18:34:30,627 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.602 to 0.612']
+2024-09-02 18:34:30,627 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:30,628 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:30,628 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.612 activated=False heading_text='' measuring=False
+2024-09-02 18:34:30,660 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.612 to 0.622']
+2024-09-02 18:34:30,660 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:30,660 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:30,661 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.622 activated=False heading_text='' measuring=False
+2024-09-02 18:34:30,702 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.622 to 0.632']
+2024-09-02 18:34:30,703 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:30,703 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:30,703 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.632 activated=False heading_text='' measuring=False
+2024-09-02 18:34:30,794 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.632 to 0.642']
+2024-09-02 18:34:30,794 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:30,794 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:30,794 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.642 activated=False heading_text='' measuring=False
+2024-09-02 18:34:30,975 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.642 to 0.632']
+2024-09-02 18:34:30,976 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:30,976 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:30,976 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.632 activated=False heading_text='' measuring=False
+2024-09-02 18:34:31,035 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.632 to 0.622']
+2024-09-02 18:34:31,035 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:31,035 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:31,035 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.622 activated=False heading_text='' measuring=False
+2024-09-02 18:34:31,431 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.622 to 0.623']
+2024-09-02 18:34:31,431 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:31,431 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:31,432 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.623 activated=False heading_text='' measuring=False
+2024-09-02 18:34:31,484 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.623 to 0.624']
+2024-09-02 18:34:31,484 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:31,484 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:31,484 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.624 activated=False heading_text='' measuring=False
+2024-09-02 18:34:31,544 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.624 to 0.625']
+2024-09-02 18:34:31,544 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:31,544 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:31,545 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.625 activated=False heading_text='' measuring=False
+2024-09-02 18:34:31,872 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.625 to 0.626']
+2024-09-02 18:34:31,873 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:31,873 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:31,873 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.626 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,385 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.626 to 0.726']
+2024-09-02 18:34:32,385 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,385 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,385 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.726 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,414 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.726 to 0.826']
+2024-09-02 18:34:32,414 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,414 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,414 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.826 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,458 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.826 to 0.926']
+2024-09-02 18:34:32,459 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,459 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,459 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=0.926 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,511 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 0.926 to 1.026']
+2024-09-02 18:34:32,512 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,512 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,512 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.026 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,754 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.026 to 1.126']
+2024-09-02 18:34:32,754 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,754 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,754 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.126 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,781 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.126 to 1.226']
+2024-09-02 18:34:32,781 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,782 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,782 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.226 activated=False heading_text='' measuring=False
+2024-09-02 18:34:32,819 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.226 to 1.326']
+2024-09-02 18:34:32,819 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:32,819 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:32,819 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.326 activated=False heading_text='' measuring=False
+2024-09-02 18:34:34,023 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.326 to 1.336']
+2024-09-02 18:34:34,024 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:34,024 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:34,024 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.336 activated=False heading_text='' measuring=False
+2024-09-02 18:34:34,050 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.336 to 1.346']
+2024-09-02 18:34:34,051 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:34,051 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:34,051 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.346 activated=False heading_text='' measuring=False
+2024-09-02 18:34:34,094 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.346 to 1.356']
+2024-09-02 18:34:34,094 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:34,095 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:34,095 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.356 activated=False heading_text='' measuring=False
+2024-09-02 18:34:34,161 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.356 to 1.366']
+2024-09-02 18:34:34,161 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:34,162 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:34,162 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.366 activated=False heading_text='' measuring=False
+2024-09-02 18:34:34,821 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 0: bias_voltage changed from 1.366 to 1.367']
+2024-09-02 18:34:34,822 - backend.modules.dac4D - INFO - turning off 0 or already off
+2024-09-02 18:34:34,822 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0
+
+2024-09-02 18:34:34,822 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=0 bias_voltage=1.367 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,494 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-09-02 18:36:28,495 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,495 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,495 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.1 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,506 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-09-02 18:36:28,506 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,506 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,506 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.2 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,570 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-09-02 18:36:28,570 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,570 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,570 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.3 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,608 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.3 to 0.4']
+2024-09-02 18:36:28,608 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,608 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,608 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.4 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,848 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.4 to 0.3']
+2024-09-02 18:36:28,848 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,848 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,848 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.3 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,871 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.3 to 0.2']
+2024-09-02 18:36:28,871 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,871 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,871 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.2 activated=False heading_text='' measuring=False
+2024-09-02 18:36:28,904 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.2 to 0.1']
+2024-09-02 18:36:28,904 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:28,904 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:28,904 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.1 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,352 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.1 to 0.11']
+2024-09-02 18:36:29,354 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,354 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,355 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.11 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,373 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.11 to 0.12']
+2024-09-02 18:36:29,373 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,373 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,373 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.12 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,405 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.12 to 0.13']
+2024-09-02 18:36:29,405 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,405 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,405 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.13 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,433 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.13 to 0.14']
+2024-09-02 18:36:29,433 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,433 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,433 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.14 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,643 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.14 to 0.13']
+2024-09-02 18:36:29,644 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,644 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,644 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.13 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,665 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.13 to 0.12']
+2024-09-02 18:36:29,665 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,665 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,665 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.12 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,689 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.12 to 0.11']
+2024-09-02 18:36:29,690 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,690 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,690 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.11 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,709 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.11 to 0.1']
+2024-09-02 18:36:29,709 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,710 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,710 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.1 activated=False heading_text='' measuring=False
+2024-09-02 18:36:29,733 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.1 to 0.09']
+2024-09-02 18:36:29,733 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:29,733 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:29,733 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.09 activated=False heading_text='' measuring=False
+2024-09-02 18:36:30,358 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.09 to 0.091']
+2024-09-02 18:36:30,358 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:30,358 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:30,359 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.091 activated=False heading_text='' measuring=False
+2024-09-02 18:36:30,395 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.091 to 0.092']
+2024-09-02 18:36:30,395 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:30,395 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:30,396 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.092 activated=False heading_text='' measuring=False
+2024-09-02 18:36:30,415 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.092 to 0.093']
+2024-09-02 18:36:30,415 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:30,415 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:30,416 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.093 activated=False heading_text='' measuring=False
+2024-09-02 18:36:30,490 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.093 to 0.094']
+2024-09-02 18:36:30,491 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:30,491 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:30,491 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.094 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,100 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.094 to 0.095']
+2024-09-02 18:36:31,100 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,101 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,101 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.095 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,120 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.095 to 0.096']
+2024-09-02 18:36:31,120 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,120 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,120 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.096 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,142 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.096 to 0.097']
+2024-09-02 18:36:31,142 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,143 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,143 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.097 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,173 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.097 to 0.098']
+2024-09-02 18:36:31,173 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,173 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,173 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.098 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,443 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.098 to 0.097']
+2024-09-02 18:36:31,443 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,443 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,444 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.097 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,474 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.097 to 0.096']
+2024-09-02 18:36:31,474 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,474 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,474 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.096 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,498 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.096 to 0.095']
+2024-09-02 18:36:31,498 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,498 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,499 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.095 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,896 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.095 to 0.105']
+2024-09-02 18:36:31,896 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,896 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,896 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.105 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,940 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.105 to 0.115']
+2024-09-02 18:36:31,940 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,941 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,941 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.115 activated=False heading_text='' measuring=False
+2024-09-02 18:36:31,960 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.115 to 0.125']
+2024-09-02 18:36:31,960 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:31,960 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:31,960 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.125 activated=False heading_text='' measuring=False
+2024-09-02 18:36:32,000 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.125 to 0.135']
+2024-09-02 18:36:32,000 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:32,000 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:32,000 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.135 activated=False heading_text='' measuring=False
+2024-09-02 18:36:32,381 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.135 to 0.235']
+2024-09-02 18:36:32,381 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:32,382 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:32,382 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.235 activated=False heading_text='' measuring=False
+2024-09-02 18:36:32,421 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.235 to 0.335']
+2024-09-02 18:36:32,422 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:32,422 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:32,422 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.335 activated=False heading_text='' measuring=False
+2024-09-02 18:36:32,455 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.335 to 0.435']
+2024-09-02 18:36:32,456 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:32,456 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:32,456 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.435 activated=False heading_text='' measuring=False
+2024-09-02 18:36:33,920 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.435 to 1.435']
+2024-09-02 18:36:33,920 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:33,921 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:33,921 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=1.435 activated=False heading_text='' measuring=False
+2024-09-02 18:36:34,630 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.435 to 2.435']
+2024-09-02 18:36:34,630 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:34,630 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:34,630 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=2.435 activated=False heading_text='' measuring=False
+2024-09-02 18:36:34,977 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 2.435 to 3.435']
+2024-09-02 18:36:34,977 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:34,977 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:34,977 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=3.435 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,043 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 3.435 to 4.435']
+2024-09-02 18:36:35,043 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,043 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,043 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.435 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,080 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.435 to 5.0']
+2024-09-02 18:36:35,080 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,080 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,080 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,365 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 5.0 to 4.0']
+2024-09-02 18:36:35,365 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,366 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,366 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,417 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.0 to 3.0']
+2024-09-02 18:36:35,417 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,417 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,418 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=3.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,582 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 3.0 to 4.0']
+2024-09-02 18:36:35,582 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,583 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,583 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,620 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.0 to 5.0']
+2024-09-02 18:36:35,620 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,620 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,621 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,650 - backend.util - INFO - Changes: []
+2024-09-02 18:36:35,650 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,651 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,651 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,709 - backend.util - INFO - Changes: []
+2024-09-02 18:36:35,710 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,710 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,710 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,815 - backend.util - INFO - Changes: []
+2024-09-02 18:36:35,815 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,816 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,816 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:35,941 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 5.0 to 4.0']
+2024-09-02 18:36:35,942 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:35,942 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:35,942 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,010 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 4.0 to 3.0']
+2024-09-02 18:36:36,010 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,010 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,010 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=3.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,040 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 3.0 to 2.0']
+2024-09-02 18:36:36,040 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,041 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,041 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=2.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,077 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 2.0 to 1.0']
+2024-09-02 18:36:36,077 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,077 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,077 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=1.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,124 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 1.0 to 0.0']
+2024-09-02 18:36:36,124 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,124 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,124 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=0.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,154 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.0 to -1.0']
+2024-09-02 18:36:36,154 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,155 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,155 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-1.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,445 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -1.0 to -2.0']
+2024-09-02 18:36:36,445 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,445 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,446 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-2.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,474 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -2.0 to -3.0']
+2024-09-02 18:36:36,474 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,475 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,475 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-3.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,489 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -3.0 to -4.0']
+2024-09-02 18:36:36,490 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,490 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,490 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:36,512 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -4.0 to -5.0']
+2024-09-02 18:36:36,512 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:36,512 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:36,512 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,026 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -5.0 to -4.0']
+2024-09-02 18:36:37,026 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,026 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,026 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,068 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -4.0 to -3.0']
+2024-09-02 18:36:37,069 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,069 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,069 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-3.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,330 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -3.0 to -4.0']
+2024-09-02 18:36:37,330 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,330 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,330 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,356 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -4.0 to -5.0']
+2024-09-02 18:36:37,356 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,356 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,356 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,359 - backend.util - INFO - Changes: []
+2024-09-02 18:36:37,360 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,360 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,360 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,389 - backend.util - INFO - Changes: []
+2024-09-02 18:36:37,389 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,390 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,390 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,427 - backend.util - INFO - Changes: []
+2024-09-02 18:36:37,427 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,427 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,428 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,465 - backend.util - INFO - Changes: []
+2024-09-02 18:36:37,465 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,465 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,465 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-5.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,660 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -5.0 to -4.0']
+2024-09-02 18:36:37,661 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,661 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,661 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-4.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,692 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -4.0 to -3.0']
+2024-09-02 18:36:37,692 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,692 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,692 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-3.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,713 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -3.0 to -2.0']
+2024-09-02 18:36:37,713 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,713 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,713 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-2.0 activated=False heading_text='' measuring=False
+2024-09-02 18:36:37,735 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from -2.0 to -1.0']
+2024-09-02 18:36:37,735 - backend.modules.dac4D - INFO - turning off 1 or already off
+2024-09-02 18:36:37,735 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0
+
+2024-09-02 18:36:37,736 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=1 bias_voltage=-1.0 activated=False heading_text='' measuring=False

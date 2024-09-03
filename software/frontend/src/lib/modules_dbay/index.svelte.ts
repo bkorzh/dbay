@@ -63,7 +63,7 @@ export class ComponentManager {
       this.component_array.pop();
     }
 
-    console.log("creating component array");
+    // console.log("creating component array");
     // const components = [];
     for (const module of module_list) {
       if (module.core.type !== "empty") {
@@ -103,7 +103,7 @@ function getComponent(name: any): ComponentType {
 export function createSystemStatefromJson(parsed: JsonSystemState) {
   const data = parsed.data.map((item: JsonModule) => {
     // depending on the type of module, we need dynamically create the module objects
-    console.log("the type of the module is: ", item.core.type);
+    // console.log("the type of the module is: ", item.core.type);
     const module = new modules[item.core.type](item);
     return module as IModule;
   });
@@ -119,7 +119,9 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
   let j = 0
   for (let i = 0; i < parsed.data.length; i++) {
     if (parsed.data[i].core.type !== system_state.data[i].core.type) {
-      console.log("DEVIATION FOUND")
+      // console.log("DEVIATION FOUND")
+
+      // deviation found bewteen state stored in browser and state from server
       j = j + 1
       system_state.data[i] = new modules[parsed.data[i].core.type](
         parsed.data[i]
@@ -132,9 +134,8 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
   system_state.dev_mode = parsed.dev_mode;
 
   if (j>0) {
-    console.log("something changed, updating the component array")
-    console.log("something changed, updating the component array")
-    console.log("something changed, updating the component array")
+    // console.log("something changed, updating the component array")
+
     manager.createComponentArray(system_state.data);
     manager.updateModuleIdx(system_state.data.length);
   }

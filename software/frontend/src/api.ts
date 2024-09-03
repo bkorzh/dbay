@@ -29,20 +29,12 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    let isTauriorVite = false;
-
+    let isTauriOrVite = false;
     if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
-        isTauriorVite = true;
+        isTauriOrVite = true;
     }
+    const fullUrl = isTauriOrVite ? `${baseUrl}${url}` : url;
 
-    const fullUrl = isTauriorVite ? `${baseUrl}${url}` : url;
-
-    console.log("import meta evn:", import.meta.env.DEV)
-
-    // console.log("using full url:", fullUrl)
-    // if (window.__TAURI_INTERNALS__) {
-    //     console.log("current running in tauri")
-    // }
 
 
     return fetch(fullUrl, config)
