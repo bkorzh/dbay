@@ -3,7 +3,7 @@ import select
 # Sender function
 import os
 import json
-from backend.location import BASE_DIR
+from backend.location import DATA_DIR
 
 # from server_logging impor
 
@@ -61,7 +61,12 @@ class ParentUDP:
 
 
 # load defuault ip address and port
-with open(os.path.join(BASE_DIR, "vsource_params.json"), "r") as f:
+# print("base dir in udp control", DATA_DIR)
+# print("base dir files in udp control", os.listdir(DATA_DIR))
+
+
+
+with open(os.path.join(DATA_DIR, "vsource_params.json"), "r") as f:
     vsource_params = json.load(f)
     udp_control = UDP(vsource_params["ipaddr"], vsource_params["port"], dev_mode = vsource_params["dev_mode"])
     parent_udp = ParentUDP(udp_control)

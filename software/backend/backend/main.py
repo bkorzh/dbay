@@ -6,6 +6,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
+import multiprocessing
+
 
 # from fastapi import fastApi
 from pydantic import BaseModel
@@ -30,12 +32,12 @@ from backend.initialize import global_state
 from backend.state import IModule, SystemState
 # from backend.addons.vsource import IVsourceAddon
 # from backend.addons.vsense import IVsenseAddon
-from backend.location import BASE_DIR
+from backend.location import BASE_DIR, WEB_DIR
 
 # from state import load_modules_from_directory
 # from importlib import import_module
-# import os
-
+import os
+import signal
 
 import mimetypes
 mimetypes.init()
@@ -82,19 +84,31 @@ app.add_middleware(
 
 
 
-app.mount(
-    "/dbay_control/",
-    StaticFiles(directory=Path(BASE_DIR, "dbay_control")),
-    name="",
-)
+# app.mount(
+#     "/",
+#     StaticFiles(directory=Path(BASE_DIR, "dbay_control")),
+#     name="static",
+# )
+
+# app.mount("/assets", StaticFiles(directory=Path(BASE_DIR, "dbay_control", "assets"), html=True), name="assets")
+# app.mount("/assets", StaticFiles(directory=Path(BASE_DIR, "dbay_control", "assets")), name="static")
+# app.mount("/", StaticFiles(directory=Path(BASE_DIR, "dbay_control", "assets"), html=True), name="")
 
 
+# app.mount("/", StaticFiles(directory=Path(BASE_DIR, "dbay_control", "assets")), name="static")
+# # Mount the parent directory at /files
+# app.mount("/files", StaticFiles(directory=BASE_DIR), name="files")
 
+# @app.get("/", response_class=HTMLResponse)
+# async def return_index(request: Request):
 
-@app.get("/", response_class=HTMLResponse)
-async def return_index(request: Request):
-    mimetypes.add_type('application/javascript', '.js')
-    return FileResponse(Path(BASE_DIR, "dbay_control", "index.html"))
+#     # print("print(BASE_DIR): ", BASE_DIR)
+#     mimetypes.add_type('application/javascript', '.js')
+#     return FileResponse(Path(BASE_DIR, "dbay_control", "index.html"))
+
+    # return FileResponse("/Users/andrew/Library/CloudStorage/OneDrive-Personal/PERSONAL/Programming/dbay/software/backend/backend/dbay_control/index.html")
+
+    # app.mount("/", StaticFiles(directory=Path(BASE_DIR, "dbay_control", "")), name="")
 
     
 
@@ -103,7 +117,24 @@ async def return_index(request: Request):
 #         await asyncio.sleep(0.01)
 #         if not global_state.system_state.dev_mode: vsource.setChVol(module.slot, channel, 0)
 
+# app.mount("/assets", StaticFiles(directory=Path(BASE_DIR, "dbay_control", "assets")), name="")
 
+app.mount("/assets", StaticFiles(directory=Path(WEB_DIR, "assets")), name="")
+
+@app.get("/", response_class=HTMLResponse)
+async def return_index(request: Request):
+
+    # print("print(BASE_DIR): ", BASE_DIR)
+    mimetypes.add_type('application/javascript', '.js')
+    # return FileResponse(Path(BASE_DIR, "dbay_control", "index.html"))
+    return FileResponse(Path(WEB_DIR, "index.html"))
+
+
+
+@app.get("/shutdown")
+def shutdown():
+    os.kill(os.getpid(), signal.SIGINT)
+    return {"message": "Shutting down"}
 
 @app.post("/initialize-module")
 async def init_module(request: Request, addition_args: ModuleAddition):
@@ -145,5 +176,5 @@ if __name__ == "__main__":
     # parser.add_argument('--timeout', type=int, help='timeout', 3)
     # parser.add_argument('--udp_remote', type=str, help='udp_remote', 5005)
     # parser.add_argument('--udp_local', type=str, help='udp_local', 55180)
-
+    multiprocessing.freeze_support()  # For Windows support
     uvicorn.run(app, host="0.0.0.0", port=8000)

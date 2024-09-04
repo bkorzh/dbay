@@ -29,7 +29,7 @@
   import PlusMinus from "../PlusMinus.svelte";
   import NumberedHoveredDotMenu from "../buttons/NumberedHoveredDotMenu.svelte";
   import ModuleHeading from "../ModuleHeading.svelte";
-  import dac16D_icon from "/dac16D_icon.svg";
+  import dac16D_icon from "/assets/dac16D_icon.svg";
 
   interface MyProps {
     module_index: number;

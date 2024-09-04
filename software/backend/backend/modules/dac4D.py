@@ -5,7 +5,6 @@ from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
 from backend.modules.dac4D_spec import dac4D, dac4DController
-from backend.initialize import global_state
 from backend.util import identify_change
 
 

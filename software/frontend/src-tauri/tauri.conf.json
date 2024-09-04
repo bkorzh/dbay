@@ -36,7 +36,7 @@
       }
     }
   },
-  "productName": "device_bay",
+  "productName": "Device Bay",
   "version": "0.1.0",
   "identifier": "DeviceBay",
   "plugins": {},
