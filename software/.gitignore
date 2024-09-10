@@ -1,10 +1,1 @@
 .vscode/
-.DS_store
-
-backend/__pycache__/
-frontend/__pycache__/
-addons/__pycache__/
-
-backend/env/
-
-backend/backend/dbay_control/

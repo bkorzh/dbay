@@ -1,45 +1,13 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
-    "frontendDist": "../dist",
-    "devUrl": "http://localhost:5173"
-  },
-  "bundle": {
-    "active": true,
-    "category": "DeveloperTool",
-    "copyright": "",
-    "targets": "all",
-    "externalBin": [],
-    "icon": [
-      "icons/db_2.png"
-    ],
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": ""
-    },
-    "longDescription": "",
-    "macOS": {
-      "entitlements": null,
-      "exceptionDomain": "",
-      "frameworks": [],
-      "providerShortName": null,
-      "signingIdentity": null
-    },
-    "resources": [],
-    "shortDescription": "",
-    "linux": {
-      "deb": {
-        "depends": []
-      }
-    }
-  },
   "productName": "Device Bay",
   "version": "0.1.0",
-  "identifier": "DeviceBay",
-  "plugins": {},
+  "identifier": "device.bay",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build"
+  },
   "app": {
     "windows": [
       {
@@ -53,5 +21,24 @@
     "security": {
       "csp": null
     }
-  }
+  },
+  "bundle": {
+    "macOS": {
+      "files": {
+        "Frameworks": "python_binary/_internal"
+      }
+    },
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/db_2.png"
+    ],
+    "resources": [
+          "python_binary/_internal/*"
+      ],
+    "externalBin": [
+        "python_binary/main"
+      ]
+  },
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json"
 }

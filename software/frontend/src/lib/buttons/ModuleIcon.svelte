@@ -48,7 +48,7 @@
     glowColor = color;
   });
 
-  getSvgColor(icon_name).then((color) => {console.log("color: ", color)})
+  // getSvgColor(icon_name).then((color) => {console.log("color: ", color)})
 </script>
 
 <div

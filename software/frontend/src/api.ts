@@ -31,12 +31,14 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
 
     let isTauriOrVite = false;
     if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
+    // if ('__TAURI__' in window || import.meta.env.DEV) {
+        // console.log("running in tauri (v1)")
         isTauriOrVite = true;
     }
     const fullUrl = isTauriOrVite ? `${baseUrl}${url}` : url;
 
 
-
+    console.log("fullUrl: ", fullUrl)
     return fetch(fullUrl, config)
         .then(response => {
             if (!response.ok) {

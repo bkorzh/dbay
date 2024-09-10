@@ -1,0 +1,15 @@
+NO: npm create tauri-app@latest -- --rc
+
+
+for adding to existing app: npm install -D @tauri-apps/cli@next
+
+add "tauri": "tauri" to package.json
+
+npm run tauri add shell
+
+
+
+
+
+
+

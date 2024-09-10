@@ -5192,3 +5192,80 @@
 2024-09-03 16:34:04,003 - backend.modules.dac4D - INFO - turning on 0 or already on
 2024-09-03 16:34:04,003 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 0 0.0
 
+2024-09-04 11:47:03,185 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: activated changed from False to True']
+2024-09-04 11:47:03,195 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:03,195 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.0
+
+2024-09-04 11:47:04,504 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.0 to 0.1']
+2024-09-04 11:47:04,504 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:04,504 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.1
+
+2024-09-04 11:47:04,654 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.1 to 0.2']
+2024-09-04 11:47:04,655 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:04,655 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.2
+
+2024-09-04 11:47:04,755 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.2 to 0.3']
+2024-09-04 11:47:04,755 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:04,755 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.3
+
+2024-09-04 11:47:05,062 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.3 to 0.301']
+2024-09-04 11:47:05,063 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:05,063 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.301
+
+2024-09-04 11:47:05,266 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.301 to 0.311']
+2024-09-04 11:47:05,266 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:05,267 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.311
+
+2024-09-04 11:47:05,439 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.311 to 0.321']
+2024-09-04 11:47:05,439 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:05,439 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.321
+
+2024-09-04 11:47:05,729 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.321 to 0.322']
+2024-09-04 11:47:05,729 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:05,729 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.322
+
+2024-09-04 11:47:06,035 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.322 to 0.323']
+2024-09-04 11:47:06,035 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:06,035 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.323
+
+2024-09-04 11:47:06,179 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.323 to 0.324']
+2024-09-04 11:47:06,179 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:06,179 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.324
+
+2024-09-04 11:47:06,365 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.324 to 0.334']
+2024-09-04 11:47:06,365 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:06,365 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.334
+
+2024-09-04 11:47:06,646 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.334 to 0.344']
+2024-09-04 11:47:06,646 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:06,647 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.344
+
+2024-09-04 11:47:06,825 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.344 to 0.354']
+2024-09-04 11:47:06,825 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:06,825 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 0.354
+
+2024-09-04 11:47:07,683 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: bias_voltage changed from 0.354 to -0.354']
+2024-09-04 11:47:07,683 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:07,683 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 -0.354
+
+2024-09-04 11:47:13,465 - backend.util - INFO - Changes: ['Module index 2 (slot 2), channel 1: heading_text changed from  to Peacoq']
+2024-09-04 11:47:13,466 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 11:47:13,466 - backend.modules.dac4D_spec - INFO - DAC4D VSD 2 1 -0.354
+
+2024-09-04 12:20:35,552 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 1: activated changed from False to True']
+2024-09-04 12:20:35,556 - backend.modules.dac4D - INFO - turning on 1 or already on
+2024-09-04 12:20:35,556 - backend.modules.dac4D_spec - INFO - DAC4D VSD 3 1 0.0
+
+2024-09-04 12:20:36,143 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: activated changed from False to True']
+2024-09-04 12:20:36,144 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-09-04 12:20:36,144 - backend.modules.dac4D_spec - INFO - DAC4D VSD 3 2 0.0
+
+2024-09-04 12:20:39,017 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: activated changed from True to False']
+2024-09-04 12:20:39,017 - backend.modules.dac4D - INFO - turning off 2 or already off
+2024-09-04 12:20:39,017 - backend.modules.dac4D_spec - INFO - DAC4D VSD 3 2 0
+
+2024-09-04 12:20:39,017 - backend.modules.dac4D - INFO - dac_4d.vsource.channels[change.index]: index=2 bias_voltage=0.0 activated=False heading_text='' measuring=False
+2024-09-04 12:20:39,502 - backend.util - INFO - Changes: ['Module index 3 (slot 3), channel 2: activated changed from False to True']
+2024-09-04 12:20:39,502 - backend.modules.dac4D - INFO - turning on 2 or already on
+2024-09-04 12:20:39,502 - backend.modules.dac4D_spec - INFO - DAC4D VSD 3 2 0.0
+

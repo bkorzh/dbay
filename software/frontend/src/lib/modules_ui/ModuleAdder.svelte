@@ -11,7 +11,7 @@
     let selectedType = "";
 
     async function initialize() {
-        console.log("submit button clicked");
+        // console.log("submit button clicked");
         const response = await initializeModule(Number(selectedSlot), selectedType)
         updateSystemStatefromJson(response)
         selectedSlot = "";

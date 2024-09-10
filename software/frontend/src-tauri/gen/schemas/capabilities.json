@@ -1,1 +1,1 @@
-{"migrated":{"identifier":"migrated","description":"permissions that were migrated from v1","local":true,"windows":["main"],"permissions":["core:default","http:default","http:default"]}}
+{"default":{"identifier":"default","description":"enables the default permissions","local":true,"windows":["main"],"permissions":["core:default","shell:default","shell:allow-open",{"identifier":"shell:allow-execute","allow":[{"cmd":"","name":"python_binary/main","sidecar":true}]}]}}
