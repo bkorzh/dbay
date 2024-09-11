@@ -1,6 +1,3 @@
-// // Prevents additional console window on Windows in release, DO NOT REMOVE!!
-// #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-
 // fn main() {
 //     app_lib::run();
 // }
@@ -26,18 +23,11 @@ use std::sync::{Arc, Mutex};
 use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
 
-// use tauri::{Manager};
-
 
 // use tauri::async_runtime::spawn;
 
 fn main() {
-    // tauri::Builder::default()
-    //     .plugin(tauri_plugin_shell::init())
-    //     .run(tauri::generate_context!())
-    //     .expect("error while running tauri application");
 
-    println!("at very beginning");
     env::set_var("RUST_BACKTRACE", "full");
 
     // Shared state to store the PID
@@ -93,11 +83,6 @@ fn main() {
                         }
                     }
                 });
-
-                // match kill_process(pid) {
-                //     Ok(_) => println!("Process killed successfully."),
-                //     Err(e) => eprintln!("Failed to kill process: {}", e),
-                // }
 
                 Ok(())
             }
