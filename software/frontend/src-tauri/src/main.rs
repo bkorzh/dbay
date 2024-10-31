@@ -47,11 +47,17 @@ fn main() {
 
                 let sidecar_command = sid.unwrap();
 
-                // let sidecar_command = app.shell().sidecar("main").unwrap();
+                // println!("this is the directory: {:?}", current_dir);
+
+                // let alternate_dir = PathBuf::from("../share/device-bay/");
+
+                // if !alternate_dir.exists() {
+                //     println!("Alternate directory does not exist: {:?}", alternate_dir);
+                // }
 
                 let sidecar_command = sidecar_command.current_dir(current_dir); // Set the working directory
 
-                let (mut rx, mut child) = sidecar_command.spawn().expect("failed to spawn sidecar");
+                let (mut rx, child) = sidecar_command.spawn().expect("failed to spawn sidecar");
 
                 println!("child pid: {}", child.pid());
 
@@ -90,7 +96,7 @@ fn main() {
         .on_window_event({
             let pid_state = Arc::clone(&pid_state);
             move |_window, event| {
-                println!("Window event triggered: {:?}", event);
+                // println!("Window event triggered: {:?}", event);
                 if let tauri::WindowEvent::CloseRequested { .. } = event {
                     // Retrieve the PID from the shared state
                     let pid = {
