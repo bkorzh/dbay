@@ -61,7 +61,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Tauri.md",
+                "file": "Development/Software frontend and backend.md",
                 "mode": "source",
                 "source": false
               }
@@ -134,7 +134,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Tauri.md",
+                "file": "Development/Software frontend and backend.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -151,7 +151,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Tauri.md",
+                "file": "Development/Software frontend and backend.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -174,7 +174,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Tauri.md"
+                "file": "Development/Software frontend and backend.md"
               }
             }
           }
@@ -197,14 +197,14 @@
   },
   "active": "20f0bcb81a10a999",
   "lastOpenFiles": [
+    "Development/Tutorial - creating a new module.md",
+    "Development/Software frontend and backend.md",
     "Development/Development.md",
     "Tauri.md",
     "Quickstart/Install and run.md",
     "index.md",
-    "Development/Software frontend and backend.md",
     "Modules/16 Channel Differential (dac16D).md",
     "Modules/4 Channel Differential (dac4D).md",
-    "Development/Tutorial - creating a new module.md",
     "attachments/IMG_20240620_121948.jpg",
     "Development/Index.md",
     "attachments/dac16D_icon.svg",
