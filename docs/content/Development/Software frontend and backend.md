@@ -4,12 +4,9 @@ The `software` used for controlling the UDP-connected VME rack, is a full-stack 
 
 Inside the `/frontend` folder, the web-based user interface is defined. By running a command in this folder, all code to operate this web-based software is compiled into several files which are placed in `/backend/dbay_control/`. The backend may then load and 'serve' this code. If you look inside the `package.json` file in `frontend`, you'll see that `npm run build` has been customized to compile the code with `vite build` and copy it to `/backend/snspd_bias_control/`. So anytime new frontend functionality is added and it's time to get it working with the backend, this command needs to be run.
 
-> [!info] Todo
-> Fix the copy command so that it runs on windows too
->
 
-
-### Frontend Development
+>[!info] Deprecated
+>### Frontend Development
 
 The frontend code may be previewed and improved without interacting with the python backend. That is, the frontend is 'served' by node (a javascript runtime) instead of the the python backend. The only difference is that the frontend will load a dummy 'fallback state' that doesn't correspond to any state shared with the python backend.
 
@@ -22,7 +19,9 @@ npm run dev
 ```
 
 Building the 'look' of a new module in the GUI is fastest by adding it to the fallback state located in `frontend/src/fallbackState.ts`, and watching for changes while the `npm run dev` development server is running.
-#### Running the python server
+
+>[!info] Deprecated
+>#### Running the python server
 
 Using `npm run dev` in the `/frontend` folder does not make use of the python backend at all. The 'backend' is needed to rout commands from the web browser to the hardware, and to be the official source of truth for the 'state' of the device bay system (what modules are plugged in, what voltages and channels are activated or powered, etc.)
 
@@ -65,7 +64,9 @@ Both `IVsourceAddon` and `IVsenseAddon` contain a list of channels, each of whic
 
 NOTE: a library called `pydantic2ts` is used to transform the datastructures found in the addon files like `/backend/addons/vsource.py` to `interface.ts` files found in `frontend/src/lib/addons` (Note: I'm using a [fork](https://pypi.org/project/pydantic-to-typescript2/) of the original `pydantic2ts` library that supports pydantic >= 2.0). This ensures that the frontend and backend code agree on the 'shape' of data packets sent between them. If files like `/backend/addons/vsource.py` are changed, or new datastructures are defined for get/put requests, then `backend/pydantic_to_typescript.py` should be rerun and possibly updated. Because `pydantic2ts` converts from python to typescript, it makes sense to (1) get your data strucutres defined first in python with pydantic classes, (2) modify `backend/pydantic_to_typescript.py` to create a corresponding `interface.ts` file somewhere inside `frontend/`, and (3) work on the frontend code to use the datastructure from the newly modified/created `interface.ts` file.
 
-## Docker Development Notes
+
+>[!info] Deprecated
+>## Docker Development Notes
 
 *Commands and notes related to building the docker container*
 
@@ -88,4 +89,5 @@ Then with the docker desktop utility, publish the image to dockerhub. This way w
 Trying to pull repository docker.io/sansseriff/dbay ...
 missing signature key
 ```
+
 
