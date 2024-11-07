@@ -1,0 +1,34 @@
+id: com.device.bay
+
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+
+command: device-bay
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  - --share=ipc
+  - --share=network
+  - --device=all
+
+modules:
+  - name: device_bay
+    buildsystem: simple
+    sources:
+      - type: file
+        path: ./Device_Bay_0.1.0_amd64.deb # Path to the local .deb file
+        only-arches: [x86_64]
+    build-commands:
+      - ar -x Device_Bay_0.1.0_amd64.deb
+      - tar -xf data.tar.gz
+      - 'install -Dm755 usr/bin/device-bay /app/bin/device-bay'
+      - 'install -Dm755 usr/bin/main /app/bin/main'
+      - 'cp -r usr/bin/device-bay_internal /app/bin/device-bay_internal'
+      - install -Dm644 usr/share/applications/device-bay.desktop /app/share/applications/device-bay.desktop
+      - install -Dm644 usr/share/icons/hicolor/128x128/apps/device-bay.png /app/share/icons/hicolor/128x128/apps/device_bay.png
+      - install -Dm644 usr/share/icons/hicolor/32x32/apps/device-bay.png /app/share/icons/hicolor/32x32/apps/device_bay.png
+      - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/device-bay.png /app/share/icons/hicolor/256x256@2/apps/device_bay.png
+
+

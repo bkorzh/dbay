@@ -4,3 +4,7 @@
 /gen/schemas
 
 python_binary/
+
+# ignore everything in /flatpak excep the manifest file
+/flatpak/*
+!/flatpak/device-bay-flatpak.yml
