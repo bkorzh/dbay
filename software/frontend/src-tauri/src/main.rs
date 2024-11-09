@@ -3,7 +3,11 @@
 // }
 
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+// #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+
+
 
 // fn main() {
 //   tauri::Builder::default()
@@ -22,6 +26,7 @@ use std::process::Command as StdCommand;
 use std::sync::{Arc, Mutex};
 use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
+use std::io::{self, Write};
 
 
 // use tauri::async_runtime::spawn;
@@ -74,15 +79,19 @@ fn main() {
                         match event {
                             CommandEvent::Stdout(line) => {
                                 println!("sidecar stdout: {}", String::from_utf8_lossy(&line));
+                                io::stdout().flush().unwrap(); // Flush stdout
                             }
                             CommandEvent::Stderr(line) => {
                                 eprintln!("sidecar stderr: {}", String::from_utf8_lossy(&line));
+                                io::stdout().flush().unwrap(); // Flush stdout
                             }
                             CommandEvent::Error(error) => {
                                 eprintln!("sidecar error: {:?}", error);
+                                io::stdout().flush().unwrap(); // Flush stdout
                             }
                             CommandEvent::Terminated(payload) => {
                                 println!("sidecar terminated with: {:?}", payload);
+                                io::stdout().flush().unwrap(); // Flush stdout
                                 break;
                             }
                             _ => {}

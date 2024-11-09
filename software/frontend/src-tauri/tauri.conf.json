@@ -5,8 +5,8 @@
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:5173",
-    "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build"
+    "beforeDevCommand": "bun run dev",
+    "beforeBuildCommand": "bun run build"
   },
   "app": {
     "windows": [
@@ -23,6 +23,9 @@
     }
   },
   "bundle": {
+    "resources": {
+      "python_binary/device-bay_internal": "device-bay_internal"
+    },
     "linux": {
       "deb": {
         "files": {
@@ -45,7 +48,6 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    
     "externalBin": [
       "python_binary/main"
     ]
