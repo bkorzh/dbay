@@ -19,6 +19,18 @@
         }
       ]
     },
-    "shell:default"
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "http://127.0.0.1:8345"
+        }
+      ],
+      "deny": [
+        {
+          "url": "https://private.tauri.app"
+        }
+      ]
+    }
   ]
 }

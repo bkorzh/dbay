@@ -23,6 +23,11 @@ export interface JsonCoreModule {
   name: string;
 }
 
+export interface ServerInfo {
+  ipaddr: string;
+  port: number;
+}
+
 export class CoreModule implements JsonCoreModule {
   slot: number;
   type: string;

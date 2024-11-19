@@ -11,6 +11,7 @@
   import ModuleAdder from "./lib/modules_ui/ModuleAdder.svelte";
   import BasicContainer from "./lib/BasicContainer.svelte";
   import ReInitSource from "./lib/modules_ui/ReInitSource.svelte";
+  import RemoteAccess from "./lib/modules_ui/RemoteAccess.svelte";
 
   import { ComponentManager } from "./lib/modules_dbay/index.svelte";
 
@@ -22,6 +23,7 @@
 
   import { system_state } from "./state/systemState.svelte";
   import { manager } from "./lib/modules_dbay/index.svelte";
+    import QrCode from "./lib/modules_ui/RemoteAccess.svelte";
   // import { Command } from "../node_modules_old/@tauri-apps/plugin-shell/dist-js";
 
   // import { Command } from "@tauri-apps/api/shell";
@@ -34,8 +36,10 @@
   // let serverNotInitialized = false;
   let num_modules = 0;
 
-  let intervalId: number;
+  let intervalId: Timer;
+  let checkIntervalId: Timer;
   let json_state: JsonSystemState;
+  let show_loading = $state(true);
 
   // let component_array = $derived(createComponentArray(system_state.data))
 
@@ -54,38 +58,76 @@
   //   //   const output = await sidecar_command.execute();
   // }
 
-    onMount(async () => {
-    setTimeout(async () => {
+  //   onMount(async () => {
+  //   setTimeout(async () => {
+  //     try {
+  //       json_state = await getFullState();
+  //       // console.log("initial json state: ", json_state)
+  //       // if the server responds, but the data field is empty, then the server is not initialized
+  //       if (json_state.data.every((module) => module.core.type === "empty")) {
+  //         ui_state.show_module_adder = true; // reactive
+  //       }
+
+  //       createSystemStatefromJson(json_state);
+
+  //       // Start the interval
+  //       intervalId = setInterval(async () => {
+  //         json_state = await getFullState();
+  //         updateSystemStatefromJson(json_state); // this seems costly
+  //       }, 1000);
+
+  //       // if no response, server is not available. Use fallback state for testing
+  //     } catch (error) {
+  //       console.log("error!", error);
+  //       serverNotResponding = true;
+  //       updateSystemStatetoFallback();
+  //     }
+  //     num_modules = system_state.data.length;
+  //   }, 3000);
+  // });
+
+  onMount(() => {
+    let attempts = 0;
+    const maxAttempts = 100; // 5 seconds / 50 milliseconds
+
+
+    // check if the server is available several times before giving up
+    // the tauri sidecar (backend) can take a second or two to start
+    checkIntervalId = setInterval(async () => {
+      attempts++;
       try {
         json_state = await getFullState();
-        // console.log("initial json state: ", json_state)
-        // if the server responds, but the data field is empty, then the server is not initialized
         if (json_state.data.every((module) => module.core.type === "empty")) {
           ui_state.show_module_adder = true; // reactive
         }
-  
+        show_loading = false;
         createSystemStatefromJson(json_state);
-  
-        // Start the interval
+
+        // Start the interval to update the system state every second
         intervalId = setInterval(async () => {
           json_state = await getFullState();
           updateSystemStatefromJson(json_state); // this seems costly
         }, 1000);
-  
-        // if no response, server is not available. Use fallback state for testing
+
+        clearInterval(checkIntervalId); // Stop checking once the backend responds
       } catch (error) {
-        console.log("error!", error);
-        serverNotResponding = true;
-        updateSystemStatetoFallback();
+        if (attempts >= maxAttempts) {
+          console.log("error!", error);
+          show_loading = false;
+          serverNotResponding = true;
+          updateSystemStatetoFallback();
+          clearInterval(checkIntervalId); // Stop checking after 5 seconds
+        }
       }
       num_modules = system_state.data.length;
-    }, 3000); 
+    }, 50);
   });
 
   onDestroy(() => {
-    // Clear the interval when the component is destroyed
     clearInterval(intervalId);
+    clearInterval(checkIntervalId);
   });
+
 
   // $effect(() => {
   //   console.log("system_state inside effect: ", system_state.data)
@@ -143,6 +185,18 @@
 
     {#if ui_state.show_source_reinit}
       <ReInitSource />
+    {/if}
+
+    {#if ui_state.show_remote_access}
+      <RemoteAccess />
+    {/if}
+
+    {#if show_loading}
+      <BasicContainer>
+        <p class="text-red-500 p-3">
+          Loading...
+        </p>
+      </BasicContainer>
     {/if}
 
     {#if system_state.dev_mode}

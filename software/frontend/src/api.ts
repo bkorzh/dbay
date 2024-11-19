@@ -5,10 +5,23 @@ import type { SharedVsourceChange, VsourceChange } from './lib/addons/vsource/in
 
 import type { SystemState } from './state/systemState.svelte';
 import type { VMEParams } from './state/systemState.svelte';
-import type { JsonSystemState } from './state/systemState.svelte';
+import type { JsonSystemState, ServerInfo } from './state/systemState.svelte';
+// import { fetch } from '@tauri-apps/plugin-http';
 
+// // Send a GET request
+// const response = await fetch('http://test.tauri.app/data.json', {
+//   method: 'GET',
+// });
+// console.log(response.status); // e.g. 200
+// console.log(response.statusText); // e.g. "OK"
 
+let tauriFetch: typeof fetch | undefined;
 
+if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
+    import('@tauri-apps/plugin-http').then(module => {
+        tauriFetch = module.fetch;
+    });
+}
 
 
 function fetchWithConfig(url: string, method: string, body?: any): Promise<any> {
@@ -17,7 +30,7 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
     const signal = controller.signal;
 
     // Specify the base URL of the different server
-    const baseUrl = "http://127.0.0.1:8000";
+    const baseUrl = "http://127.0.0.1:8345";
 
     const config: RequestInit = {
         method,
@@ -29,22 +42,16 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    let isTauriOrVite = false;
-    if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
-    // if ('__TAURI__' in window || import.meta.env.DEV) {
-        // console.log("running in tauri (v1)")
-        isTauriOrVite = true;
-    }
+    const isTauriOrVite = '__TAURI_INTERNALS__' in window || import.meta.env.DEV;
     const fullUrl = isTauriOrVite ? `${baseUrl}${url}` : url;
-
+    const fetchFunction = isTauriOrVite && tauriFetch ? tauriFetch : window.fetch;
 
     console.log("fullUrl: ", fullUrl)
-    return fetch(fullUrl, config)
+    return fetchFunction(fullUrl, config)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            // console.log("returning!")
             return response.json();
         });
 }
@@ -82,6 +89,10 @@ export function requestSharedChannelUpdate(dst: SharedVsourceChange, endpoint: s
 
 export function initializeModule(slot: number, type: string) {
     return fetchWithConfig("/initialize-module", "POST", { slot, type });
+}
+
+export function serverInfo(): Promise<ServerInfo> {
+    return fetchWithConfig("/server-info", "GET");
 }
 
 

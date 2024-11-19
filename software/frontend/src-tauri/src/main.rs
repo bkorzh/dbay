@@ -11,6 +11,7 @@
 
 // fn main() {
 //   tauri::Builder::default()
+
 //     .run(tauri::generate_context!())
 //     .expect("error while running tauri application");
 // }
@@ -39,7 +40,8 @@ fn main() {
     let pid_state = Arc::new(Mutex::new(None));
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init()) // YOU NEED THIS!!
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_http::init()) // YOU NEED THIS!!
         // if you don't have the init line, then you get an error with app.shell() below
         .setup({
             let pid_state = Arc::clone(&pid_state);
@@ -74,6 +76,7 @@ fn main() {
                 }
 
                 // Spawn a task to read stdout
+                #[cfg(not(dev))] // do not run sidecar in dev mode: https://github.com/tauri-apps/tauri/discussions/6453
                 tauri::async_runtime::spawn(async move {
                     while let Some(event) = rx.recv().await {
                         match event {

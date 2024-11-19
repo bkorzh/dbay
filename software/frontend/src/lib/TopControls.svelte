@@ -75,6 +75,10 @@
 
   }
 
+  function showRemoteAccess() {
+    ui_state.show_remote_access = true;
+  }
+
   let isMounted = false;
 
   onMount(() => {
@@ -97,6 +101,7 @@
       <MenuSlotted onclick={toggleMenu} menuVisible={showDropdown} location={{top: menuLocation.top + 5, left: menuLocation.left - 4}}>
         <MenuButton onclick={addModule}>Add a Module</MenuButton>
         <MenuButton onclick={showSourceReInit}>Re-Initialize Source</MenuButton>
+        <MenuButton onclick={showRemoteAccess}>Remote Access</MenuButton>
       </MenuSlotted>
     {/if}
   </div>
