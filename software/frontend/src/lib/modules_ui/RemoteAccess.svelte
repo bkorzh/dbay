@@ -7,6 +7,7 @@
   import QrCode from "svelte-qrcode";
   import { onMount } from "svelte";
   import { serverInfo } from "../../api";
+  import { copy } from "svelte-copy";
 
   function done() {
     ui_state.show_remote_access = false;
@@ -14,6 +15,8 @@
 
   let access_string = $state("");
   let qr_border = $state("none");
+
+  let text = "you copied correctly!";
 
   onMount(() => {
     serverInfo()
@@ -41,27 +44,25 @@
   </div>
 
   <div class="main-controlls">
-
     <div class="outer-box">
       <div class="box" style="border: 4px solid {qr_border}">
         <QrCode value={access_string}></QrCode>
       </div>
     </div>
-    
+
+    <button use:copy={"Hello World"}> Copy </button>
 
     <SubmitButton onclick={done}>Done</SubmitButton>
   </div>
 </div>
 
 <style>
-
   .outer-box {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 1rem;
   }
-
 
   .main-controlls {
     /* flex-grow: 1;
