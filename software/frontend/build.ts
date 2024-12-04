@@ -11,8 +11,8 @@ import { $ } from "bun";
 import Bun from "bun";
 import path from "node:path";
 import { readdir } from "node:fs/promises";
-// import { process } from "node:process";
 import { parseArgs } from "util";
+import { execSync } from "node:child_process";
 
 const { values, positionals } = parseArgs({
     args: Bun.argv,
@@ -38,21 +38,9 @@ const { values, positionals } = parseArgs({
 });
 
 
-// if (values.frontend || values.all) {
-//     console.log("Building frontend...");
-// }
-
-
-// process.exit(0);
-
-
-// to stdout:
-// const thing = await $`ls *.js`;
-
-
 const current_directory = import.meta.dir; // https://bun.sh/docs/api/import-meta
 
-const dist_directory = current_directory + "/dist";
+const dist_directory = path.join(current_directory, "/dist/");
 
 const output_directory = path.join(current_directory, "../backend/backend/dbay_control");
 
@@ -68,58 +56,80 @@ async function folderExists(folder: string): Promise<boolean> {
     }
 }
 
-if (!await folderExists(current_directory + "/src-tauri/python_binary")) {
-    await $`mkdir ${current_directory + "/src-tauri/python_binary"}`
+if (!await folderExists(path.join(current_directory, "/src-tauri/python_binary"))) {
+    await $`mkdir ${path.join(current_directory, "/src-tauri/python_binary")}`
 }
 
-const sidecar_directory = current_directory + "/src-tauri/python_binary";
+const sidecar_directory = path.join(current_directory, "/src-tauri/python_binary");
 
 
-// let exists = false;
-// try{
-//   await readdir("./tmp");
-//   exists = true;
-// } catch{ /* handle error if you want */ }
-
-
-
-
-// const backend_dist = path.join(backend_parent, "dist/*");
-// const backend_build = path.join(backend_parent, "build/*");
-
-// const files_inside_output_directory = output_directory + "/*";
-
-
-// function stdoutToString(input: string[]): string {
-//   const result = Bun.spawnSync(input);
-//   return new TextDecoder().decode(result.stdout);
-// }
-
-
-if (!values.frontend && !values.backend && !values.tauri && values.flatpak && !values.all) {
+if (!values.frontend && !values.backend && !values.tauri && !values.flatpak && !values.all) {
     console.log("Please specify either --frontend, --backend, --tauri, or --all");
     process.exit(1);
+}
+
+
+function newExecutableName() {
+    let suffix
+    // have you installed rust? Refer to the tauri pre-requisites: https://v2.tauri.app/start/prerequisites/
+    if (process.platform === "win32") {
+        suffix = execSync('rustc -Vv | Select-String "host:" | ForEach-Object {$_.Line.split(" ")[1]}', { shell: 'powershell.exe' }).toString().trim();
+    } else {
+        suffix = execSync('rustc -Vv | grep host | cut -f2 -d\' \'').toString().trim();
+    }
+
+    console.log("using suffix: ", suffix);
+
+    // test this on ubuntu....
+    let new_main_name = path.join("main" + "-" + suffix);
+
+    // remove last character from new_main_name (it's a \n newline probably)
+    // new_main_name = new_main_name.slice(0, -1);
+    if (process.platform === "win32") {
+        new_main_name = new_main_name + ".exe";
+    }
+
+    return new_main_name;
 }
 
 /////////////////////////////////
 if (values.frontend || values.all) {
     console.log('\x1b[33m >>>>> Building frontend... \x1b[0m');
-    await $`npm run build`;
+    await $`bun run build`;
 
     console.log('\x1b[33m >>>>> Moving compiled javascript, css, & html to /backend/backend/dbay_control/ \x1b[0m');
-    await $`rm -rf ${output_directory + "/*"}`;
-    await $`cp -r ${dist_directory}/* ${output_directory}`;
+    // console.log("process.platform: ", process.platform);
+
+    if (process.platform === "win32") {
+
+        // rm -rf is not working in bun shell yet as of Bun 1.1.34
+        // execSync(`del /Q /S ${path.join(output_directory,  "/*")}`, { stdio: 'inherit' });
+        execSync(`rmdir /S /Q ${output_directory}`, { stdio: 'inherit' });
+        execSync(`mkdir ${output_directory}`, { stdio: 'inherit' });
+    } else {
+        await $`rm -rf ${path.join(output_directory, "/*")}`;
+    }
+    // process.exit(1);
+
+    await $`mkdir -p ${output_directory}`;
+    await $`cp -R ${path.join(dist_directory, "assets")} ${output_directory}`;
+    await $`cp ${path.join(dist_directory, "index.html")} ${output_directory}`;
 
 }
 
+
+
 if (values.backend || values.all) {
+
+    if (process.platform === "win32") {
+        execSync(`rmdir /S /Q ${path.join(backend_parent, "dist")}`, { stdio: 'inherit' });
+        execSync(`rmdir /S /Q ${path.join(backend_parent, "build")}`, { stdio: 'inherit' });
+    } else {
     // clean the output folders for pyinstaller
     await $`rm -rf ${path.join(backend_parent, "dist")}`;
     await $`rm -rf ${path.join(backend_parent, "build")}`;
+    }
 
-
-
-    // console.log("process.platform: ", process.platform);
 
     /////////////////////////////////
     console.log('\x1b[33m >>>>> Running PyInstaller to build backend... \x1b[0m');
@@ -128,21 +138,31 @@ if (values.backend || values.all) {
     await $`cd ${backend_parent} && poetry run pyinstaller backend/main.spec && cd ${current_directory}`;
 
 
-    // something like "-x86_64-unknown-linux-gnu"
-    const suffix = await $`echo "-$(uname -m)-unknown-$(uname -s | tr '[:upper:]' '[:lower:]')-gnu"`;
+    // const suffix = await $`echo "-$(uname -m)-unknown-$(uname -s | tr '[:upper:]' '[:lower:]')-gnu"`;
 
-    // console.log("suffix: ", suffix.text());
+    let executable_name
 
-    const file = Bun.file(path.join(backend_parent, "/dist/main/main"));
 
-    let new_main_name = path.join("main" + suffix.text());
+    if (process.platform === "win32") {
+        executable_name = "main.exe";
+    } else {
+        executable_name = "main";
+    }
 
-    // remove last character from new_main_name (it's a \n newline probably)
-    new_main_name = new_main_name.slice(0, -1);
+
+
+    const file = Bun.file(path.join(backend_parent, "/dist/main/", executable_name));
+
+    // console.log("testing file: ", file);
+    // console.log("testing file exists: ", await file.exists());
+
+
+    
 
 
     if (await file.exists()) {
-        await $`mv ${path.join(backend_parent, "/dist/main/main")} ${path.join(backend_parent, "/dist/main/" + new_main_name)}`
+        // rename to include platform suffix
+        await $`mv ${path.join(backend_parent, "/dist/main/", executable_name)} ${path.join(backend_parent, "/dist/main/" + newExecutableName())}`
     }
 
 }
@@ -151,12 +171,12 @@ if (values.backend || values.all) {
 if (values.tauri || values.all) {
     console.log('\x1b[33m >>>>> Moving backend build to src-tauri/python_binary \x1b[0m');
     // having issues with use of * (wildcard) in mv command
-    await $`cp -v ${path.join(backend_parent, "/dist/main/", new_main_name)} ${sidecar_directory}`
-    await $`cp -r ${path.join(backend_parent, "/dist/main/device-bay_internal/")} ${sidecar_directory}`
+    await $`cp -v ${path.join(backend_parent, "/dist/main/", newExecutableName())} ${sidecar_directory}`
+    await $`cp -R ${path.join(backend_parent, "/dist/main/device-bay_internal/")} ${sidecar_directory}`
 
 
     console.log('\x1b[33m >>>>> Building tauri installers \x1b[0m');
-    await $`npm run tauri build`;
+    await $`bun run tauri build`;
 }
 
 

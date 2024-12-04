@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 import multiprocessing
-
+import socket
 
 # from fastapi import fastApi
 from pydantic import BaseModel
@@ -19,6 +19,8 @@ from typing import cast
 from backend.server_logging import get_logger
 from fastapi.middleware.cors import CORSMiddleware
 logger = get_logger(__name__)
+
+
 
 import asyncio
 import importlib
@@ -32,6 +34,10 @@ from backend.state import IModule, SystemState
 from backend.location import BASE_DIR, WEB_DIR
 
 
+SERVE_PORT = 8345 # something a little random/unique
+
+# from state import load_modules_from_directory
+# from importlib import import_module
 import os
 import signal
 
@@ -52,6 +58,10 @@ class VsourceParams(BaseModel):
     timeout: float
     port: int
     dev_mode: bool
+
+class ServerInfo(BaseModel):
+    ipaddr: str
+    port: int
 
 # NOTE: if dev_mode is true and there's no VME rack to connect to, the fetch requests will take longer and there will be a 
 # hard to debug delay in the frontend! 
@@ -125,6 +135,15 @@ async def state_set(request: Request, state: SystemState):
     return global_state.system_state
 
 
+@app.get("/server-info")
+async def server_info():
+    hostname = socket.gethostname()
+    ipaddr = socket.gethostbyname(hostname)
+    port = SERVE_PORT  # The port your server is running on
+
+    return ServerInfo(ipaddr=ipaddr, port=port)
+
+
 if __name__ == "__main__":
 
     # parser = argparse.ArgumentParser()
@@ -133,4 +152,9 @@ if __name__ == "__main__":
     # parser.add_argument('--udp_remote', type=str, help='udp_remote', 5005)
     # parser.add_argument('--udp_local', type=str, help='udp_local', 55180)
     multiprocessing.freeze_support()  # For Windows support
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=SERVE_PORT)
+
+
+
+# dev:
+# poetry run fastapi dev main.py --port 8345 --host 0.0.0.0

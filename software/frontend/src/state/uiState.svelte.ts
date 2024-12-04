@@ -12,12 +12,14 @@
 
 export class UIState {
   show_module_adder: boolean = $state(false);
+  show_remote_access: boolean = $state(false);
   show_source_reinit: boolean = $state(false);
   colorMode: boolean = $state(false);
 
-  constructor(show_module_adder = false, show_source_reinit = false, colorMode = false) {
+  constructor(show_module_adder = false, show_source_reinit = false, colorMode = false, show_remote_access = false) {
     this.show_module_adder = show_module_adder;
     this.show_source_reinit = show_source_reinit;
+    this.show_remote_access = show_remote_access;
     this.colorMode = colorMode;
   }
 }

@@ -3,10 +3,15 @@
 // }
 
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+// #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+
+
 
 // fn main() {
 //   tauri::Builder::default()
+
 //     .run(tauri::generate_context!())
 //     .expect("error while running tauri application");
 // }
@@ -22,6 +27,7 @@ use std::process::Command as StdCommand;
 use std::sync::{Arc, Mutex};
 use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
+use std::io::{self, Write};
 
 
 // use tauri::async_runtime::spawn;
@@ -34,7 +40,8 @@ fn main() {
     let pid_state = Arc::new(Mutex::new(None));
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init()) // YOU NEED THIS!!
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_http::init()) // YOU NEED THIS!!
         // if you don't have the init line, then you get an error with app.shell() below
         .setup({
             let pid_state = Arc::clone(&pid_state);
@@ -69,20 +76,25 @@ fn main() {
                 }
 
                 // Spawn a task to read stdout
+                #[cfg(not(dev))] // do not run sidecar in dev mode: https://github.com/tauri-apps/tauri/discussions/6453
                 tauri::async_runtime::spawn(async move {
                     while let Some(event) = rx.recv().await {
                         match event {
                             CommandEvent::Stdout(line) => {
                                 println!("sidecar stdout: {}", String::from_utf8_lossy(&line));
+                                io::stdout().flush().unwrap(); // Flush stdout
                             }
                             CommandEvent::Stderr(line) => {
                                 eprintln!("sidecar stderr: {}", String::from_utf8_lossy(&line));
+                                io::stdout().flush().unwrap(); // Flush stdout
                             }
                             CommandEvent::Error(error) => {
                                 eprintln!("sidecar error: {:?}", error);
+                                io::stdout().flush().unwrap(); // Flush stdout
                             }
                             CommandEvent::Terminated(payload) => {
                                 println!("sidecar terminated with: {:?}", payload);
+                                io::stdout().flush().unwrap(); // Flush stdout
                                 break;
                             }
                             _ => {}
