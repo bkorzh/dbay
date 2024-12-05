@@ -46,6 +46,8 @@ const output_directory = path.join(current_directory, "../backend/backend/dbay_c
 
 const backend_parent = path.join(current_directory, "../backend");
 
+const flatpak_directory = path.join(current_directory, "/src-tauri/flatpak");
+
 
 async function folderExists(folder: string): Promise<boolean> {
     try {
@@ -64,7 +66,7 @@ const sidecar_directory = path.join(current_directory, "/src-tauri/python_binary
 
 
 if (!values.frontend && !values.backend && !values.tauri && !values.flatpak && !values.all) {
-    console.log("Please specify either --frontend, --backend, --tauri, or --all");
+    console.log("Please specify either --frontend, --backend, --tauri, --flatpak, or --all");
     process.exit(1);
 }
 
@@ -81,7 +83,7 @@ function newExecutableName() {
     console.log("using suffix: ", suffix);
 
     // test this on ubuntu....
-    let new_main_name = path.join("main" + "-" + suffix);
+    let new_main_name = path.join("dbaybackend" + "-" + suffix);
 
     // remove last character from new_main_name (it's a \n newline probably)
     // new_main_name = new_main_name.slice(0, -1);
@@ -125,9 +127,9 @@ if (values.backend || values.all) {
         execSync(`rmdir /S /Q ${path.join(backend_parent, "dist")}`, { stdio: 'inherit' });
         execSync(`rmdir /S /Q ${path.join(backend_parent, "build")}`, { stdio: 'inherit' });
     } else {
-    // clean the output folders for pyinstaller
-    await $`rm -rf ${path.join(backend_parent, "dist")}`;
-    await $`rm -rf ${path.join(backend_parent, "build")}`;
+        // clean the output folders for pyinstaller
+        await $`rm -rf ${path.join(backend_parent, "dist")}`;
+        await $`rm -rf ${path.join(backend_parent, "build")}`;
     }
 
 
@@ -144,25 +146,25 @@ if (values.backend || values.all) {
 
 
     if (process.platform === "win32") {
-        executable_name = "main.exe";
+        executable_name = "dbaybackend.exe";
     } else {
-        executable_name = "main";
+        executable_name = "dbaybackend";
     }
 
 
 
-    const file = Bun.file(path.join(backend_parent, "/dist/main/", executable_name));
+    const file = Bun.file(path.join(backend_parent, "/dist/dbaybackend/", executable_name));
 
     // console.log("testing file: ", file);
     // console.log("testing file exists: ", await file.exists());
 
 
-    
+
 
 
     if (await file.exists()) {
         // rename to include platform suffix
-        await $`mv ${path.join(backend_parent, "/dist/main/", executable_name)} ${path.join(backend_parent, "/dist/main/" + newExecutableName())}`
+        await $`mv ${path.join(backend_parent, "/dist/dbaybackend/", executable_name)} ${path.join(backend_parent, "/dist/dbaybackend/" + newExecutableName())}`
     }
 
 }
@@ -171,12 +173,40 @@ if (values.backend || values.all) {
 if (values.tauri || values.all) {
     console.log('\x1b[33m >>>>> Moving backend build to src-tauri/python_binary \x1b[0m');
     // having issues with use of * (wildcard) in mv command
-    await $`cp -v ${path.join(backend_parent, "/dist/main/", newExecutableName())} ${sidecar_directory}`
-    await $`cp -R ${path.join(backend_parent, "/dist/main/device-bay_internal/")} ${sidecar_directory}`
+    await $`cp -v ${path.join(backend_parent, "/dist/dbaybackend/", newExecutableName())} ${sidecar_directory}`
+    await $`cp -R ${path.join(backend_parent, "/dist/dbaybackend/device-bay_internal/")} ${sidecar_directory}`
 
 
     console.log('\x1b[33m >>>>> Building tauri installers \x1b[0m');
     await $`bun run tauri build`;
 }
 
+if (values.flatpak) {
+    console.log('\x1b[33m >>>>> Building flatpak installer \x1b[0m');
+    // get the name of the file that ends in .deb
+    // check if platform is not linux, and if so, exit
+    if (process.platform !== "linux") {
+        console.log("Flatpak can only be built on Linux");
+        process.exit(1);
+    }
 
+
+    let deb_file = execSync(`ls ./src-tauri/target/release/bundle/deb/ | grep .deb`).toString().trim();
+    deb_file = deb_file.split("\n")[0];
+    console.log("deb_file: ", deb_file);
+
+    const deb_directory = "./src-tauri/target/release/bundle/deb/";
+    await $`cp ${path.join(deb_directory, deb_file)} ${flatpak_directory}`
+
+
+    await $`cp ./src-tauri/flatpak/device-bay-flatpak-template.yml ./src-tauri/flatpak/device-bay-flatpak.yml`
+
+    // edit the manifest file (device-bay-flatpak.yml) to include the name of the deb file using sed
+    await $`sed -i "s|<-deb-filename->|${deb_file}|g" ./src-tauri/flatpak/device-bay-flatpak.yml`
+
+    //await $`cd ${flatpak_directory} && flatpak-builder --force-clean build-dir device-bay-flatpak.yml && flatpak-builder --repo=repo --force-clean build-dir device-bay-flatpak.yml && flatpak build-bundle repo device-bay.flatpak com.device.bay`
+    // await $`flatpak-builder --repo=repo --force-clean build-dir device-bay-flatpak.yml`
+    await $`cd ${flatpak_directory} && \
+flatpak-builder --force-clean --user --repo=repo --install builddir device-bay-flatpak.yml && \
+flatpak build-bundle repo device-bay.flatpak com.device.bay --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo`
+}

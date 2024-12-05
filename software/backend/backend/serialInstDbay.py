@@ -15,7 +15,7 @@ class serialInstDbay():
     Generic base class for an instrument connected over serial port
     """
 
-    def __init__(self, port, timeout=5, offline=False, baudrate=9600):
+    def __init__(self, port: str, timeout: int=5, offline: bool=False, baudrate: int=9600):
         """
 
         :param port: The serial port
@@ -52,7 +52,7 @@ class serialInstDbay():
         """
         Seems to avoid most issues with the serial connection getting into weird states
         """
-        lines = []
+        lines: list[str] = []
 
         while True:
             if self.offline:
@@ -66,20 +66,25 @@ class serialInstDbay():
         return ''.join(lines)
 
     def read(self):
-        lines = []
+        lines: list[str] = []
         lines.extend(self.read_until_none_left())
         time.sleep(0.001)
         lines.extend(self.read_until_none_left())
         return ''.join(lines)
 
 
-    def write(self, cmd):
+    def write(self, cmd: bytes):
         #print('serial write')
         if self.offline: return True
         self.serial.flush()
         return self.serial.write(cmd)
 
-    def query(self,cmd, **kwargs):
+    def query(self, cmd: bytes):
         #print('serial query')
-        self.write(cmd, **kwargs)
+        self.write(cmd)
         return self.read()
+    
+
+    def query_newline(self, cmd: str):
+        command = (cmd + "\n").encode()
+        return self.query(command)

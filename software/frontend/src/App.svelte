@@ -23,7 +23,7 @@
 
   import { system_state } from "./state/systemState.svelte";
   import { manager } from "./lib/modules_dbay/index.svelte";
-    import QrCode from "./lib/modules_ui/RemoteAccess.svelte";
+  import QrCode from "./lib/modules_ui/RemoteAccess.svelte";
   // import { Command } from "../node_modules_old/@tauri-apps/plugin-shell/dist-js";
 
   // import { Command } from "@tauri-apps/api/shell";
@@ -40,6 +40,7 @@
   let checkIntervalId: Timer;
   let json_state: JsonSystemState;
   let show_loading = $state(true);
+  let show_loading_longer = $state(false);
 
   // let component_array = $derived(createComponentArray(system_state.data))
 
@@ -88,9 +89,8 @@
 
   onMount(() => {
     let attempts = 0;
-    const maxAttempts = 100; // 5 seconds / 50 milliseconds
-
-
+    const maxAttempts = 200; // 10 seconds / 50 milliseconds
+    const mediumAttempts = 70; // 5 seconds / 50 milliseconds
     // check if the server is available several times before giving up
     // the tauri sidecar (backend) can take a second or two to start
     checkIntervalId = setInterval(async () => {
@@ -111,6 +111,10 @@
 
         clearInterval(checkIntervalId); // Stop checking once the backend responds
       } catch (error) {
+        if (attempts >= mediumAttempts) {
+          show_loading_longer = true;
+        }
+
         if (attempts >= maxAttempts) {
           console.log("error!", error);
           show_loading = false;
@@ -127,7 +131,6 @@
     clearInterval(intervalId);
     clearInterval(checkIntervalId);
   });
-
 
   // $effect(() => {
   //   console.log("system_state inside effect: ", system_state.data)
@@ -191,10 +194,16 @@
       <RemoteAccess />
     {/if}
 
-    {#if show_loading}
+    {#if show_loading && !show_loading_longer}
+      <BasicContainer>
+        <p class="text-red-500 p-3">Loading...</p>
+      </BasicContainer>
+    {/if}
+
+    {#if show_loading_longer}
       <BasicContainer>
         <p class="text-red-500 p-3">
-          Loading...
+          Loading may take more than several seconds during first startup
         </p>
       </BasicContainer>
     {/if}

@@ -7,4 +7,5 @@ python_binary/
 
 # ignore everything in /flatpak excep the manifest file
 /flatpak/*
-!/flatpak/device-bay-flatpak.yml
+!/flatpak/device-bay-flatpak-template.yml
+!/flatpak/com.device.bay.desktop

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=
+Comment=Device Bay
+Exec=device-bay
+Icon=com.device.bay
+Name=Device Bay
+Terminal=false
+Type=Application

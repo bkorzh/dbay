@@ -31,6 +31,7 @@
           "url": "https://private.tauri.app"
         }
       ]
-    }
+    },
+    "fs:default"
   ]
 }

@@ -18,12 +18,12 @@ modules:
     buildsystem: simple
     sources:
       - type: file
-        path: ./DeviceBay_0.1.1_amd64.deb # Path to the local .deb file
+        path: ./<-deb-filename-> # Path to the local .deb file
         only-arches: [x86_64]
       - type: file
         path: ./com.device.bay.desktop # Path to the local .desktop file
     build-commands:
-      - ar -x DeviceBay_0.1.1_amd64.deb
+      - ar -x <-deb-filename->
       - tar -xf data.tar.gz
       - 'install -Dm755 usr/bin/device-bay /app/bin/device-bay'
       - 'install -Dm755 usr/bin/dbaybackend /app/bin/dbaybackend'

@@ -12,6 +12,8 @@
 // fn main() {
 //   tauri::Builder::default()
 
+// .plugin(tauri_plugin_fs::init())
+
 //     .run(tauri::generate_context!())
 //     .expect("error while running tauri application");
 // }
@@ -28,7 +30,9 @@ use std::sync::{Arc, Mutex};
 use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
 use std::io::{self, Write};
-
+// use tauri_plugin_fs::BaseDirectory;
+use tauri::path::BaseDirectory;
+use tauri::Manager;
 
 // use tauri::async_runtime::spawn;
 
@@ -42,15 +46,20 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_http::init()) // YOU NEED THIS!!
+        .plugin(tauri_plugin_fs::init())
         // if you don't have the init line, then you get an error with app.shell() below
         .setup({
             let pid_state = Arc::clone(&pid_state);
             move |app| {
+
+                let resource_path = app.path().resolve("device-bay_internal/", BaseDirectory::Resource)?;
+                println!("Resource path: {:?}", resource_path);
+
                 let current_dir = PathBuf::from("/");
 
                 let shell = app.shell();
 
-                let sid = shell.sidecar("main");
+                let sid = shell.sidecar("dbaybackend");
 
                 let sidecar_command = sid.unwrap();
 
