@@ -1,24 +1,7 @@
-// fn main() {
-//     app_lib::run();
-// }
 
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-
+// Prevents additional console window on Windows in release
 // #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-
-
-
-// fn main() {
-//   tauri::Builder::default()
-
-// .plugin(tauri_plugin_fs::init())
-
-//     .run(tauri::generate_context!())
-//     .expect("error while running tauri application");
-// }
-
-// use tauri::api::process::Command;
 use std::env;
 
 // use std::env;
@@ -30,11 +13,9 @@ use std::sync::{Arc, Mutex};
 use tauri_plugin_shell::process::CommandEvent;
 use tauri_plugin_shell::ShellExt;
 use std::io::{self, Write};
-// use tauri_plugin_fs::BaseDirectory;
 use tauri::path::BaseDirectory;
 use tauri::Manager;
 
-// use tauri::async_runtime::spawn;
 
 fn main() {
 
@@ -45,40 +26,20 @@ fn main() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
-        .plugin(tauri_plugin_http::init()) // YOU NEED THIS!!
+        .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_fs::init())
-        // if you don't have the init line, then you get an error with app.shell() below
         .setup({
             let pid_state = Arc::clone(&pid_state);
             move |app| {
-
                 let resource_path = app.path().resolve("device-bay_internal/", BaseDirectory::Resource)?;
                 println!("Resource path: {:?}", resource_path);
-
                 let current_dir = PathBuf::from("/");
-
                 let shell = app.shell();
-
                 let sid = shell.sidecar("dbaybackend");
-
                 let sidecar_command = sid.unwrap();
-
-                // println!("this is the directory: {:?}", current_dir);
-
-                // let alternate_dir = PathBuf::from("../share/device-bay/");
-
-                // if !alternate_dir.exists() {
-                //     println!("Alternate directory does not exist: {:?}", alternate_dir);
-                // }
-
                 let sidecar_command = sidecar_command.current_dir(current_dir); // Set the working directory
-
                 let (mut rx, child) = sidecar_command.spawn().expect("failed to spawn sidecar");
-
                 println!("child pid: {}", child.pid());
-
-                // let pid = child.pid();
-                // Store the PID in the shared state
                 {
                     let mut pid = pid_state.lock().unwrap();
                     *pid = Some(child.pid());
@@ -150,7 +111,6 @@ fn kill_process(pid: u32) -> Result<(), Box<dyn std::error::Error>> {
             .spawn()?;
         kill.wait()?;
     }
-
     #[cfg(windows)]
     {
         let pid_str = pid.to_string();
