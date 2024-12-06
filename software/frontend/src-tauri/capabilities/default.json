@@ -10,20 +10,19 @@
     "shell:default",
     "shell:allow-open",
     {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "cmd": "",
-          "name": "python_binary/main",
-          "sidecar": true
-        }
-      ]
+      "identifier": "shell:allow-execute"
     },
     {
       "identifier": "http:default",
       "allow": [
         {
           "url": "http://127.0.0.1:8345"
+        },
+        {
+          "url": "http://localhost:8345"
+        },
+        {
+          "url": "http://0.0.0.0:8345"
         }
       ],
       "deny": [

@@ -3,9 +3,10 @@
 /target/
 /gen/schemas
 
-python_binary/
+# python_binary/
+resources/
 
 # ignore everything in /flatpak excep the manifest file
 /flatpak/*
-!/flatpak/device-bay-flatpak-template.yml
-!/flatpak/com.device.bay.desktop
+# !/flatpak/device-bay-flatpak-template.yml
+# !/flatpak/com.device.bay.desktop

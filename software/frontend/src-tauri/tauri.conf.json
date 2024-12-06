@@ -24,19 +24,7 @@
   },
   "bundle": {
     "resources": {
-      "python_binary/device-bay_internal": "device-bay_internal"
-    },
-    "linux": {
-      "deb": {
-        "files": {
-          "usr/bin/device-bay_internal": "python_binary/device-bay_internal"
-        }
-      }
-    },
-    "macOS": {
-      "files": {
-        "Frameworks": "python_binary/device-bay_internal"
-      }
+      "resources/": "resources/"
     },
     "shortDescription": "Device Bay",
     "active": true,
@@ -51,9 +39,6 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "externalBin": [
-      "python_binary/dbaybackend"
     ]
   },
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json"

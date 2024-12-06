@@ -26,8 +26,7 @@ modules:
       - ar -x <-deb-filename->
       - tar -xf data.tar.gz
       - 'install -Dm755 usr/bin/device-bay /app/bin/device-bay'
-      - 'install -Dm755 usr/bin/dbaybackend /app/bin/dbaybackend'
-      - 'cp -r usr/bin/device-bay_internal /app/bin/device-bay_internal'
+      - 'cp -r usr/lib/ /app/lib/'
       # copy the local device.bay.desktop instead of the one in the deb
       - 'install -Dm644 com.device.bay.desktop /app/share/applications/com.device.bay.desktop'
       # - install -Dm644 usr/share/applications/com.device.bay.desktop /app/share/applications/com.device.bay.desktop

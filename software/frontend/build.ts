@@ -47,6 +47,7 @@ const output_directory = path.join(current_directory, "../backend/backend/dbay_c
 const backend_parent = path.join(current_directory, "../backend");
 
 const flatpak_directory = path.join(current_directory, "/src-tauri/flatpak");
+const flatpak_resources_directory = path.join(current_directory, "/src-tauri/flatpak_resources");
 
 
 async function folderExists(folder: string): Promise<boolean> {
@@ -58,11 +59,11 @@ async function folderExists(folder: string): Promise<boolean> {
     }
 }
 
-if (!await folderExists(path.join(current_directory, "/src-tauri/python_binary"))) {
-    await $`mkdir ${path.join(current_directory, "/src-tauri/python_binary")}`
+if (!await folderExists(path.join(current_directory, "/src-tauri/resources"))) {
+    await $`mkdir ${path.join(current_directory, "/src-tauri/resouces")}`
 }
 
-const sidecar_directory = path.join(current_directory, "/src-tauri/python_binary");
+const sidecar_directory = path.join(current_directory, "/src-tauri/resources");
 
 
 if (!values.frontend && !values.backend && !values.tauri && !values.flatpak && !values.all) {
@@ -72,24 +73,26 @@ if (!values.frontend && !values.backend && !values.tauri && !values.flatpak && !
 
 
 function newExecutableName() {
-    let suffix
-    // have you installed rust? Refer to the tauri pre-requisites: https://v2.tauri.app/start/prerequisites/
-    if (process.platform === "win32") {
-        suffix = execSync('rustc -Vv | Select-String "host:" | ForEach-Object {$_.Line.split(" ")[1]}', { shell: 'powershell.exe' }).toString().trim();
-    } else {
-        suffix = execSync('rustc -Vv | grep host | cut -f2 -d\' \'').toString().trim();
-    }
+    // let suffix
+    // // have you installed rust? Refer to the tauri pre-requisites: https://v2.tauri.app/start/prerequisites/
+    // if (process.platform === "win32") {
+    //     suffix = execSync('rustc -Vv | Select-String "host:" | ForEach-Object {$_.Line.split(" ")[1]}', { shell: 'powershell.exe' }).toString().trim();
+    // } else {
+    //     suffix = execSync('rustc -Vv | grep host | cut -f2 -d\' \'').toString().trim();
+    // }
 
-    console.log("using suffix: ", suffix);
+    // console.log("using suffix: ", suffix);
 
-    // test this on ubuntu....
-    let new_main_name = path.join("dbaybackend" + "-" + suffix);
+    // // test this on ubuntu....
+    // let new_main_name = path.join("dbaybackend" + "-" + suffix);
 
-    // remove last character from new_main_name (it's a \n newline probably)
-    // new_main_name = new_main_name.slice(0, -1);
-    if (process.platform === "win32") {
-        new_main_name = new_main_name + ".exe";
-    }
+    // // remove last character from new_main_name (it's a \n newline probably)
+    // // new_main_name = new_main_name.slice(0, -1);
+    // if (process.platform === "win32") {
+    //     new_main_name = new_main_name + ".exe";
+    // }
+
+    let new_main_name = "dbaybackend";
 
     return new_main_name;
 }
@@ -171,7 +174,7 @@ if (values.backend || values.all) {
 
 
 if (values.tauri || values.all) {
-    console.log('\x1b[33m >>>>> Moving backend build to src-tauri/python_binary \x1b[0m');
+    console.log('\x1b[33m >>>>> Moving backend build to src-tauri/resources \x1b[0m');
     // having issues with use of * (wildcard) in mv command
     await $`cp -v ${path.join(backend_parent, "/dist/dbaybackend/", newExecutableName())} ${sidecar_directory}`
     await $`cp -R ${path.join(backend_parent, "/dist/dbaybackend/device-bay_internal/")} ${sidecar_directory}`
@@ -189,6 +192,11 @@ if (values.flatpak) {
         console.log("Flatpak can only be built on Linux");
         process.exit(1);
     }
+
+    // Clean flatpak directory except template and desktop file
+    await $`rm -rf ${flatpak_directory}`;
+    await $`mkdir -p ${flatpak_directory}`;
+    await $`cp ${flatpak_resources_directory}/* ${flatpak_directory}`
 
 
     let deb_file = execSync(`ls ./src-tauri/target/release/bundle/deb/ | grep .deb`).toString().trim();

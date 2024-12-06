@@ -1,6 +1,5 @@
 a = Analysis(
     ['main.py'],
-    pathex=['/usr/share/device-bay/_internal'],
     binaries=[],
     datas=[('config/vsource_params.json', 'config'), ('dbay_control/', 'dbay_control')],
     hiddenimports=[],
@@ -10,7 +9,6 @@ a = Analysis(
     excludes=[],
     noarchive=False,
     optimize=0,
-    runtime_tmpdir='/usr/share/device-bay/_internal',
 )
 pyz = PYZ(a.pure)
 

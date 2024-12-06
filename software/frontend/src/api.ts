@@ -20,6 +20,9 @@ let tauriFetch: typeof fetch | undefined;
 if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
     import('@tauri-apps/plugin-http').then(module => {
         tauriFetch = module.fetch;
+
+
+        // tauriFetch = fetch
     });
 }
 
@@ -32,10 +35,15 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
     // Specify the base URL of the different server
     const baseUrl = "http://127.0.0.1:8345";
 
-    const config: RequestInit = {
+    const config: RequestInit = tauriFetch ? {
         method,
         signal,
         headers,
+    } : {
+        method,
+        signal,
+        headers,
+        connectTimeout: 0.1
     };
 
     if (body) {
@@ -77,11 +85,11 @@ export function initializeVsource(params: VMEParams) {
 }
 
 
-export function requestChannelUpdate(dst: VsourceChange, endpoint: string): Promise<VsourceChange>{
+export function requestChannelUpdate(dst: VsourceChange, endpoint: string): Promise<VsourceChange> {
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 
-export function requestSharedChannelUpdate(dst: SharedVsourceChange, endpoint: string): Promise<SharedVsourceChange>{
+export function requestSharedChannelUpdate(dst: SharedVsourceChange, endpoint: string): Promise<SharedVsourceChange> {
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 
