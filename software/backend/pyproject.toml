@@ -1,17 +1,13 @@
-[tool.poetry]
-name = "backend"
+[project]
+name = "dbaybackend"
 version = "0.1.0"
-description = ""
-authors = ["Andrew Mueller <amueller@caltech.edu>"]
-readme = "README.md"
-package-mode = false
-
-[tool.poetry.dependencies]
-python = ">=3.11,<3.14"
-fastapi = {extras = ["standard"], version = "^0.112.2"}
-pyinstaller = "^6.10.0"
+description = "backend server for the Device Bay electronics system"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "fastapi[standard]>=0.115.6",
+    "psutil>=6.1.0",
+    "pyinstaller>=6.11.1",
+]
 
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+

@@ -32,6 +32,9 @@ const { values, positionals } = parseArgs({
         all: {
             type: 'boolean',
         },
+        clean: {
+            type: 'boolean',
+        }
     },
     strict: true,
     allowPositionals: true,
@@ -59,8 +62,15 @@ async function folderExists(folder: string): Promise<boolean> {
     }
 }
 
+if (values.clean) {
+    console.log("Cleaning src-tauri/resources directory...");
+    await $`rm -rf ${path.join(current_directory, "/src-tauri/resources/")}`
+    await $`rm -rf ${path.join(current_directory, "/src-tauri/target/")}`
+    await $`rm -rf ${path.join(current_directory, "/src-tauri/flatpak/")}`
+}
+
 if (!await folderExists(path.join(current_directory, "/src-tauri/resources"))) {
-    await $`mkdir ${path.join(current_directory, "/src-tauri/resouces")}`
+    await $`mkdir ${path.join(current_directory, "/src-tauri/resources")}`
 }
 
 const sidecar_directory = path.join(current_directory, "/src-tauri/resources");
@@ -140,7 +150,7 @@ if (values.backend || values.all) {
     console.log('\x1b[33m >>>>> Running PyInstaller to build backend... \x1b[0m');
 
 
-    await $`cd ${backend_parent} && poetry run pyinstaller backend/main.spec && cd ${current_directory}`;
+    await $`cd ${backend_parent} && uv run pyinstaller backend/main.spec && cd ${current_directory}`;
 
 
     // const suffix = await $`echo "-$(uname -m)-unknown-$(uname -s | tr '[:upper:]' '[:lower:]')-gnu"`;
@@ -177,7 +187,7 @@ if (values.tauri || values.all) {
     console.log('\x1b[33m >>>>> Moving backend build to src-tauri/resources \x1b[0m');
     // having issues with use of * (wildcard) in mv command
     await $`cp -v ${path.join(backend_parent, "/dist/dbaybackend/", newExecutableName())} ${sidecar_directory}`
-    await $`cp -R ${path.join(backend_parent, "/dist/dbaybackend/device-bay_internal/")} ${sidecar_directory}`
+    await $`cp -R ${path.join(backend_parent, "/dist/dbaybackend/device-bay_internal/")} ${path.join(sidecar_directory, "device-bay_internal")}`
 
 
     console.log('\x1b[33m >>>>> Building tauri installers \x1b[0m');

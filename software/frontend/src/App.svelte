@@ -101,6 +101,7 @@
           ui_state.show_module_adder = true; // reactive
         }
         show_loading = false;
+        show_loading_longer = false;
         createSystemStatefromJson(json_state);
 
         // Start the interval to update the system state every second
@@ -118,6 +119,7 @@
         if (attempts >= maxAttempts) {
           console.log("error!", error);
           show_loading = false;
+          show_loading_longer = false;
           serverNotResponding = true;
           updateSystemStatetoFallback();
           clearInterval(checkIntervalId); // Stop checking after 5 seconds
