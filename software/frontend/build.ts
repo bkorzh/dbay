@@ -12,6 +12,7 @@ import Bun from "bun";
 import path from "node:path";
 import { readdir } from "node:fs/promises";
 import { parseArgs } from "util";
+import { existsSync } from "node:fs";
 import { execSync, spawn } from "node:child_process";
 
 const { values, positionals } = parseArgs({
@@ -137,15 +138,25 @@ if (values.frontend || values.all) {
 
 
 if (values.backend || values.all) {
+    const distPath = path.join(backend_parent, "dist");
+    const buildPath = path.join(backend_parent, "build");
 
     if (process.platform === "win32") {
-        execSync(`rmdir /S /Q ${path.join(backend_parent, "dist")}`, { stdio: 'inherit' });
-        execSync(`rmdir /S /Q ${path.join(backend_parent, "build")}`, { stdio: 'inherit' });
+        if (existsSync(distPath)) {
+            execSync(`rmdir /S /Q ${distPath}`, { stdio: 'inherit' });
+        }
+        if (existsSync(buildPath)) {
+            execSync(`rmdir /S /Q ${buildPath}`, { stdio: 'inherit' });
+        }
     } else {
-        // clean the output folders for pyinstaller
-        await $`rm -rf ${path.join(backend_parent, "dist")}`;
-        await $`rm -rf ${path.join(backend_parent, "build")}`;
+        if (existsSync(distPath)) {
+            await $`rm -rf ${distPath}`;
+        }
+        if (existsSync(buildPath)) {
+            await $`rm -rf ${buildPath}`;
+        }
     }
+
 
 
     /////////////////////////////////
