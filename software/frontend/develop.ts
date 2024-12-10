@@ -45,5 +45,6 @@ await new Promise(resolve => setTimeout(resolve, 300));
 if (values.tauri) {
     startProcess("bun", ["run", "tauri", "dev"], { cwd: current_directory });
 } else {
+    console.log("Starting browser dev server...");
     startProcess("bun", ["run", "dev"], { cwd: current_directory });
 }

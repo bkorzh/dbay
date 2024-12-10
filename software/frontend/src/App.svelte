@@ -96,8 +96,8 @@
       }
     } else {
       let attempts = 0;
-      const maxAttempts = 200; // 10 seconds / 50 milliseconds
-      const mediumAttempts = 70; // 5 seconds / 50 milliseconds
+      const maxAttempts = 20; // 10 seconds / 50 milliseconds
+      const mediumAttempts = 7; // 5 seconds / 50 milliseconds
       // check if the server is available several times before giving up
       // the tauri sidecar (backend) can take a second or two to start
       checkIntervalId = setInterval(async () => {
@@ -116,7 +116,7 @@
           }
         }
         num_modules = system_state.data.length;
-      }, 50);
+      }, 500);
     }
   });
 

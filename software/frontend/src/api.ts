@@ -43,16 +43,12 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
     // Specify the base URL of the different server
     const baseUrl = "http://127.0.0.1:8345";
 
-    const config: RequestInit = tauriFetch ? {
+    const config: RequestInit = {
         method,
         signal,
         headers,
-    } : {
-        method,
-        signal,
-        headers,
-        connectTimeout: 0.1
-    };
+        connectTimeout: 1
+    }
 
     if (body) {
         config.body = JSON.stringify(body);
