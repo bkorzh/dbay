@@ -105,7 +105,7 @@ use std::process::Command;
 use std::sync::{Arc, Mutex};
 // use std::thread;
 use tauri::path::BaseDirectory;
-use tauri::Manager;
+use tauri::{Manager, RunEvent};
 
 fn main() {
     env::set_var("RUST_BACKTRACE", "full");
@@ -181,8 +181,27 @@ fn main() {
                 }
             }
         })
-        .run(tauri::generate_context!())
-        .expect("error while running Tauri application");
+        .build(tauri::generate_context!())
+        .expect("error while running Tauri application")
+        .run({
+            let pid_state = Arc::clone(&pid_state);
+            move |_app_handle, event| {
+                if let RunEvent::Exit = event {
+                    let pid = {
+                        let pid = pid_state.lock().unwrap();
+                        *pid
+                    };
+
+                    if let Some(pid) = pid {
+                        println!("Killing process with PID: {}", pid);
+                        match kill_process(pid) {
+                            Ok(_) => println!("Process killed successfully."),
+                            Err(e) => eprintln!("Failed to kill process: {}", e),
+                        }
+                    }
+                }
+            }
+        });
 }
 
 // Keep the existing kill_process function unchanged

@@ -16,23 +16,47 @@ import type {
   SystemState,
   JsonSystemState,
 } from "../../state/systemState.svelte";
-// import { writable } from 'svelte';
-import type { ComponentType } from "svelte";
+import type { Component } from "svelte";
 
 import { system_state } from "../../state/systemState.svelte";
 import type { JsonModule } from "../../state/systemState.svelte";
-// import type { Updater } from '../../state/systemState.svelte'
 
-// interface Components {
-//   dac4D: ComponentType;
-//   dac16D: ComponentType;
-// }
+
+interface ModuleProps {
+  module_index: number;
+}
 
 const components: any = {
   dac4D: dac4D_component,
-  // dac4D_old: dac4D_old_component,
   dac16D: dac16D_component,
 };
+
+// Make ComponentHolder generic to accept props type with proper constraint
+interface ComponentHolder<P extends Record<string, any> = {}> {
+  name: string;
+  component: Component<P>;
+  module_index: number;
+}
+
+
+interface ComponentCollection {
+  [key: string]: ComponentHolder<ModuleProps>;
+}
+
+// Now the constant is properly typed with the required props
+const cc: ComponentCollection = {
+  dac4D: {
+    name: "dac4D",
+    component: dac4D_component,
+    module_index: 0,
+  },
+  dac16D: {
+    name: "dac16D",
+    component: dac16D_component,
+    module_index: 0,
+  }
+};
+
 
 const modules: ModulesDict = {
   empty,
@@ -50,8 +74,8 @@ interface ModulesDict {
 }
 
 export class ComponentManager {
-  public component_array: Array<any> = $state([]);
-  public module_idx: number[] = $state([]);
+  public component_array: Array<ComponentHolder<ModuleProps>> = $state([]);
+  // public module_idx: number[] = $state([]);
 
   constructor() {
     this.component_array = [];
@@ -59,51 +83,36 @@ export class ComponentManager {
 
   public createComponentArray(module_list: IModule[]): any {
 
-    while(this.component_array.length > 0) {
+    // not deleting and recreating the array because its a $state() object
+    while (this.component_array.length > 0) {
       this.component_array.pop();
     }
 
-    // console.log("creating component array");
-    // const components = [];
     for (const module of module_list) {
       if (module.core.type !== "empty") {
-        const component = getComponent(module.core.type);
-        this.component_array.push(component);
+        const component_holder = getComponentHolder(module.core.type);
+        component_holder.module_index = module.core.slot;
+        this.component_array.push(component_holder);
       }
     }
-    // this.component_array = components;
-  }
-
-  public updateModuleIdx(num_modules: number) {
-
-    while(this.module_idx.length > 0) {
-      this.module_idx.pop();
-    }
-
-    for (let i = 0; i < num_modules; i++) {
-      if (system_state.data[i].core.type !== "empty") {
-        this.module_idx.push(i);
-      }
-    }
+    this.component_array.sort((a, b) => a.module_index - b.module_index);
   }
 }
 
 export let manager = new ComponentManager();
 
-function getComponent(name: any): ComponentType {
-  // console.log("the name is: ", name)
-  const component = components[name];
-  // console.log("the name of the component is: ", component)
-  if (!component) {
+function getComponentHolder(name: any): ComponentHolder<ModuleProps> {
+  const component_holder_reference = cc[name];
+  const component_holder = { ...component_holder_reference };
+  if (!component_holder) {
     throw new Error(`Component ${name} does not exist`);
   }
-  return component;
+  return component_holder;
 }
 
 export function createSystemStatefromJson(parsed: JsonSystemState) {
   const data = parsed.data.map((item: JsonModule) => {
     // depending on the type of module, we need dynamically create the module objects
-    // console.log("the type of the module is: ", item.core.type);
     const module = new modules[item.core.type](item);
     return module as IModule;
   });
@@ -112,7 +121,7 @@ export function createSystemStatefromJson(parsed: JsonSystemState) {
   system_state.dev_mode = parsed.dev_mode;
 
   manager.createComponentArray(system_state.data);
-  manager.updateModuleIdx(system_state.data.length);
+  // manager.updateModuleIdx(system_state.data.length);
 }
 
 export function updateSystemStatefromJson(parsed: JsonSystemState) {
@@ -133,11 +142,11 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
   system_state.valid = parsed.valid;
   system_state.dev_mode = parsed.dev_mode;
 
-  if (j>0) {
+  if (j > 0) {
     // console.log("something changed, updating the component array")
 
     manager.createComponentArray(system_state.data);
-    manager.updateModuleIdx(system_state.data.length);
+    // manager.updateModuleIdx(system_state.data.length);
   }
 }
 
@@ -180,7 +189,7 @@ export function updateSystemStatetoFallback() {
   system_state.dev_mode = true;
 
   manager.createComponentArray(system_state.data);
-  manager.updateModuleIdx(system_state.data.length);
+  // manager.updateModuleIdx(system_state.data.length);
 }
 
 // I need to make the TotalState.data as an object and find a way to connect the data of that object to the component.

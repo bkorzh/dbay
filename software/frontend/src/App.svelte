@@ -41,144 +41,90 @@
   let json_state: JsonSystemState;
   let show_loading = $state(true);
   let show_loading_longer = $state(false);
+  let in_browser = false;
 
-  // let component_array = $derived(createComponentArray(system_state.data))
+  if ("__TAURI_INTERNALS__" in window) {
+    console.log("running in tauri");
+    in_browser = false;
+  } else {
+    console.log("running in browser");
+    in_browser = true;
+  }
 
-  // if ("__TAURI_INTERNALS__" in window) { // tauri 2
-  // if ("__TAURI__" in window) {
-  //   console.log("starting python backend");
-  //   setupPythonBackend();
-  //   console.log("command executed");
-  // }
-
-  // async function setupPythonBackend() {
-  //   const command = Command.sidecar("python_binary/main");
-  //   const output = await command.execute();
-
-  //   //   const sidecar_command = Command.sidecar("python_binary/main");
-  //   //   const output = await sidecar_command.execute();
-  // }
-
-  //   onMount(async () => {
-  //   setTimeout(async () => {
-  //     try {
-  //       json_state = await getFullState();
-  //       // console.log("initial json state: ", json_state)
-  //       // if the server responds, but the data field is empty, then the server is not initialized
-  //       if (json_state.data.every((module) => module.core.type === "empty")) {
-  //         ui_state.show_module_adder = true; // reactive
-  //       }
-
-  //       createSystemStatefromJson(json_state);
-
-  //       // Start the interval
-  //       intervalId = setInterval(async () => {
-  //         json_state = await getFullState();
-  //         updateSystemStatefromJson(json_state); // this seems costly
-  //       }, 1000);
-
-  //       // if no response, server is not available. Use fallback state for testing
-  //     } catch (error) {
-  //       console.log("error!", error);
-  //       serverNotResponding = true;
-  //       updateSystemStatetoFallback();
-  //     }
-  //     num_modules = system_state.data.length;
-  //   }, 3000);
-  // });
-
-  onMount(() => {
-    let attempts = 0;
-    const maxAttempts = 200; // 10 seconds / 50 milliseconds
-    const mediumAttempts = 70; // 5 seconds / 50 milliseconds
-    // check if the server is available several times before giving up
-    // the tauri sidecar (backend) can take a second or two to start
-    checkIntervalId = setInterval(async () => {
-      attempts++;
-      try {
-        json_state = await getFullState();
-        if (json_state.data.every((module) => module.core.type === "empty")) {
-          ui_state.show_module_adder = true; // reactive
-        }
-        show_loading = false;
-        show_loading_longer = false;
-        createSystemStatefromJson(json_state);
-
-        // Start the interval to update the system state every second
-        intervalId = setInterval(async () => {
-          json_state = await getFullState();
-          updateSystemStatefromJson(json_state); // this seems costly
-        }, 1000);
-
-        clearInterval(checkIntervalId); // Stop checking once the backend responds
-      } catch (error) {
-        if (attempts >= mediumAttempts) {
-          show_loading_longer = true;
-        }
-
-        if (attempts >= maxAttempts) {
-          console.log("error!", error);
-          show_loading = false;
-          show_loading_longer = false;
-          serverNotResponding = true;
-          updateSystemStatetoFallback();
-          clearInterval(checkIntervalId); // Stop checking after 5 seconds
-        }
+  async function attemptSetup() {
+    try {
+      json_state = await getFullState();
+      if (json_state.data.every((module) => module.core.type === "empty")) {
+        ui_state.show_module_adder = true; // reactive
       }
-      num_modules = system_state.data.length;
-    }, 50);
+      show_loading = false;
+      show_loading_longer = false;
+      createSystemStatefromJson(json_state);
+
+      // Start the interval to update the system state every second
+      intervalId = setInterval(async () => {
+        try {
+          json_state = await getFullState();
+
+          // console.log("full state: ", json_state);
+
+          updateSystemStatefromJson(json_state); // this seems costly
+        } catch (error) {
+          console.error("Failed to update system state:", error);
+        }
+      }, 1000);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async function failSetup(error) {
+    console.log("error!", error);
+    show_loading = false;
+    show_loading_longer = false;
+    serverNotResponding = true;
+    updateSystemStatetoFallback();
+  }
+
+  onMount(async () => {
+    if (in_browser) {
+      try {
+        await attemptSetup();
+      } catch (error) {
+        failSetup(error);
+        updateSystemStatetoFallback();
+      }
+    } else {
+      let attempts = 0;
+      const maxAttempts = 200; // 10 seconds / 50 milliseconds
+      const mediumAttempts = 70; // 5 seconds / 50 milliseconds
+      // check if the server is available several times before giving up
+      // the tauri sidecar (backend) can take a second or two to start
+      checkIntervalId = setInterval(async () => {
+        attempts++;
+        try {
+          await attemptSetup();
+          clearInterval(checkIntervalId); // Stop checking once the backend responds
+        } catch (error) {
+          if (attempts >= mediumAttempts) {
+            show_loading_longer = true;
+          }
+
+          if (attempts >= maxAttempts) {
+            failSetup(error);
+            clearInterval(checkIntervalId); // Stop checking after 5 seconds
+          }
+        }
+        num_modules = system_state.data.length;
+      }, 50);
+    }
   });
 
   onDestroy(() => {
     clearInterval(intervalId);
     clearInterval(checkIntervalId);
   });
-
-  // $effect(() => {
-  //   console.log("system_state inside effect: ", system_state.data)
-  //   // if (scrollY > 0) {
-  //   //   console.log("scrollY: ", scrollY);
-  //   // }
-  // });
-
-  // $effect(() => {
-  //   console.log("manager.module_idx inside effect: ", manager.module_idx)
-  // });
-
-  // let scrollable = $state(true);
-
-  // wheel = (node, options) => {
-  //   let { scrollable } = options;
-  //   console.log("scrollable: ", scrollable);
-
-  //   const handler = e => {
-  //     // console.log("inside handler")
-  //     // console.log(e)
-
-  //     // if the event comes from an input: then prevent default
-
-  //     if (e.target.tagName === "INPUT") {
-  //       e.preventDefault();
-  //       console.log("input")
-  //       return;
-  //     }
-  //     // if (!scrollable) e.preventDefault();
-  //   };
-
-  //   node.addEventListener('wheel', handler, { passive: false });
-
-  //   return {
-  //     update(options) {
-  //       scrollable = options.scrollable;
-  //     },
-  //     destroy() {
-  //       node.removeEventListener('wheel', handler, { passive: false });
-  //     }
-  //   };
-  // };
 </script>
-
-<!-- <svelte:window use:wheel={{scrollable}}/> -->
 
 <div class="container-main">
   <div class="main-bar">
@@ -226,13 +172,10 @@
       </BasicContainer>
     {/if}
 
-    {#if manager.module_idx}
-      {#each manager.module_idx as idx, i (idx)}
-        <!-- module_idx has numbers for filled slots. e.g [0, 3, 5] -->
-        <!-- i counts from 0 to (one minus number of filled slots). e.g. [0, 1, 2] -->
-        <svelte:component
-          this={manager.component_array[i]}
-          module_index={idx}
+    {#if manager}
+      {#each manager.component_array as component_holder}
+        <component_holder.component
+          module_index={component_holder.module_index}
         />
       {/each}
     {:else}

@@ -17,13 +17,21 @@ import type { JsonSystemState, ServerInfo } from './state/systemState.svelte';
 
 let tauriFetch: typeof fetch | undefined;
 
-if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
+
+// if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
+
+
+if ('__TAURI_INTERNALS__' in window) {
     import('@tauri-apps/plugin-http').then(module => {
+
+        console.log("using tuauri fetch");
         tauriFetch = module.fetch;
 
 
         // tauriFetch = fetch
     });
+} else {
+    console.log("using browser fetch");
 }
 
 
@@ -50,18 +58,25 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    const isTauriOrVite = '__TAURI_INTERNALS__' in window || import.meta.env.DEV;
+    const isTauriOrVite = '__TAURI_INTERNALS__' in window;
     const fullUrl = isTauriOrVite ? `${baseUrl}${url}` : url;
     const fetchFunction = isTauriOrVite && tauriFetch ? tauriFetch : window.fetch;
 
-    console.log("fullUrl: ", fullUrl)
-    return fetchFunction(fullUrl, config)
+    console.log("fullUrl: ", fullUrl);
+
+    const result_promise = fetchFunction(fullUrl, config)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            throw new Error(`Failed to fetch: ${error.message}`);
         });
+
+    return result_promise;
 }
 
 

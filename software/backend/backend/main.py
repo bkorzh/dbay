@@ -172,4 +172,4 @@ if __name__ == "__main__":
 
 
 # dev:
-# poetry run fastapi dev main.py --port 8345 --host 0.0.0.0
+# uv run fastapi dev main.py --port 8345 --host 0.0.0.0

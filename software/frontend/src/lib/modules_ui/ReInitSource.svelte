@@ -2,17 +2,18 @@
   import SubmitButton from "../buttons/SubmitButton.svelte";
   import { ui_state } from "../../state/uiState.svelte";
   import EditPencil from "../buttons/EditPencil.svelte";
-  import { initializeVsource } from "../../api"
+  import { initializeVsource } from "../../api";
   import { system_state } from "../../state/systemState.svelte";
+  import GeneralButton from "../buttons/GeneralButton.svelte";
 
   let ipEditable = false;
   let portEditable = false;
   let timeoutEditable = false;
 
-  let ipaddr = "10.7.0.193"
-  let port = 8880
-  let timeout = 5
-  let dev_mode = false
+  let ipaddr = "10.7.0.193";
+  let port = 8880;
+  let timeout = 5;
+  let dev_mode = false;
 
   function toggleIpEditable() {
     ipEditable = !ipEditable;
@@ -27,18 +28,15 @@
   }
 
   function submit() {
-    console.log("dev mode: ", dev_mode)
+    console.log("dev mode: ", dev_mode);
 
     system_state.dev_mode = dev_mode;
 
-    console.log("done")
+    console.log("done");
 
-    initializeVsource({ipaddr, port, timeout, dev_mode})
+    initializeVsource({ ipaddr, port, timeout, dev_mode });
   }
-
-
 </script>
-
 
 <div class="basic-block">
   <!-- you CAN NOT use the class name "container" because that means something in tailwind -->
@@ -52,8 +50,19 @@
     <div class="param">
       <div class="label">IP</div>
       <div class="input-params">
-        <input type="text" bind:value={ipaddr} readonly={!ipEditable} class:non-editable={!ipEditable} />
-        <div class="icon" on:click={toggleIpEditable} on:keydown={toggleIpEditable} role="button" tabindex="0">
+        <input
+          type="text"
+          bind:value={ipaddr}
+          readonly={!ipEditable}
+          class:non-editable={!ipEditable}
+        />
+        <div
+          class="icon"
+          on:click={toggleIpEditable}
+          on:keydown={toggleIpEditable}
+          role="button"
+          tabindex="0"
+        >
           <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
@@ -62,8 +71,19 @@
     <div class="param">
       <div class="label">Port</div>
       <div class="input-params">
-        <input type="text" bind:value={port} readonly={!portEditable} class:non-editable={!portEditable} />
-        <div class="icon" role="button" tabindex="0" on:click={togglePortEditable} on:keydown={togglePortEditable}>
+        <input
+          type="text"
+          bind:value={port}
+          readonly={!portEditable}
+          class:non-editable={!portEditable}
+        />
+        <div
+          class="icon"
+          role="button"
+          tabindex="0"
+          on:click={togglePortEditable}
+          on:keydown={togglePortEditable}
+        >
           <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
@@ -72,8 +92,19 @@
     <div class="param">
       <div class="label">Timeout</div>
       <div class="input-params">
-        <input type="text" bind:value={timeout} readonly={!timeoutEditable} class:non-editable={!timeoutEditable} />
-        <div class="icon" on:click={toggleTimeoutEditable} on:keydown={toggleTimeoutEditable} role="button" tabindex="0">
+        <input
+          type="text"
+          bind:value={timeout}
+          readonly={!timeoutEditable}
+          class:non-editable={!timeoutEditable}
+        />
+        <div
+          class="icon"
+          on:click={toggleTimeoutEditable}
+          on:keydown={toggleTimeoutEditable}
+          role="button"
+          tabindex="0"
+        >
           <EditPencil darkMode={ui_state.colorMode} />
         </div>
       </div>
@@ -83,25 +114,25 @@
       <div class="label">Dev-Mode</div>
       <div class="input-params">
         <input class="check" type="checkbox" bind:checked={dev_mode} />
-        
       </div>
     </div>
 
-
-    <br>
-    <SubmitButton onclick={submit} >Re-Initialize</SubmitButton>
+    <br />
+    <SubmitButton onclick={submit}>Re-Initialize</SubmitButton>
+    <br />
+    <GeneralButton onclick={() => (ui_state.show_source_reinit = false)}
+      >Cancel</GeneralButton
+    >
   </div>
 </div>
 
 <style>
-
   .check {
     width: 1.5rem;
     height: 1.5rem;
-    margin: 0.0rem;
+    margin: 0rem;
   }
 
-  
   .non-editable {
     color: var(--disabled-digits-color);
   }
@@ -116,7 +147,6 @@
   .icon:hover {
     cursor: pointer;
     background-color: var(--hover-body-color);
-    
   }
 
   .param {
@@ -133,7 +163,6 @@
     align-items: center;
     width: 13rem;
   }
-
 
   .label {
     font-size: 1.2rem;

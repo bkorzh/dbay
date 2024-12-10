@@ -14,7 +14,9 @@
     "buildfrontend": "bun ./build.ts --frontend",
     "buildbackend": "bun ./build.ts --backend",
     "buildtauri": "bun ./build.ts --tauri",
-    "buildall": "bun ./build.ts --all"
+    "buildall": "bun ./build.ts --all",
+    "develop": "bun ./develop.ts",
+    "developtauri": "bun ./develop.ts --tauri"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^4.0.0",

@@ -14,16 +14,21 @@
   }
 </script>
 
-<div class="container" {onclick} onkeydown={handleKeyDown}
-role="button"
-    tabindex="0">
+<div
+  class="container"
+  {onclick}
+  onkeydown={handleKeyDown}
+  role="button"
+  tabindex="0"
+>
   <svg
     width="15"
     height="17"
     viewBox="0 0 98 192"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-
+    shape-rendering="geometricPrecision"
+    preserveAspectRatio="xMidYMid meet"
   >
     <path
       class="outer"
