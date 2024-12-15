@@ -1,102 +1,9 @@
 // Prevents additional console window on Windows in release
 // #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-// use std::env;
 
-// // use std::env;
-// use std::path::PathBuf;
-
-// // switch??
-// use std::process::Command as StdCommand;
-// use std::sync::{Arc, Mutex};
-// use tauri_plugin_shell::process::CommandEvent;
-// use tauri_plugin_shell::ShellExt;
-// use std::io::{self, Write};
-// use tauri::path::BaseDirectory;
-// use tauri::Manager;
-
-// fn main() {
-
-//     env::set_var("RUST_BACKTRACE", "full");
-
-//     // Shared state to store the PID
-//     let pid_state = Arc::new(Mutex::new(None));
-
-//     tauri::Builder::default()
-//         .plugin(tauri_plugin_shell::init())
-//         .plugin(tauri_plugin_http::init())
-//         .plugin(tauri_plugin_fs::init())
-//         .setup({
-//             let pid_state = Arc::clone(&pid_state);
-//             move |app| {
-//                 let resource_path = app.path().resolve("device-bay_internal/", BaseDirectory::Resource)?;
-//                 println!("Resource path: {:?}", resource_path);
-//                 let current_dir = PathBuf::from("/");
-//                 let shell = app.shell();
-//                 let sid = shell.sidecar("dbaybackend");
-//                 let sidecar_command = sid.unwrap();
-//                 let sidecar_command = sidecar_command.current_dir(current_dir); // Set the working directory
-//                 let (mut rx, child) = sidecar_command.spawn().expect("failed to spawn sidecar");
-//                 println!("child pid: {}", child.pid());
-//                 {
-//                     let mut pid = pid_state.lock().unwrap();
-//                     *pid = Some(child.pid());
-//                 }
-
-//                 // Spawn a task to read stdout
-//                 #[cfg(not(dev))] // do not run sidecar in dev mode: https://github.com/tauri-apps/tauri/discussions/6453
-//                 tauri::async_runtime::spawn(async move {
-//                     while let Some(event) = rx.recv().await {
-//                         match event {
-//                             CommandEvent::Stdout(line) => {
-//                                 println!("sidecar stdout: {}", String::from_utf8_lossy(&line));
-//                                 io::stdout().flush().unwrap(); // Flush stdout
-//                             }
-//                             CommandEvent::Stderr(line) => {
-//                                 eprintln!("sidecar stderr: {}", String::from_utf8_lossy(&line));
-//                                 io::stdout().flush().unwrap(); // Flush stdout
-//                             }
-//                             CommandEvent::Error(error) => {
-//                                 eprintln!("sidecar error: {:?}", error);
-//                                 io::stdout().flush().unwrap(); // Flush stdout
-//                             }
-//                             CommandEvent::Terminated(payload) => {
-//                                 println!("sidecar terminated with: {:?}", payload);
-//                                 io::stdout().flush().unwrap(); // Flush stdout
-//                                 break;
-//                             }
-//                             _ => {}
-//                         }
-//                     }
-//                 });
-
-//                 Ok(())
-//             }
-//         })
-//         .on_window_event({
-//             let pid_state = Arc::clone(&pid_state);
-//             move |_window, event| {
-//                 // println!("Window event triggered: {:?}", event);
-//                 if let tauri::WindowEvent::CloseRequested { .. } = event {
-//                     // Retrieve the PID from the shared state
-//                     let pid = {
-//                         let pid = pid_state.lock().unwrap();
-//                         *pid
-//                     };
-
-//                     if let Some(pid) = pid {
-//                         println!("Killing process with PID: {}", pid);
-//                         match kill_process(pid) {
-//                             Ok(_) => println!("Process killed successfully."),
-//                             Err(e) => eprintln!("Failed to kill process: {}", e),
-//                         }
-//                     }
-//                 }
-//             }
-//         })
-//         .run(tauri::generate_context!())
-//         .expect("error while running Tauri application");
-// }
+// Prevents additional console window on Windows in release
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::env;
 use std::io::{self, BufRead, BufReader, Write};
@@ -106,6 +13,9 @@ use std::sync::{Arc, Mutex};
 // use std::thread;
 use tauri::path::BaseDirectory;
 use tauri::{Manager, RunEvent};
+
+#[cfg(windows)]
+use std::os::windows::process::CommandExt; //provides creation_flags()
 
 fn main() {
     env::set_var("RUST_BACKTRACE", "full");
@@ -123,10 +33,22 @@ fn main() {
                 let backend_path = resource_path.join("dbaybackend");
                 println!("Backend path: {:?}", backend_path);
 
-                // Spawn the backend process
-                let child = Command::new(backend_path)
-                    .spawn()
-                    .expect("failed to spawn backend");
+                    let child = {
+                    #[cfg(windows)]
+                    {
+                        // no terminal window mode
+                        Command::new(backend_path)
+                            .creation_flags(0x08000000)
+                            .spawn()
+                            .expect("failed to spawn backend")
+                    }
+                    #[cfg(not(windows))]
+                    {
+                        Command::new(backend_path)
+                            .spawn()
+                            .expect("failed to spawn backend")
+                    }
+                };
 
                 println!("child pid: {}", child.id());
 

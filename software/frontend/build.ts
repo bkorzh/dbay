@@ -12,7 +12,8 @@ import Bun from "bun";
 import path from "node:path";
 import { readdir } from "node:fs/promises";
 import { parseArgs } from "util";
-import { execSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { execSync, spawn } from "node:child_process";
 
 const { values, positionals } = parseArgs({
     args: Bun.argv,
@@ -67,6 +68,8 @@ if (values.clean) {
     await $`rm -rf ${path.join(current_directory, "/src-tauri/resources/")}`
     await $`rm -rf ${path.join(current_directory, "/src-tauri/target/")}`
     await $`rm -rf ${path.join(current_directory, "/src-tauri/flatpak/")}`
+    await $`rm -rf ${path.join(backend_parent, "/dist/")}`
+    await $`rm -rf ${path.join(backend_parent, "/build/")}`
 }
 
 if (!await folderExists(path.join(current_directory, "/src-tauri/resources"))) {
@@ -135,22 +138,32 @@ if (values.frontend || values.all) {
 
 
 if (values.backend || values.all) {
+    const distPath = path.join(backend_parent, "dist");
+    const buildPath = path.join(backend_parent, "build");
 
     if (process.platform === "win32") {
-        execSync(`rmdir /S /Q ${path.join(backend_parent, "dist")}`, { stdio: 'inherit' });
-        execSync(`rmdir /S /Q ${path.join(backend_parent, "build")}`, { stdio: 'inherit' });
+        if (existsSync(distPath)) {
+            execSync(`rmdir /S /Q ${distPath}`, { stdio: 'inherit' });
+        }
+        if (existsSync(buildPath)) {
+            execSync(`rmdir /S /Q ${buildPath}`, { stdio: 'inherit' });
+        }
     } else {
-        // clean the output folders for pyinstaller
-        await $`rm -rf ${path.join(backend_parent, "dist")}`;
-        await $`rm -rf ${path.join(backend_parent, "build")}`;
+        if (existsSync(distPath)) {
+            await $`rm -rf ${distPath}`;
+        }
+        if (existsSync(buildPath)) {
+            await $`rm -rf ${buildPath}`;
+        }
     }
+
 
 
     /////////////////////////////////
     console.log('\x1b[33m >>>>> Running PyInstaller to build backend... \x1b[0m');
 
 
-    await $`cd ${backend_parent} && uv run pyinstaller backend/main.spec && cd ${current_directory}`;
+    await $`cd ${backend_parent} && uv run --project ./ pyinstaller backend/main.spec && cd ${current_directory}`;
 
 
     // const suffix = await $`echo "-$(uname -m)-unknown-$(uname -s | tr '[:upper:]' '[:lower:]')-gnu"`;
@@ -189,6 +202,30 @@ if (values.tauri || values.all) {
     await $`cp -v ${path.join(backend_parent, "/dist/dbaybackend/", newExecutableName())} ${sidecar_directory}`
     await $`cp -R ${path.join(backend_parent, "/dist/dbaybackend/device-bay_internal/")} ${path.join(sidecar_directory, "device-bay_internal")}`
 
+
+
+    // run the backend here temporarily. I think this fixes an issue where the backend takes too long to start on debian
+    if (process.platform != "win32") {
+
+        // Launch process in background
+        const proc = spawn(`./${newExecutableName()}`, [], {
+            cwd: sidecar_directory,
+            stdio: 'inherit'
+        });
+
+        // Store PID for cleanup
+        const pid = proc.pid;
+
+        // Wait 2 seconds
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        try {
+            // Send SIGTERM signal
+            process.kill(pid);
+        } catch (error) {
+            console.error(`Failed to kill process ${pid}:`, error);
+        }
+    }
 
     console.log('\x1b[33m >>>>> Building tauri installers \x1b[0m');
     await $`bun run tauri build`;
