@@ -23,6 +23,12 @@
     }
   },
   "bundle": {
+    "windows": {
+      "wix": {
+        "fragmentPaths": ["./windows/fragments/frag.wxs"],
+        "componentRefs": ["FirewallExceptions"]
+      }
+    },
     "resources": {
       "resources/": "resources/"
     },

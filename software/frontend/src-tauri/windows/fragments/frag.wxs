@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:fire="http://schemas.microsoft.com/wix/FirewallExtension">
+  <Fragment>
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="FirewallExceptions" Guid="de95bf40-7d9c-4ee6-8c47-1a06f3b7ebe3">
+        <File Id="DbayBackendExe" 
+                Source="C:\Users\hera\Documents\dbay\software\frontend\src-tauri\target\release\resources\dbaybackend"
+                KeyPath="yes"/>
+        <fire:FirewallException Id="PayloadAgentTCP" File="DbayBackendExe"  Name="Payload (TCP)" Profile="all" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
+        <fire:FirewallException Id="PayloadAgentUDP" File="DbayBackendExe" Name="Payload (UDP)" Profile="all" Protocol="udp" Scope="any" IgnoreFailure="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>
+
