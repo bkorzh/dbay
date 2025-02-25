@@ -1,51 +1,31 @@
 import uvicorn
 from pathlib import Path
-
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 import multiprocessing
 import socket
-
-# from fastapi import fastApi
 from pydantic import BaseModel
+import psutil
+import os
+import signal
+import mimetypes
 
 from backend.modules import dac4D
 from backend.modules import dac16D
-from typing import Literal, Union, Type, Any, Callable
-from typing import cast
 from backend.server_logging import get_logger
-from fastapi.middleware.cors import CORSMiddleware
+from backend.udp_control import parent_udp, UDP
+from backend.initialize import global_state
+from backend.state import SystemState
+from backend.location import WEB_DIR
+
 
 logger = get_logger(__name__)
-
-
-import asyncio
-import importlib
-
-from backend.udp_control import parent_udp, UDP
-
-
-from backend.initialize import global_state
-from backend.state import IModule, SystemState
-from backend.location import BASE_DIR, WEB_DIR
-
-
 SERVE_PORT = 8345  # something a little random/unique
-
-# from state import load_modules_from_directory
-# from importlib import import_module
-import os
-import signal
-
-import mimetypes
-
 mimetypes.init()
-
-
-import psutil
 
 
 class ModuleAddition(BaseModel):
@@ -107,7 +87,6 @@ def shutdown():
 
 @app.post("/initialize-module")
 async def init_module(request: Request, addition_args: ModuleAddition):
-
     global_state.add_module(addition_args.type, addition_args.slot)
 
     return global_state.system_state
@@ -115,7 +94,6 @@ async def init_module(request: Request, addition_args: ModuleAddition):
 
 @app.post("/initialize-vsource")
 async def vsource_set_state(params: VsourceParams):
-
     global_state.system_state.dev_mode = params.dev_mode
     udp = UDP(params.ipaddr, params.port, params.dev_mode)
 
@@ -129,7 +107,6 @@ async def vsource_set_state(params: VsourceParams):
 
 @app.get("/full-state")
 async def state():
-
     return global_state.system_state
 
 
@@ -161,7 +138,6 @@ async def server_info():
 
 
 if __name__ == "__main__":
-
     # parser = argparse.ArgumentParser()
     # parser.add_argument('--ipaddr', type=str, help='the voltage source ip address', default='10.7.0.162')
     # parser.add_argument('--timeout', type=int, help='timeout', 3)
@@ -169,7 +145,3 @@ if __name__ == "__main__":
     # parser.add_argument('--udp_local', type=str, help='udp_local', 55180)
     multiprocessing.freeze_support()  # For Windows support
     uvicorn.run(app, host="0.0.0.0", port=SERVE_PORT)
-
-
-# dev:
-# uv run fastapi dev main.py --port 8345 --host 0.0.0.0
