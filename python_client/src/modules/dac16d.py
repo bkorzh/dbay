@@ -1,21 +1,95 @@
+from src.http import Http
+from src.addons.vsource import VsourceChange, SharedVsourceChange
+from src.state import IModule, Core
+from typing import Literal, Union, List
+from src.addons.vsource import IVsourceAddon
+from src.addons.vsense import ChSenseState
+
+
+class dac16D_spec(IModule):
+    module_type: Literal["dac16D"] = "dac16D"
+    core: Core
+    vsource: IVsourceAddon
+    vsb: dict  # Assuming vsb structure from backend
+    vr: dict   # Assuming vr structure from backend
+
+
 class dac16D:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, data, http: Http):
+        self.http = http
+        self.data = dac16D_spec(**data)
 
-    async def voltage_set_shared(self, change):
-        # Implement the logic to call the /vsource_shared/ endpoint
-        pass
+    def __del__(self):
+        print("Cleaning up dac16D instance.")
 
-    async def voltage_set(self, change):
-        # Implement the logic to call the /vsb/ endpoint
-        pass
+        # Reverting to previous config
+        for idx in range(16):
+            change = VsourceChange(
+                module_index=self.data.core.slot,
+                index=idx,
+                bias_voltage=self.data.vsource.channels[idx].bias_voltage,
+                activated=self.data.vsource.channels[idx].activated,
+                heading_text=self.data.vsource.channels[idx].heading_text,
+                measuring=False,
+            )
 
-    async def websocket_vsense(self):
-        # Implement the logic to call the /ws_vsense/ endpoint
-        pass
+            self.http.put("dac16D/vsource/", data=change.model_dump())
 
-    async def read_voltage(self, board):
-        # Implement the logic to read voltage from the specified board
-        pass
+    def voltage_set(self, index: int, voltage: float, activated: Union[bool, None] = None):
+        if activated is None:
+            activated = self.data.vsource.channels[index].activated
+        change = VsourceChange(
+            module_index=self.data.core.slot,
+            index=index,
+            bias_voltage=voltage,
+            activated=activated,
+            heading_text=self.data.vsource.channels[index].heading_text,
+            measuring=True,
+        )
 
-    # Add any additional methods as needed based on the requirements of the application
+        self.http.put("dac16D/vsource/", data=change.model_dump())
+
+    def voltage_set_shared(self, voltage: float, activated: bool = True, channels: List[bool] = None):
+        """
+        Set same voltage to multiple channels at once
+        """
+        if channels is None:
+            # Default to all channels
+            channels = [True] * 16
+
+        change = VsourceChange(
+            module_index=self.data.core.slot,
+            index=0,  # Index doesn't matter for shared changes
+            bias_voltage=voltage,
+            activated=activated,
+            heading_text=self.data.vsource.channels[0].heading_text,
+            measuring=True,
+        )
+
+        shared_change = SharedVsourceChange(
+            change=change,
+            link_enabled=channels
+        )
+
+        self.http.put("dac16D/vsource_shared/", data=shared_change.model_dump())
+
+    def set_vsb(self, voltage: float, activated: bool = True):
+        """
+        Set VSB voltage
+        """
+        change = VsourceChange(
+            module_index=self.data.core.slot,
+            index=0,
+            bias_voltage=voltage,
+            activated=activated,
+            heading_text="VSB",
+            measuring=True,
+        )
+
+        self.http.put("dac16D/vsb/", data=change.model_dump())
+
+    def connect_vsense_websocket(self, callback):
+        """
+        Connect to the vsense websocket to receive voltage readings
+        """
+        return self.http.websocket_connect(f"dac16D/ws_vsense/", callback)

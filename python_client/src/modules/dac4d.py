@@ -3,6 +3,7 @@ from src.addons.vsource import VsourceChange
 from src.state import IModule, Core
 from typing import Literal
 from src.addons.vsource import IVsourceAddon
+from typing import Union
 
 
 class dac4D_spec(IModule):
@@ -34,13 +35,17 @@ class dac4D:
 
             self.http.put("dac4D/vsource/", data=change.model_dump())
 
-    def voltage_set(self, index: int, voltage: float):
+    def voltage_set(
+        self, index: int, voltage: float, activated: Union[bool, None] = None
+    ):
+        if activated is None:
+            activated = self.data.vsource.channels[index].activated
         change = VsourceChange(
             module_index=self.data.core.slot,
             index=index,
             bias_voltage=voltage,
-            activated=False,
-            heading_text="LOCKED: " + self.data.vsource.channels[index].heading_text,
+            activated=activated,
+            heading_text=self.data.vsource.channels[index].heading_text,
             measuring=True,
         )
 

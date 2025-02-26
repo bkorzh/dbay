@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class ChSenseState(BaseModel):
@@ -8,7 +9,7 @@ class ChSenseState(BaseModel):
     name: str
 
 class IVsenseAddon(BaseModel):
-    channels: list[ChSenseState]
+    channels: List[ChSenseState]
 
 
 
