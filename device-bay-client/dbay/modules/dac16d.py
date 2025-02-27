@@ -35,6 +35,12 @@ class dac16D:
 
             self.http.put("dac16D/vsource/", data=change.model_dump())
 
+    def __str__(self):
+        """Return a pretty string representation of the dac16D module."""
+        slot = self.data.core.slot
+        active_channels = sum(1 for ch in self.data.vsource.channels if ch.activated)
+        return f"dac16D (Slot {slot}): {active_channels}/16 channels active"
+
     def voltage_set(self, index: int, voltage: float, activated: Union[bool, None] = None):
         if activated is None:
             activated = self.data.vsource.channels[index].activated

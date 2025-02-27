@@ -51,4 +51,10 @@ class dac4D:
 
         self.http.put("dac4D/vsource/", data=change.model_dump())
 
+    def __str__(self):
+        """Return a pretty string representation of the dac4D module."""
+        slot = self.data.core.slot
+        active_channels = sum(1 for ch in self.data.vsource.channels if ch.activated)
+        return f"dac4D (Slot {slot}): {active_channels}/4 channels active"
+
     # Add other methods corresponding to the endpoints defined in dac4D.py as needed.

@@ -32,4 +32,15 @@ class DBay:
     def get_modules(self):
         return self.modules
 
+    def list_modules(self):
+        """
+        Pretty-print a list of all modules and their basic status.
+        """
+        print("DBay Modules:")
+        print("-------------")
+        for i, module in enumerate(self.modules):
+            print(f"Slot {i}: {module}")
+        print("-------------")
+        return self.modules
+
     # Additional methods to interact with the modules can be added here.

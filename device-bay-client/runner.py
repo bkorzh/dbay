@@ -6,6 +6,8 @@ client = DBay("0.0.0.0")
 
 # with the GUI, place a dac4D in slot 1 and a dac16D in slot 2
 
+client.list_modules()
+
 client.modules[0].voltage_set(0, 1)
 time.sleep(1)
 client.modules[0].voltage_set(0, 2, activated=True)
