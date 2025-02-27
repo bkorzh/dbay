@@ -3,7 +3,6 @@ name = "dbay"
 version = "0.1.4"
 description = "A python library for interacting with the Device Bay VME racks. This library communicates with the local Device Bay webserver, which runs the user interface and keeps it in sync with changes made by this library"
 
-
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
@@ -31,5 +30,5 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["dbay"]
+packages = ["dbay", "dbay.modules"]
 
