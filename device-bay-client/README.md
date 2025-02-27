@@ -22,7 +22,7 @@ To use the DBay client, you need to create an instance of the `DBay` class with 
 from src.client import DBay
 
 # Initialize the client with the server address
-client = DBay("http://<server-ip>:<port>")
+client = DBay("0.0.0.0", port=8345)
 
 # Access the modules
 modules = client.modules

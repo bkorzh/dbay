@@ -1,8 +1,8 @@
-from src.http import Http
-from src.addons.vsource import VsourceChange
-from src.state import IModule, Core
+from dbay.http import Http
+from dbay.addons.vsource import VsourceChange
+from dbay.state import IModule, Core
 from typing import Literal
-from src.addons.vsource import IVsourceAddon
+from dbay.addons.vsource import IVsourceAddon
 from typing import Union
 
 

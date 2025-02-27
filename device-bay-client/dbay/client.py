@@ -1,7 +1,7 @@
-from src.modules.dac4d import dac4D
-from src.modules.dac16d import dac16D
-from src.modules.empty import Empty
-from src.http import Http
+from dbay.modules.dac4d import dac4D
+from dbay.modules.dac16d import dac16D
+from dbay.modules.empty import Empty
+from dbay.http import Http
 import time
 from typing import List, Union
 

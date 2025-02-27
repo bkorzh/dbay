@@ -1,9 +1,9 @@
-from src.http import Http
-from src.addons.vsource import VsourceChange, SharedVsourceChange
-from src.state import IModule, Core
+from dbay.http import Http
+from dbay.addons.vsource import VsourceChange, SharedVsourceChange
+from dbay.state import IModule, Core
 from typing import Literal, Union, List
-from src.addons.vsource import IVsourceAddon
-from src.addons.vsense import ChSenseState
+from dbay.addons.vsource import IVsourceAddon
+from dbay.addons.vsense import ChSenseState
 
 
 class dac16D_spec(IModule):
