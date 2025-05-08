@@ -1,9 +1,17 @@
-# dbay
-
-<p align="center">
-    <img width="17%" src="https://raw.githubusercontent.com/bkorzh/dbay/main/software/frontend/public/db_2.png">
-</p>
-
+<div style="display: flex; align-items: center; align-items: center;">
+    <img width="13%" src="./readme/db_f.svg" style="margin-right: 10px;">
+    <h3 style=" font-size: 28px; margin-bottom: 1.7rem;">Device Bay</h3>
+</div>
 Repository for the Device Bay (DBay) Electronics System
 
-See the `README.md` files in the subfolders for detailed information. 
+See the `README.md` files in the subfolders for detailed information.
+
+<a href="https://github.com/bkorzh/dbay/releases/tag/v0.1.2"><span style="font-size: 14px;">> Install the Device Bay user interface</span></a>
+
+<img src="./readme/dbay_hero.jpeg">
+
+Device Bay is an open-source mainframe for test & measurement electronics modules. It is ideally suited for operation and testing of cryogenic detectors like SNSPDs, and offers an alternative to proprietary electronics test equipment.
+
+Modules communicate with a PC over USB or ethernet, and may be monitored and controlled with the accompanying installer. Each supported hardware module (voltage source, voltmeter, etc) has an accompanying control interface in the controller software.
+
+<img src="./readme/ui.png">

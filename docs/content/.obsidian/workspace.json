@@ -40,7 +40,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -165,8 +166,8 @@
   "active": "c271d2f563cf325d",
   "lastOpenFiles": [
     "Development/Tutorial - creating a new module.md",
-    "Development/Software frontend and backend.md",
     "Development/Development.md",
+    "Development/Software frontend and backend.md",
     "Tauri.md",
     "Quickstart/Install and run.md",
     "index.md",

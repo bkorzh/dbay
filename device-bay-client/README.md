@@ -29,7 +29,9 @@ from dbay.client import DBay
 import time
 
 # Initialize the client with the server address
-client = DBay("0.0.0.0")  # Default port is used
+# Use ip address of the computer running the DBay gui program.
+# make sure port 8345 is open on this computer's firewall
+client = DBay("<ip address>")  # Default port is used. 
 
 # List all modules and their current status
 client.list_modules()
