@@ -1,7 +1,9 @@
-<div style="display: flex; align-items: center; align-items: center;">
-    <img width="13%" src="./readme/db_f.svg" style="margin-right: 10px;">
-    <h3 style=" font-size: 28px; margin-bottom: 1.7rem;">Device Bay</h3>
-</div>
+# Device Bay
+
+<p align="center">
+  <img width="87" src="./readme/db_f.svg">
+</p>
+
 Repository for the Device Bay (DBay) Electronics System
 
 See the `README.md` files in the subfolders for detailed information.
