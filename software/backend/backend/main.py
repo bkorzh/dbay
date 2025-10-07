@@ -16,6 +16,7 @@ import mimetypes
 
 from backend.modules import dac4D
 from backend.modules import dac16D
+from backend.modules import adc4D
 from backend.server_logging import get_logger
 from backend.udp_control import parent_udp, UDP
 from backend.initialize import global_state
@@ -53,6 +54,7 @@ class ServerInfo(BaseModel):
 app = FastAPI()
 app.include_router(dac4D.router)
 app.include_router(dac16D.router)
+app.include_router(adc4D.router)
 
 origins = [
     "http://localhost:5173",

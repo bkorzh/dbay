@@ -1,6 +1,9 @@
 import { default as dac4D_component } from "./dac4D.svelte";
 import { dac4D } from "./dac4D_data.svelte";
 
+import { default as adc4D_component } from "./adc4D.svelte";
+import { adc4D } from "./adc4D_data.svelte";
+
 import { empty } from "./empty_data.svelte";
 
 // import { default as dac4D_old_component } from '../depreciated/dac4D_old.svelte'
@@ -28,6 +31,7 @@ interface ModuleProps {
 
 const components: any = {
   dac4D: dac4D_component,
+  adc4D: adc4D_component,
   dac16D: dac16D_component,
 };
 
@@ -50,6 +54,11 @@ const cc: ComponentCollection = {
     component: dac4D_component,
     module_index: 0,
   },
+  adc4D: {
+    name: "adc4D",
+    component: adc4D_component,
+    module_index: 0,
+  },
   dac16D: {
     name: "dac16D",
     component: dac16D_component,
@@ -61,6 +70,7 @@ const cc: ComponentCollection = {
 const modules: ModulesDict = {
   empty,
   dac4D,
+  adc4D,
   // dac4D_old,
   dac16D,
 };
@@ -154,8 +164,8 @@ export function updateSystemStatetoFallback() {
   const module_0: dac4D = new dac4D({
     core: { slot: 0, type: "dac4D", name: "my 4ch module 1" },
   });
-  const module_1: empty = new empty({
-    core: { slot: 1, type: "empty", name: "empty" },
+  const module_1: adc4D = new adc4D({
+    core: { slot: 1, type: "adc4D", name: "my 5ch ADC module" },
   });
   const module_2: dac16D = new dac16D({
     core: { slot: 2, type: "dac16D", name: "my 16ch module 1" },

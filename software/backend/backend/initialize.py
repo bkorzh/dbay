@@ -19,10 +19,10 @@ from typing import cast
 from pydantic import BaseModel
 
 from backend.modules.dac4D_spec import dac4DController
-# import sys
 
 from backend.modules import dac4D_spec
 from backend.modules import dac16D_spec
+from backend.modules import adc4D_spec
 
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__)) # needed for pyinstaller to work
@@ -97,7 +97,7 @@ class GlobalState:
         # modules = self.load_modules_from_directory('modules')
 
         # this is not dynamic, but it's a start.
-        modules = {"dac4D": dac4D_spec, "dac16D": dac16D_spec}
+        modules = {"dac4D": dac4D_spec, "dac16D": dac16D_spec, "adc4D": adc4D_spec}
         # get the create_prototype() function from a module file, like dac4D_spec.create_prototype()
 
         # print("module_type", module_type)

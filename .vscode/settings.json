@@ -1,3 +1,5 @@
 {
-    "rust-analyzer.linkedProjects": ["software/frontend/src-tauri/Cargo.toml"]
+    "rust-analyzer.linkedProjects": ["software/frontend/src-tauri/Cargo.toml"],
+    "python-envs.pythonProjects": [],
+    "python.defaultInterpreterPath": "${workspaceFolder}/device-bay-client/.venv/bin/python",
 }

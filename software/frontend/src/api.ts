@@ -1,6 +1,7 @@
 
 
 import type { SharedVsourceChange, VsourceChange } from './lib/addons/vsource/interface';
+import type { VsenseChange } from './lib/addons/vsense/interface';
 
 
 import type { SystemState } from './state/systemState.svelte';
@@ -46,8 +47,7 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
     const config: RequestInit = {
         method,
         signal,
-        headers,
-        connectTimeout: 1
+        headers
     }
 
     if (body) {
@@ -97,6 +97,10 @@ export function initializeVsource(params: VMEParams) {
 
 
 export function requestChannelUpdate(dst: VsourceChange, endpoint: string): Promise<VsourceChange> {
+    return fetchWithConfig(endpoint, "PUT", dst);
+}
+
+export function requestSenseUpdate(dst: VsenseChange, endpoint: string): Promise<VsenseChange> {
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 

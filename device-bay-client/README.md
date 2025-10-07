@@ -1,79 +1,181 @@
 # dbay-client/README.md
 
-# DBay Client
+# DBay Client (Unified Dual-Mode)
 
-DBay is a Python client for interacting with the DBay web server. This client allows you to manage and control various modules such as `dac4D` and `dac16D` through a simple interface.
+DBay provides a unified Python client (`DBayClient`) for interacting with DBay hardware in two distinct ways:
+
+1. **GUI (stateful) mode** – Talks to the DBay GUI backend over HTTP, pulling a full system state (modules, channels) and pushing configuration updates.
+2. **Direct (stateless) mode** – Sends low-level ASCII commands directly to the mainframe over UDP or Serial without maintaining any shadow state.
+
+Both modes share the same object model and method names where feasible. You choose the mode once at construction via a simple string: `mode="gui"` or `mode="direct"`.
 
 ## Installation
 
-You can install the DBay client directly from PyPI:
+Install from PyPI (package name placeholder shown below; adjust if different):
 
 ```bash
 pip install dbay
 ```
 
-Alternatively, you can clone the repository and install the required dependencies:
+Or install from source (editable):
 
 ```bash
 git clone <repository-url>
-cd dbay-client
+cd dbay/device-bay-client
 pip install -e .
 ```
 
-## Usage
+## Quick Start
 
-To use the DBay client, you need to create an instance of the `DBay` class with the server address (IP address and port). The client will automatically call the `/full-state` endpoint to retrieve the current state of the server.
+### GUI Mode (Stateful)
+
+```python
+from dbay import DBayClient
+
+client = DBayClient(mode="gui", server_address="192.168.0.50", port=8345)
+client.list_modules()
+
+dac16 = client.module(1, expected="dac16D")
+dac16.set_voltage(0, 1.2, activated=True)
+dac16.set_voltage_shared(0.5)  # sets all channels to 0.5 V
+dac16.set_bias(2.0)
+```
+
+### Direct Mode (UDP)
+
+```python
+from dbay import DBayClient, dac4D, dac16D
+
+client = DBayClient(mode="direct", direct_host="192.168.0.108", direct_port=8880)
+
+# Direct mode requires explicit attachment (no discovery)
+dac4 = client.attach_module(0, dac4D)
+dac4.set_voltage(0, 5.0)
+dac4.set_voltage_diff(1, -2.0)
+
+dac16 = client.attach_module(1, dac16D)
+dac16.set_voltage(10, -1.25)
+dac16.set_bias(3.0)
+print("Raw read: ", dac16.read())
+```
+
+### Direct Mode (Serial)
+
+```python
+from dbay import DBayClient, HIC4, ADC4D
+
+client = DBayClient(
+	mode="direct",
+	direct_transport="serial",
+	serial_port="/dev/ttyUSB0",
+	baudrate=115200,
+	timeout=1.0,
+)
+h = client.attach_module(2, HIC4)
+h.set_voltage(0, 0.75)
+```
+
+### Raw Command (Direct Only)
+
+```python
+client.direct_send("DAC16D VS 1 5 2.5")
+```
+
+## Module Methods (Summary)
+
+| Module  | Methods (Common)                                                  | GUI Support                  | Direct Support |
+| ------- | ----------------------------------------------------------------- | ---------------------------- | -------------- |
+| dac4D   | set_voltage, set_voltage_diff                                     | voltage only (diff TBD)      | yes            |
+| dac16D  | set_voltage, set_voltage_diff, set_voltage_shared, set_bias, read | shared, bias (diff/read TBD) | yes            |
+| FAFD    | set_voltage, read                                                 | pending                      | yes            |
+| HIC4    | set_voltage                                                       | pending                      | yes            |
+| ADC4D   | read_diff                                                         | pending                      | yes            |
+| DAC4ETH | set_voltage, set_voltage_diff                                     | pending                      | yes            |
+| Empty   | placeholder                                                       | n/a                          | n/a            |
+
+GUI “pending” indicates the HTTP backend and data models are not yet implemented; calls will raise `NotImplementedError`.
+
+## Migration from Legacy `DBay`
+
+Old (HTTP-only):
 
 ```python
 from dbay.client import DBay
-import time
-
-# Initialize the client with the server address
-# Use ip address of the computer running the DBay gui program.
-# make sure port 8345 is open on this computer's firewall
-client = DBay("<ip address>")  # Default port is used. 
-
-# List all modules and their current status
-client.list_modules()
-# Example output:
-# DBay Modules:
-# -------------
-# Slot 0: dac4D (Slot 0): 2/4 channels active
-# Slot 1: dac16D (Slot 1): 0/16 channels active
-# Slot 2: Empty slot
-# Slot 3: Empty slot
-# Slot 4: Empty slot
-# Slot 5: Empty slot
-# Slot 6: Empty slot
-# Slot 7: Empty slot
-# -------------
-
-# Working with a dac4D module in slot 1
-client.modules[0].voltage_set(0, 1)  # Set channel 0 to 1V
-client.modules[0].voltage_set(0, 2, activated=True)  # Set and activate channel 0
-client.modules[0].voltage_set(0, 3.33)  # Set channel 0 to 3.33V
-
-# Working with a dac16D module in slot 2
-client.modules[1].voltage_set(0, 1, activated=True)  # Set and activate channel 0
-client.modules[1].voltage_set(1, 2, activated=True)  # Set and activate channel 1
-
-# Setting multiple channels at once
-channels = [True, False] * 8  # Select alternating channels
-client.modules[1].voltage_set_shared(1.5, channels=channels)  # Set selected channels to 1.5V
+client = DBay("192.168.0.50")
+client.modules[0].voltage_set(0, 1.0)
 ```
 
-## Modules
+New unified API:
 
-The client supports the following modules:
+```python
+from dbay import DBayClient
+client = DBayClient(mode="gui", server_address="192.168.0.50")
+mod = client.module(0, expected="dac4D")
+mod.set_voltage(0, 1.0)
+```
 
-- **dac4D**: Represents a DAC4D module and includes methods for controlling its functionality.
-- **dac16D**: Represents a DAC16D module and includes methods for controlling its functionality.
-- **Empty**: Represents an empty module.
+Key changes:
+
+- Class name changed to `DBayClient`.
+- Methods standardized to `set_voltage` (legacy `voltage_set` still available as alias).
+- Access modules via `client.module(slot)` instead of `client.modules[index]`.
+- Direct mode now uses class-based `attach_module(slot, ModuleClass)` for better type checking.
+
+## Design Notes
+
+- GUI mode uses Pydantic models. By default (now the naive / persistent behavior) module changes are retained (`retain_changes=True`). Opt out with `retain_changes=False` if you want automatic revert for supported modules.
+- Direct mode is intentionally stateless: it sends commands and returns raw responses (no caching). Activation flags are ignored in direct mode.
+- Differential and sense features may be absent in GUI until backend endpoints are added.
+- Class-based attachment uses each module's `CORE_TYPE` attribute to set hardware identity.
+- New modules (FAFD, HIC4, ADC4D, DAC4ETH) raise `NotImplementedError` for GUI operations for now.
+
+## State Retention & Optional Reversion (`retain_changes`)
+
+Default behavior now: hardware settings you apply in GUI mode remain in effect after your script ends. This matches the intuitive expectation that "what I last set is what the GUI (and hardware) keeps". The flag `retain_changes` therefore defaults to `True`.
+
+If you prefer a session-style workflow where temporary changes are rolled back automatically for supported modules (currently the DAC family), start the client with `retain_changes=False`:
+
+```python
+from dbay import DBayClient
+
+client = DBayClient(
+    mode="gui",
+    server_address="192.168.0.50",
+    retain_changes=False,   # auto-revert DAC channels on cleanup
+)
+```
+
+Behavior matrix:
+
+| Mode   | retain_changes | Cleanup action | Notes                                                |
+| ------ | -------------- | -------------- | ---------------------------------------------------- |
+| GUI    | True (default) | No revert      | Final commanded values persist in GUI                |
+| GUI    | False          | Revert (DACs)  | Attempts to restore initial snapshot for DAC modules |
+| Direct | (any)          | No revert      | Direct mode never auto-reverts; flag currently inert |
+
+Details & caveats:
+
+- Reversion relies on destructor timing; abrupt termination (e.g. `kill -9`) skips cleanup.
+- Only modules that captured an initial state support revert (DAC family). Others have nothing to restore.
+- A future enhancement may add an explicit `revert_all()` to avoid relying on GC.
+
+Recommendation: leave the default (`True`) for user-facing or interactive tooling; use `False` in automated measurement scripts that must leave hardware in a known pre-run state.
+
+## Limitations / Not Implemented Yet
+
+- Differential voltage setting in GUI mode.
+- Reading values (e.g., `read`, `read_diff`) in GUI mode.
+- Batch / shared voltage command optimization in direct mode (currently sequential sends).
+- Websocket streaming for sense channels (explicitly out of scope for now).
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.
+Contributions are welcome! Feel free to open issues or PRs for:
+
+- Adding GUI endpoints/models for the new modules.
+- Extending test coverage for direct command generation.
+- Documentation improvements.
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+MIT License. See `LICENSE`.

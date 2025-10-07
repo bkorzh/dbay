@@ -28,8 +28,9 @@ class Empty(IModule):
 
 from backend.modules.dac4D_spec import dac4D
 from backend.modules.dac16D_spec import dac16D
+from backend.modules.adc4D_spec import adc4D
 
-modules = {"dac4D": dac4D, "dac16D": dac16D}
+modules = {"dac4D": dac4D, "dac16D": dac16D, "adc4D": adc4D}
 
 # this dynamically loads schema for the modules from {module_name}_spec.py files in the modules directory
 # if you think it's causing problems, comment it out and customize the following lines. 
