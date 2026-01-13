@@ -1,11 +1,18 @@
-# Install Arduino and Teensyduino
+# 1.  Install Arduino and Teensyduino
 ## On Linux
-1. Go to https://www.arduino.cc/en/software/ and download the Arduino IDE AppImage
-2. (optional but recommended) In the Home directory, create an Applications folder and copy the Arduino IDE AppImage into this folder
-3. Make the AppImage executable and run it
-4. Go to https://www.pjrc.com/teensy/td_download.html and follow the instructions there to install Teensyduino
+ Go to https://www.arduino.cc/en/software/ and download the Arduino IDE AppImage
 
-# Load the Firmware
+(Optional but recommended) In the Home directory, create an Applications folder and copy the Arduino IDE AppImage into this folder.
+
+Make the AppImage executable and run it:
+```shell
+chmod a+x arduino-ide_xxx.AppImage
+```
+
+Go to https://www.pjrc.com/teensy/td_download.html and follow the instructions there to install Teensyduino.
+
+TODO: Other OS
+# 2. Load the Firmware
 1. Make sure the rack containing the control module is powered and running.
 2. Connect the control module via USB to the computer
 3. Connect the control module via Ethernet to the local network.
