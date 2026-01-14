@@ -14,3 +14,14 @@ Open obsidian, and open the `/docs/content` folder as an obsidian vault. There i
 
 ![[set_to_attachments.png]]
 
+#### Style-Guide
+**Serial commands:**
+Inline: `reset`
+Block:
+```
+SETDEV [board] [device]
+```
+**File paths and file names**
+*/an/example/path*
+**Button names in UI**
+*example button*
