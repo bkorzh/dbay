@@ -18,9 +18,9 @@ TODO: Other OS
 3. Connect the control module via Ethernet to the local network.
 4. Clone the git repository containing the firmware from https://github.com/lautaroleon/dbayfirmware
 5. In the Arduino IDE, in the taskbar, select the board Teensy 4.1. Open the file *dbay_ctrlFW/dbay_ctrlFW.ino* found in the cloned firmware repository.  Then click *Upload* in the Arduino IDE's task bar. During the upload, you might be required to press the button on the Teensy.
-6. If there aren't any errors in the Output log in the Arduino IDE, open *Tools>Serial Monitor* in the Arduino IDE. Wait for about 1min  and send the command *help*. If the firmware was loaded correctly, the message should start with ```-Available commands:```.  If the ethernet connection could be established, the answer to the *help* command states the IP address. It has to be different from 0.0.0.0.
+6. If there aren't any errors in the Output log in the Arduino IDE, open *Tools>Serial Monitor* in the Arduino IDE. Wait for about 1 min  and send the command `help`. If the firmware was loaded correctly, the message should start with ```-Available commands:```.  If the ethernet connection could be established, the answer to the `help` command states the IP address. It has to be different from 0.0.0.0. If it is not, see [[#The IP address is 0.0.0.0]].
 
 # Troubleshooting
 ## The IP address is 0.0.0.0
 TODO is this true?
-This happens when there was no IP assigned to the Control Module. This can happen if the Control Module is directly connected to a computer instead of a network. Please connect the Control Module to the network and send the command *reset* via Serial Monitor. Check the IP again after the reset using the command *help*.
+This happens when there was no IP assigned to the Control Module. This can happen if the Control Module is directly connected to a computer instead of a network. Please connect the Control Module to the network and send the command `reset`via Serial Monitor. Check the IP again after the reset using the command `help`.
