@@ -1,24 +1,14 @@
-from pydantic import BaseModel, Field
 # from backend.addons.vsense import ChSenseState
 
 from pydantic import BaseModel, Field
 
-from typing import Literal, Union, Type
+from typing import Literal, Union
 from typing_extensions import Annotated
 import os
-import importlib
-import importlib.util
-import sys
+
+from backend.module import IModule, Core
 
 SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__)) # needed for pyinstaller to work
-
-class Core(BaseModel):
-    slot: int
-    type: str
-    name: str
-
-class IModule(BaseModel):
-    core: Core
 
 
 class Empty(IModule):

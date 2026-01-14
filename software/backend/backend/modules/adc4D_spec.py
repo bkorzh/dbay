@@ -1,4 +1,4 @@
-from backend.state import IModule, Core
+from backend.module import IModule, Core
 from backend.addons.vsense import IVsenseAddon, ChSenseState
 from typing import Literal
 from backend.udp_control import Controller, ParentUDP

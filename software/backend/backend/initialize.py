@@ -3,7 +3,8 @@ from backend.location import DATA_DIR
 import json
 import os
 
-from backend.state import Core, SystemState, Empty
+from backend.state import SystemState, Empty
+from backend.module import Core
 from backend.addons.vsource import IVsourceAddon
 from backend.addons.vsource import ChSourceState
 # from backend.modules.dac4D_spec import dac4D
