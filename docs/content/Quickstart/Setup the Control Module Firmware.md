@@ -17,8 +17,9 @@ TODO: Other OS
 2. Connect the control module via USB to the computer
 3. Connect the control module via Ethernet to the local network.
 4. Clone the git repository containing the firmware from https://github.com/lautaroleon/dbayfirmware
-5. In the Arduino IDE, in the taskbar, select the board Teensy 4.1. Open the file *dbay_ctrlFW/dbay_ctrlFW.ino* found in the cloned firmware repository.  Then click *Upload* in the Arduino IDE's task bar. During the upload, you might be required to press the button on the Teensy.
-6. If there aren't any errors in the Output log in the Arduino IDE, open *Tools>Serial Monitor* in the Arduino IDE. Wait for about 1 min  and send the command `help`. If the firmware was loaded correctly, the message should start with ```-Available commands:```.  If the ethernet connection could be established, the answer to the `help` command states the IP address. It has to be different from 0.0.0.0. If it is not, see [[#The IP address is 0.0.0.0]].
+5. If you want to use the MAC address (e.g. to let the network assign a fixed IP to the control module), it is a good idea to make sure it is unique in your network. If it is not, then you need to change it in this step. Go to the line starting with `byte mac[] =` and change the MAC address there. Each element in the array has to be a two-digit hexadecimal number (e.g 0x1A).  *Example:* If you want to use the mac address 11:22:33:44:55:6F, write  `byte mac[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x6F};`.
+6. In the Arduino IDE, in the taskbar, select the board Teensy 4.1. Open the file *dbay_ctrlFW/dbay_ctrlFW.ino* found in the cloned firmware repository.  Then click *Upload* in the Arduino IDE's task bar. During the upload, you might be required to press the button on the Teensy.
+7. If there aren't any errors in the Output log in the Arduino IDE, open *Tools>Serial Monitor* in the Arduino IDE. Wait for about 1 min  and send the command `help`. If the firmware was loaded correctly, the message should start with ```-Available commands:```.  If the ethernet connection could be established, the answer to the `help` command states the IP address. It has to be different from 0.0.0.0. If it is not, see [[#The IP address is 0.0.0.0]].
 
 # Troubleshooting
 ## The IP address is 0.0.0.0
