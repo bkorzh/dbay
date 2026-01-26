@@ -1,4 +1,4 @@
-from backend.state import IModule, Core
+from backend.module import IModule, Core
 from backend.addons.vsource import IVsourceAddon, ChSourceState
 from backend.addons.vsense import ChSenseState
 from typing import Literal

@@ -17,6 +17,7 @@ else:
 
 DATA_DIR = os.path.join(BASE_DIR, "config")
 WEB_DIR = os.path.join(BASE_DIR, "dbay_control")
+MODULE_DIR = os.path.join(BASE_DIR, "modules")
 
 
 

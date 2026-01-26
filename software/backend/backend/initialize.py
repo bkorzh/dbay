@@ -1,103 +1,72 @@
-
-from backend.location import DATA_DIR
+import importlib
 import json
 import os
-
-from backend.state import Core, SystemState, Empty
-from backend.addons.vsource import IVsourceAddon
-from backend.addons.vsource import ChSourceState
-# from backend.modules.dac4D_spec import dac4D
-from typing import Any, Type
-
-from backend.udp_control import Controller, parent_udp
-
-import importlib
-import importlib.util
-
-from typing import Literal, Union, Type, Any, Callable
+from typing import Type, Any, Callable
 from typing import cast
+
 from pydantic import BaseModel
 
+from backend.location import DATA_DIR
+from backend.location import MODULE_DIR
+from backend.module import Core
 from backend.modules.dac4D_spec import dac4DController
-
-from backend.modules import dac4D_spec
-from backend.modules import dac16D_spec
-from backend.modules import adc4D_spec
+from backend.state import SystemState, Empty
+from backend.udp_control import Controller, parent_udp
 
 
-SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__)) # needed for pyinstaller to work
+def load_modules_from_directory(directory: str) -> dict[str, Type[Any]]:
+    modules: dict[str, Any] = {}
 
-
-# # create a default testing state
-# data: list[Any]  = [Empty(core=Core(slot=i, type="empty", name="empty")) for i in range(8)]
-
-# channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac4D", measuring=False) for i in range(4)]
-# data[3] = dac4D(core=Core(slot=3, type="dac4D", name="empty"), vsource=IVsourceAddon(channels=channels))
-
-# channels_2 = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text=f"{i}th ch dac4DM2", measuring=False) for i in range(4)]
-# data[6] = dac4D(core=Core(slot=6, type="dac4D", name="empty"), vsource=IVsourceAddon(channels=channels_2))
-
-
-# # load dev mode setting. If true, python does not acctually send UDP messages to the rack. 
-# with open(os.path.join(BASE_DIR, "vsource_params.json"), "r") as f:
-#     vsource_params= json.load(f)
-# system_state = SystemState(data=data, valid=True, dev_mode=vsource_params["dev_mode"])
-
-
-
+    for filename in os.listdir(directory):
+        if filename.endswith('_spec.py') and filename != '__init__.py':
+            module_name = filename[:-8]  # remove '_spec.py' from filename
+            module_path = os.path.join(directory, filename)
+            spec = importlib.util.spec_from_file_location(module_name, module_path)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                modules[module_name] = module
+    return modules
 
 
 class GlobalState:
-    def __init__(self):
+    """
+    This class is a singleton representing the global state.
+    """
+    _instance = None
 
-        data: list[Any]  = [Empty(core=Core(slot=i, type="empty", name="empty")) for i in range(8)]
+    def __new__(cls, vsource_params: str | None = None):
+        """
+        This method is called when GlobalState() is executed but before __init__. It allows to check if there is
+        already an instance of the global state and return it if so. Else, a new global state is created.
 
-        # print("base dir", BASE_DIR)
-        # print("base dir files", os.listdir(BASE_DIR))
-        with open(os.path.join(DATA_DIR, "vsource_params.json"), "r") as f:
-            vsource_params= json.load(f)
+        :param vsource_params: configuration file for Voltage Source
+        """
+        if cls._instance is not None:
+            return cls._instance
 
+        cls._instance = super(GlobalState, cls).__new__(cls)
 
-        self.system_state = SystemState(data=data, valid=True, dev_mode=vsource_params["dev_mode"])
-        self.controllers: list[Controller] = [Controller(parent_udp, "empty") for _ in range(8)]
+        cls._instance.data: list[Any] = [Empty(core=Core(slot=i, type="empty", name="empty")) for i in range(8)]
 
-    # @staticmethod
-    # def load_modules_from_directory(directory: str) -> dict[str, Type[Any]]:
-    #     modules: dict[str, Any] = {}
-    #     for filename in os.listdir(directory):
-    #         # print(filename)
-    #         if filename.endswith('_spec.py') and filename != '__init__.py':
-    #             module_name = filename[:-8]  # remove '_spec.py' from filename
-    #             module = importlib.import_module(f'.{module_name}_spec', package=f"backend.{directory}")
-    #             modules[module_name] = module
-    #     return modules
-    
+        # for backwards compatibility:
+        if vsource_params is None:
+            vsource_params = os.path.join(DATA_DIR, "vsource_params.json")
 
-    # @staticmethod
-    # def load_modules_from_directory(directory: str) -> dict[str, Type[Any]]:
-    #     modules: dict[str, Any] = {}
+        with open(vsource_params, "r") as f:
+            vsource_params = json.load(f)
 
-    #     directory = os.path.join(SCRIPT_PATH, directory)
+        cls._instance.system_state = SystemState(data=cls._instance.data, valid=True,
+                                                 dev_mode=vsource_params["dev_mode"])
+        cls._instance.controllers: list[Controller] = [Controller(parent_udp, "empty") for _ in range(8)]
 
-    #     for filename in os.listdir(directory):
-    #         if filename.endswith('_spec.py') and filename != '__init__.py':
-    #             module_name = filename[:-8]  # remove '_spec.py' from filename
-    #             module_path = os.path.join(directory, filename)
-    #             spec = importlib.util.spec_from_file_location(module_name, module_path)
-    #             if spec and spec.loader:
-    #                 module = importlib.util.module_from_spec(spec)
-    #                 spec.loader.exec_module(module)
-    #                 modules[module_name] = module
-    #     return modules
-
-
+        return cls._instance
 
     def add_module(self, module_type: str, slot: int):
-
-        # modules = self.load_modules_from_directory('modules')
+        modules = load_modules_from_directory(MODULE_DIR)
 
         # this is not dynamic, but it's a start.
-        modules = {"dac4D": dac4D_spec, "dac16D": dac16D_spec, "adc4D": adc4D_spec}
+        # modules = {"dac4D": dac4D_spec, "dac16D": dac16D_spec, "adc4D": adc4D_spec}
         # get the create_prototype() function from a module file, like dac4D_spec.create_prototype()
 
         # print("module_type", module_type)
@@ -107,9 +76,12 @@ class GlobalState:
         model = creator(slot)
         controller_instance = controller_class(parent_udp, slot)
 
-        self.system_state.data[slot] = model # type: ignore
+        self.system_state.data[slot] = model  # type: ignore
         self.controllers[slot] = controller_instance
 
+    def __str__(self):
+        return f"{self.__class__.__name__}(system_state={self.system_state.data})"
 
 
+# TODO this call should be made in the files where global_state is used
 global_state = GlobalState()
