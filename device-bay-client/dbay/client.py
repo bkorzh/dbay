@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from typing import List, Union, Optional, Type, TypeVar, overload
 
+from pydantic import BaseModel
+
 from dbay.modules.dac4d import dac4D
 from dbay.modules.dac16d import dac16D
 from dbay.modules.fafd import FAFD
@@ -21,6 +23,16 @@ from dbay.direct import DeviceConnection, DirectDeviceError
 
 __all__ = ["DBayClient", "DBayError"]
 
+class Mode:
+    GUI = "gui"
+    DIRECT = "direct"
+
+
+# TODO not clean because copied from backend/backend/main:
+class ModuleAddition(BaseModel):
+    slot: int
+    type: str
+    # system_activated: bool
 
 class DBayError(Exception):
     pass
@@ -42,7 +54,7 @@ class DBayClient:
     def __init__(
         self,
         *,
-        mode: str = "gui",
+        mode: str = Mode.GUI,
         server_address: Optional[str] = None,
         port: int = 8345,
         direct_host: str = "192.168.0.108",
@@ -56,7 +68,7 @@ class DBayClient:
         retain_changes: bool = True,
     ):
         mode = mode.lower()
-        if mode not in {"gui", "direct"}:
+        if mode not in {Mode.GUI, Mode.DIRECT}:
             raise ValueError("mode must be either 'gui' or 'direct'")
         self.mode = mode
         self.max_slots = max_slots
@@ -67,12 +79,12 @@ class DBayClient:
         # slot -> module instance
         self._modules: List[Union[dac4D, dac16D, FAFD, HIC4, ADC4D, DAC4ETH, Empty, None]] = [None] * max_slots
 
-        if self.mode == "gui" and load_state:
+        if self.mode == Mode.GUI and load_state:
             if not server_address:
                 raise ValueError("server_address is required in gui mode")
             self._http = Http(server_address, port)
             self._load_full_state()
-        elif self.mode == "gui":
+        elif self.mode == Mode.GUI:
             if not server_address:
                 raise ValueError("server_address is required in gui mode")
             self._http = Http(server_address, port)
@@ -105,17 +117,17 @@ class DBayClient:
             raw_type = module_info.get("core", {}).get("type", "")
             module_type = raw_type.lower()
             if module_type == "dac4d":
-                self._modules[i] = dac4D(module_info, http=self._http, mode="gui", retain_changes=self.retain_changes)
+                self._modules[i] = dac4D(module_info, http=self._http, mode=Mode.GUI, retain_changes=self.retain_changes)
             elif module_type == "dac16d":
-                self._modules[i] = dac16D(module_info, http=self._http, mode="gui", retain_changes=self.retain_changes)
+                self._modules[i] = dac16D(module_info, http=self._http, mode=Mode.GUI, retain_changes=self.retain_changes)
             elif module_type == "fafd":
-                self._modules[i] = FAFD(module_info, http=self._http, mode="gui", retain_changes=self.retain_changes)
+                self._modules[i] = FAFD(module_info, http=self._http, mode=Mode.GUI, retain_changes=self.retain_changes)
             elif module_type == "hic4":
-                self._modules[i] = HIC4(module_info, http=self._http, mode="gui", retain_changes=self.retain_changes)
+                self._modules[i] = HIC4(module_info, http=self._http, mode=Mode.GUI, retain_changes=self.retain_changes)
             elif module_type == "adc4d":
-                self._modules[i] = ADC4D(module_info, http=self._http, mode="gui", retain_changes=self.retain_changes)
+                self._modules[i] = ADC4D(module_info, http=self._http, mode=Mode.GUI, retain_changes=self.retain_changes)
             elif module_type == "dac4eth":
-                self._modules[i] = DAC4ETH(module_info, http=self._http, mode="gui", retain_changes=self.retain_changes)
+                self._modules[i] = DAC4ETH(module_info, http=self._http, mode=Mode.GUI, retain_changes=self.retain_changes)
             else:
                 self._modules[i] = Empty()
 
@@ -133,7 +145,7 @@ class DBayClient:
         The module class must expose a `CORE_TYPE` attribute matching the
         underlying hardware identifier (e.g. "dac4D").
         """
-        if self.mode != "direct":
+        if self.mode != Mode.DIRECT:
             raise ValueError("attach_module is only valid in direct mode")
         if not (0 <= slot < self.max_slots):
             raise ValueError("slot out of range")
@@ -144,7 +156,7 @@ class DBayClient:
             raise ValueError("Module class missing CORE_TYPE attribute")
         core_stub = {"core": {"slot": slot, "type": core_type, "name": core_type}}
         # Instantiate with connection + direct mode. Some classes may have different constructor signatures.
-        mod: M = module_cls(core_stub, connection=self._connection, mode="direct", retain_changes=self.retain_changes)  # type: ignore[arg-type]
+        mod: M = module_cls(core_stub, connection=self._connection, mode=Mode.DIRECT, retain_changes=self.retain_changes)  # type: ignore[arg-type]
         self._modules[slot] = mod
         return mod
 
@@ -175,7 +187,7 @@ class DBayClient:
     # Convenience wrappers for direct mode raw sending (advanced)
     # ------------------------------------------------------------------
     def direct_send(self, command: str) -> str:
-        if self.mode != "direct":
+        if self.mode != Mode.DIRECT:
             raise ValueError("direct_send only valid in direct mode")
         assert self._connection is not None
         try:
@@ -194,3 +206,10 @@ class DBayClient:
     def __exit__(self, exc_type, exc, tb):
         self.close()
 
+    def set_module(self, slot: int, module_cls: Type[M]):
+        ma = ModuleAddition(type=module_cls.__name__, slot=slot)
+
+        if self.mode == Mode.GUI:
+            self._http.post("initialize-module", ma.model_dump())
+        else:  # direct mode
+            self._connection.send(f"SETDEV {slot} {module_cls.__name__.upper()}")
