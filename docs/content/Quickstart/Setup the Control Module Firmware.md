@@ -23,5 +23,4 @@ TODO: Other OS
 
 # Troubleshooting
 ## The IP address is 0.0.0.0
-TODO is this true?
 This happens when there was no IP assigned to the Control Module. This can happen if the Control Module is directly connected to a computer instead of a network. Please connect the Control Module to the network and send the command `reset`via Serial Monitor. Check the IP again after the reset using the command `help`.

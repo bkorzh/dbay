@@ -1,4 +1,7 @@
 # 1. Setting the I2C Address
+
+TODO: this is outdated and needs to be rewritten: Now the the address is given by pins in the backplane. Each slot in the rack has one pin out of 8 connected and defines the address.
+
 On the card, there is a switch array controlling three bits (labelled A0, A1, A2 on the board). The switch array is displayed on the image below for the Dac4D module card. 
 ![[2025_12_11_address_switch.jpg]]This switch array defines the address of the module. Each card in a rack must have another address (except for the control module, which does not have an address). If there are already cards installed in the rack, check their address switch array and choose an unused address configuration for the switch. A0 is the least significant bit and A2 the most significant bit. 
 
