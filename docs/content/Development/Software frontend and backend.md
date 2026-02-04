@@ -39,7 +39,7 @@ python main.py
 
 To create the software for a new module, code in both `/frontend` and `/backend` must be added. This is an iterative process that often begins with defining what structs or data packets will be sent and received from what endpoints (e.g. `/dac16D/vsource/`). Here's some steps that don't necessarily need to happen in this order:
 
-1. Create a new ui file `{module_name}.svelte` and core logic file `{module_name}_data.svelte.ts` in `frontend/src/lib/modules_dbay`. The `{module_name}_data.svelte.ts` may make use of the 'addon' classes defined in `frontend/src/lib/addons`. The `frontend/src/modules_day/index.svelte.ts` file must also be updated. Include the imports:
+1. Create a new ui file `{module_name}.svelte` and core logic file `{module_name}_data.svelte.ts` in `frontend/src/lib/modules_dbay`. The `{module_name}_data.svelte.ts` may make use of the 'addon' classes defined in `frontend/src/lib/addons`. The `frontend/src/lib/modules_dbay/index.svelte.ts` file must also be updated. Include the imports:
 
 ```ts
 import { default as {module_name}_component } from './{module_name}.svelte'
@@ -60,7 +60,7 @@ vsense: IVsenseAddon | None
 
 Both `IVsourceAddon` and `IVsenseAddon` contain a list of channels, each of which has a number of associated properties like `index`, `heading_text`, and `activated`.
 
-2. Create a new python file in `backend/modules/` with name `{module_name}.py`. This python file may import datastructures from `backend/addons`. It must define a `router` using `APIRouter(prefix="/{module_name}", ...)` imported from `fastapi`. This router must also be imported into the `main.py` file (e.g. with `from .modules import {module_name}`), and 'connected' with the rest of the application using `app.include_router({module_name}.router)`.
+2. Create a new python file in `backend/backend/modules/` with name `{module_name}.py`. This python file may import datastructures from `backend/addons`. It must define a `router` using `APIRouter(prefix="/{module_name}", ...)` imported from `fastapi`. This router must also be imported into the `main.py` file (e.g. with `from .modules import {module_name}`), and 'connected' with the rest of the application using `app.include_router({module_name}.router)`.
 
 NOTE: a library called `pydantic2ts` is used to transform the datastructures found in the addon files like `/backend/addons/vsource.py` to `interface.ts` files found in `frontend/src/lib/addons` (Note: I'm using a [fork](https://pypi.org/project/pydantic-to-typescript2/) of the original `pydantic2ts` library that supports pydantic >= 2.0). This ensures that the frontend and backend code agree on the 'shape' of data packets sent between them. If files like `/backend/addons/vsource.py` are changed, or new datastructures are defined for get/put requests, then `backend/pydantic_to_typescript.py` should be rerun and possibly updated. Because `pydantic2ts` converts from python to typescript, it makes sense to (1) get your data strucutres defined first in python with pydantic classes, (2) modify `backend/pydantic_to_typescript.py` to create a corresponding `interface.ts` file somewhere inside `frontend/`, and (3) work on the frontend code to use the datastructure from the newly modified/created `interface.ts` file.
 
