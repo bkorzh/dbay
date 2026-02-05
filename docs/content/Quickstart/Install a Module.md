@@ -1,4 +1,14 @@
+
 # 1. Setting the I2C Address
+
+The way modules are addressed changed during the development. The current method uses 8 pins in the backplane of the rack to do the addressing. The legacy method uses a switch on the module which defined its address. 
+
+TODO: write down on what the addressing depends. Is it just the pin connections of the backplane?
+
+Depending on your system, follow either step 1a or 1b below.
+## 1a. Current method
+Go directly to step 2. The module gets addressed depending on which slot in the rack it is in.
+## 1b. Legacy method Setting the I2C Address
 
 TODO: this is outdated and needs to be rewritten: Now the the address is given by pins in the backplane. Each slot in the rack has one pin out of 8 connected and defines the address.
 
