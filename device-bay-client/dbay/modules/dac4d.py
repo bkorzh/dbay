@@ -11,6 +11,13 @@ class dac4D_spec(IModule):
     core: Core
     vsource: Optional[IVsourceAddon] = None  # optional in direct mode
 
+# TODO  wouldn't it make sense to split this class in two one for Serial/UDP
+#  and the other for http?
+
+# TODO this file seems to be very similar to dac4d_spec in backend. Shall we somehow merge them?
+# lowest level communication layer
+# reason for spec: differentiating it from higher level
+
 
 class dac4D:
     CORE_TYPE = "dac4D"
@@ -26,14 +33,14 @@ class dac4D:
         *,
         http: Optional[Http] = None,
         connection: Optional[DeviceConnection] = None,
-        mode: str = "gui",
+        mode: str = "gui",F
         retain_changes: bool = True,
     ):
         self.mode = mode.lower()
         if self.mode not in {"gui", "direct"}:
             raise ValueError("mode must be 'gui' or 'direct'")
         self.http = http
-        self.connection = connection
+        self.connection = connection# TODO why not the same as dac4d in dbay pypi package?
         self.retain_changes = retain_changes
         # In direct mode vsource may be absent; allow None
         self.data = dac4D_spec(**data)

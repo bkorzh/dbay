@@ -4,7 +4,7 @@ Exports the dual-mode `DBayClient` class. The legacy HTTP-only `DBay` entry has
 been superseded.
 """
 
-from .client import DBayClient, DBayError  # noqa: F401
+from .client import DBayClient, DBayError, Mode  # noqa: F401
 from .modules.dac4d import dac4D  # noqa: F401
 from .modules.dac16d import dac16D  # noqa: F401
 from .modules.empty import Empty  # noqa: F401
@@ -23,4 +23,5 @@ __all__ = [
 	"HIC4",
 	"ADC4D",
 	"DAC4ETH",
+	"Mode"
 ]

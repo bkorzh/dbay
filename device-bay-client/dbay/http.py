@@ -21,3 +21,12 @@ class Http:
             return response.json()
         else:
             raise Exception(f"Failed to put data to {endpoint}")
+
+    def post(self, endpoint: str, data: dict):
+        response = requests.post(
+            f"http://{self.server_address}:{self.port}/{endpoint}", json=data
+        )
+        if response.status_code == 200:
+            return response.json()
+        else:
+            raise Exception(f"Failed to put data to {endpoint}")
