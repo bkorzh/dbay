@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "de4c7fe72b332087",
+        "id": "434d022bd8dc8000",
         "type": "tabs",
         "children": [
           {
-            "id": "c271d2f563cf325d",
+            "id": "35658a4036661935",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Development/Development.md",
+                "file": "Quickstart/Setup the Control Module Hardware and Firmware.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Development"
+              "title": "Setup the Control Module Hardware and Firmware"
             }
           }
         ]
@@ -94,8 +94,8 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Development/Development.md",
-                "collapseAll": false,
+                "file": "Quickstart/Setup the Control Module Hardware and Firmware.md",
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Development"
+              "title": "Backlinks for Setup the Control Module Hardware and Firmware"
             }
           },
           {
@@ -140,21 +140,25 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Development/Development.md"
+                "file": "Quickstart/Setup the Control Module Hardware and Firmware.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Development"
+              "title": "Outline of Setup the Control Module Hardware and Firmware"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -163,16 +167,33 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c271d2f563cf325d",
+  "active": "35658a4036661935",
   "lastOpenFiles": [
-    "Development/Tutorial - creating a new module.md",
+    "Quickstart/Writing documentation.md",
+    "Quickstart/Untitled.md",
+    "Quickstart/Setup the Control Module Hardware and Firmware.md",
+    "Untitled 1.base",
+    "Development/Development Setup.md",
+    "Quickstart/Install a Module.md",
+    "Development/Untitled.md",
     "Development/Development.md",
+    "Modules/5 Channel ADC (adc4D).md~",
+    "Untitled.base",
+    "attachments/menu_bar.png",
+    "attachments/Screenshot from 2026-01-14 10-20-34.png",
     "Development/Software frontend and backend.md",
-    "Tauri.md",
     "Quickstart/Install and run.md",
-    "index.md",
     "Modules/16 Channel Differential (dac16D).md",
+    "Modules/5 Channel ADC (adc4D).md",
+    "Tutorial - creating a new module.md",
     "Modules/4 Channel Differential (dac4D).md",
+    "attachments/2025_12_11_address_switch.jpg",
+    "index.md",
+    "Quickstart/Tutorial - creating a new module.md",
+    "Quickstart/Setting Up the Control Module Firmware.md",
+    "Quickstart/select_teensy.png",
+    "select_teensy.png",
+    "Tauri.md",
     "attachments/IMG_20240620_121948.jpg",
     "Development/Index.md",
     "attachments/dac16D_icon.svg",
@@ -180,7 +201,6 @@
     "attachments/4_channel_vsource_hr.png",
     "Modules",
     "Usage",
-    "Quickstart/Writing documentation.md",
     "Software/Install and Use.md",
     "Quickstart",
     "info/info.md",
@@ -189,7 +209,6 @@
     "info/index.md",
     "Software",
     "attachments/dbay_logo.png",
-    "attachments/set_to_attachments.png",
     "attachments",
     "index.md.md"
   ]

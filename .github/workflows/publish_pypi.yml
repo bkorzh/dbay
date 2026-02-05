@@ -25,12 +25,12 @@ jobs:
       
       - name: Build package
         run: |
-          cd device-bay-client
+          cd software/client
           uv build
       
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: device-bay-client/dist/
+          packages-dir: software/client/dist/
           # No need to provide PyPI token when using trusted publishing with id-token: write permission
 
