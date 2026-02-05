@@ -1,0 +1,24 @@
+[project]
+name = "dbaybackend"
+version = "0.1.2"
+description = "backend server for the Device Bay electronics system"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "dbay",
+    "fastapi[standard]>=0.115.6",
+    "psutil>=6.1.0",
+    "pyinstaller>=6.11.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0", # Required by FastAPI TestClient
+]
+
+[tool.uv.sources]
+dbay = { path = "../../client", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
