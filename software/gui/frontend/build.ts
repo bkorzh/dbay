@@ -227,6 +227,29 @@ if (values.tauri || values.all) {
         }
     }
 
+    // Dynamically generate frag.wxs with the correct absolute path for this machine
+    if (process.platform === "win32") {
+        const fragPath = path.join(current_directory, "src-tauri", "windows", "fragments", "frag.wxs");
+        const dbaybackendPath = path.join(current_directory, "src-tauri", "target", "release", "resources", "dbaybackend");
+        const fragContent = `<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:fire="http://schemas.microsoft.com/wix/FirewallExtension">
+  <Fragment>
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="FirewallExceptions" Guid="de95bf40-7d9c-4ee6-8c47-1a06f3b7ebe3">
+        <File Id="DbayBackendExe" 
+                Source="${dbaybackendPath}"
+                KeyPath="yes"/>
+        <fire:FirewallException Id="PayloadAgentTCP" File="DbayBackendExe"  Name="Payload (TCP)" Profile="all" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
+        <fire:FirewallException Id="PayloadAgentUDP" File="DbayBackendExe" Name="Payload (UDP)" Profile="all" Protocol="udp" Scope="any" IgnoreFailure="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>
+`;
+        await Bun.write(fragPath, fragContent);
+        console.log('\x1b[33m >>>>> Generated frag.wxs with Source path: ' + dbaybackendPath + ' \x1b[0m');
+    }
+
     console.log('\x1b[33m >>>>> Building tauri installers \x1b[0m');
     await $`bun run tauri build`;
 }

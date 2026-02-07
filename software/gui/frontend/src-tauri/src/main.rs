@@ -88,9 +88,10 @@ fn main() {
             let pid_state = Arc::clone(&pid_state);
             move |_window, event| {
                 if let tauri::WindowEvent::CloseRequested { .. } = event {
+                    // Take the PID out (replace with None) so RunEvent::Exit won't kill again
                     let pid = {
-                        let pid = pid_state.lock().unwrap();
-                        *pid
+                        let mut pid = pid_state.lock().unwrap();
+                        pid.take()
                     };
 
                     if let Some(pid) = pid {
@@ -109,9 +110,10 @@ fn main() {
             let pid_state = Arc::clone(&pid_state);
             move |_app_handle, event| {
                 if let RunEvent::Exit = event {
+                    // Only kill if CloseRequested didn't already handle it
                     let pid = {
-                        let pid = pid_state.lock().unwrap();
-                        *pid
+                        let mut pid = pid_state.lock().unwrap();
+                        pid.take()
                     };
 
                     if let Some(pid) = pid {
@@ -142,10 +144,11 @@ fn kill_process(pid: u32) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(windows)]
     {
         let pid_str = pid.to_string();
-        println!("Sending taskkill to process with PID: {}", pid_str);
+        println!("Sending taskkill to process tree with PID: {}", pid_str);
 
         let mut kill = Command::new("taskkill")
-            .args(["/PID", &pid_str, "/F"])
+            .args(["/PID", &pid_str, "/T", "/F"])
+            .creation_flags(0x08000000) // CREATE_NO_WINDOW - prevents console flash
             .spawn()?;
         kill.wait()?;
     }
