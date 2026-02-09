@@ -1,6 +1,4 @@
-# Prerequisites:
-- Make sure you own a rack as specified in [[The Rack]]
-- Install the control module as described in [[Install the Control Module]]
+
 # 1. Setting the I2C Address
 
 The way modules are addressed changed during the development. 
@@ -40,7 +38,7 @@ With the serial monitor still open from  [[#3. Check if the Control Module Recog
 ```
 SETDEV [address] [device_type]
 ```
-with the address set in [[#1. Setting the I2C Address|Step 1]] and `device_type` is either `DAC4D`, `DAC16D` or TODO: what are the other devices?.  The parameter `device_type` is case-sensitive. 
+with the address set in [[#1. Setting the I2C Address|Step 1]] and `device_type` is either `DAC4D`, `DAC4D`, `DAC4ETH`, `DAC16D` 
 
 **Example:**
 When `device_type` was `DAC4D`, then the control module answers with
