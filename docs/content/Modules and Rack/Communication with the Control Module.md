@@ -5,8 +5,11 @@ The following commands can be used:
 
 To use in terminal: echo 'help' | netcat -u 192.168.0.108 8880 -w 1
 # USB-to-Serial communication
-- Baud rate: TODO
-- other settings: TODO
+ Use these settings:
+ - Baudrate: 9600 baud/s
+ - 8-bit data communication 
+ - no parity bits 
+ - one stop bit
 
 # Commands
 All commands and arguments are case-sensitive.
@@ -15,9 +18,7 @@ All commands and arguments are case-sensitive.
 ```
 help
 ```
-Returns a helpful information TODO: what exactly?
-
-Arguments: None
+Returns the available commands, the IP and MAC address.
 
 ```
 debug mode
@@ -34,7 +35,7 @@ Configures a module. This command has to be run before module-specific commands 
 
 Arguments:
 - `slot`: Slot of the rack. See [[The Rack#Usage of the Slots|Usage of the Slots]]. Allowed values range from 0 to 7.
-- `module_type`: Type of module. Currently, these values are allowed: `DAC4D`, TODO: complete list here
+- `module_type`: Type of module. Currently, these values are allowed: `DAC4D`, `DAC4D`, `DAC4D`, `DAC4ETH`, `DAC16D`.
 
 ```
 reset
