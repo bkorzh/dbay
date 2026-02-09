@@ -1,3 +1,5 @@
+TODO: update this
+
 The `software` used for controlling the UDP-connected VME rack, is a full-stack web application built with [svelte](https://svelte.dev/) for the frontend, and [FastAPI](https://fastapi.tiangolo.com/) for the backend. Because the software is web based, the GUI can be accessed on most devices including smartphones, and could be accessed remotely with a proper VPN setup. 
 
 ### Architecture

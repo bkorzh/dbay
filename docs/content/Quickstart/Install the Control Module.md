@@ -1,4 +1,10 @@
-# 1.  Install Arduino and Teensyduino
+# Prerequisites
+- Make sure you own a rack as specified in [[The Rack]]
+# 1 Insert the Module into the Rack
+Please make sure that the rack is switched off and disconnect it from the mains power supply.  Then insert the control module in its intended slot. It has to be installed in the rightmost slot (see picture below).
+![[rack_slots.svg]]
+
+# 2.  Install Arduino and Teensyduino
 ## On Linux
  Go to https://www.arduino.cc/en/software/ and download the Arduino IDE AppImage
 
@@ -12,7 +18,7 @@ chmod a+x arduino-ide_xxx.AppImage
 Go to https://www.pjrc.com/teensy/td_download.html and follow the instructions there to install Teensyduino.
 
 TODO: Other OS
-# 2. Load the Firmware
+# 3. Load the Firmware
 1. Make sure the rack containing the control module is powered and running.
 2. Connect the control module via USB to the computer
 3. Connect the control module via Ethernet to the local network.

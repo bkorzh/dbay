@@ -6,16 +6,17 @@ The repository layout:
   ├── docs
   ├── firmware
   ├── hardware
-  ├── software
-  |   ├── frontend
-  |   ├── backend
+  ├── readme
   ├── sites
+  ├── software
+  |   ├── client
+  |   ├── gui
 ```
 
 - The `docs` directory contains this documentation as an obsidian vault. During a commit to the main branch, the contents of `docs` is copied into corresponding folders in `sites/docs/` and built into a website with quartz.
 - The `firmware` folder contains code that is compiled and loaded onto microcontrollers in VME rack itself. 
 - The `hardware` folder contains information related to physical construction and design of the VME rack.
-- The `software` folder contains `frontend` code to show a graphical user interface in a web-browser or desktop app, and `backend` code written in python for keeping track of the state of the device-bay system. "State" includes which channels are currently turned on, and to what voltage, and which slot contains which module, and so on. 
+- The `software` folder contains `gui/frontend` code to show a graphical user interface in a web-browser or desktop app, and `gui/backend` code written in python for keeping track of the state of the device-bay system. "State" includes which channels are currently turned on, and to what voltage, and which slot contains which module, and so on.  The folder `client` contains code to access the device-bay system via user-written code.
 - The `sites/docs` directory contains the parent quartz website repository as a submodule. This way, the submodule only needs to be downloaded if the website is being built locally. For most development this likely isn't needed, and the work of building the website is handled by github actions. By using a submodule, the latest version of quartz is always used so that explicit updating steps are not required. The `sites/` directory could also contain files related to other websites in the future. 
 
 Follow the below steps to set up a local development environment.
@@ -115,7 +116,7 @@ INFO:     Uvicorn running on http://0.0.0.0:8345 (Press CTRL+C to quit)
 ```
 click on the IP address displayed or copy it in a browser to access the GUI.
 
-To connect to a control module, click on the Menu (three horizontal bars in the top-right) and then on *Re-initialize Source* . In the appearing box, enter the IP address of the control module (see [[Setup the Control Module Firmware]] to find the IP).
+To connect to a control module, click on the Menu (three horizontal bars in the top-right) and then on *Re-initialize Source* . In the appearing box, enter the IP address of the control module (see [[Install the Control Module]] to find the IP).
 
 You will have to add firewall rules on linux to access the web gui on another machine. For Ubuntu this would be
 ```bash
