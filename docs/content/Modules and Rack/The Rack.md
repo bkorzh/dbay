@@ -1,8 +1,7 @@
 
 # Rack Customisation
 
-The rack is custom made from VectorInc and is modified as specified in this document:
-[[2025_02_09_VectorInc_rack_specs_for_dbay.pdf]].
+The rack is custom made from VectorInc and is modified as specified in this document: TODO
 
 *Note:* Some pins of the connectors in the backplane are removed. This is necessary for the address circuitry to work (see [[Install a Module#1. Setting the I2C Address#1a. Current method]]).
 
