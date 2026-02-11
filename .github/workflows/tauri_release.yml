@@ -2,7 +2,19 @@ name: Build Tauri release assets
 
 on:
   release:
-    types: [published]
+    types: [published, prereleased]
+  workflow_dispatch:
+    inputs:
+      publish_assets:
+        description: Attach artifacts to a GitHub release
+        required: false
+        type: boolean
+        default: false
+      release_tag:
+        description: Release tag for publish step when publish_assets is true (vX.Y.Z)
+        required: false
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -18,20 +30,46 @@ jobs:
     outputs:
       tag: ${{ steps.validate.outputs.tag }}
       should_build: ${{ steps.validate.outputs.should_build }}
+      should_publish: ${{ steps.validate.outputs.should_publish }}
     steps:
-      - name: Validate release tag format
+      - name: Validate trigger inputs and publish mode
         id: validate
         run: |
-          TAG="${{ github.event.release.tag_name }}"
-          if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          SEMVER_REGEX='^v[0-9]+\.[0-9]+\.[0-9]+$'
+
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            TAG="${{ github.event.release.tag_name }}"
+            if [[ "$TAG" =~ $SEMVER_REGEX ]]; then
+              echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+              echo "should_build=true" >> "$GITHUB_OUTPUT"
+              echo "should_publish=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            echo "Release tag '$TAG' does not match v*.*.*; skipping workflow."
             echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-            echo "should_build=true" >> "$GITHUB_OUTPUT"
+            echo "should_build=false" >> "$GITHUB_OUTPUT"
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "Release tag '$TAG' does not match v*.*.*; skipping workflow."
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-          echo "should_build=false" >> "$GITHUB_OUTPUT"
+          # Manual workflow_dispatch always builds for debugging.
+          MANUAL_TAG="${{ github.event.inputs.release_tag }}"
+          MANUAL_PUBLISH="${{ github.event.inputs.publish_assets }}"
+          echo "should_build=true" >> "$GITHUB_OUTPUT"
+
+          if [[ "$MANUAL_PUBLISH" == "true" ]]; then
+            if [[ "$MANUAL_TAG" =~ $SEMVER_REGEX ]]; then
+              echo "tag=$MANUAL_TAG" >> "$GITHUB_OUTPUT"
+              echo "should_publish=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "::error::release_tag must match vX.Y.Z when publish_assets=true."
+              exit 1
+            fi
+          else
+            echo "tag=$MANUAL_TAG" >> "$GITHUB_OUTPUT"
+            echo "should_publish=false" >> "$GITHUB_OUTPUT"
+          fi
 
   build-tauri:
     needs: validate-release-tag
@@ -185,7 +223,7 @@ jobs:
       - validate-release-tag
       - build-tauri
       - build-flatpak
-    if: needs.validate-release-tag.outputs.should_build == 'true'
+    if: needs.validate-release-tag.outputs.should_build == 'true' && needs.validate-release-tag.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Download all build artifacts
