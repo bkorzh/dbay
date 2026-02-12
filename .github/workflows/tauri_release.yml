@@ -188,10 +188,10 @@ jobs:
             flatpak-builder
 
       - name: Add Flathub remote
-        run: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        run: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Install Flatpak runtime and SDK
-        run: flatpak install -y flathub org.gnome.Platform//46 org.gnome.Sdk//46
+        run: flatpak install --user -y flathub org.gnome.Platform//46 org.gnome.Sdk//46
 
       - name: Sync backend Python environment with uv
         working-directory: ${{ env.BACKEND_DIR }}
