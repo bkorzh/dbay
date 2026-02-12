@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - 'v*'  # Trigger on tags starting with 'v'
+      - 'py-v*.*.*'  # Trigger on Python client release tags only
 
 jobs:
   deploy:
@@ -25,6 +25,15 @@ jobs:
       
       - name: Build package
         run: |
+          TAG="${GITHUB_REF_NAME}"
+          EXPECTED_VERSION="${TAG#py-v}"
+          ACTUAL_VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' software/client/pyproject.toml | head -n 1)
+
+          if [ "$EXPECTED_VERSION" != "$ACTUAL_VERSION" ]; then
+            echo "Tag version ($EXPECTED_VERSION) does not match software/client/pyproject.toml version ($ACTUAL_VERSION)"
+            exit 1
+          fi
+
           cd software/client
           uv build
       

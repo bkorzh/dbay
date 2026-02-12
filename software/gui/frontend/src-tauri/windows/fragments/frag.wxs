@@ -4,7 +4,7 @@
     <DirectoryRef Id="TARGETDIR">
       <Component Id="FirewallExceptions" Guid="de95bf40-7d9c-4ee6-8c47-1a06f3b7ebe3">
         <File Id="DbayBackendExe" 
-                Source="C:\Users\hera\Documents\dbay\software\frontend\src-tauri\target\release\resources\dbaybackend"
+                Source="C:\Users\Andrew\Documents\dbay\software\gui\frontend\src-tauri\target\release\resources\dbaybackend"
                 KeyPath="yes"/>
         <fire:FirewallException Id="PayloadAgentTCP" File="DbayBackendExe"  Name="Payload (TCP)" Profile="all" Protocol="tcp" Scope="any" IgnoreFailure="yes" />
         <fire:FirewallException Id="PayloadAgentUDP" File="DbayBackendExe" Name="Payload (UDP)" Profile="all" Protocol="udp" Scope="any" IgnoreFailure="yes" />
@@ -12,4 +12,3 @@
     </DirectoryRef>
   </Fragment>
 </Wix>
-

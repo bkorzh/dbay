@@ -6,6 +6,9 @@
 # python_binary/
 resources/
 
+# frag.wxs is generated at build time with machine-specific absolute paths
+/windows/fragments/frag.wxs
+
 # ignore everything in /flatpak excep the manifest file
 /flatpak/*
 # !/flatpak/device-bay-flatpak-template.yml
