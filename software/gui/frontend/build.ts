@@ -221,7 +221,11 @@ if (values.tauri || values.all) {
 
         try {
             // Send SIGTERM signal
-            process.kill(pid);
+            if (pid !== undefined) {
+                process.kill(pid);
+            } else {
+                console.warn("Backend process PID unavailable; skipping kill.");
+            }
         } catch (error) {
             console.error(`Failed to kill process ${pid}:`, error);
         }
@@ -251,7 +255,13 @@ if (values.tauri || values.all) {
     }
 
     console.log('\x1b[33m >>>>> Building tauri installers \x1b[0m');
-    await $`bun run tauri build`;
+    const tauri_bundle_targets = process.env.TAURI_BUNDLE_TARGETS?.trim();
+    if (tauri_bundle_targets) {
+        console.log(`\x1b[33m >>>>> Using Tauri bundle targets override: ${tauri_bundle_targets} \x1b[0m`);
+        await $`bun run tauri build --bundles ${tauri_bundle_targets}`;
+    } else {
+        await $`bun run tauri build`;
+    }
 }
 
 if (values.flatpak) {

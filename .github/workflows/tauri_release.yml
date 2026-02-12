@@ -11,7 +11,7 @@ on:
         type: boolean
         default: false
       release_tag:
-        description: Release tag for publish step when publish_assets is true (vX.Y.Z)
+        description: Release tag for publish step when publish_assets is true (gui-vX.Y.Z)
         required: false
         type: string
         default: ""
@@ -35,18 +35,18 @@ jobs:
       - name: Validate trigger inputs and publish mode
         id: validate
         run: |
-          SEMVER_REGEX='^v[0-9]+\.[0-9]+\.[0-9]+$'
+          GUI_TAG_REGEX='^gui-v[0-9]+\.[0-9]+\.[0-9]+$'
 
           if [[ "${{ github.event_name }}" == "release" ]]; then
             TAG="${{ github.event.release.tag_name }}"
-            if [[ "$TAG" =~ $SEMVER_REGEX ]]; then
+            if [[ "$TAG" =~ $GUI_TAG_REGEX ]]; then
               echo "tag=$TAG" >> "$GITHUB_OUTPUT"
               echo "should_build=true" >> "$GITHUB_OUTPUT"
               echo "should_publish=true" >> "$GITHUB_OUTPUT"
               exit 0
             fi
 
-            echo "Release tag '$TAG' does not match v*.*.*; skipping workflow."
+            echo "Release tag '$TAG' does not match gui-v*.*.*; skipping workflow."
             echo "tag=$TAG" >> "$GITHUB_OUTPUT"
             echo "should_build=false" >> "$GITHUB_OUTPUT"
             echo "should_publish=false" >> "$GITHUB_OUTPUT"
@@ -59,11 +59,11 @@ jobs:
           echo "should_build=true" >> "$GITHUB_OUTPUT"
 
           if [[ "$MANUAL_PUBLISH" == "true" ]]; then
-            if [[ "$MANUAL_TAG" =~ $SEMVER_REGEX ]]; then
+            if [[ "$MANUAL_TAG" =~ $GUI_TAG_REGEX ]]; then
               echo "tag=$MANUAL_TAG" >> "$GITHUB_OUTPUT"
               echo "should_publish=true" >> "$GITHUB_OUTPUT"
             else
-              echo "::error::release_tag must match vX.Y.Z when publish_assets=true."
+              echo "::error::release_tag must match gui-vX.Y.Z when publish_assets=true."
               exit 1
             fi
           else
@@ -71,8 +71,58 @@ jobs:
             echo "should_publish=false" >> "$GITHUB_OUTPUT"
           fi
 
-  build-tauri:
+  validate-gui-version-files:
     needs: validate-release-tag
+    if: needs.validate-release-tag.outputs.should_build == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate GUI tag version matches tauri and cargo
+        run: |
+          TAG="${{ needs.validate-release-tag.outputs.tag }}"
+          if [[ -z "$TAG" ]]; then
+            echo "No release tag supplied; skipping version match check."
+            exit 0
+          fi
+
+          EXPECTED_VERSION="${TAG#gui-v}"
+          export EXPECTED_VERSION
+          python3 - <<'PY'
+          import os
+          import json
+          import pathlib
+          import re
+          import sys
+
+          expected_version = os.environ["EXPECTED_VERSION"]
+          tauri_conf = pathlib.Path("software/gui/frontend/src-tauri/tauri.conf.json")
+          cargo_toml = pathlib.Path("software/gui/frontend/src-tauri/Cargo.toml")
+
+          tauri_version = json.loads(tauri_conf.read_text(encoding="utf-8"))["version"]
+          cargo_text = cargo_toml.read_text(encoding="utf-8")
+          match = re.search(r"(?ms)^\[package\]\s*.*?^version\s*=\s*\"([^\"]+)\"", cargo_text)
+          if not match:
+              print("::error::Could not find [package].version in Cargo.toml")
+              sys.exit(1)
+          cargo_version = match.group(1)
+
+          if tauri_version != cargo_version:
+              print(f"::error::Version mismatch: tauri.conf.json={tauri_version}, Cargo.toml={cargo_version}")
+              sys.exit(1)
+
+          if expected_version != tauri_version:
+              print(f"::error::Tag version {expected_version} does not match GUI version {tauri_version}")
+              sys.exit(1)
+
+          print(f"Validated GUI version {expected_version} against tauri.conf.json and Cargo.toml")
+          PY
+
+  build-tauri:
+    needs:
+      - validate-release-tag
+      - validate-gui-version-files
     if: needs.validate-release-tag.outputs.should_build == 'true'
     strategy:
       fail-fast: false
@@ -148,7 +198,9 @@ jobs:
           if-no-files-found: error
 
   build-flatpak:
-    needs: validate-release-tag
+    needs:
+      - validate-release-tag
+      - validate-gui-version-files
     if: needs.validate-release-tag.outputs.should_build == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -221,6 +273,7 @@ jobs:
   publish-release-assets:
     needs:
       - validate-release-tag
+      - validate-gui-version-files
       - build-tauri
       - build-flatpak
     if: needs.validate-release-tag.outputs.should_build == 'true' && needs.validate-release-tag.outputs.should_publish == 'true'
