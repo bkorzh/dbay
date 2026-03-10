@@ -1,10 +1,13 @@
-<script>
+<script lang="ts">
+  interface Props {
+    onclick?: (event: MouseEvent) => void;
+  }
 
- let { onclick } = $props()
+  let { onclick }: Props = $props();
 
-function handleKeyDown(event) {
+  function handleKeyDown(event: KeyboardEvent) {
     if (event.key === "Enter" || event.key === " ") {
-      event.target.click();
+      (event.currentTarget as HTMLDivElement).click();
     }
   }
 </script>

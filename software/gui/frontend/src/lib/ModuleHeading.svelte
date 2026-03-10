@@ -24,12 +24,12 @@
 
     let glowColor: string | null = $state("");
 
-    let iconElement = $state(null) as unknown as HTMLElement;
+    let iconElement = $state<HTMLElement>(null!);
     let showDropdown = $state(false);
     let menuLocation = $state({ top: 0, left: 0 });
     // let dynamic_coor_name = $state("dynamic-color" + icon_name);
 
-    let el; // reference to an element inside the component
+    let el: HTMLDivElement | null = null;
 
     function toggleMenu() {
       console.log("toggleing")

@@ -146,7 +146,7 @@
     </div>
     {#if ch.editing}
         <div class="right-editing">
-            <SubmitButton onclick={() => ch.onSubmit(onChannelChange)}
+            <SubmitButton onclick={() => ch.onSubmit()}
                 >Submit</SubmitButton
             >
             <GeneralButton onclick={exitEditing}>Cancel</GeneralButton>

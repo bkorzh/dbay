@@ -16,7 +16,7 @@
     // let toggle_up = $state(false);
     // let toggle_down = $state(true);
     let isConsistentHovering = $state(false);
-    let hoverTimeout: number;
+    let hoverTimeout: ReturnType<typeof setTimeout> | undefined;
 
     function togglerRotateState() {
         if (onChevronClick) onChevronClick();
@@ -29,10 +29,10 @@
 
 
     $effect(() => {
-        clearTimeout(hoverTimeout);
-        isHovering = isHovering;
+        if (hoverTimeout) {
+            clearTimeout(hoverTimeout);
+        }
         hoverTimeout = setTimeout(() => {
-            
             isConsistentHovering = isHovering;
         }, 200);
     });

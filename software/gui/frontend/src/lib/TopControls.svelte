@@ -1,7 +1,3 @@
-<script lang="ts" context="module">
-  import "../app.css";
-</script>
-
 <script lang="ts">
   import LightDarkToggle from "./buttons/LightDarkToggle.svelte";
   import LightDarkToggleFG from "./buttons/LightDarkToggleFG.svelte";

@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-    import "../app.css";
     export let activated;
 </script>
 

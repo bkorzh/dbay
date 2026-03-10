@@ -19,12 +19,12 @@
 <button {onclick}
   class="{redGreen
     ? ui_state.colorMode
-      ? 'teal text-teal-500 hover:text-teal-400 border-teal-500 hover:bg-teal-900'
-      : 'teal text-teal-500 bg-teal-50 border-teal-500 hover:bg-teal-100'
+      ? 'teal text-teal-500 hover:text-teal-400 border-teal-500/50 hover:bg-teal-900'
+      : 'teal text-teal-500 bg-teal-50 border-teal-500/50 hover:bg-teal-100'
     : ui_state.colorMode
-      ? 'red text-red-500 hover:text-red-400 border-red-500 hover:bg-red-900'
-      : 'red text-red-500 bg-red-50 border-red-500 hover:bg-red-100'} 
-    text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
+      ? 'red text-red-500 hover:text-red-400 border-red-500/50 hover:bg-red-900'
+      : 'red text-red-500 bg-red-50 border-red-500/50 hover:bg-red-100'} 
+    text-s font-medium border-2 rounded px-4 py-1 button"
 
 >
   {@render children()}

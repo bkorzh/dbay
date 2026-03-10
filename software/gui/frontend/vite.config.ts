@@ -1,14 +1,11 @@
 import { defineConfig } from 'vite'
-// import postcss from './postcss.config.js';
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   // base: '/compiled_frontend/',  // You CAN'T use this for tauri builds...
-  plugins: [svelte()],
-  // css: {
-  //   postcss
-  // },
+  plugins: [tailwindcss(), svelte()],
   // build: {
   //   rollupOptions: {
   //     output: {

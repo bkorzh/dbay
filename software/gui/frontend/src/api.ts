@@ -16,7 +16,12 @@ import type { JsonSystemState, ServerInfo } from './state/systemState.svelte';
 // console.log(response.status); // e.g. 200
 // console.log(response.statusText); // e.g. "OK"
 
-let tauriFetch: typeof fetch | undefined;
+type FetchLike = (
+    input: string | URL | Request,
+    init?: RequestInit,
+) => Promise<Response>;
+
+let tauriFetch: FetchLike | undefined;
 
 
 // if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
@@ -26,7 +31,7 @@ if ('__TAURI_INTERNALS__' in window) {
     import('@tauri-apps/plugin-http').then(module => {
 
         console.log("using tuauri fetch");
-        tauriFetch = module.fetch;
+        tauriFetch = (input, init) => module.fetch(input, init);
 
 
         // tauriFetch = fetch
