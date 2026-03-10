@@ -5,6 +5,8 @@ title: Welcome to the Device Bay documentation
 ![[dbay_logo.png | center | 170]]
 
 
-Looking for an easy setup with minimal customization? Follow the [[Install and run]] tutorial to setup docker and run the webserver graphical user interface. 
+Use [[Development Setup]] to set up the current software development environment for the GUI and backend.
 
-Or, learn how to set up a [[Development]] environment to customize the GUI, webserver, or firmware. 
+For a high-level map of the software stack and codebase, see [[Software frontend and backend]].
+
+For a broader overview of the development section, start at [[Development]].

@@ -1,93 +1,196 @@
-The `software` used for controlling the UDP-connected VME rack, is a full-stack web application built with [svelte](https://svelte.dev/) for the frontend, and [FastAPI](https://fastapi.tiangolo.com/) for the backend. Because the software is web based, the GUI can be accessed on most devices including smartphones, and could be accessed remotely with a proper VPN setup. 
+# Software Frontend and Backend
 
-### Architecture
+Device Bay software is split into a reusable Python client package and a GUI application stack.
 
-Inside the `/frontend` folder, the web-based user interface is defined. By running a command in this folder, all code to operate this web-based software is compiled into several files which are placed in `/backend/dbay_control/`. The backend may then load and 'serve' this code. If you look inside the `package.json` file in `frontend`, you'll see that `npm run build` has been customized to compile the code with `vite build` and copy it to `/backend/snspd_bias_control/`. So anytime new frontend functionality is added and it's time to get it working with the backend, this command needs to be run.
+The GUI stack uses:
 
+- Svelte for the frontend
+- FastAPI for the backend
+- Tauri for the desktop shell
+- PyInstaller for packaging the backend executable
 
->[!info] Deprecated
->### Frontend Development
+## Software Layout
 
-The frontend code may be previewed and improved without interacting with the python backend. That is, the frontend is 'served' by node (a javascript runtime) instead of the the python backend. The only difference is that the frontend will load a dummy 'fallback state' that doesn't correspond to any state shared with the python backend.
-
-node and npm need to be installed
-
-```shell
-cd frontend
-npm install
-npm run dev
+```folder
+software/
+├── client/
+│   ├── dbay/
+│   ├── README.md
+│   └── pyproject.toml
+└── gui/
+    ├── backend/
+    │   ├── backend/
+    │   ├── pyproject.toml
+    │   └── uv.lock
+    ├── frontend/
+    │   ├── src/
+    │   ├── src-tauri/
+    │   ├── build.ts
+    │   ├── develop.ts
+    │   └── package.json
+    ├── build.sh
+    ├── dev-browser.sh
+    └── dev-tauri.sh
 ```
 
-Building the 'look' of a new module in the GUI is fastest by adding it to the fallback state located in `frontend/src/fallbackState.ts`, and watching for changes while the `npm run dev` development server is running.
+## What Each Part Does
 
->[!info] Deprecated
->#### Running the python server
+### `software/client/`
 
-Using `npm run dev` in the `/frontend` folder does not make use of the python backend at all. The 'backend' is needed to rout commands from the web browser to the hardware, and to be the official source of truth for the 'state' of the device bay system (what modules are plugged in, what voltages and channels are activated or powered, etc.)
+This is the reusable Python `dbay` package.
 
-If the frontend had been updated in some way, it will have to be recompiled by running `npm run build` in the frontend folder, thereby populating `/backend/snspd_bias_control/` with new html and javascript to serve.
+It supports two usage styles:
 
+- GUI mode: talk to the FastAPI backend over HTTP
+- direct mode: talk to the hardware directly over UDP or serial
 
-Use anaconda or pip to install dependencies. For pip:
+The GUI backend also uses this package internally, so it is not just an external SDK.
+
+### `software/gui/frontend/`
+
+This contains:
+
+- the Svelte user interface
+- the Bun and Vite development workflow
+- the Tauri desktop application wrapper in `src-tauri/`
+
+During browser development, the frontend runs on the Vite dev server.
+
+During packaged builds, the compiled frontend assets are copied into the backend's static asset directory so the backend can serve them.
+
+### `software/gui/backend/`
+
+This contains:
+
+- the FastAPI server
+- the shared backend state models
+- module routers and module-specific controller logic
+- PyInstaller packaging configuration
+
+The backend is the source of truth for the current system state and exposes the HTTP API used by the frontend.
+
+## Runtime Architecture
+
+```mermaid
+flowchart LR
+    Frontend["SvelteFrontend"] -->|"HTTP JSON"| Backend["FastAPIBackend"]
+    Backend -->|"shared state and module endpoints"| State["SystemState"]
+    Backend -->|"direct-mode bridge"| Client["dbayPythonPackage"]
+    Client -->|"UDP / serial"| Hardware["DeviceBayHardware"]
+    Tauri["TauriDesktopShell"] -->|"hosts frontend and starts backend sidecar"| Backend
+```
+
+### Browser Development
+
+- `software/gui/frontend/develop.ts` starts the FastAPI backend on port `8345`
+- the same script then starts the Vite dev server on port `5173`
+- the frontend talks to the backend over HTTP
+- this path does not require a prebuilt static frontend, because Vite serves the UI directly
+
+### Tauri Development
+
+- the same development script starts the backend
+- Tauri opens a native desktop window using the frontend code
+- the Tauri shell is only needed for desktop app work
+
+### Packaged Desktop App
+
+- the frontend is built into static assets
+- the backend is packaged into a standalone executable with PyInstaller
+- the Tauri app bundles that backend executable as a sidecar
+- `src-tauri/src/main.rs` starts the bundled backend when the desktop app launches
+
+### Backend Static Serving
+
+When the backend serves the UI directly, it expects built frontend files to exist in:
+
+- `software/gui/backend/backend/compiled_frontend/`
+
+That directory is populated by the frontend build step.
+
+Until that build has been run at least once, the backend does not have the compiled `index.html` and asset files it needs to serve the UI directly.
+
+## Main Entry Points
+
+- `software/gui/frontend/package.json` defines the frontend, development, and build scripts
+- `software/gui/frontend/develop.ts` is the main development launcher
+- `software/gui/backend/backend/main.py` is the FastAPI entrypoint
+- `software/gui/frontend/src-tauri/src/main.rs` is the native desktop entrypoint
+
+## State and API Model
+
+The frontend uses `software/gui/frontend/src/api.ts` to call backend endpoints such as:
+
+- `/full-state`
+- `/initialize-vsource`
+- `/server-info`
+
+The backend keeps the shared system state in Pydantic models under `software/gui/backend/backend/`.
+
+Module-specific HTTP routes are registered in `main.py`, and the available module types are centrally registered in `software/gui/backend/backend/module_registry.py`.
+
+There is also a helper script at `software/gui/backend/backend/pydantic_to_typescript.py` for generating TypeScript interfaces from some backend Pydantic models used by the frontend addons.
+
+## Build and Packaging Flow
+
+### Frontend Build
+
+`software/gui/frontend/build.ts --frontend`:
+
+- runs `vite build`
+- copies the built assets into `software/gui/backend/backend/compiled_frontend/`
+
+### Backend Build
+
+`software/gui/frontend/build.ts --backend`:
+
+- runs PyInstaller inside `software/gui/backend/`
+- creates the packaged backend executable
+
+### Tauri Build
+
+`software/gui/frontend/build.ts --tauri`:
+
+- moves the packaged backend into `software/gui/frontend/src-tauri/resources/`
+- builds desktop installers with Tauri
+
+### Build Wrapper Script
+
+For macOS and Linux, use:
+
+- `software/gui/build.sh`
+
+It is a thin wrapper around the existing Bun scripts in `software/gui/frontend/package.json`.
+
+Examples:
 
 ```bash
-pip install --no-cache-dir --upgrade -r requirements.txt
-cd backend
-python main.py
-```
-## Development Process
-
-To create the software for a new module, code in both `/frontend` and `/backend` must be added. This is an iterative process that often begins with defining what structs or data packets will be sent and received from what endpoints (e.g. `/dac16D/vsource/`). Here's some steps that don't necessarily need to happen in this order:
-
-1. Create a new ui file `{module_name}.svelte` and core logic file `{module_name}_data.svelte.ts` in `frontend/src/lib/modules_dbay`. The `{module_name}_data.svelte.ts` may make use of the 'addon' classes defined in `frontend/src/lib/addons`. The `frontend/src/lib/modules_dbay/index.svelte.ts` file must also be updated. Include the imports:
-
-```ts
-import { default as {module_name}_component } from './{module_name}.svelte'
-import { {module_name} } from './{module_name}_data.svelte'
+./software/gui/build.sh frontend
+./software/gui/build.sh backend
+./software/gui/build.sh tauri
+./software/gui/build.sh all
 ```
 
-And add the new module/module_component to the `components` and `modules` objects defined below in the same file.
-## Module data structure.
+Use these targets as follows:
 
-Module state is defined with a simple hierarchy of dataclasses (python) or objects (javascript/typescript). It's easiest to see the basic structure in `backend/state.py`
+- `frontend` builds the web UI and populates `software/gui/backend/backend/compiled_frontend/`
+- `backend` packages the backend with PyInstaller
+- `tauri` builds the Tauri installers
+- `all` runs the frontend, backend, and Tauri build flow in sequence
 
-```python
-class IModule(BaseModel):
-core: Core
-vsource: IVsourceAddon | None
-vsense: IVsenseAddon | None
-```
+If you want the FastAPI backend to serve the built UI directly, run the `frontend` build first.
 
-Both `IVsourceAddon` and `IVsenseAddon` contain a list of channels, each of which has a number of associated properties like `index`, `heading_text`, and `activated`.
+## Development Entry Points
 
-2. Create a new python file in `backend/backend/modules/` with name `{module_name}.py`. This python file may import datastructures from `backend/addons`. It must define a `router` using `APIRouter(prefix="/{module_name}", ...)` imported from `fastapi`. This router must also be imported into the `main.py` file (e.g. with `from .modules import {module_name}`), and 'connected' with the rest of the application using `app.include_router({module_name}.router)`.
+For day-to-day development, use:
 
-NOTE: a library called `pydantic2ts` is used to transform the datastructures found in the addon files like `/backend/addons/vsource.py` to `interface.ts` files found in `frontend/src/lib/addons` (Note: I'm using a [fork](https://pypi.org/project/pydantic-to-typescript2/) of the original `pydantic2ts` library that supports pydantic >= 2.0). This ensures that the frontend and backend code agree on the 'shape' of data packets sent between them. If files like `/backend/addons/vsource.py` are changed, or new datastructures are defined for get/put requests, then `backend/pydantic_to_typescript.py` should be rerun and possibly updated. Because `pydantic2ts` converts from python to typescript, it makes sense to (1) get your data strucutres defined first in python with pydantic classes, (2) modify `backend/pydantic_to_typescript.py` to create a corresponding `interface.ts` file somewhere inside `frontend/`, and (3) work on the frontend code to use the datastructure from the newly modified/created `interface.ts` file.
+- `software/gui/build.sh` for macOS and Linux build tasks
+- `software/gui/dev-browser.sh` for browser-based development on macOS and Linux
+- `software/gui/dev-tauri.sh` for Tauri development on macOS and Linux
+- the underlying Bun scripts directly on Windows or when you want finer control
 
+## Next Guide
 
->[!info] Deprecated
->## Docker Development Notes
+This page is only a high-level software overview.
 
-*Commands and notes related to building the docker container*
-
-The uploaded docker image was built on an ARM-based macbook. In order to build an image that will run on an x86-64 platform, you have to use `buildx`, a feature for multi-architecture builds.
-
-```shell
-# Create a new builder instance
-docker buildx create --name mybuilder
-# Switch to the new builder instance
-docker buildx use mybuilder
-# Start up the builder instance
-docker buildx inspect --bootstrap
-# build the image and pull it to the local docker desktop (?)
-docker buildx build --platform linux/amd64 -t sansseriff/dbay . --load
-```
-
-Then with the docker desktop utility, publish the image to dockerhub. This way works without signing issues. If I used the --push option for that last command, then the built container had signing issues. I would get this error when trying to pull:
-
-```shell
-Trying to pull repository docker.io/sansseriff/dbay ...
-missing signature key
-```
-
-
+The detailed guide for creating a brand new custom module should live separately, after the development environment and architecture docs are stable.

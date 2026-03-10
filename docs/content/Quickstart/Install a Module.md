@@ -55,9 +55,6 @@ Now, you can send module-specific commands via serial communication.
 
 ## Option 2: In the Frontend
 ### With the development environment
-If you have the development environment set up ([[Development Setup]]), start the UI by following [[Development Setup#5. Start the Application]]. 
+If you have the development environment set up, start the UI by following [[Development Setup#Browser Development]]. 
 
 In the UI, click on the menu bar (![[menu_bar.png]]) and select *Add a module*. Then, in the newly opened box, select the module slot (it is the address value +1). Then select the module type and click *Add Module*.
-
-### With Docker
-TODO test and write

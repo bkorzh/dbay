@@ -5,6 +5,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+import logging
 
 import multiprocessing
 import socket
@@ -27,6 +28,14 @@ from backend.location import WEB_DIR
 logger = get_logger(__name__)
 SERVE_PORT = 8345  # something a little random/unique
 mimetypes.init()
+
+
+class IgnoreFullStateFilter(logging.Filter):
+    def filter(self, record: logging.LogRecord) -> bool:
+        return 'GET /full-state' not in record.getMessage()
+
+
+logging.getLogger("uvicorn.access").addFilter(IgnoreFullStateFilter())
 
 
 class ModuleAddition(BaseModel):

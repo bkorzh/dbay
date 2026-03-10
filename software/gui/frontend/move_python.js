@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const sourceDir = path.join(__dirname, 'dist');
-const targetDir = path.join(__dirname, '../backend/backend/dbay_control');
+const targetDir = path.join(__dirname, '../backend/backend/compiled_frontend');
 
 // Remove the target directory if it exists
 fs.remove(targetDir)

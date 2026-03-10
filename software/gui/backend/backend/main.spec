@@ -12,7 +12,7 @@ a = Analysis(
     binaries=[],
     datas=[
         ('config/vsource_params.json', 'config'),
-        ('dbay_control/', 'dbay_control'),
+        ('compiled_frontend/', 'compiled_frontend'),
         ('modules/', 'modules'),  # Include module spec files for dynamic loading
     ],
     hiddenimports=['dbay', 'dbay.client', 'dbay.direct', 'dbay.http', 'dbay.state', 

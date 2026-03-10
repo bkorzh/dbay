@@ -4,4 +4,4 @@ dist/
 
 backend/file.log
 
-backend/dbay_control/assets/
+backend/compiled_frontend/assets/
