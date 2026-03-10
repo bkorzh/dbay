@@ -54,9 +54,10 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    const isTauriOrVite = '__TAURI_INTERNALS__' in window;
-    const fullUrl = isTauriOrVite ? `${baseUrl}${url}` : url;
-    const fetchFunction = isTauriOrVite && tauriFetch ? tauriFetch : window.fetch;
+    const isTauri = '__TAURI_INTERNALS__' in window;
+    const useBackendBaseUrl = isTauri || import.meta.env.DEV;
+    const fullUrl = useBackendBaseUrl ? `${baseUrl}${url}` : url;
+    const fetchFunction = isTauri && tauriFetch ? tauriFetch : window.fetch;
 
     console.log("fullUrl: ", fullUrl);
 
