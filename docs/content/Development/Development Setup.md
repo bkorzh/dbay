@@ -119,6 +119,21 @@ uv python install 3.11
 uv sync
 ```
 
+## Why This Project Standardizes on `uv`
+
+This project intentionally standardizes on `uv` instead of supporting multiple Python environment managers.
+
+Reasons:
+
+- the backend already declares its dependencies in `software/gui/backend/pyproject.toml`
+- the backend development scripts already run through `uv`
+- the CI and release workflow already use `uv sync`
+- consistent environment creation helps keep local development and PyInstaller packaging reproducible
+
+That last point matters here. The packaged GUI depends on PyInstaller collecting the right Python environment contents into the backend executable. If contributors build the environment in different ways, the resulting installed packages and interpreter layout can differ, which makes packaged builds less predictable.
+
+If you are curious why `uv` is a strong default even outside this repository, this article is a good overview: [uv is the best thing to happen to the Python ecosystem in a decade](https://emily.space/posts/251023-uv).
+
 ## 4. Set Up the Frontend Environment
 
 From the repository root:
@@ -175,6 +190,14 @@ The same wrapper script also supports:
 
 ### Browser Development
 
+Browser development means:
+
+- the frontend is served by the Vite development server
+- the backend runs separately as an API server
+- you open the app in a normal web browser at `http://localhost:5173`
+
+This is usually the fastest way to work on the GUI and backend together.
+
 This mode starts:
 
 - the FastAPI backend on port `8345`
@@ -202,6 +225,21 @@ Then open:
 ```text
 http://localhost:5173
 ```
+
+### Supported Backend Startup Paths
+
+The supported ways to start the backend are the wrapper scripts and the FastAPI commands they call.
+
+Use one of these approaches:
+
+- `./software/gui/dev-browser.sh`
+- `./software/gui/dev-tauri.sh`
+- `uv run fastapi dev main.py ...`
+- `uv run fastapi run main.py ...`
+
+Do **not** treat `python software/gui/backend/backend/main.py` as the normal startup command.
+
+That file is part of the `backend` Python package, and running it directly as a plain script can lead to confusing import-path issues that do not occur with the supported FastAPI entrypoints.
 
 ### Tauri Development
 
@@ -317,6 +355,45 @@ uv sync
 ### Tauri fails to start or build
 
 This usually means Rust or native Tauri prerequisites are missing. Recheck the Tauri prerequisites guide for your operating system.
+
+### Running `main.py` directly gives import errors
+
+Use the supported startup commands above instead of running `python software/gui/backend/backend/main.py` directly.
+
+If you need to start only the backend manually, use a FastAPI command such as:
+
+```bash
+cd software/gui/backend/backend
+uv run fastapi dev main.py --port 8345 --host 0.0.0.0
+```
+
+or from the backend project root:
+
+```bash
+cd software/gui/backend
+uv run python -m backend.main
+```
+
+The FastAPI command is the preferred manual workflow.
+
+### Backend starts but complains that `compiled_frontend` assets are missing
+
+That means you are trying to use the backend's static-serving path before the frontend has been built into:
+
+- `software/gui/backend/backend/compiled_frontend/`
+
+Fix that by running:
+
+```bash
+./software/gui/build.sh frontend
+```
+
+or on Windows:
+
+```powershell
+cd software/gui/frontend
+bun run buildfrontend
+```
 
 ### Port `5173` or `8345` is already in use
 

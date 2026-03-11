@@ -82,6 +82,8 @@ flowchart LR
 
 ### Browser Development
 
+Here, "browser development" means the frontend is served by Vite during development and opened in a normal web browser, while the backend runs separately as an API server.
+
 - `software/gui/frontend/develop.ts` starts the FastAPI backend on port `8345`
 - the same script then starts the Vite dev server on port `5173`
 - the frontend talks to the backend over HTTP
@@ -110,12 +112,30 @@ That directory is populated by the frontend build step.
 
 Until that build has been run at least once, the backend does not have the compiled `index.html` and asset files it needs to serve the UI directly.
 
+This is why a developer who runs the backend outside the normal browser-dev workflow can see missing-assets errors or a blank page.
+
 ## Main Entry Points
 
 - `software/gui/frontend/package.json` defines the frontend, development, and build scripts
 - `software/gui/frontend/develop.ts` is the main development launcher
 - `software/gui/backend/backend/main.py` is the FastAPI entrypoint
 - `software/gui/frontend/src-tauri/src/main.rs` is the native desktop entrypoint
+
+## Supported Backend Startup
+
+For normal development, prefer:
+
+- `software/gui/dev-browser.sh`
+- `software/gui/dev-tauri.sh`
+
+If you need to start the backend manually, use the FastAPI entrypoints that the project already relies on, for example:
+
+```bash
+cd software/gui/backend/backend
+uv run fastapi dev main.py --port 8345 --host 0.0.0.0
+```
+
+Running `python software/gui/backend/backend/main.py` directly is not the supported workflow and can produce import-path errors that do not occur with the package-aware FastAPI commands.
 
 ## State and API Model
 
