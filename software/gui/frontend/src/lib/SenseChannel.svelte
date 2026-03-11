@@ -1,24 +1,6 @@
 <script lang="ts">
-  import { ui_state } from "../state/uiState.svelte";
-  import Button from "./buttons/Button.svelte";
-  import GeneralButton from "./buttons/GeneralButton.svelte";
-  import { requestChannelUpdate } from "../api";
-
-  import type { ChSenseState, VsenseChange } from "./addons/vsense/interface";
-
-  import { onMount } from "svelte";
-
-  import { system_state } from "../state/systemState.svelte";
-  import type { IModule } from "../state/systemState.svelte";
-
-  import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./buttons/MenuButton.svelte";
-
-  import { adc4D } from "./modules_dbay/adc4D_data.svelte";
   import { ChSenseStateClass } from "./addons";
-  import HorizontalDots from "./buttons/HorizontalDots.svelte";
-  import ChannelChevron from "./buttons/ChannelChevron.svelte";
-  import SenseDisplay from "./SenseDisplay.svelte";
   import SenseChannelContent from "./SenseChannelContent.svelte";
   import SenseChannelBar from "./SenseChannelBar.svelte";
   import type {

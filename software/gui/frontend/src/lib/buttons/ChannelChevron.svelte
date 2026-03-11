@@ -28,13 +28,26 @@
     let toggle_down = $derived(down);
 
 
+    // Workaround for Svelte 5.4+ effect scheduling: an effect that subscribes to
+    // isConsistentHovering ensures updates from the debounce timeout propagate
+    // to the template. Without this, the {#if} block may not re-render.
     $effect(() => {
+        void isConsistentHovering;
+    });
+
+    $effect(() => {
+        const currentHover = isHovering;
         if (hoverTimeout) {
             clearTimeout(hoverTimeout);
         }
         hoverTimeout = setTimeout(() => {
-            isConsistentHovering = isHovering;
+            isConsistentHovering = currentHover;
         }, 200);
+        return () => {
+            if (hoverTimeout) {
+                clearTimeout(hoverTimeout);
+            }
+        };
     });
 
 </script>
@@ -135,6 +148,7 @@
     }
 
     .chevron-container:hover {
+        cursor: pointer;
         background-color: var(--hover-heading-color);
     }
 

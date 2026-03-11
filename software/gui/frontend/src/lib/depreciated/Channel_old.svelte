@@ -4,6 +4,7 @@
 </script> -->
 
 <script lang="ts">
+    import { DropdownMenu } from "bits-ui";
     import { ui_state } from "../../state/uiState.svelte";
     // import { voltageStore } from "../stores/voltageStore"
     import Button from "../Button.svelte";
@@ -22,7 +23,6 @@
     import { system_state } from "../../state/systemState.svelte";
     import type { IModule } from "../../state/systemState.svelte";
 
-    import MenuSlotted from "../MenuSlotted.svelte";
     import MenuButton from "../MenuButton.svelte";
 
     import { dac4D } from "../modules_dbay/dac4D_data.svelte";
@@ -38,8 +38,6 @@
     let dac4d = system_state.data[module_index - 1] as dac4D;
     let ch = dac4d.vsource.channels[index - 1];
 
-    let dotMenu: HTMLElement;
-    let menuLocation = $state({ top: 0, left: 0 });
     let immediate_text: string = $state("");
     let integer = $derived(Math.round(Math.abs(ch.bias_voltage * 1000)));
     let thousands = $derived(integer % 10);
@@ -67,15 +65,6 @@
     );
 
     let showDropdown = $state(false);
-    function toggleMenu() {
-        showDropdown = !showDropdown;
-        const rect = dotMenu.getBoundingClientRect();
-        menuLocation = {
-            top: rect.top + window.scrollY,
-            left: rect.right + window.scrollX,
-        };
-        // console.log("menuLocation: ", menuLocation);
-    }
 
     async function validateUpdateVoltage(voltage: number) {
         if (voltage >= 5) {
@@ -230,45 +219,36 @@
             />
         </div>
         <div class="top-right">
-            <div
-                class="dot-menu"
-                onclick={toggleMenu}
-                onkeydown={toggleMenu}
-                bind:this={dotMenu}
-                role="button"
-                tabindex="0"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="21"
-                    height="21"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    class="bi bi-three-dots"
-                    viewBox="0 0 16 16"
-                >
-                    <path
-                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
-                        stroke-width="0.3"
-                    />
-                </svg>
-            </div>
-            <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
-            <!-- where 'something' is both a boolean in javascript and a class -->
-            {#if showDropdown}
-                <MenuSlotted
-                    onClick={toggleMenu}
-                    menuVisible={showDropdown}
-                    location={menuLocation}
-                >
-                    <MenuButton
-                        onclick={() => {
-                            updateChannel({ measuring: !ch.measuring });
-                            showDropdown = !showDropdown;
-                        }}>Toggle Measurement Mode</MenuButton
+            <DropdownMenu.Root bind:open={showDropdown}>
+                <DropdownMenu.Trigger class="dot-menu" aria-label="Channel actions">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="21"
+                        height="21"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        class="bi bi-three-dots"
+                        viewBox="0 0 16 16"
                     >
-                </MenuSlotted>
-            {/if}
+                        <path
+                            d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+                            stroke-width="0.3"
+                        />
+                    </svg>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Portal>
+                    <DropdownMenu.Content
+                        side="bottom"
+                        align="end"
+                        sideOffset={6}
+                        class="dropdown-content"
+                    >
+                        <MenuButton onclick={() => updateChannel({ measuring: !ch.measuring })}
+                            >Toggle Measurement Mode</MenuButton
+                        >
+                    </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+            </DropdownMenu.Root>
 
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -702,6 +682,18 @@
     .dot-menu:hover {
         cursor: pointer;
         background-color: var(--hover-heading-color);
+    }
+
+    .dropdown-content {
+        min-width: 13rem;
+        overflow: hidden;
+        border: 1.3px solid var(--outer-border-color);
+        border-radius: 0.5rem;
+        background-color: var(--body-color);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+        padding: 0.2rem;
+        outline: none;
+        z-index: 1000;
     }
 
     .chevron {

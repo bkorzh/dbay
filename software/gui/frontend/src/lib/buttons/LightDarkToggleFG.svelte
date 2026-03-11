@@ -46,7 +46,7 @@
 <button
   class="{ui_state.colorMode
     ? 'bg-gray-500 '
-    : ' bg-gray-300'} relative my-auto mx-1 mr-4 inline-flex h-[1.22rem] w-[2.25rem] shrink-0 rounded-full border-2 border-transparent duration-200 ease-in-out"
+    : ' bg-gray-300'} relative my-auto mx-1 mr-4 inline-flex h-[1.30rem] w-[2.32rem] shrink-0 rounded-full border-2 border-transparent duration-200 ease-in-out"
   on:click={toggle}
 >
   <span class="sr-only">Toggle Dark Mode</span>

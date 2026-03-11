@@ -18,7 +18,6 @@
   import { system_state } from "../state/systemState.svelte";
   import type { IModule } from "../state/systemState.svelte";
 
-  import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./buttons/MenuButton.svelte";
 
   import { dac4D } from "./modules_dbay/dac4D_data.svelte";

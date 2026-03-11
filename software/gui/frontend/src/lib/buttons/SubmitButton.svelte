@@ -23,7 +23,7 @@
   class="{ ui_state.colorMode
       ? 'blue border-blue-500/50 text-blue-500 hover:bg-blue-900 hover:text-blue-400'
       : 'blue border-blue-500/50 bg-blue-50 text-blue-500 hover:bg-blue-100'
-    } button rounded border-2 px-4 py-1.5 font-medium"
+    } button rounded border-[1.5px] px-2 py-[0.42rem] font-medium"
 {onclick}>
   {@render children()}
 </button>

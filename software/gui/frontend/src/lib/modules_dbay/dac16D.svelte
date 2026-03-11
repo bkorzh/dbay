@@ -19,7 +19,6 @@
 
   import ChannelChevron from "../buttons/ChannelChevron.svelte";
   import HorizontalDots from "../buttons/HorizontalDots.svelte";
-  import MenuSlotted from "../MenuSlotted.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
   import VerticalDots from "../buttons/VerticalDots.svelte";
   import ChannelBar from "../ChannelBar.svelte";

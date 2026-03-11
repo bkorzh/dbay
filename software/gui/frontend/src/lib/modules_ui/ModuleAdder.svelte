@@ -216,6 +216,7 @@
     padding: 0 0.6rem 0 0.5rem;
     margin-bottom: 0.75rem;
     border: 1.5px solid var(--inner-border-color);
+    border-radius: 0.55rem;
     background-color: var(--display-color);
     color: var(--text-color);
     cursor: pointer;
@@ -246,8 +247,8 @@
   }
 
   .trigger-icon {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 1.8rem;
+    height: 1.8rem;
     flex-shrink: 0;
   }
 
@@ -261,11 +262,13 @@
   .dropdown-content {
     background-color: var(--display-color);
     border: 1.5px solid var(--outer-border-color);
+    border-radius: 0.55rem;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
     min-width: var(--bits-dropdown-menu-anchor-width);
     padding: 0.25rem 0;
     z-index: 1000;
     outline: none;
+    overflow: hidden;
   }
 
   /* Items */
@@ -298,8 +301,8 @@
   }
 
   .module-icon {
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 2.5rem;
+    height: 2.5rem;
     flex-shrink: 0;
   }
 
