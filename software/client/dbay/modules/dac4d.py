@@ -12,6 +12,20 @@ class dac4D_spec(IModule):
     vsource: Optional[IVsourceAddon] = None  # optional in direct mode
 
 
+class dac4d_core:
+    """
+    Use this class if the GUI is not needed.
+
+    """
+
+    def set_voltage(self, channel: int, voltage: float, activated: Union[bool, None] = None):
+        """Set voltage on a channel using VSD (differential) command.
+
+        This is the standard voltage-setting method for dac4D.
+        """
+        todo: implement
+
+
 class dac4D:
     CORE_TYPE = "dac4D"
     """Dual-mode dac4D module wrapper.
