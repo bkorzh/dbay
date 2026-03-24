@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { DropdownMenu } from "bits-ui";
   import ChannelChevron from "./buttons/ChannelChevron.svelte";
   import HorizontalDots from "./buttons/HorizontalDots.svelte";
-  import MenuSlotted from "./MenuSlotted.svelte";
-  import MenuButton from "./buttons/MenuButton.svelte";
   import { ChSenseStateClass } from "./addons";
   import type {
     SenseChangerFunction,
@@ -33,27 +31,20 @@
     borderTop = false,
     onChevronClick,
     onChannelChange,
-    effect,
+    effect: channelEffect,
   }: Props = $props();
 
-  // override the onChannelChange function if it is passed as a prop
-  if (onChannelChange && ch) {
-    ch.onChannelChange = onChannelChange;
-  }
+  $effect(() => {
+    if (onChannelChange && ch) {
+      ch.onChannelChange = onChannelChange;
+    }
+  });
 
-  // override the effect function if it is passed as a prop. Used for updating other parts
-  // of a module after a channel has finished updating.
-  if (effect && ch) {
-    ch.effect = effect;
-  }
-
-  // let heading_editing = false;
-  let isEditing = false;
-  let isMounted = false;
-
-  let dotMenu = $state() as unknown as HTMLElement;
-  let menuLocation = $state({ top: 0, left: 0 });
-  // let showDropdown = $state(false);
+  $effect(() => {
+    if (channelEffect && ch) {
+      ch.effect = channelEffect;
+    }
+  });
 
   function handleInput(event: Event) {
     let target = event.target as HTMLInputElement;
@@ -63,30 +54,11 @@
 
   function handleKeyDown(event: KeyboardEvent) {
     if (event.key === "Enter") {
-      isEditing = false;
       if (ch) ch.updateChannel({ name: ch.immediate_text });
       const target = event.target as HTMLInputElement;
       target.blur();
     }
   }
-
-  function toggleMenu() {
-    showDropdown = !showDropdown;
-    const rect = dotMenu.getBoundingClientRect();
-    menuLocation = {
-      top: rect.top + window.scrollY,
-      left: rect.right + window.scrollX,
-    };
-  }
-
-  onMount(() => {
-    isMounted = true;
-    const rect = dotMenu.getBoundingClientRect();
-    menuLocation = {
-      top: rect.top + window.scrollY,
-      left: rect.right + window.scrollX,
-    };
-  });
 </script>
 
 <div
@@ -133,21 +105,27 @@
         {ch.voltage.toFixed(3)}V
       </div>
     {/if}
-    <HorizontalDots onclick={toggleMenu} onkeydown={toggleMenu} bind:dotMenu
-    ></HorizontalDots>
-    <!-- here, class:something is a special svelte way of pointing to a class which may be toggled. It is a shorthand for class:something={something} -->
-    <!-- where 'something' is both a boolean in javascript and a class -->
-    {#if showDropdown}
-      <MenuSlotted
-        onclick={toggleMenu}
-        menuVisible={showDropdown}
-        location={menuLocation}
-      >
-        {@render children()}
-      </MenuSlotted>
-    {/if}
-
-    <!-- <ChannelChevron bind:down={visible}></ChannelChevron> -->
+    <DropdownMenu.Root bind:open={showDropdown}>
+      <DropdownMenu.Trigger>
+        {#snippet child({ props }: { props: Record<string, unknown> })}
+          <HorizontalDots
+            triggerProps={props}
+            ariaLabel={staticName ?? (ch ? `Channel ${ch.index + 1} actions` : "Channel actions")}
+          />
+        {/snippet}
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content side="bottom" align="end" sideOffset={6}>
+          {#snippet child({ wrapperProps, props }: { wrapperProps: Record<string, unknown>; props: Record<string, unknown> })}
+            <div {...wrapperProps}>
+              <div {...props} class="dropdown-content">
+                {@render children()}
+              </div>
+            </div>
+          {/snippet}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   </div>
 </div>
 
@@ -198,6 +176,18 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .dropdown-content {
+    min-width: 13rem;
+    overflow: hidden;
+    border: 1.3px solid var(--outer-border-color);
+    border-radius: 0.5rem;
+    background-color: var(--body-color);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0.2rem;
+    outline: none;
+    z-index: 1000;
   }
 
   .heading-input {

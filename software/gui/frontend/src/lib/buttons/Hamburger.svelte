@@ -1,28 +1,27 @@
 <script lang="ts">
-    // import { writable } from 'svelte/store';
-    // import { componentInstance } from '../../state/componentInstanceStore'
+  interface MyProps {
+    triggerProps?: Record<string, unknown>;
+    burgerMenu?: HTMLButtonElement;
+    ariaLabel?: string;
+  }
 
-    // export let onClick;
-
-    interface MyProps {
-        onclick: () => void;
-        burgerMenu: any;
-    }
-    let { onclick, burgerMenu = $bindable() }: MyProps = $props();
-
-
-    function handleKeyDown(event: KeyboardEvent) {
-        if (event.key === "Enter" || event.key === " ") {
-            console.log("onclick: ", onclick)
-            onclick();
-        }
-    }
+  let {
+    triggerProps = {},
+    burgerMenu = $bindable(),
+    ariaLabel = "Open main menu",
+  }: MyProps = $props();
 </script>
 
-<div class="hamburger" onclick={onclick} onkeydown={handleKeyDown} bind:this={burgerMenu} role="button" tabindex="0">
+<button
+  type="button"
+  {...triggerProps}
+  class="hamburger"
+  bind:this={burgerMenu}
+  aria-label={ariaLabel}
+>
     <svg
-        class="h-5.5 w-6 my-1 mr-1"
-        viewBox="0 0 24 24"
+        class="h-5.5 w-6 my-2 mr-1"
+        viewBox="0 0 22 22"
         fill="none"
         stroke="currentColor"
         stroke-width="2.5"
@@ -31,7 +30,7 @@
     >
         <path d="M3 12h18M3 6h18M3 18h18" />
     </svg>
-</div>
+</button>
 
 <style>
     .hamburger {
@@ -41,6 +40,8 @@
         padding-left: 4px;
         padding-right: 4px;
         color: var(--text-color);
+        border: none;
+        background: transparent;
     }
 
     .hamburger:hover {

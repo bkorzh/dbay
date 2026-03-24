@@ -1,8 +1,19 @@
+<script lang="ts">
+  import type { Snippet } from "svelte";
+
+  interface Props {
+    children?: Snippet;
+  }
+
+  let { children }: Props = $props();
+</script>
 
 <div class="basic-block">
   <!-- you CAN NOT use the class name "container" because that means something in tailwind -->
   <div class="top-bar"><h1>Info</h1></div>
-    <slot></slot>
+  {#if children}
+    {@render children()}
+  {/if}
 </div>
 
 

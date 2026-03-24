@@ -1,23 +1,23 @@
 <script lang="ts">
+  interface Props {
+    triggerProps?: Record<string, unknown>;
+    dotMenu?: HTMLButtonElement;
+    ariaLabel?: string;
+  }
 
-    interface Props {
-        onclick: (e: MouseEvent) => void;
-        onkeydown: (e: KeyboardEvent) => void;
-        dotMenu: HTMLElement;
-    }
-
-let { onclick, onkeydown, dotMenu = $bindable() }: Props = $props();
-
-
+  let {
+    triggerProps = {},
+    dotMenu = $bindable(),
+    ariaLabel = "Open menu",
+  }: Props = $props();
 </script>
 
-<div
-    class="dot-menu"
-    {onclick}
-    {onkeydown}
-    bind:this={dotMenu}
-    role="button"
-    tabindex="0"
+<button
+  type="button"
+  {...triggerProps}
+  class="dot-menu"
+  bind:this={dotMenu}
+  aria-label={ariaLabel}
 >
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@ let { onclick, onkeydown, dotMenu = $bindable() }: Props = $props();
             stroke-width="0.3"
         />
     </svg>
-</div>
+</button>
 
 
 <style>
@@ -43,22 +43,17 @@ let { onclick, onkeydown, dotMenu = $bindable() }: Props = $props();
         padding-top: 0.1rem;
         margin-bottom: 0.15rem;
         margin-top: 0.15rem;
-        /* padding-bottom: -10rem; */
         color: var(--icon-color);
         border-radius: 5px;
+        border: none;
+        background: transparent;
     }
 
     .dot-menu:hover {
-        /* cursor: pointer; */
         background-color: var(--hover-heading-color);
-        
     }
 
     .dot-menu:active {
         transform: scale(0.95);
     }
-
-    /* .dot-menu:hover {
-        transform: scale(1.05);
-    } */
 </style>

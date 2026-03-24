@@ -1,11 +1,10 @@
 <script lang="ts">
-  import MenuButton from "./buttons/MenuButton.svelte";
+  import { DropdownMenu } from "bits-ui";
   import ModuleChevron from "./buttons/ModuleChevron.svelte";
   import ModuleIcon from "./buttons/ModuleIcon.svelte";
   import { VisibleState } from "./buttons/module_chevron";
   import type { IModule } from "../state/systemState.svelte";
   import type { Snippet } from "svelte";
-  import MenuSlotted from "./MenuSlotted.svelte";
   import { hexToRGBA } from "../util";
 
 
@@ -22,31 +21,14 @@
   let { m, visible, rotateState, module_index, name, menu_buttons, icon_name }: Props =
     $props();
 
-    let glowColor: string | null = $state("");
+  let glowColor: string | null = $state("");
+  let showDropdown = $state(false);
 
-    let iconElement = $state(null) as unknown as HTMLElement;
-    let showDropdown = $state(false);
-    let menuLocation = $state({ top: 0, left: 0 });
-    // let dynamic_coor_name = $state("dynamic-color" + icon_name);
+  let el: HTMLDivElement | null = null;
 
-    let el; // reference to an element inside the component
-
-    function toggleMenu() {
-      console.log("toggleing")
-      showDropdown = !showDropdown;
-      const rect = iconElement.getBoundingClientRect();
-      menuLocation = {
-          top: rect.top + window.scrollY,
-          left: rect.right + window.scrollX,
-      };
-      console.log("showDropdown: ", showDropdown)
-      console.log("menuLocation: ", menuLocation)
-
-    }
-
-    $effect(() => {
-      if (el) el.style.setProperty("--dynamic-color", hexToRGBA(glowColor, 0.07));
-    });
+  $effect(() => {
+    if (el) el.style.setProperty("--dynamic-color", hexToRGBA(glowColor, 0.07));
+  });
 </script>
 
 <div bind:this={el} class="heading" class:closed={!visible}>
@@ -56,26 +38,32 @@
     <div class="identifier">{name}</div>
   </div>
   <div class="right">
-    <ModuleIcon
-    {icon_name}
-    onclick={toggleMenu}
-    bind:iconElement
-    bind:glowColor
-  ></ModuleIcon>
-  
+    <DropdownMenu.Root bind:open={showDropdown}>
+      <DropdownMenu.Trigger>
+        {#snippet child({ props }: { props: Record<string, unknown> })}
+          <ModuleIcon
+            {icon_name}
+            bind:glowColor
+            triggerProps={props}
+            ariaLabel={`${name} actions`}
+          />
+        {/snippet}
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content side="bottom" align="end" sideOffset={8}>
+          {#snippet child({ wrapperProps, props }: { wrapperProps: Record<string, unknown>; props: Record<string, unknown> })}
+            <div {...wrapperProps}>
+              <div {...props} class="dropdown-content">
+                {@render menu_buttons()}
+              </div>
+            </div>
+          {/snippet}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   </div>
 
 </div>
-
-{#if showDropdown}
-            <MenuSlotted
-                onclick={toggleMenu}
-                menuVisible={showDropdown}
-                location={menuLocation}
-            >
-                {@render menu_buttons()}
-            </MenuSlotted>
-        {/if}
 
 <style>
 
@@ -89,11 +77,22 @@
 
 
   .right {
-    
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
+  }
+
+  .dropdown-content {
+    min-width: 14rem;
+    overflow: hidden;
+    border: 1.3px solid var(--outer-border-color);
+    border-radius: 0.5rem;
+    background-color: var(--body-color);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0.2rem;
+    outline: none;
+    z-index: 1000;
   }
 
   .heading {
@@ -112,7 +111,6 @@
     /* border-bottom: none; */
     border-top-left-radius: 0.4rem;
     border-top-right-radius: 0.4rem;
-    
   }
 
   .heading::after {

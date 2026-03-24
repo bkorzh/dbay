@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "../../app.css";
   import { onMount } from "svelte";
   import { ui_state, setMode } from "../../state/uiState.svelte";
 
@@ -47,14 +46,14 @@
 <button
   class="{ui_state.colorMode
     ? 'bg-gray-500 '
-    : ' bg-gray-300'} relative inline-flex flex-shrink-1 h-[1.22rem] w-[2.25rem] border-2 border-transparent rounded-full ease-in-out duration-200 my-auto mx-1 mr-4"
+    : ' bg-gray-300'} relative my-auto mx-1 mr-4 inline-flex h-[1.30rem] w-[2.32rem] shrink-0 rounded-full border-2 border-transparent duration-200 ease-in-out"
   on:click={toggle}
 >
   <span class="sr-only">Toggle Dark Mode</span>
   <span
     class="{ui_state.colorMode
       ? 'translate-x-0 bg-gray-700'
-      : 'translate-x-4 bg-gray-200'} pointer-events-none relative inline-block h-4 w-4 rounded-full shadow transform ring-0 transition ease-in-out duration-200"
+      : 'translate-x-4 bg-gray-200'} pointer-events-none relative inline-block h-4 w-4 rounded-full shadow-sm ring-0 transition duration-200 ease-in-out"
   >
     <span
       class="{ui_state.colorMode

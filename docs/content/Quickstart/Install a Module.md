@@ -8,8 +8,8 @@ The current method uses 8 pins in the backplane of the rack to do the addressing
 The legacy method is not advisable to use. It uses a switch on the module which defined its address. This method is still used if the control module is not in its intended slot.
 
 Depending on the method, follow either step 1a or 1b below.
-## 1a. Current method![[rack_slots.svg]]
-
+## 1a. Current method
+![[rack_slots.png]]
 Make sure that the control module is in the right slot according to the picture above. The module gets addressed depending on which slot in the rack it is in. Do not use the slot labeled with NC.
 ## 1b. Legacy method Setting the I2C Address
 
@@ -53,10 +53,10 @@ if there is no error. TODO: add answers for other modules.
 Now, you can send module-specific commands via serial communication.
 
 
-## Option 2: In the GUI
+## Option 2: In the Frontend
+### With the development environment
+If you have the development environment set up, start the UI by following [[Development Setup#Browser Development]]. 
+If you have the DBay software from https://github.com/bkorzh/dbay/releases installed, you can start the GUI this way
 
-Here, there are two options:
-- If you have the development environment set up ([[Development Environment]]), start the GUI by following [[Development Environment#5. Start the Application]]. 
-- If you have the DBay software from https://github.com/bkorzh/dbay/releases installed, you can start the GUI this way
 
-In the GUI, click on the menu bar (three horizontal lines) and select *Add a module*. Then, in the newly opened box, select the module slot (it is the address value +1). Then select the module type and click *Add Module*.
+In the UI, click on the menu bar (![[menu_bar.png]]) and select *Add a module*. Then, in the newly opened box, select the module slot (it is the address value +1). Then select the module type and click *Add Module*.

@@ -56,6 +56,8 @@ bun scripts/release.ts client patch --push
 - GUI tags: `gui-vX.Y.Z`
 - Python client tags: `py-vX.Y.Z`
 
+Pushing a `gui-vX.Y.Z` tag triggers the Tauri build workflow automatically.
+
 ## Options
 
 - `--dry-run`: show planned version/tag without changing files

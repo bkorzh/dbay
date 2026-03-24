@@ -12,7 +12,7 @@
   import { VisibleState } from "../buttons/module_chevron";
   import ModuleHeading from "../ModuleHeading.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
-  import adc4D_icon from "/assets/adc4D_icon.svg";
+  const adc4D_icon = "/assets/adc4D_icon.svg";
 
   interface MyProps {
     module_index: number;

@@ -6,7 +6,12 @@ import { mount } from 'svelte';
 //   target: document.getElementById('app'),
 // })
 
+const target = document.getElementById("app");
 
-const app = mount(App, { target: document.getElementById("app") });
+if (!target) {
+  throw new Error("App mount target #app was not found");
+}
+
+const app = mount(App, { target });
 
 export default app

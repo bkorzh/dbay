@@ -22,7 +22,7 @@ build-tauri:
 # steps
 # go into frontend
 # npm run build
-# npm run move   # that moves the built files to /dbay_control/
+# npm run move   # that moves the built files to /compiled_frontend/
 # 
 
 # run "pyinstaller main.spec"

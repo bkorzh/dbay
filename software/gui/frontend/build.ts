@@ -46,7 +46,7 @@ const current_directory = import.meta.dir; // https://bun.sh/docs/api/import-met
 
 const dist_directory = path.join(current_directory, "/dist/");
 
-const output_directory = path.join(current_directory, "../backend/backend/dbay_control");
+const output_directory = path.join(current_directory, "../backend/backend/compiled_frontend");
 
 const backend_parent = path.join(current_directory, "../backend");
 
@@ -115,7 +115,7 @@ if (values.frontend || values.all) {
     console.log('\x1b[33m >>>>> Building frontend... \x1b[0m');
     await $`bun run build`;
 
-    console.log('\x1b[33m >>>>> Moving compiled javascript, css, & html to /backend/backend/dbay_control/ \x1b[0m');
+    console.log('\x1b[33m >>>>> Moving compiled javascript, css, & html to /backend/backend/compiled_frontend/ \x1b[0m');
     // console.log("process.platform: ", process.platform);
 
     if (process.platform === "win32") {

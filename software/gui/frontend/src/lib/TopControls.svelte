@@ -1,112 +1,62 @@
-<script lang="ts" context="module">
-  import "../app.css";
-</script>
-
 <script lang="ts">
-  import LightDarkToggle from "./buttons/LightDarkToggle.svelte";
+  import { DropdownMenu } from "bits-ui";
   import LightDarkToggleFG from "./buttons/LightDarkToggleFG.svelte";
   import Hamburger from "./buttons/Hamburger.svelte";
-  import { componentInstance } from "../state/componentInstanceStore";
   import { ui_state } from "../state/uiState.svelte";
-  import MenuSlotted from "./MenuSlotted.svelte";
   import MenuButton from "./buttons/MenuButton.svelte";
   import Button from "./buttons/Button.svelte";
-  import { get } from "svelte/store";
   import {
     system_state,
     switch_on_off_system,
   } from "../state/systemState.svelte";
 
-  import { updateSystemStatefromJson } from "./modules_dbay/index.svelte";
-  // import {requestFullStateUpdate} from "../api";
-  import type { SystemState } from "../state/systemState.svelte";
-  import { onMount } from "svelte";
-
-  let burgerMenu: any = $state();
-  let menuLocation = $state({ top: 0, left: 0 });
-
   let showDropdown = $state(false);
 
-  function toggleMenu() {
-    showDropdown = !showDropdown;
-    const rect = burgerMenu.getBoundingClientRect();
-    menuLocation = {
-      top: rect.top + window.scrollY,
-      left: rect.right + window.scrollX,
-    };
-  }
-
-  // let total_state: SystemState;
-
   async function allOn() {
-    // const total_state = get(voltageStore);
     switch_on_off_system(system_state, true);
-    // const returned_state = await requestFullStateUpdate(modified_state);
-    // updateSystemStatefromJson(returned_state)
   }
 
   async function allOff() {
-    // const total_state = get(voltageStore);
     switch_on_off_system(system_state, false);
-    // const returned_state = await requestFullStateUpdate(modified_state);
-    // // voltageStore.set(returned_state);
-    // updateSystemStatefromJson(returned_state)
   }
 
   function addModule() {
-    // uiStateStore.update((state) => {
-    //     state.show_module_adder = true;
-    //     return state;
-    // });
     ui_state.show_module_adder = true;
-    showDropdown = false;
   }
 
   function showSourceReInit() {
-    // console.log("showSourceReInit");
-    // uiStateStore.update((state) => {
-    //   state.show_source_reinit = !state.show_source_reinit;
-    //   return state;
-    // });
     ui_state.show_source_reinit = !ui_state.show_source_reinit;
-    showDropdown = false;
-    // console.log("show_source_reinit: ", $uiStateStore.show_source_reinit);
   }
 
   function showRemoteAccess() {
     ui_state.show_remote_access = true;
-    showDropdown = false;
   }
-
-  let isMounted = false;
-
-  onMount(() => {
-    isMounted = true;
-    const rect = burgerMenu.getBoundingClientRect();
-    menuLocation = {
-      top: rect.top + window.scrollY,
-      left: rect.right + window.scrollX,
-    };
-  });
 </script>
 
 <div class="bound-box">
   <div class="top-bar">
     <h1 class="heading">Device Bay Electronics System</h1>
     <LightDarkToggleFG />
-    <Hamburger onclick={toggleMenu} bind:burgerMenu />
-    {#if showDropdown}
-      <!-- <Menu onClick={toggleMenu} menuVisible={showDropdown} /> -->
-      <MenuSlotted
-        onclick={toggleMenu}
-        menuVisible={showDropdown}
-        location={{ top: menuLocation.top + 5, left: menuLocation.left - 4 }}
-      >
-        <MenuButton onclick={addModule}>Add a Module</MenuButton>
-        <MenuButton onclick={showSourceReInit}>Re-Initialize Source</MenuButton>
-        <MenuButton onclick={showRemoteAccess}>Remote Access</MenuButton>
-      </MenuSlotted>
-    {/if}
+    <DropdownMenu.Root bind:open={showDropdown}>
+      <DropdownMenu.Trigger>
+        {#snippet child({ props }: { props: Record<string, unknown> })}
+          <Hamburger triggerProps={props} ariaLabel="System actions" />
+        {/snippet}
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content side="bottom" align="end" sideOffset={6}>
+          {#snippet child({ wrapperProps, props }: { wrapperProps: Record<string, unknown>; props: Record<string, unknown> })}
+            <div {...wrapperProps}>
+              <div {...props} class="dropdown-content">
+                <MenuButton onclick={addModule}>Add a Module</MenuButton>
+                <MenuButton onclick={showSourceReInit}>Re-Initialize Source</MenuButton>
+                <MenuButton onclick={showRemoteAccess}>Remote Access</MenuButton>
+              </div>
+            </div>
+          {/snippet}
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   </div>
 
   <div class="button-bar">
@@ -129,6 +79,18 @@
     flex-direction: row;
     background-color: var(--module-header-color);
     border-bottom: 1.3px solid var(--inner-border-color);
+  }
+
+  .dropdown-content {
+    min-width: 15rem;
+    overflow: hidden;
+    border: 1.3px solid var(--outer-border-color);
+    border-radius: 0.5rem;
+    background-color: var(--body-color);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.09);
+    padding: 0.2rem;
+    outline: none;
+    z-index: 1000;
   }
 
   .button-bar {

@@ -16,7 +16,12 @@ import type { JsonSystemState, ServerInfo } from './state/systemState.svelte';
 // console.log(response.status); // e.g. 200
 // console.log(response.statusText); // e.g. "OK"
 
-let tauriFetch: typeof fetch | undefined;
+type FetchLike = (
+    input: string | URL | Request,
+    init?: RequestInit,
+) => Promise<Response>;
+
+let tauriFetch: FetchLike | undefined;
 
 
 // if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
@@ -26,7 +31,7 @@ if ('__TAURI_INTERNALS__' in window) {
     import('@tauri-apps/plugin-http').then(module => {
 
         console.log("using tuauri fetch");
-        tauriFetch = module.fetch;
+        tauriFetch = (input, init) => module.fetch(input, init);
 
 
         // tauriFetch = fetch
@@ -54,9 +59,10 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    const isTauriOrVite = '__TAURI_INTERNALS__' in window;
-    const fullUrl = isTauriOrVite ? `${baseUrl}${url}` : url;
-    const fetchFunction = isTauriOrVite && tauriFetch ? tauriFetch : window.fetch;
+    const isTauri = '__TAURI_INTERNALS__' in window;
+    const useBackendBaseUrl = isTauri || import.meta.env.DEV;
+    const fullUrl = useBackendBaseUrl ? `${baseUrl}${url}` : url;
+    const fetchFunction = isTauri && tauriFetch ? tauriFetch : window.fetch;
 
     console.log("fullUrl: ", fullUrl);
 

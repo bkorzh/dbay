@@ -11,19 +11,14 @@
 
   let { onclick, children }: Props = $props();
 
-  // const dispatch = createEventDispatcher();
-  
-  // function handleClick() {
-  //   dispatch('submit');
-  // }
 </script>
 
 
 <button
   class="{ ui_state.colorMode
-      ? 'gray text-gray-500 hover:text-gray-400 border-gray-500 hover:bg-gray-900'
-      : 'gray text-gray-500 bg-gray-50 border-gray-500 hover:bg-gray-100'
-    } text-s font-medium border-2 border-opacity-50 rounded px-4 py-1 button"
+      ? 'gray border-gray-500/50 text-gray-500 hover:bg-gray-900 hover:text-gray-400'
+      : 'gray border-gray-500/50 bg-gray-50 text-gray-500 hover:bg-gray-100'
+    } button rounded border-[1.5px] px-4 py-[0.42rem] font-medium"
 {onclick}>
   {@render children()}
 </button>

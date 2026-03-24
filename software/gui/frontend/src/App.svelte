@@ -1,5 +1,4 @@
 <script lang="ts">
-  import "./app.css";
   import TopControls from "./lib/TopControls.svelte";
   import { onMount, onDestroy } from "svelte";
   import { getFullState } from "./api";
@@ -78,7 +77,7 @@
     }
   }
 
-  async function failSetup(error) {
+  async function failSetup(error: unknown) {
     console.log("error!", error);
     show_loading = false;
     show_loading_longer = false;

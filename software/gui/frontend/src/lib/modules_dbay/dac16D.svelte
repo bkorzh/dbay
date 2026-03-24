@@ -19,7 +19,6 @@
 
   import ChannelChevron from "../buttons/ChannelChevron.svelte";
   import HorizontalDots from "../buttons/HorizontalDots.svelte";
-  import MenuSlotted from "../MenuSlotted.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
   import VerticalDots from "../buttons/VerticalDots.svelte";
   import ChannelBar from "../ChannelBar.svelte";
@@ -29,7 +28,7 @@
   import PlusMinus from "../PlusMinus.svelte";
   import NumberedHoveredDotMenu from "../buttons/NumberedHoveredDotMenu.svelte";
   import ModuleHeading from "../ModuleHeading.svelte";
-  import dac16D_icon from "/assets/dac16D_icon.svg";
+  const dac16D_icon = "/assets/dac16D_icon.svg";
 
   interface MyProps {
     module_index: number;

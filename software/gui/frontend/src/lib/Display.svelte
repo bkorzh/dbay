@@ -105,7 +105,7 @@
         }
         if (event.key === "Enter" && index === inputs.length - 1) {
             target.blur();
-            ch.onSubmit(onChannelChange);
+            ch.onSubmit();
         }
     }
 
@@ -116,15 +116,23 @@
 
     let scrollable = $state(true);
 
-  const wheel = (node, options) => {
+  const wheel = (
+    node: HTMLElement,
+    options: { scrollable: boolean },
+  ) => {
     let { scrollable } = options;
-    const handler = e => {
+    const handler = (event: Event) => {
+      const e = event as WheelEvent;
       // if the event comes from an input: then prevent default
-      if (e.target.tagName === "INPUT" && ( e.altKey || e.ctrlKey)) {
+      const target = e.target;
+      if (
+        target instanceof HTMLInputElement &&
+        (e.altKey || e.ctrlKey)
+      ) {
         e.preventDefault();
         let idx = 0;
         
-        switch (e.target) {
+        switch (target) {
             case ones_el:
                 idx = 0;
                 break;
@@ -149,14 +157,14 @@
       }
     };
 
-    node.addEventListener('wheel', handler, { passive: false });
+    node.addEventListener('wheel', handler, false);
 
     return {
-      update(options) {
+      update(options: { scrollable: boolean }) {
         scrollable = options.scrollable;
       },
       destroy() {
-        node.removeEventListener('wheel', handler, { passive: false });
+        node.removeEventListener('wheel', handler, false);
       }
     };
   };
@@ -175,7 +183,7 @@
         let new_bias_voltage =
             Math.round((ch.bias_voltage + scaling[index] * value) * 1000) /
             1000;
-        ch.validateUpdateVoltage(new_bias_voltage, onChannelChange);
+        ch.validateUpdateVoltage(new_bias_voltage);
     }
 
 </script>

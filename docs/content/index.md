@@ -7,6 +7,10 @@ Device bay (or short DBay) is an open-source modular system for electronics used
 
 Looking for an easy setup with minimal customization? Get the latest DBay software here: https://github.com/bkorzh/dbay/releases 
 
-Or, learn how to set up a [[Development Environment]] to customize the GUI, webserver, or firmware. 
+Use [[Development Setup]] to set up the current software development environment for the GUI and backend.
+
+For a high-level map of the software stack and codebase, see [[Software frontend and backend]].
+
+For a broader overview of the development section, start at [[Development]].
 
 To explore available modules, go to the [[Summary|Modules Summary]].
