@@ -12,18 +12,54 @@ class dac4D_spec(IModule):
     vsource: Optional[IVsourceAddon] = None  # optional in direct mode
 
 
-class dac4d_core:
+class dac4D_direct:
     """
     Use this class if the GUI is not needed.
-
     """
+
+    def __init__(self, connection, slot: int):
+        self._slot: int = slot
+        self._connection = connection
 
     def set_voltage(self, channel: int, voltage: float, activated: Union[bool, None] = None):
         """Set voltage on a channel using VSD (differential) command.
 
         This is the standard voltage-setting method for dac4D.
         """
-        todo: implement
+        if not (0 <= channel <= 3):
+            raise ValueError("channel must be 0..3")
+        if not (-10 <= voltage <= 10):
+            raise ValueError("voltage must be -10..10 V")
+
+        assert self._connection is not None
+        self._connection.send(f"DAC4D VSD {self._slot} {channel} {voltage}")
+
+    def set_voltage_single(self, channel: int, voltage: float):
+        """Set single-ended voltage output using VS command.
+
+        Use set_voltage() for standard differential output.
+        """
+        if not (0 <= channel <= 7):
+            raise ValueError("channel must be 0..7")
+        if not (-10 <= voltage <= 10):
+            raise ValueError("voltage must be -10..10 V")
+
+        assert self._connection is not None
+        self._connection.send(f"DAC4D VS {self._slot} {channel} {voltage}")
+
+    # Backwards compatibility alias
+    def voltage_set(self, channel: int, voltage: float, activated: Union[bool, None] = None):
+        """Legacy alias for set_voltage()."""
+        return self.set_voltage(channel, voltage, activated=activated)
+
+    # Backwards compatibility alias
+    def set_voltage_diff(self, channel: int, voltage: float):
+        """Alias for set_voltage() - VSD is now the default."""
+        return self.set_voltage(channel, voltage)
+
+    def __str__(self):
+        return f"dac4D (Slot {self._slot}) [direct]"
+
 
 
 class dac4D:
@@ -43,14 +79,17 @@ class dac4D:
         mode: str = "gui",
         retain_changes: bool = True,
     ):
+
+
         self.mode = mode.lower()
         if self.mode not in {"gui", "direct"}:
             raise ValueError("mode must be 'gui' or 'direct'")
         self.http = http
-        self.connection = connection
         self.retain_changes = retain_changes
         # In direct mode vsource may be absent; allow None
         self.data = dac4D_spec(**data)
+
+        self._dac4D_core = dac4D_direct(connection=connection, slot=self.data.core.slot)
 
     # ------------------------------------------------------------------
     # GUI-only cleanup (revert config). Direct mode does nothing.
@@ -84,11 +123,12 @@ class dac4D:
         
         This is the standard voltage-setting method for dac4D.
         """
-        if not (0 <= channel <= 3):
-            raise ValueError("channel must be 0..3")
-        if not (-10 <= voltage <= 10):
-            raise ValueError("voltage must be -10..10 V")
+
         if self.mode == "gui":
+            if not (0 <= channel <= 3):
+                raise ValueError("channel must be 0..3")
+            if not (-10 <= voltage <= 10):
+                raise ValueError("voltage must be -10..10 V")
             if activated is None:
                 activated = self.data.vsource.channels[channel].activated  # type: ignore
             change = VsourceChange(
@@ -102,22 +142,17 @@ class dac4D:
             assert self.http is not None
             self.http.put("dac4D/vsource/", data=change.model_dump())
         else:  # direct
-            assert self.connection is not None
-            self.connection.send(f"DAC4D VSD {self.data.core.slot} {channel} {voltage}")
+            self._dac4D_core.set_voltage(channel, voltage)
 
     def set_voltage_single(self, channel: int, voltage: float):
         """Set single-ended voltage output using VS command.
         
         Use set_voltage() for standard differential output.
         """
-        if not (0 <= channel <= 7):
-            raise ValueError("channel must be 0..7")
-        if not (-10 <= voltage <= 10):
-            raise ValueError("voltage must be -10..10 V")
+
         if self.mode == "gui":
             raise NotImplementedError("Single-ended voltage not exposed in GUI")
-        assert self.connection is not None
-        self.connection.send(f"DAC4D VS {self.data.core.slot} {channel} {voltage}")
+        self._dac4D_core.set_voltage_single(channel, voltage)
 
     # Backwards compatibility aliases
     def voltage_set(self, channel: int, voltage: float, activated: Union[bool, None] = None):
