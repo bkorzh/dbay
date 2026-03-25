@@ -13,8 +13,6 @@ Depending on the method, follow either step 1a or 1b below.
 Make sure that the control module is in the right slot according to the picture above. The module gets addressed depending on which slot in the rack it is in. Do not use the slot labeled with NC.
 ## 1b. Legacy method Setting the I2C Address
 
-TODO: this is outdated and needs to be rewritten: Now the the address is given by pins in the backplane. Each slot in the rack has one pin out of 8 connected and defines the address.
-
 On the card, there is a switch array controlling three bits (labelled A0, A1, A2 on the board). The switch array is displayed on the image below for the Dac4D module card. 
 ![[2025_12_11_address_switch.jpg]]This switch array defines the address of the module. Each card in a rack must have another address (except for the control module, which does not have an address). If there are already cards installed in the rack, check their address switch array and choose an unused address configuration for the switch. A0 is the least significant bit and A2 the most significant bit. 
 
@@ -23,6 +21,7 @@ A0 = ON, A1 = OFF and A2 = OFF corresponds to an address 1.
 A0 = ON, A1 = OFF and A2 = ON corresponds to 0b101 = 5.
 
 # 2. Inserting the Card
+
 Please make sure that the rack is switched off and disconnect it from the mains power supply. Then insert the card in a free slots. The plastic rails guiding the card might not be in the correct position for the connector at the back to mate to the rack. You can take them out an insert them at the correct location.
 
 # 3. Check if the Control Module Recognizes the Card
@@ -35,12 +34,13 @@ where `XXX`is the value of the address you set.
 # 4. Initializing the Module
 This step depends on the way the rack is going to be used. Either, the initialization can be done in the frontendor directly via serial communication.
 ## Option 1: Via Serial Communication
-With the serial monitor still open from step [[#3. Check if the Control Module Recognizes the Card]], send the command
+With the serial monitor still open from  [[#3. Check if the Control Module Recognizes the Card|Step 3]], send the command
 ```
 SETDEV [address] [device_type]
 ```
-with the address set in step [[#1. Setting the I2C Address]] and `device_type` is either `DAC4D` or TODO: what are the other devices?.  The `device_type` is case-sensitive. 
+with the address set in [[#1. Setting the I2C Address|Step 1]] and `device_type` is either `DAC4D`, `DAC4D`, `DAC4ETH`, `DAC16D` 
 
+**Example:**
 When `device_type` was `DAC4D`, then the control module answers with
 ```
 deviceType: 1
@@ -56,5 +56,7 @@ Now, you can send module-specific commands via serial communication.
 ## Option 2: In the Frontend
 ### With the development environment
 If you have the development environment set up, start the UI by following [[Development Setup#Browser Development]]. 
+If you have the DBay software from https://github.com/bkorzh/dbay/releases installed, you can start the GUI this way
+
 
 In the UI, click on the menu bar (![[menu_bar.png]]) and select *Add a module*. Then, in the newly opened box, select the module slot (it is the address value +1). Then select the module type and click *Add Module*.
