@@ -1,4 +1,5 @@
 import uvicorn
+from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -23,6 +24,8 @@ from backend.udp_control import parent_udp, UDP
 from backend.initialize import global_state
 from backend.state import SystemState
 from backend.location import WEB_DIR
+from backend.sync import replace_sync_state, set_sync_value, sync
+from lab_link import ptr
 
 
 logger = get_logger(__name__)
@@ -60,7 +63,14 @@ class ServerInfo(BaseModel):
 # hard to debug delay in the frontend!
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    async with sync.lifespan(app):
+        yield
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(sync.router)
 app.include_router(dac4D.router)
 app.include_router(dac16D.router)
 app.include_router(adc4D.router)
@@ -99,6 +109,7 @@ def shutdown():
 @app.post("/initialize-module")
 async def init_module(request: Request, addition_args: ModuleAddition):
     global_state.add_module(addition_args.type, addition_args.slot)
+    replace_sync_state()
 
     return global_state.system_state
 
@@ -109,6 +120,7 @@ async def vsource_set_state(params: VsourceParams):
     udp = UDP(params.ipaddr, params.port, params.dev_mode)
 
     parent_udp.udp = udp
+    set_sync_value(ptr("dev_mode"), params.dev_mode)
 
     logger.info(
         "udp control re-initialized with params: {}".format(params.model_dump())
@@ -126,6 +138,7 @@ async def state_set(request: Request, state: SystemState):
     logger.info("full state updated")
 
     global_state.system_state = state
+    replace_sync_state()
     return global_state.system_state
 
 

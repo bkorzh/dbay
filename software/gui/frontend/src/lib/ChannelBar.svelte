@@ -89,7 +89,7 @@
         oninput={handleInput}
         onfocus={() => (ch.heading_editing = true)}
         onblur={() => {
-          ch.heading_editing = false;
+          ch.finishHeadingEditing();
           if (ch) ch.updateChannel({ heading_text: ch.immediate_text });
         }}
         onkeydown={handleKeyDown}

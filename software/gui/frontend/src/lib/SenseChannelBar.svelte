@@ -86,7 +86,7 @@
         oninput={handleInput}
         onfocus={() => (ch.name_editing = true)}
         onblur={() => {
-          ch.name_editing = false;
+          ch.finishNameEditing();
           if (ch) ch.updateChannel({ name: ch.immediate_text });
         }}
         onkeydown={handleKeyDown}

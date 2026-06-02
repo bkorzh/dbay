@@ -7,6 +7,7 @@ import type { VsenseChange } from './lib/addons/vsense/interface';
 import type { SystemState } from './state/systemState.svelte';
 import type { VMEParams } from './state/systemState.svelte';
 import type { JsonSystemState, ServerInfo } from './state/systemState.svelte';
+import { syncRuntime } from './sync/runtime.svelte';
 // import { fetch } from '@tauri-apps/plugin-http';
 
 // // Send a GET request
@@ -26,8 +27,9 @@ let tauriFetch: FetchLike | undefined;
 
 // if ('__TAURI_INTERNALS__' in window || import.meta.env.DEV) {
 
+const hasWindow = typeof window !== "undefined";
 
-if ('__TAURI_INTERNALS__' in window) {
+if (hasWindow && '__TAURI_INTERNALS__' in window) {
     import('@tauri-apps/plugin-http').then(module => {
 
         console.log("using tuauri fetch");
@@ -59,10 +61,10 @@ function fetchWithConfig(url: string, method: string, body?: any): Promise<any> 
         config.body = JSON.stringify(body);
     }
 
-    const isTauri = '__TAURI_INTERNALS__' in window;
+    const isTauri = hasWindow && '__TAURI_INTERNALS__' in window;
     const useBackendBaseUrl = isTauri || import.meta.env.DEV;
     const fullUrl = useBackendBaseUrl ? `${baseUrl}${url}` : url;
-    const fetchFunction = isTauri && tauriFetch ? tauriFetch : window.fetch;
+    const fetchFunction = isTauri && tauriFetch ? tauriFetch : globalThis.fetch;
 
     console.log("fullUrl: ", fullUrl);
 
@@ -103,14 +105,40 @@ export function initializeVsource(params: VMEParams) {
 
 
 export function requestChannelUpdate(dst: VsourceChange, endpoint: string): Promise<VsourceChange> {
+    const command = {
+        "/dac4D/vsource/": "set_dac4d_vsource",
+        "/dac16D/vsource/": "set_dac16d_vsource",
+    }[endpoint];
+
+    if (command) {
+        return syncRuntime.sendCommand<VsourceChange>(command, { ...dst }).then(ack => {
+            if (!ack.result) throw new Error(`${command} did not return a result`);
+            return ack.result;
+        });
+    }
+
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 
 export function requestSenseUpdate(dst: VsenseChange, endpoint: string): Promise<VsenseChange> {
+    if (endpoint === "/adc4D/vsense/") {
+        return syncRuntime.sendCommand<VsenseChange>("set_adc4d_vsense", { ...dst }).then(ack => {
+            if (!ack.result) throw new Error("set_adc4d_vsense did not return a result");
+            return ack.result;
+        });
+    }
+
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 
 export function requestSharedChannelUpdate(dst: SharedVsourceChange, endpoint: string): Promise<SharedVsourceChange> {
+    if (endpoint === "/dac16D/vsource_shared/") {
+        return syncRuntime.sendCommand<SharedVsourceChange>("set_dac16d_vsource_shared", { ...dst }).then(ack => {
+            if (!ack.result) throw new Error("set_dac16d_vsource_shared did not return a result");
+            return ack.result;
+        });
+    }
+
     return fetchWithConfig(endpoint, "PUT", dst);
 }
 
@@ -123,6 +151,3 @@ export function initializeModule(slot: number, type: string) {
 export function serverInfo(): Promise<ServerInfo> {
     return fetchWithConfig("/server-info", "GET");
 }
-
-
-

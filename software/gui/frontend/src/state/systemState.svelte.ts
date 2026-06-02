@@ -1,6 +1,8 @@
 import { VsourceAddon, VsenseAddon } from "../lib/addons"
 import type { IVsourceAddon, IVsenseAddon } from "../lib/addons"
 import type { ChSourceState, ChSenseState } from "../lib/addons"
+import { SvelteSyncNode } from "lab-link/svelte";
+import { syncRuntime } from "../sync/runtime.svelte";
 
 
 export interface IModule {
@@ -8,6 +10,8 @@ export interface IModule {
   vsource?: VsourceAddon; // VsourceAddon is a class that implements the IVsourceAddon interface...
   vsense?: VsenseAddon;
   update: (data: JsonModule) => void;
+  applySnapshot?: (data: JsonModule) => void;
+  dispose?: () => void;
 }
 
 export interface JsonModule {
@@ -54,15 +58,30 @@ export interface SystemState {
   dev_mode: boolean;
 }
 
-export class SystemStateClass implements SystemState {
+export class SystemStateClass
+  extends SvelteSyncNode<JsonSystemState>
+  implements SystemState
+{
   data: Array<IModule> = $state([]);
   valid: boolean = $state(false);
   dev_mode: boolean = $state(false);
 
   constructor(data: Array<IModule>, valid: boolean, dev_mode: boolean) {
+    super(syncRuntime, "");
     data.forEach(item => this.data.push(item));
     this.valid = valid;
     this.dev_mode = dev_mode;
+  }
+
+  public fields: any = this.defineFields<any>({
+    valid: {},
+    dev_mode: {},
+    data: {},
+  });
+
+  applySnapshot(data: JsonSystemState): void {
+    this.valid = data.valid;
+    this.dev_mode = data.dev_mode;
   }
 
   update(data: Array<IModule>, valid: boolean, dev_mode: boolean) {
@@ -120,7 +139,6 @@ export function switch_on_off_system(system: SystemState, onoff: boolean): Syste
 
 
 export let system_state: SystemStateClass = new SystemStateClass([], false, false);
-
 
 
 

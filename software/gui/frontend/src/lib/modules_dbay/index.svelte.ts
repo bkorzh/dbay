@@ -23,6 +23,8 @@ import type { Component } from "svelte";
 
 import { system_state } from "../../state/systemState.svelte";
 import type { JsonModule } from "../../state/systemState.svelte";
+import { syncRuntime } from "../../sync/runtime.svelte";
+import { joinJsonPointer } from "lab-link/core";
 
 
 interface ModuleProps {
@@ -77,7 +79,13 @@ const modules: ModulesDict = {
 
 // interface IModuleUpdater extends IModule, Updater {}
 
-type Constructor<T> = new (data: JsonModule) => T;
+type ReplaceModule = (data: JsonModule) => void;
+type Constructor<T> = new (
+  data: any,
+  path: string,
+  parsed: JsonModule,
+  replaceSelf?: ReplaceModule,
+) => T;
 
 interface ModulesDict {
   [key: string]: Constructor<IModule>;
@@ -120,12 +128,35 @@ function getComponentHolder(name: any): ComponentHolder<ModuleProps> {
   return component_holder;
 }
 
+function modulePath(slot: number): string {
+  return joinJsonPointer("", "data", String(slot));
+}
+
+function createModule(item: JsonModule): IModule {
+  const slot = item.core.slot;
+  return new modules[item.core.type](
+    syncRuntime,
+    modulePath(slot),
+    item,
+    (next: JsonModule) => replaceModule(slot, next),
+  ) as IModule;
+}
+
+function replaceModule(slot: number, next: JsonModule): void {
+  system_state.data[slot]?.dispose?.();
+  system_state.data[slot] = createModule(next);
+  manager.createComponentArray(system_state.data);
+}
+
 export function createSystemStatefromJson(parsed: JsonSystemState) {
   const data = parsed.data.map((item: JsonModule) => {
     // depending on the type of module, we need dynamically create the module objects
-    const module = new modules[item.core.type](item);
-    return module as IModule;
+    return createModule(item);
   });
+  system_state.data.forEach((item) => item.dispose?.());
+  while (system_state.data.length > 0) {
+    system_state.data.pop();
+  }
   data.forEach((item) => system_state.data.push(item));
   system_state.valid = parsed.valid;
   system_state.dev_mode = parsed.dev_mode;
@@ -142,9 +173,8 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
 
       // deviation found bewteen state stored in browser and state from server
       j = j + 1
-      system_state.data[i] = new modules[parsed.data[i].core.type](
-        parsed.data[i]
-      );
+      system_state.data[i]?.dispose?.();
+      system_state.data[i] = createModule(parsed.data[i]);
     } else {
       system_state.data[i].update(parsed.data[i]);
     }
@@ -161,42 +191,25 @@ export function updateSystemStatefromJson(parsed: JsonSystemState) {
 }
 
 export function updateSystemStatetoFallback() {
-  const module_0: dac4D = new dac4D({
-    core: { slot: 0, type: "dac4D", name: "my 4ch module 1" },
-  });
-  const module_1: adc4D = new adc4D({
-    core: { slot: 1, type: "adc4D", name: "my 5ch ADC module" },
-  });
-  const module_2: dac16D = new dac16D({
-    core: { slot: 2, type: "dac16D", name: "my 16ch module 1" },
-  });
-  const module_3: dac16D = new dac16D({
-    core: { slot: 3, type: "dac16D", name: "my 16ch module" },
-  });
-  const module_4: empty = new empty({
-    core: { slot: 4, type: "empty", name: "empty" },
-  });
-  const module_5: dac16D = new dac16D({
-    core: { slot: 5, type: "dac16D", name: "my 16ch module" },
-  });
-  const module_6: empty = new empty({
-    core: { slot: 6, type: "empty", name: "empty" },
-  });
-  const module_7: empty = new empty({
-    core: { slot: 7, type: "empty", name: "empty" },
-  });
-  system_state.data = [
-    module_0,
-    module_1,
-    module_2,
-    module_3,
-    module_4,
-    module_5,
-    module_6,
-    module_7,
-  ];
-  system_state.valid = false;
-  system_state.dev_mode = true;
+  const fallbackState: JsonSystemState = {
+    data: [
+      { core: { slot: 0, type: "dac4D", name: "my 4ch module 1" } },
+      { core: { slot: 1, type: "adc4D", name: "my 5ch ADC module" } },
+      { core: { slot: 2, type: "dac16D", name: "my 16ch module 1" } },
+      { core: { slot: 3, type: "dac16D", name: "my 16ch module" } },
+      { core: { slot: 4, type: "empty", name: "empty" } },
+      { core: { slot: 5, type: "dac16D", name: "my 16ch module" } },
+      { core: { slot: 6, type: "empty", name: "empty" } },
+      { core: { slot: 7, type: "empty", name: "empty" } },
+    ],
+    valid: false,
+    dev_mode: true,
+  };
+
+  system_state.data.forEach((item) => item.dispose?.());
+  system_state.data = fallbackState.data.map((item) => createModule(item));
+  system_state.valid = fallbackState.valid;
+  system_state.dev_mode = fallbackState.dev_mode;
 
   manager.createComponentArray(system_state.data);
   // manager.updateModuleIdx(system_state.data.length);

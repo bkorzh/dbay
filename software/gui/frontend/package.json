@@ -44,6 +44,7 @@
     "@tauri-apps/plugin-http": "~2.5.7",
     "@tauri-apps/plugin-shell": "~2.3.5",
     "bits-ui": "^2.16.3",
+    "lab-link": "^0.1.2",
     "svelte-qrcode": "^1.0.1"
   }
 }
