@@ -1,11 +1,15 @@
 [project]
 name = "dbay"
 version = "0.3.0"
-description = "Unified dual-mode client (HTTP GUI + direct UDP/Serial) for Device Bay VME racks"
+description = "Unified dual-mode client (lab-link GUI sync + direct UDP/Serial) for Device Bay VME racks"
 
 readme = "README.md"
-requires-python = ">=3.8"
-dependencies = ["pydantic>=2.10.6", "pyserial>=3.5", "requests>=2.32.3"]
+requires-python = ">=3.11"
+dependencies = [
+    "lab-link>=0.2.0",
+    "pydantic>=2.10.6",
+    "pyserial>=3.5",
+]
 authors = [{ name = "Andrew Mueller", email = "andrewstermueller@gmail.com" }]
 license = { text = "MIT" }
 keywords = ["dbay", "client", "api"]
@@ -14,11 +18,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
 urls = { Homepage = "https://github.com/bkorzh/dbay", Documentation = "https://bkorzh.github.io/dbay/" }
 

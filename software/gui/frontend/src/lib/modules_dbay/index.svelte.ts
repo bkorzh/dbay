@@ -194,7 +194,7 @@ export function updateSystemStatetoFallback() {
   const fallbackState: JsonSystemState = {
     data: [
       { core: { slot: 0, type: "dac4D", name: "my 4ch module 1" } },
-      { core: { slot: 1, type: "adc4D", name: "my 5ch ADC module" } },
+      { core: { slot: 1, type: "adc4D", name: "my 4ch ADC module" } },
       { core: { slot: 2, type: "dac16D", name: "my 16ch module 1" } },
       { core: { slot: 3, type: "dac16D", name: "my 16ch module" } },
       { core: { slot: 4, type: "empty", name: "empty" } },

@@ -1,4 +1,4 @@
-"""Unified client supporting both GUI (HTTP/stateful) and direct (stateless) modes.
+"""Unified client supporting both GUI sync and direct hardware modes.
 
 Use a simple string mode selector ("gui" or "direct"). The two operational
 paths intentionally do not share an abstraction layer beyond this central
@@ -7,7 +7,7 @@ dispatch because their semantics differ (stateful vs stateless).
 
 from __future__ import annotations
 
-from typing import List, Union, Optional, Type, TypeVar, overload, Any, Sequence
+from typing import List, Union, Optional, Type, TypeVar, Any, Sequence
 
 from dbay.modules.dac4d import dac4D
 from dbay.modules.dac16d import dac16D
@@ -16,7 +16,7 @@ from dbay.modules.hic4 import HIC4
 from dbay.modules.adc4d import ADC4D
 from dbay.modules.dac4eth import DAC4ETH
 from dbay.modules.empty import Empty
-from dbay.http import Http
+from dbay.gui_sync import GuiSync
 from dbay.direct import DeviceConnection, DirectDeviceError, IConnection
 
 __all__ = ["DBayClient", "DBayError"]
@@ -33,7 +33,8 @@ class DBayClient:
     ----------
     mode: "gui" | "direct"
         Selects operational path.
-    server_address, port: Used only in gui mode.
+    server_address, port:
+        Used only in gui mode.
     direct_host, direct_port, direct_transport, serial_port, baudrate, timeout:
         Used only in direct mode.
     max_slots: Number of slots to track (GUI) or capacity for attachments (direct).
@@ -64,7 +65,7 @@ class DBayClient:
             raise ValueError("mode must be either 'gui' or 'direct'")
         self.mode = mode
         self.max_slots = max_slots
-        self._http: Optional[Http] = None
+        self._sync: Optional[GuiSync] = None
         # Allow injection of an existing IConnection (e.g., proxy / remote wrapper)
         self._connection: Optional[IConnection] = connection
         self.retain_changes = retain_changes
@@ -74,16 +75,13 @@ class DBayClient:
             Union[dac4D, dac16D, FAFD, HIC4, ADC4D, DAC4ETH, Empty, None]
         ] = [None] * max_slots
 
-        if self.mode == "gui" and load_state:
+        if self.mode == "gui":
             if not server_address:
                 raise ValueError("server_address is required in gui mode")
-            self._http = Http(server_address, port)
-            self._load_full_state()
-        elif self.mode == "gui":
-            if not server_address:
-                raise ValueError("server_address is required in gui mode")
-            self._http = Http(server_address, port)
-            # intentionally skip loading state
+            self._sync = GuiSync(server_address, port, command_timeout=timeout)
+            if load_state:
+                self._sync.connect()
+                self._load_sync_state()
         else:  # direct mode
             # Precedence: explicit connection argument wins; otherwise build one.
             if self._connection is None:
@@ -113,12 +111,12 @@ class DBayClient:
     # ------------------------------------------------------------------
     # GUI Mode State Loading
     # ------------------------------------------------------------------
-    def _load_full_state(self):
-        assert self._http is not None
+    def _load_sync_state(self):
+        assert self._sync is not None
         try:
-            response = self._http.get("full-state")
+            response = self._sync.snapshot()
         except Exception as exc:  # pragma: no cover - network dependency
-            raise DBayError(f"Failed to load full state: {exc}") from exc
+            raise DBayError(f"Failed to load sync state: {exc}") from exc
         self._instantiate_modules(response.get("data", []))
 
     def _instantiate_modules(self, module_data: Sequence[Any]):
@@ -130,42 +128,42 @@ class DBayClient:
             if module_type == "dac4d":
                 self._modules[i] = dac4D(
                     module_info,
-                    http=self._http,
+                    sync=self._sync,
                     mode="gui",
                     retain_changes=self.retain_changes,
                 )
             elif module_type == "dac16d":
                 self._modules[i] = dac16D(
                     module_info,
-                    http=self._http,
+                    sync=self._sync,
                     mode="gui",
                     retain_changes=self.retain_changes,
                 )
             elif module_type == "fafd":
                 self._modules[i] = FAFD(
                     module_info,
-                    http=self._http,
+                    sync=self._sync,
                     mode="gui",
                     retain_changes=self.retain_changes,
                 )
             elif module_type == "hic4":
                 self._modules[i] = HIC4(
                     module_info,
-                    http=self._http,
+                    sync=self._sync,
                     mode="gui",
                     retain_changes=self.retain_changes,
                 )
             elif module_type == "adc4d":
                 self._modules[i] = ADC4D(
                     module_info,
-                    http=self._http,
+                    sync=self._sync,
                     mode="gui",
                     retain_changes=self.retain_changes,
                 )
             elif module_type == "dac4eth":
                 self._modules[i] = DAC4ETH(
                     module_info,
-                    http=self._http,
+                    sync=self._sync,
                     mode="gui",
                     retain_changes=self.retain_changes,
                 )
@@ -242,6 +240,8 @@ class DBayClient:
 
     # Context management (mainly for serial) -------------------------
     def close(self):  # pragma: no cover - trivial
+        if self._sync is not None:
+            self._sync.close()
         if self._connection is not None:
             self._connection.close()
 

@@ -1,7 +1,6 @@
-from dbay.http import Http
 from dbay.addons.vsource import VsourceChange
 from dbay.state import IModule, Core
-from typing import Literal, Union, Optional
+from typing import Any, Literal, Union, Optional
 from dbay.addons.vsource import IVsourceAddon
 from dbay.direct import DeviceConnection
 
@@ -66,7 +65,7 @@ class dac4D_direct:
         return f"dac4D (Slot {self._slot}) [direct]"
 
 
-class dac4D_http:
+class dac4D_gui:
     CORE_TYPE = "dac4D"
     """Dual-mode dac4D module wrapper.
 
@@ -78,11 +77,11 @@ class dac4D_http:
             self,
             data,
             *,
-            http: Optional[Http] = None,
+            sync: Any = None,
             retain_changes: bool = True,
     ):
 
-        self.http = http
+        self.sync = sync
         self.retain_changes = retain_changes
         self.data = dac4D_spec(**data)
 
@@ -92,7 +91,7 @@ class dac4D_http:
     def __del__(self):  # pragma: no cover - defensive cleanup
         if self.retain_changes:
             return
-        if not self.data.vsource or not self.http:
+        if not self.data.vsource or not self.sync:
             return
         try:
             for idx in range(min(4, len(self.data.vsource.channels))):
@@ -105,7 +104,7 @@ class dac4D_http:
                     heading_text=ch.heading_text,
                     measuring=False,
                 )
-                self.http.put("dac4D/vsource/", data=change.model_dump())
+                self.sync.send_command("set_dac4d_vsource", change.model_dump())
         except Exception:
             # Avoid destructor exceptions
             pass
@@ -135,8 +134,9 @@ class dac4D_http:
                 channel].heading_text,  # type: ignore
             measuring=True,
         )
-        assert self.http is not None
-        self.http.put("dac4D/vsource/", data=change.model_dump())
+        assert self.sync is not None
+        self.sync.send_command("set_dac4d_vsource", change.model_dump())
+        self._refresh()
 
     def set_voltage_single(self, channel: int, voltage: float):
         """Set single-ended voltage output using VS command.
@@ -165,6 +165,11 @@ class dac4D_http:
             return f"dac4D (Slot {slot}): {active_channels}/4 channels active"
         return f"dac4D (Slot {slot}) [direct]"
 
+    def _refresh(self):
+        if self.sync is None:
+            return
+        self.data = dac4D_spec(**self.sync.module_data(self.data.core.slot))
+
 
 class dac4D:
     CORE_TYPE = "dac4D"
@@ -178,7 +183,7 @@ class dac4D:
             self,
             data,
             *,
-            http: Optional[Http] = None,
+            sync: Any = None,
             connection: Optional[DeviceConnection] = None,
             mode: str = MODE_GUI,
             retain_changes: bool = True,
@@ -187,18 +192,18 @@ class dac4D:
         self.mode = mode.lower()
         if self.mode not in {MODE_GUI, MODE_DIRECT}:
             raise ValueError(f"mode must be '{MODE_GUI}' or '{MODE_DIRECT}'")
-        self.http = http
+        self.sync = sync
         self.retain_changes = retain_changes
         # In direct mode vsource may be absent; allow None
         self.data = dac4D_spec(**data)
 
 
         # TODO: in principle, this initialization could be done outside
-        # this class and dac4D_http or dac4D_direct could be given as an
+        # this class and dac4D_gui or dac4D_direct could be given as an
         # argument to this class.
         if self.mode == MODE_GUI:
-            self._dac4D = dac4D_http(data,
-                                     http=http,
+            self._dac4D = dac4D_gui(data,
+                                     sync=sync,
                                      retain_changes=retain_changes)
         elif self.mode == MODE_DIRECT:
             self._dac4D = dac4D_direct(connection=connection,
@@ -215,6 +220,8 @@ class dac4D:
         """
 
         self._dac4D.set_voltage(channel, voltage, activated=activated)
+        if hasattr(self._dac4D, "data"):
+            self.data = self._dac4D.data
 
     def set_voltage_single(self, channel: int, voltage: float):
         """Set single-ended voltage output using VS command.

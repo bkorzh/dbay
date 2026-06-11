@@ -4,12 +4,14 @@
 
 DBay provides a unified Python client (`DBayClient`) for interacting with DBay hardware in two distinct ways:
 
-1. **GUI (stateful) mode** – Talks to the DBay GUI backend over HTTP, pulling a full system state (modules, channels) and pushing configuration updates.
+1. **GUI (stateful) mode** – Talks to the DBay GUI backend over lab-link WebSocket sync, pulling the authoritative system state and sending backend commands.
 2. **Direct (stateless) mode** – Sends low-level ASCII commands directly to the mainframe over UDP or Serial without maintaining any shadow state.
 
 Both modes share the same object model and method names where feasible. You choose the mode once at construction via a simple string: `mode="gui"` or `mode="direct"`.
 
 ## Installation
+
+Requires Python 3.11 or newer.
 
 Install from PyPI (package name placeholder shown below; adjust if different):
 
@@ -38,7 +40,6 @@ client.list_modules()
 dac16 = client.module(1, expected="dac16D")
 dac16.set_voltage(0, 1.2, activated=True)
 dac16.set_voltage_shared(0.5)  # sets all channels to 0.5 V
-dac16.set_bias(2.0)
 ```
 
 ### Direct Mode (UDP)
@@ -86,14 +87,14 @@ client.direct_send("DAC16D VS 1 5 2.5")
 | Module  | Methods (Common)                                                  | GUI Support                  | Direct Support |
 | ------- | ----------------------------------------------------------------- | ---------------------------- | -------------- |
 | dac4D   | set_voltage, set_voltage_diff                                     | voltage only (diff TBD)      | yes            |
-| dac16D  | set_voltage, set_voltage_diff, set_voltage_shared, set_bias, read | shared, bias (diff/read TBD) | yes            |
+| dac16D  | set_voltage, set_voltage_diff, set_voltage_shared, set_bias, read | voltage/shared               | yes            |
 | FAFD    | set_voltage, read                                                 | pending                      | yes            |
 | HIC4    | set_voltage                                                       | pending                      | yes            |
-| ADC4D   | read_diff                                                         | pending                      | yes            |
+| ADC4D   | read_diff                                                         | yes                          | yes            |
 | DAC4ETH | set_voltage, set_voltage_diff                                     | pending                      | yes            |
 | Empty   | placeholder                                                       | n/a                          | n/a            |
 
-GUI “pending” indicates the HTTP backend and data models are not yet implemented; calls will raise `NotImplementedError`.
+GUI “pending” indicates the sync command and data models are not yet implemented; calls will raise `NotImplementedError`.
 
 ## Migration from Legacy `DBay`
 
@@ -123,9 +124,9 @@ Key changes:
 
 ## Design Notes
 
-- GUI mode uses Pydantic models. By default (now the naive / persistent behavior) module changes are retained (`retain_changes=True`). Opt out with `retain_changes=False` if you want automatic revert for supported modules.
+- GUI mode uses lab-link WebSocket sync and Pydantic models. By default module changes are retained (`retain_changes=True`). Opt out with `retain_changes=False` if you want automatic revert for supported modules.
 - Direct mode is intentionally stateless: it sends commands and returns raw responses (no caching). Activation flags are ignored in direct mode.
-- Differential and sense features may be absent in GUI until backend endpoints are added.
+- Some sense and supply-voltage features may be absent in GUI until sync commands are added.
 - Class-based attachment uses each module's `CORE_TYPE` attribute to set hardware identity.
 - New modules (FAFD, HIC4, ADC4D, DAC4ETH) raise `NotImplementedError` for GUI operations for now.
 - Direct connection layer can be injected: pass an existing `DeviceConnection` (or subclass) via `connection=` at construction to integrate with higher-level proxy frameworks (e.g., Pyro5 remote transport).
@@ -168,8 +169,7 @@ Recommendation: leave the default (`True`) for user-facing or interactive toolin
 
 ## Limitations / Not Implemented Yet
 
-- Differential voltage setting in GUI mode.
-- Reading values (e.g., `read`, `read_diff`) in GUI mode.
+- `dac16D.read()` in GUI mode.
 - Batch / shared voltage command optimization in direct mode (currently sequential sends).
 - Websocket streaming for sense channels (explicitly out of scope for now).
 

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional
-from dbay.http import Http
+from typing import Any, Optional
 from dbay.direct import DeviceConnection
 
 __all__ = ["HIC4"]
@@ -21,7 +20,7 @@ class HIC4:
         self,
         data,
         *,
-        http: Optional[Http] = None,
+        sync: Any = None,
         connection: Optional[DeviceConnection] = None,
         mode: str = "gui",
         retain_changes: bool = True,
@@ -29,7 +28,7 @@ class HIC4:
         self.mode = mode.lower()
         if self.mode not in {"gui", "direct"}:
             raise ValueError("mode must be 'gui' or 'direct'")
-        self.http = http
+        self.sync = sync
         self.connection = connection
         self.slot = data.get("core", {}).get("slot", 0)
         self.retain_changes = retain_changes

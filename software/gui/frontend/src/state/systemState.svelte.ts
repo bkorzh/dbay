@@ -18,6 +18,12 @@ export interface JsonModule {
   core: JsonCoreModule;
   vsource?: IVsourceAddon;
   vsense?: IVsenseAddon;
+  polling?: AdcPollingState;
+}
+
+export interface AdcPollingState {
+  running: boolean;
+  frequency: number;
 }
 
 
@@ -29,6 +35,7 @@ export interface JsonCoreModule {
 
 export interface ServerInfo {
   ipaddr: string;
+  ipaddrs: string[];
   port: number;
 }
 

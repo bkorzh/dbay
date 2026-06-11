@@ -2,7 +2,7 @@
 
 Tests that:
 1. Modules send UDP commands to the initially configured address
-2. After /initialize-vsource switches the UDP target, commands go to the new address
+2. After initialize_vsource switches the UDP target, commands go to the new address
 3. The UDPAdapter correctly follows ParentUDP's inner UDP replacement
 """
 
@@ -12,6 +12,26 @@ import time
 from fastapi.testclient import TestClient
 
 from tests.mock_udp_server import MockUDPServer
+
+
+def send_command(client: TestClient, command: str, params: dict, request_id: str = "test"):
+    with client.websocket_connect("/sync/ws") as websocket:
+        websocket.receive_json()
+        websocket.send_json(
+            {
+                "type": "command",
+                "command": command,
+                "requestId": request_id,
+                "params": params,
+            }
+        )
+
+        while True:
+            message = websocket.receive_json()
+            if message["type"] == "command_ack" and message["requestId"] == request_id:
+                return message
+            if message["type"] == "command_error" and message["requestId"] == request_id:
+                raise AssertionError(message)
 
 
 # We need to patch vsource_params.json before importing main,
@@ -64,8 +84,8 @@ def configured_app(mock_servers, tmp_path, monkeypatch):
     # Override the UDP instance to point to server1
     parent_udp.udp = UDP("127.0.0.1", server1.port, dev_mode=False)
 
-    client = TestClient(app)
-    yield client, server1, server2, parent_udp
+    with TestClient(app) as client:
+        yield client, server1, server2, parent_udp
 
 
 class TestDynamicUDPSwitch:
@@ -76,8 +96,7 @@ class TestDynamicUDPSwitch:
         client, server1, server2, parent_udp = configured_app
 
         # Add a dac4D module to slot 0
-        response = client.post("/initialize-module", json={"slot": 0, "type": "dac4D"})
-        assert response.status_code == 200
+        send_command(client, "initialize_module", {"slot": 0, "type": "dac4D"})
 
         # Give the server a moment to receive
         time.sleep(0.1)
@@ -94,34 +113,33 @@ class TestDynamicUDPSwitch:
         ), "Server2 should not have received anything yet"
 
     def test_switch_udp_target(self, configured_app):
-        """After /initialize-vsource, commands should go to the new server."""
+        """After initialize_vsource, commands should go to the new server."""
         client, server1, server2, parent_udp = configured_app
 
         # First, initialize a module (goes to server1)
-        client.post("/initialize-module", json={"slot": 0, "type": "dac4D"})
+        send_command(client, "initialize_module", {"slot": 0, "type": "dac4D"})
         time.sleep(0.1)
 
         initial_server1_count = len(server1.messages)
 
         # Now switch to server2
-        response = client.post(
-            "/initialize-vsource",
-            json={
+        send_command(
+            client,
+            "initialize_vsource",
+            {
                 "ipaddr": "127.0.0.1",
                 "port": server2.port,
                 "timeout": 1.0,
                 "dev_mode": False,
             },
         )
-        assert response.status_code == 200
 
         # Clear server messages to start fresh
         server1.clear()
         server2.clear()
 
         # Add another module - should go to server2 now
-        response = client.post("/initialize-module", json={"slot": 1, "type": "dac4D"})
-        assert response.status_code == 200
+        send_command(client, "initialize_module", {"slot": 1, "type": "dac4D"})
 
         time.sleep(0.1)
 
@@ -143,13 +161,14 @@ class TestDynamicUDPSwitch:
         client, server1, server2, parent_udp = configured_app
 
         # Initialize module on server1
-        client.post("/initialize-module", json={"slot": 0, "type": "dac4D"})
+        send_command(client, "initialize_module", {"slot": 0, "type": "dac4D"})
         time.sleep(0.1)
 
         # Switch to server2
-        client.post(
-            "/initialize-vsource",
-            json={
+        send_command(
+            client,
+            "initialize_vsource",
+            {
                 "ipaddr": "127.0.0.1",
                 "port": server2.port,
                 "timeout": 1.0,
@@ -160,9 +179,10 @@ class TestDynamicUDPSwitch:
         server2.clear()
 
         # Send a voltage command - should go to server2
-        response = client.put(
-            "/dac4D/vsource/",
-            json={
+        send_command(
+            client,
+            "set_dac4d_vsource",
+            {
                 "module_index": 0,
                 "index": 0,
                 "bias_voltage": 1.5,
@@ -171,7 +191,6 @@ class TestDynamicUDPSwitch:
                 "measuring": False,
             },
         )
-        assert response.status_code == 200
 
         time.sleep(0.1)
 

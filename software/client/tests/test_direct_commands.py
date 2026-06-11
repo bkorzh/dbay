@@ -15,7 +15,7 @@ def test_dac4d_voltage_command(monkeypatch):
     monkeypatch.setattr(client._connection, "send", recorder)  # type: ignore[attr-defined]
     mod = client.attach_module(0, dac4D)
     mod.set_voltage(0, 5.0)
-    assert recorder.commands[-1].startswith("DAC4D VS 0 0 5.0")
+    assert recorder.commands[-1].startswith("DAC4D VSD 0 0 5.0")
 
 
 def test_dac16d_shared_and_bias(monkeypatch):

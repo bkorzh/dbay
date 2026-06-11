@@ -1,25 +1,18 @@
 from backend.addons.vsource import VsourceChange, SharedVsourceChange
-from backend.addons.vsense import ChSenseState
-from fastapi import Request, WebSocket
-from fastapi import APIRouter, HTTPException
 from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
 from backend.modules.dac16D_spec import dac16D, dac16DController
-from backend.initialize import global_state
-from backend.sync import publish_vsource_channel, publish_vsource_channels, sync
-from backend.util import identify_change
+from backend.sync import (
+    publish_dac16d_vsb,
+    publish_vsource_channel,
+    publish_vsource_channels,
+    sync,
+)
 from lab_link import CommandContext, CommandError, ptr
-import asyncio 
-import random
 
 
 logger = get_logger(__name__)
-
-router = APIRouter(
-    prefix="/dac16D",
-    responses={404: {"description": "Not found"}},
-)
 
 
 def _command_error(
@@ -97,6 +90,37 @@ def _hardware_error(change: VsourceChange, detail: str) -> CommandError:
     )
 
 
+def _validated_vsb_change(params: dict) -> tuple[dac16D, VsourceChange]:
+    change = VsourceChange(**params)
+
+    try:
+        module = cast(dac16D, global_state.system_state.data[change.module_index])
+    except IndexError as exc:
+        raise _command_error(
+            "invalid_module",
+            f"Slot {change.module_index + 1} is not a dac16D module.",
+            path=ptr("data", change.module_index),
+        ) from exc
+
+    if module.core.type != "dac16D":
+        raise _command_error(
+            "invalid_module",
+            f"Slot {change.module_index + 1} is not a dac16D module.",
+            path=ptr("data", change.module_index),
+        )
+
+    change.index = 0
+    change.bias_voltage = round(change.bias_voltage, 4)
+    if change.bias_voltage < -20 or change.bias_voltage > 20:
+        raise _command_error(
+            "voltage_out_of_range",
+            f"{change.bias_voltage} V is outside the allowed VSB range.",
+            path=ptr("data", change.module_index, "vsb", "bias_voltage"),
+        )
+
+    return module, change
+
+
 @sync.command
 def set_dac16d_vsource(ctx: CommandContext, **params):
     module, change = _validated_change(params)
@@ -148,90 +172,20 @@ def set_dac16d_vsource_shared(ctx: CommandContext, **params):
     return shared_change.model_dump(mode="json")
 
 
-@router.put("/vsource_shared/")
-async def voltage_set_shared(request: Request, shared_change: SharedVsourceChange):
-    try:
-        assert global_state.system_state.data[shared_change.change.module_index].core.type == "dac16D" # type: ignore
-    except AssertionError:
-        logger.error("Module not dac16D")
-        raise HTTPException(status_code=404, detail="Module not dac16D")
-    
-    slot = shared_change.change.module_index
-    assert slot == global_state.system_state.data[shared_change.change.module_index].core.slot # type: ignore
-    dac_16d = cast(dac16D, global_state.system_state.data[shared_change.change.module_index]) # type: ignore
+@sync.command
+def set_dac16d_vsb(ctx: CommandContext, **params):
+    module, change = _validated_vsb_change(params)
+    controller = cast(dac16DController, global_state.controllers[change.module_index])
 
+    hardware_voltage = change.bias_voltage if change.activated else 0
+    result = controller.setBias(hardware_voltage)
+    if result != 0:
+        raise _hardware_error(change, f"setBias returned {result}")
 
-    dac16d_controller = cast(dac16DController, global_state.controllers[slot])
-    changed_channels: list[int] = []
-    for i, boolean in enumerate(shared_change.link_enabled):
-        source_channel = dac_16d.vsource.channels[i]
+    module.vsb.heading_text = change.heading_text
+    module.vsb.measuring = change.measuring
+    module.vsb.activated = change.activated
+    module.vsb.bias_voltage = change.bias_voltage
+    publish_dac16d_vsb(change.module_index)
 
-        if boolean:
-            source_channel.heading_text = shared_change.change.heading_text
-            source_channel.measuring = shared_change.change.measuring
-            source_channel.bias_voltage = shared_change.change.bias_voltage
-            source_channel.activated = shared_change.change.activated
-            if source_channel.activated:
-                dac16d_controller.setChVol(slot, i, shared_change.change.bias_voltage)
-            else:
-                dac16d_controller.setChVol(slot, i, 0)
-            changed_channels.append(i)
-
-    publish_vsource_channels(slot, changed_channels)
-    return shared_change
-
-@router.put("/vsb/")
-async def voltage_set_vsb(request: Request, change: VsourceChange):
-    pass
-
-
-@router.websocket("/ws_vsense/")
-async def websocket_vsense_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        number = random.randint(0, 100)/100
-        logger.info(f"Received data: {number}")
-        vsense_state = ChSenseState(index=0, voltage=number, measuring=True, name="dac16D vr")
-        await websocket.send_text(vsense_state.model_dump_json())
-        await asyncio.sleep(0.1)
-
-@router.put("/vsource/")
-async def voltage_set(request: Request, change: VsourceChange):
-    try:
-        assert global_state.system_state.data[change.module_index].core.type == "dac16D" # type: ignore
-    except AssertionError:
-        logger.error("Module not dac16D")
-        raise HTTPException(status_code=404, detail="Module not dac16D")
-    slot = change.module_index
-    assert slot == global_state.system_state.data[change.module_index].core.slot # type: ignore
-    dac_16d = cast(dac16D, global_state.system_state.data[change.module_index]) # type: ignore
-    change.bias_voltage = round(change.bias_voltage, 4)
-    identify_change(
-        change, dac_16d.vsource.channels[change.index]
-    )
-    source_channel = dac_16d.vsource.channels[change.index]
-    source_channel.heading_text = change.heading_text
-    source_channel.measuring = change.measuring
-    dac16d_controller = cast(dac16DController, global_state.controllers[slot])
-    source_channel.activated = change.activated
-    source_channel.bias_voltage = change.bias_voltage
-
-
-    try:
-        assert (change.index >= 0 and change.index <= 15)
-    except AssertionError:
-        logger.error("Channel index not in 0-3 range")
-        raise HTTPException(status_code=404, detail="Channel index not in 0-3 range")
-    
-
-    logger.info(f"change.index: {change.index}")
-    if change.activated:
-        logger.info(f"turning on {change.index} or already on")
-        dac16d_controller.setChVol(slot, change.index, change.bias_voltage)
-    else:  # turning on or already on
-        logger.info(f"turning off {change.index} or already off")
-        dac16d_controller.setChVol(slot, change.index, 0)
-        logger.info(f"dac_4d.vsource.channels[change.index]: {dac_16d.vsource.channels[change.index]}")
-
-    publish_vsource_channel(change.module_index, change.index)
-    return change
+    return change.model_dump(mode="json")
