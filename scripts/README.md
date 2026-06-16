@@ -75,7 +75,11 @@ shipping empty notes, so keep the Unreleased section current.
 ## What gets bumped
 
 - `gui`: `tauri.conf.json`, `Cargo.toml`, **and `Cargo.lock`** (the local crate's
-  own `[[package]]` version, kept in step automatically), plus the changelog.
+  own `[[package]]` version, kept in step automatically), the changelog, **and
+  `software/gui/backend/uv.lock`** — the backend bundles the `dbay` client as an
+  editable path dependency, so the script re-runs `uv lock` to pick up the
+  current client version (the Tauri build runs `uv sync --locked` and would
+  otherwise fail). This requires `uv` on PATH when cutting a GUI release.
 - `client`: `pyproject.toml` plus the changelog.
 
 ## Tag format

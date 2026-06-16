@@ -85,6 +85,13 @@ const clientFiles = {
   changelog: path.join(repoRoot, "software/client/CHANGELOG.md"),
 };
 
+// The GUI backend bundles the `dbay` client as an editable path dependency, so
+// a client version bump leaves software/gui/backend/uv.lock stale. The Tauri
+// build runs `uv sync --locked`, which then fails. A GUI release re-locks the
+// backend so the lockfile always matches the client version being shipped.
+const backendDir = path.join(repoRoot, "software/gui/backend");
+const backendLock = path.join(backendDir, "uv.lock");
+
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -174,6 +181,17 @@ function readGuiVersion(): string {
   }
   parseSemver(tauriVersion);
   return tauriVersion;
+}
+
+function relockBackend() {
+  const result = spawnSync("uv", ["lock"], { cwd: backendDir, encoding: "utf-8" });
+  if (result.error || result.status !== 0) {
+    const detail = result.error ? result.error.message : (result.stderr || "").trim();
+    throw new Error(
+      `Failed to refresh backend uv.lock (the GUI build runs 'uv sync --locked'): ${detail}\n` +
+        "Install 'uv', or run 'uv lock' in software/gui/backend manually before releasing."
+    );
+  }
 }
 
 function readGuiCrateName(): string {
@@ -289,7 +307,7 @@ function main() {
   const changelogPath = target === "gui" ? guiFiles.changelog : clientFiles.changelog;
   const filesToUpdate =
     target === "gui"
-      ? [guiFiles.tauriConf, guiFiles.cargoToml, guiFiles.cargoLock, changelogPath]
+      ? [guiFiles.tauriConf, guiFiles.cargoToml, guiFiles.cargoLock, backendLock, changelogPath]
       : [clientFiles.pyprojectToml, changelogPath];
 
   console.log(`Target: ${target}`);
@@ -305,6 +323,7 @@ function main() {
 
   if (target === "gui") {
     updateGuiVersion(nextVersion);
+    relockBackend();
   } else {
     updateClientVersion(nextVersion);
   }
