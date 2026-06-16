@@ -10,6 +10,8 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-06-16
+
 ### Changed
 
 - Require `lab-link>=0.3.0` (was `>=0.2.0`). The client uses the
