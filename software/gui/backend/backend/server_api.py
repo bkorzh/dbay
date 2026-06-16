@@ -6,7 +6,7 @@ from pydantic import BaseModel
 
 from backend.initialize import global_state
 from backend.server_logging import get_logger
-from backend.sync import replace_sync_state, set_sync_value, sync
+from backend.sync import sync
 from backend.udp_control import UDP, parent_udp
 
 
@@ -49,6 +49,7 @@ def initialize_module(ctx: CommandContext, **params):
         )
 
     try:
+        # the slot assignment inside add_module broadcasts the change
         global_state.add_module(addition_args.type, addition_args.slot)
     except ValueError as exc:
         raise _command_error(
@@ -57,7 +58,6 @@ def initialize_module(ctx: CommandContext, **params):
             path=ptr("data", addition_args.slot),
         ) from exc
 
-    replace_sync_state()
     return global_state.system_state.model_dump(mode="json")
 
 
@@ -66,7 +66,6 @@ def initialize_vsource(ctx: CommandContext, **params):
     vsource_params = VsourceParams(**params)
     global_state.system_state.dev_mode = vsource_params.dev_mode
     parent_udp.udp = UDP(vsource_params.ipaddr, vsource_params.port, vsource_params.dev_mode)
-    set_sync_value(ptr("dev_mode"), vsource_params.dev_mode)
 
     logger.info(
         "udp control re-initialized with params: %s",

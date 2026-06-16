@@ -1,7 +1,7 @@
 from backend.module import IModule, Core
 from backend.addons.vsense import IVsenseAddon, ChSenseState
 from typing import Literal
-from pydantic import BaseModel
+from lab_link import ReactiveModel
 from backend.udp_control import Controller, ParentUDP
 from backend.dbay_bridge import dbay_client
 from dbay.modules.adc4d import ADC4D as ClientADC4D
@@ -16,7 +16,7 @@ MIN_POLLING_HZ = 0.1
 MAX_POLLING_HZ = 20.0
 
 
-class PollingState(BaseModel):
+class PollingState(ReactiveModel):
     """Polling configuration for the adc4D module."""
     running: bool = False
     frequency: float = 2.0  # Hz

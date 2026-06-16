@@ -3,12 +3,7 @@ from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
 from backend.modules.dac16D_spec import dac16D, dac16DController
-from backend.sync import (
-    publish_dac16d_vsb,
-    publish_vsource_channel,
-    publish_vsource_channels,
-    sync,
-)
+from backend.sync import sync
 from lab_link import CommandContext, CommandError, ptr
 
 
@@ -136,7 +131,6 @@ def set_dac16d_vsource(ctx: CommandContext, **params):
     source_channel.measuring = change.measuring
     source_channel.activated = change.activated
     source_channel.bias_voltage = change.bias_voltage
-    publish_vsource_channel(change.module_index, change.index)
 
     return change.model_dump(mode="json")
 
@@ -167,7 +161,6 @@ def set_dac16d_vsource_shared(ctx: CommandContext, **params):
         source_channel.bias_voltage = change.bias_voltage
 
     shared_change.change = change
-    publish_vsource_channels(change.module_index, changed_channels)
 
     return shared_change.model_dump(mode="json")
 
@@ -186,6 +179,5 @@ def set_dac16d_vsb(ctx: CommandContext, **params):
     module.vsb.measuring = change.measuring
     module.vsb.activated = change.activated
     module.vsb.bias_voltage = change.bias_voltage
-    publish_dac16d_vsb(change.module_index)
 
     return change.model_dump(mode="json")

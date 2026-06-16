@@ -1,9 +1,10 @@
 from pydantic import BaseModel
+from lab_link import ReactiveModel
 
 
 
 # STATE ##################################
-class ChSourceState(BaseModel):
+class ChSourceState(ReactiveModel):
     index: int
     bias_voltage: float
     activated: bool
@@ -11,7 +12,7 @@ class ChSourceState(BaseModel):
     measuring: bool
 
 
-class IVsourceAddon(BaseModel):
+class IVsourceAddon(ReactiveModel):
     channels: list[ChSourceState]
 
 

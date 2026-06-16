@@ -19,7 +19,11 @@ a = Analysis(
                    'dbay.modules', 'dbay.modules.dac4d', 'dbay.modules.dac16d',
                    'dbay.modules.adc4d', 'dbay.modules.fafd', 'dbay.modules.hic4',
                    'dbay.modules.dac4eth', 'dbay.modules.empty', 'dbay.addons',
-                   'dbay.addons.vsource'],
+                   'dbay.addons.vsource',
+                   # lab-link persistence: sqlmodel is imported lazily inside
+                   # lab_link.persistence, sqlite dialect via sqlalchemy registry
+                   'sqlmodel', 'sqlalchemy.dialects.sqlite',
+                   'sqlalchemy.dialects.sqlite.pysqlite'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],

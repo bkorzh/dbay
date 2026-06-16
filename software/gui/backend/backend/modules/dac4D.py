@@ -3,7 +3,7 @@ from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
 from backend.modules.dac4D_spec import dac4D, dac4DController
-from backend.sync import publish_vsource_channel, sync
+from backend.sync import sync
 from lab_link import CommandContext, CommandError, ptr
 
 
@@ -90,7 +90,6 @@ def set_dac4d_vsource(ctx: CommandContext, **params):
     source_channel.measuring = change.measuring
     source_channel.activated = change.activated
     source_channel.bias_voltage = change.bias_voltage
-    publish_vsource_channel(change.module_index, change.index)
 
     return change.model_dump(mode="json")
         

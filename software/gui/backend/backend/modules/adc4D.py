@@ -13,12 +13,7 @@ from backend.modules.adc4D_spec import (
     adc4D,
     adc4DController,
 )
-from backend.sync import (
-    publish_adc4d_polling,
-    publish_vsense_channel,
-    publish_vsense_voltages,
-    sync,
-)
+from backend.sync import sync
 from lab_link import CommandContext, CommandError, ptr
 
 
@@ -100,7 +95,6 @@ async def set_adc4d_vsense(ctx: CommandContext, **params):
     sense_channel.measuring = change.measuring
     sense_channel.voltage = voltage
     change.voltage = voltage
-    publish_vsense_channel(change.module_index, change.index)
 
     return change.model_dump(mode="json")
 
@@ -114,7 +108,6 @@ async def set_adc4d_polling(ctx: CommandContext, **params):
 
     module.polling.running = change.running
     module.polling.frequency = frequency
-    publish_adc4d_polling(change.module_index)
 
     task = _polling_tasks.get(change.module_index)
     if change.running:
@@ -154,9 +147,10 @@ async def _poll_adc4d(module_index: int) -> None:
                 voltages = await asyncio.to_thread(
                     lambda: [controller.readChannelVoltage(module_index, i) for i in measuring]
                 )
+                # same-tick writes batch into one patch; if the slot was
+                # re-initialized, the orphaned module swallows them harmlessly
                 for index, voltage in zip(measuring, voltages):
                     module.vsense.channels[index].voltage = voltage
-                publish_vsense_voltages(module_index, measuring)
 
             await asyncio.sleep(1.0 / module.polling.frequency)
     except asyncio.CancelledError:

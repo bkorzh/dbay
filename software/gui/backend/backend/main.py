@@ -1,11 +1,13 @@
 import uvicorn
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import FileResponse
+from starlette.routing import Mount, Route, WebSocketRoute
+from starlette.staticfiles import StaticFiles
 
 import multiprocessing
 import mimetypes
@@ -16,12 +18,13 @@ from backend.modules import dac16D as _dac16D_commands  # noqa: F401
 from backend.modules import dac4D as _dac4D_commands  # noqa: F401
 from backend.server_logging import get_logger
 from backend.location import WEB_DIR
-from backend.sync import router as sync_router, sync
+from backend.sync import restore_hardware_bindings, sync
 
 
 logger = get_logger(__name__)
 SERVE_PORT = 8345  # something a little random/unique
 mimetypes.init()
+mimetypes.add_type("application/javascript", ".js")
 
 
 # NOTE: if dev_mode is true and there's no VME rack to connect to, the fetch requests will take longer and there will be a
@@ -29,42 +32,40 @@ mimetypes.init()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: Starlette):
     async with sync.lifespan(app):
+        restore_hardware_bindings()
         yield
 
 
-app = FastAPI(
-    lifespan=lifespan,
-    docs_url=None,
-    redoc_url=None,
-    openapi_url=None,
-)
-app.include_router(sync_router)
+# return the index.html file on browser
+async def return_index(request: Request) -> FileResponse:
+    return FileResponse(Path(WEB_DIR, "index.html"))
+
+
+routes = [
+    Route("/", return_index),
+    WebSocketRoute("/sync/ws", sync.handle_ws),
+    Mount("/assets", app=StaticFiles(directory=Path(WEB_DIR, "assets")), name="assets"),
+]
 
 origins = [
     "http://localhost:5173",
     "http://localhost:4173",
-    "tauri://localhost",  # With this line, the Tauri app can now access the FastAPI server
+    "tauri://localhost",  # With this line, the Tauri app can now access the backend server
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+]
 
-
-app.mount("/assets", StaticFiles(directory=Path(WEB_DIR, "assets")), name="")
-
-
-# return the index.html file on browser
-@app.get("/", response_class=HTMLResponse)
-async def return_index(request: Request):
-    mimetypes.add_type("application/javascript", ".js")
-    return FileResponse(Path(WEB_DIR, "index.html"))
+app = Starlette(routes=routes, middleware=middleware, lifespan=lifespan)
 
 
 if __name__ == "__main__":

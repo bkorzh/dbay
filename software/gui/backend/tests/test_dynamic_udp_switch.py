@@ -9,7 +9,7 @@ Tests that:
 import pytest
 import socket
 import time
-from fastapi.testclient import TestClient
+from starlette.testclient import TestClient
 
 from tests.mock_udp_server import MockUDPServer
 
