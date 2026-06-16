@@ -12,6 +12,8 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-16
+
 ### Changed
 
 - **Breaking:** migrated the backend to lab-link 0.3.0's reactive state engine.
