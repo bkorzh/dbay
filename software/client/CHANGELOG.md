@@ -10,6 +10,16 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-07-02
+
+### Fixed
+
+- `ADC4D.CORE_TYPE` is now `"adc4D"` (was `"ADC4D"`), matching the GUI/state
+  `core.type` convention used by `dac4D`/`dac16D` and the websocket snapshot.
+  `CORE_TYPE` is a state-identity label, not a wire-protocol name — the all-caps
+  `ADC4D` firmware commands (`SETDEV`, `ADC4D VRD …`) are unchanged. This lets
+  consumers match the module type exactly without case normalization.
+
 ## [0.4.0] - 2026-07-02
 
 ### Added
