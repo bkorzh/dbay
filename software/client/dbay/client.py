@@ -218,6 +218,45 @@ class DBayClient:
                 )
         return mod
 
+    def snapshot(self) -> dict:
+        """Return the raw GUI server state snapshot.
+
+        Read-only accessor for gui mode. Connects the underlying sync transport
+        if it is not already connected (so it works even when the client was
+        built with ``load_state=False``). The returned mapping mirrors the
+        server payload, e.g. ``{"data": [{"core": {"slot", "type", ...}}, ...]}``.
+        """
+        if self.mode != "gui":
+            raise ValueError("snapshot() is only valid in gui mode")
+        if self._sync is None:
+            raise DBayError("GUI sync not initialized")
+        if not self._sync.connected:
+            self._sync.connect()
+        return self._sync.snapshot()
+
+    def present_modules(self) -> List[tuple]:
+        """Return ``(slot, type)`` for each module the GUI server reports.
+
+        Discovery helper for gui mode: reads the server snapshot and yields the
+        raw hardware type string (e.g. ``"dac4D"``) for every slot that reports
+        one, in slot order. Callers decide which types they care about, so no
+        filtering (including of empty slots) is applied here. Encapsulates the
+        snapshot's shape so consumers don't reach into the transport layer.
+        """
+        snapshot = self.snapshot()
+        data = snapshot.get("data", []) if isinstance(snapshot, dict) else []
+        result: List[tuple] = []
+        for entry in data:
+            if not isinstance(entry, dict):
+                continue
+            core = entry.get("core", {})
+            mtype = core.get("type")
+            slot = core.get("slot")
+            if not mtype or slot is None:
+                continue
+            result.append((int(slot), str(mtype)))
+        return result
+
     def list_modules(self):  # pragma: no cover - printing convenience
         print("DBay Modules:")
         print("-------------")
