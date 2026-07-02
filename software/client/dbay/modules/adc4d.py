@@ -7,7 +7,10 @@ __all__ = ["ADC4D"]
 
 
 class ADC4D:
-    CORE_TYPE = "ADC4D"
+    # core.type identity, matching the GUI/state convention (dac4D, dac16D,
+    # adc4D). Not the wire-protocol device name — hardware commands below use
+    # the all-caps "ADC4D" literal, a separate namespace.
+    CORE_TYPE = "adc4D"
     """Dual-mode ADC4D module.
 
     Direct commands:
