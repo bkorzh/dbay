@@ -10,6 +10,16 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-02
+
+### Added
+
+- `DBayClient.snapshot()` and `DBayClient.present_modules()`: public read-only
+  accessors for the GUI server state. `present_modules()` returns `(slot, type)`
+  pairs for discovery, so callers no longer need to reach into `GuiSync` or the
+  underlying transport to enumerate installed modules. Both connect the sync
+  transport on demand, so they work with `load_state=False`.
+
 ## [0.3.1] - 2026-06-16
 
 ### Changed
