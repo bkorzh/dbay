@@ -148,8 +148,9 @@ Ad7124Chip::setConfig (uint8_t cfg, RefSel ref, PgaSel pga,
                   AD7124_CFG_REG_PGA (pga) |
                   (bipolar ? AD7124_CFG_REG_BIPOLAR : 0) |
                   AD7124_CFG_REG_BURNOUT (burnout) |
-                  AD7124_CFG_REG_REF_BUFP | AD7124_CFG_REG_REF_BUFM |
-                  AD7124_CFG_REG_AIN_BUFP | AD7124_CFG_REG_AINN_BUFM;
+                  AD7124_CFG_REG_REF_BUFP | AD7124_CFG_REG_REF_BUFM | 
+                  // (0UL <<6) | (0UL <<5);// debugging: changed by Fadri. 
+                  AD7124_CFG_REG_AIN_BUFP | AD7124_CFG_REG_AINN_BUFM; // Original line
     return writeRegister ( (RegisterId) cfg);
   }
   return -1;
