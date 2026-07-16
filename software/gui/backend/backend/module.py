@@ -1,12 +1,12 @@
-from pydantic import BaseModel
+from lab_link import ReactiveModel
 
-class Core(BaseModel):
+class Core(ReactiveModel):
     slot: int
     type: str
     name: str
 
 
-class IModule(BaseModel):
+class IModule(ReactiveModel):
     core: Core
 
 

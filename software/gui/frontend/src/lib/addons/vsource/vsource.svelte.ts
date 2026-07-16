@@ -1,14 +1,19 @@
 import type { IVsourceAddon, ChSourceState, VsourceChange } from "./interface";
 import { system_state } from "../../../state/systemState.svelte";
 import { requestChannelUpdate } from "../../../api";
+import { SvelteSyncNode, type SyncRuntime } from "lab-link/svelte";
+import { joinJsonPointer } from "lab-link/core";
 
 
 export type ChangerFunction = (data: VsourceChange) => Promise<VsourceChange>;
 export type EffectFunction = () => void;
 
-export class ChSourceStateClass implements ChSourceState {
+export class ChSourceStateClass
+  extends SvelteSyncNode<ChSourceState>
+  implements ChSourceState
+{
   // interface defined properties
-  public index: number;
+  public index: number = 0;
   public bias_voltage: number = $state(0);
   public activated: boolean = $state(false);
   public heading_text: string = $state("");
@@ -16,6 +21,42 @@ export class ChSourceStateClass implements ChSourceState {
 
   // module index
   public module_index: number;
+
+  public fields: any = this.defineFields<any>({
+    index: { writable: false },
+    bias_voltage: {
+      blockWhen: () => this.editing,
+      onBlocked: "queueLatest",
+      validateRemote: (value) => typeof value === "number",
+      coerceRemote: (value) => Math.round(Number(value) * 10000) / 10000,
+      onApplied: () => {
+        this.valid = true;
+        this.voltageToTemp();
+        this.effect();
+      },
+    },
+    activated: {
+      onApplied: () => {
+        this.valid = true;
+        this.effect();
+      },
+    },
+    heading_text: {
+      blockWhen: () => this.heading_editing,
+      onBlocked: "queueLatest",
+      onApplied: () => {
+        this.valid = true;
+        this.voltageToTemp();
+        this.effect();
+      },
+    },
+    measuring: {
+      onApplied: () => {
+        this.valid = true;
+        this.effect();
+      },
+    },
+  });
 
   // derived and computed properties
   public temp: Array<number> = $state([0, 0, 0, 0]);
@@ -52,14 +93,19 @@ export class ChSourceStateClass implements ChSourceState {
 
   public immediate_text = $state("");
 
-  constructor(data: ChSourceState, module_index: number) {
-    this.index = data.index;
-    this.bias_voltage = data.bias_voltage;
-    this.activated = data.activated;
-    this.heading_text = data.heading_text;
-    this.measuring = data.measuring;
+  constructor(
+    sync: SyncRuntime,
+    path: string,
+    data: ChSourceState,
+    module_index: number,
+  ) {
+    super(sync, path);
     this.module_index = module_index;
-    this.voltageToTemp();
+    this.applySnapshot(data);
+  }
+
+  public applySnapshot(data: ChSourceState): void {
+    this.update(data, this.module_index);
   }
 
   public update(data: ChSourceState, module_index: number) {
@@ -71,6 +117,16 @@ export class ChSourceStateClass implements ChSourceState {
     this.module_index = module_index;
     this.voltageToTemp();
     this.effect();
+  }
+
+  public finishEditing(): void {
+    this.editing = false;
+    this.sync.flushQueued(this, "bias_voltage");
+  }
+
+  public finishHeadingEditing(): void {
+    this.heading_editing = false;
+    this.sync.flushQueued(this, "heading_text");
   }
 
   public currentStateAsChange(): VsourceChange {
@@ -103,7 +159,7 @@ export class ChSourceStateClass implements ChSourceState {
 
     this.validateUpdateVoltage(submitted_voltage);
 
-    this.editing = false;
+    this.finishEditing();
     this.focusing = false;
     this.isPlusMinusPressed = true;
     setTimeout(() => {
@@ -174,20 +230,28 @@ export class ChSourceStateClass implements ChSourceState {
   }
 }
 
-export class VsourceAddon implements IVsourceAddon {
+export class VsourceAddon
+  extends SvelteSyncNode<IVsourceAddon>
+  implements IVsourceAddon
+{
   public channels: ChSourceStateClass[];
 
   constructor(
+    sync: SyncRuntime,
+    path: string,
     module_index: number,
     channels?: Array<ChSourceState>,
     default_channel_number = 4,
   ) {
+    super(sync, path);
     const deflt = !channels || channels.length === 0;
     this.channels = Array.from(
       { length: deflt ? default_channel_number : channels.length },
       (_, i) => {
         if (deflt) {
           return new ChSourceStateClass(
+            sync,
+            joinJsonPointer(path, "channels", String(i)),
             {
               index: i,
               bias_voltage: 0,
@@ -198,18 +262,42 @@ export class VsourceAddon implements IVsourceAddon {
             module_index,
           );
         } else {
-          return new ChSourceStateClass(channels[i], module_index);
+          return new ChSourceStateClass(
+            sync,
+            joinJsonPointer(path, "channels", String(i)),
+            channels[i],
+            module_index,
+          );
         }
       },
     );
+  }
+
+  public applySnapshot(data: IVsourceAddon): void {
+    this.update(this.channels[0]?.module_index ?? 0, data.channels);
   }
 
   public update(module_index: number, channels: Array<ChSourceState>): void {
     // I need to figure out how to check for an invalid shared channel state here, because someone editing
     // the state could invalidate it.
 
-    for (let i = 0; i < this.channels.length; i++) {
-      this.channels[i].update(channels[i], module_index);
+    for (let i = 0; i < channels.length; i++) {
+      if (this.channels[i]) {
+        this.channels[i].update(channels[i], module_index);
+      } else {
+        this.channels.push(
+          new ChSourceStateClass(
+            this.sync,
+            joinJsonPointer(this.path, "channels", String(i)),
+            channels[i],
+            module_index,
+          ),
+        );
+      }
+    }
+
+    while (this.channels.length > channels.length) {
+      this.channels.pop()?.dispose();
     }
   }
 
@@ -219,5 +307,10 @@ export class VsourceAddon implements IVsourceAddon {
 
   public setAllChannelsVoltage(voltage: number): void {
     this.channels.forEach((channel) => {channel.updateChannel({ voltage: voltage })});
+  }
+
+  public dispose(): void {
+    this.channels.forEach((channel) => channel.dispose());
+    super.dispose();
   }
 }

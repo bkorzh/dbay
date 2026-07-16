@@ -1,6 +1,6 @@
 {
   "productName": "DeviceBay",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "identifier": "device.bay",
   "build": {
     "frontendDist": "../dist",

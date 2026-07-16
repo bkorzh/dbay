@@ -308,6 +308,8 @@
 
 <style>
     input {
+        appearance: none;
+        -webkit-appearance: none;
         background-color: transparent;
         border-radius: 4px;
         border: 1.5px solid var(--value-border-color);
@@ -335,7 +337,8 @@
     }
 
     input[type="number"] {
-        appearance: textfield;
+        appearance: none;
+        -webkit-appearance: none;
         -moz-appearance: textfield;
     }
     input:focus {
@@ -378,6 +381,9 @@
         justify-content: space-between;
         border-radius: 4px;
         border: 1.3px solid var(--value-border-color);
+        /* keep the outermost glyphs clear of the overflow-hidden edge;
+           Safari clips the left side of light glyphs that sit flush on it */
+        padding: 0 0.2rem;
         transition: background-color 0.1s ease-in-out;
         background-color: var(--display-color);
     }

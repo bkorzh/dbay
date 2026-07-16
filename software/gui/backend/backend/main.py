@@ -1,151 +1,71 @@
 import uvicorn
+from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
-import logging
+from starlette.applications import Starlette
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
+from starlette.requests import Request
+from starlette.responses import FileResponse
+from starlette.routing import Mount, Route, WebSocketRoute
+from starlette.staticfiles import StaticFiles
 
 import multiprocessing
-import socket
-from pydantic import BaseModel
-import psutil
-import os
-import signal
 import mimetypes
 
-from backend.modules import dac4D
-from backend.modules import dac16D
-from backend.modules import adc4D
+from backend import server_api as _server_api_commands  # noqa: F401
+from backend.modules import adc4D as _adc4D_commands  # noqa: F401
+from backend.modules import dac16D as _dac16D_commands  # noqa: F401
+from backend.modules import dac4D as _dac4D_commands  # noqa: F401
 from backend.server_logging import get_logger
-from backend.udp_control import parent_udp, UDP
-from backend.initialize import global_state
-from backend.state import SystemState
 from backend.location import WEB_DIR
+from backend.sync import restore_hardware_bindings, sync
 
 
 logger = get_logger(__name__)
 SERVE_PORT = 8345  # something a little random/unique
 mimetypes.init()
-
-
-class IgnoreFullStateFilter(logging.Filter):
-    def filter(self, record: logging.LogRecord) -> bool:
-        return 'GET /full-state' not in record.getMessage()
-
-
-logging.getLogger("uvicorn.access").addFilter(IgnoreFullStateFilter())
-
-
-class ModuleAddition(BaseModel):
-    slot: int
-    type: str
-    # system_activated: bool
-
-
-class VsourceParams(BaseModel):
-    ipaddr: str
-    timeout: float
-    port: int
-    dev_mode: bool
-
-
-class ServerInfo(BaseModel):
-    ipaddr: str
-    port: int
+mimetypes.add_type("application/javascript", ".js")
 
 
 # NOTE: if dev_mode is true and there's no VME rack to connect to, the fetch requests will take longer and there will be a
 # hard to debug delay in the frontend!
 
 
-app = FastAPI()
-app.include_router(dac4D.router)
-app.include_router(dac16D.router)
-app.include_router(adc4D.router)
+@asynccontextmanager
+async def lifespan(app: Starlette):
+    async with sync.lifespan(app):
+        restore_hardware_bindings()
+        yield
+
+
+# return the index.html file on browser
+async def return_index(request: Request) -> FileResponse:
+    return FileResponse(Path(WEB_DIR, "index.html"))
+
+
+routes = [
+    Route("/", return_index),
+    WebSocketRoute("/sync/ws", sync.handle_ws),
+    Mount("/assets", app=StaticFiles(directory=Path(WEB_DIR, "assets")), name="assets"),
+]
 
 origins = [
     "http://localhost:5173",
     "http://localhost:4173",
-    "tauri://localhost",  # With this line, the Tauri app can now access the FastAPI server
+    "tauri://localhost",  # With this line, the Tauri app can now access the backend server
 ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-app.mount("/assets", StaticFiles(directory=Path(WEB_DIR, "assets")), name="")
-
-
-# return the index.html file on browser
-@app.get("/", response_class=HTMLResponse)
-async def return_index(request: Request):
-    mimetypes.add_type("application/javascript", ".js")
-    return FileResponse(Path(WEB_DIR, "index.html"))
-
-
-@app.get("/shutdown")
-def shutdown():
-    os.kill(os.getpid(), signal.SIGINT)
-    return {"message": "Shutting down"}
-
-
-@app.post("/initialize-module")
-async def init_module(request: Request, addition_args: ModuleAddition):
-    global_state.add_module(addition_args.type, addition_args.slot)
-
-    return global_state.system_state
-
-
-@app.post("/initialize-vsource")
-async def vsource_set_state(params: VsourceParams):
-    global_state.system_state.dev_mode = params.dev_mode
-    udp = UDP(params.ipaddr, params.port, params.dev_mode)
-
-    parent_udp.udp = udp
-
-    logger.info(
-        "udp control re-initialized with params: {}".format(params.model_dump())
+middleware = [
+    Middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
     )
-    return params
+]
 
-
-@app.get("/full-state")
-async def state():
-    return global_state.system_state
-
-
-@app.put("/full-state")
-async def state_set(request: Request, state: SystemState):
-    logger.info("full state updated")
-
-    global_state.system_state = state
-    return global_state.system_state
-
-
-@app.get("/server-info")
-async def server_info():
-    hostname = socket.gethostname()
-
-    # Get the actual IP address using psutil
-    ipaddr = "127.0.0.1"
-    for interface, addrs in psutil.net_if_addrs().items():
-        for addr in addrs:
-            if addr.family == socket.AF_INET and not addr.address.startswith("127."):
-                ipaddr = addr.address
-                break
-        if ipaddr != "127.0.0.1":
-            break
-
-    port = SERVE_PORT  # The port your server is running on
-
-    return ServerInfo(ipaddr=ipaddr, port=port)
+app = Starlette(routes=routes, middleware=middleware, lifespan=lifespan)
 
 
 if __name__ == "__main__":

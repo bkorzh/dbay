@@ -1,7 +1,6 @@
-from dbay.http import Http
 from dbay.addons.vsource import VsourceChange, SharedVsourceChange
 from dbay.state import IModule, Core
-from typing import Literal, Union, List, Optional
+from typing import Any, Literal, Union, List, Optional
 from dbay.addons.vsource import IVsourceAddon
 from dbay.direct import DeviceConnection
 
@@ -20,7 +19,7 @@ class dac16D:
         self,
         data,
         *,
-        http: Optional[Http] = None,
+        sync: Any = None,
         connection: Optional[DeviceConnection] = None,
         mode: str = "gui",
         retain_changes: bool = True,
@@ -28,7 +27,7 @@ class dac16D:
         self.mode = mode.lower()
         if self.mode not in {"gui", "direct"}:
             raise ValueError("mode must be 'gui' or 'direct'")
-        self.http = http
+        self.sync = sync
         self.connection = connection
         self.retain_changes = retain_changes
         self.data = dac16D_spec(**data)
@@ -36,7 +35,7 @@ class dac16D:
     def __del__(self):  # pragma: no cover
         if self.mode != "gui" or self.retain_changes:
             return
-        if not self.data.vsource or not self.http:
+        if not self.data.vsource or not self.sync:
             return
         try:
             for idx in range(min(16, len(self.data.vsource.channels))):
@@ -49,7 +48,7 @@ class dac16D:
                     heading_text=ch.heading_text,
                     measuring=False,
                 )
-                self.http.put("dac16D/vsource/", data=change.model_dump())
+                self.sync.send_command("set_dac16d_vsource", change.model_dump())
         except Exception:
             pass
 
@@ -75,8 +74,9 @@ class dac16D:
                 heading_text=self.data.vsource.channels[channel].heading_text,  # type: ignore
                 measuring=True,
             )
-            assert self.http is not None
-            self.http.put("dac16D/vsource/", data=change.model_dump())
+            assert self.sync is not None
+            self.sync.send_command("set_dac16d_vsource", change.model_dump())
+            self._refresh()
         else:
             assert self.connection is not None
             self.connection.send(f"DAC16D VSD {self.data.core.slot} {channel} {voltage}")
@@ -122,8 +122,12 @@ class dac16D:
                 measuring=True,
             )
             shared_change = SharedVsourceChange(change=change, link_enabled=channels)
-            assert self.http is not None
-            self.http.put("dac16D/vsource_shared/", data=shared_change.model_dump())
+            assert self.sync is not None
+            self.sync.send_command(
+                "set_dac16d_vsource_shared",
+                shared_change.model_dump(),
+            )
+            self._refresh()
         else:
             # Iterate each channel for now (could optimize later if protocol adds batch)
             assert self.connection is not None
@@ -135,16 +139,7 @@ class dac16D:
         if not (0 <= voltage <= 8):
             raise ValueError("bias voltage must be 0..8 V")
         if self.mode == "gui":
-            change = VsourceChange(
-                module_index=self.data.core.slot,
-                index=0,
-                bias_voltage=voltage,
-                activated=True,
-                heading_text="VSB",
-                measuring=True,
-            )
-            assert self.http is not None
-            self.http.put("dac16D/vsb/", data=change.model_dump())
+            raise NotImplementedError("dac16D.set_bias not implemented for GUI sync")
         else:
             assert self.connection is not None
             self.connection.send(f"DAC16D VSB {self.data.core.slot} {voltage}")
@@ -161,3 +156,8 @@ class dac16D:
             active_channels = sum(1 for ch in self.data.vsource.channels if ch.activated)
             return f"dac16D (Slot {slot}): {active_channels}/16 channels active"
         return f"dac16D (Slot {slot}) [direct]"
+
+    def _refresh(self):
+        if self.sync is None:
+            return
+        self.data = dac16D_spec(**self.sync.module_data(self.data.core.slot))

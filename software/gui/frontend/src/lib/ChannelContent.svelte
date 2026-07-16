@@ -99,7 +99,7 @@
         ch.temp[2] = ch.hundreds;
         ch.temp[3] = ch.thousands;
         ch.sign_temp = ch.sign;
-        ch.editing = false;
+        ch.finishEditing();
     }
 </script>
 

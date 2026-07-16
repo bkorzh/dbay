@@ -120,6 +120,15 @@ jobs:
           print(f"Validated GUI version {expected_version} against tauri.conf.json and Cargo.toml")
           PY
 
+      - name: Validate changelog has an entry for this version
+        run: |
+          TAG="${{ needs.validate-release-tag.outputs.tag }}"
+          if [[ -z "$TAG" ]]; then
+            echo "No release tag supplied; skipping changelog check."
+            exit 0
+          fi
+          python3 scripts/extract_changelog.py software/gui/CHANGELOG.md "${TAG#gui-v}" > /dev/null
+
   build-tauri:
     needs:
       - validate-release-tag
@@ -280,6 +289,15 @@ jobs:
     if: needs.validate-release-tag.outputs.should_build == 'true' && needs.validate-release-tag.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract release notes from changelog
+        run: |
+          TAG="${{ needs.validate-release-tag.outputs.tag }}"
+          python3 scripts/extract_changelog.py software/gui/CHANGELOG.md "${TAG#gui-v}" > RELEASE_NOTES.md
+          echo "Release notes:" && cat RELEASE_NOTES.md
+
       - name: Download all build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -289,6 +307,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.validate-release-tag.outputs.tag }}
+          body_path: RELEASE_NOTES.md
           files: |
             release-assets/**/*.dmg
             release-assets/**/*.msi

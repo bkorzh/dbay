@@ -1,14 +1,10 @@
 <script lang="ts">
-  import SenseChannel from "../SenseChannel.svelte";
-  import { onMount } from "svelte";
-  import { ui_state } from "../../state/uiState.svelte";
+  import SenseRow from "../SenseRow.svelte";
   import { system_state } from "../../state/systemState.svelte";
   import { slide } from "svelte/transition";
-  import { blur } from "svelte/transition";
   import { adc4D } from "./adc4D_data.svelte";
   import type { VsenseChange } from "../addons/vsense/interface";
-  import { requestSenseUpdate } from "../../api";
-  import ModuleChevron from "../buttons/ModuleChevron.svelte";
+  import { requestSenseUpdate, requestPollingUpdate } from "../../api";
   import { VisibleState } from "../buttons/module_chevron";
   import ModuleHeading from "../ModuleHeading.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
@@ -21,9 +17,7 @@
 
   const this_component_data = system_state.data[module_index] as adc4D;
 
-  let down_array = $state([true, true, true, true, true]);
-
-  let channel_list = [0, 1, 2, 3, 4]; // 5 channels for differential ADC
+  let channel_list = [0, 1, 2, 3]; // 4 differential ADC channels
 
   let visible = $state(
     Number(localStorage.getItem("visible" + module_index)) ||
@@ -41,38 +35,79 @@
     return returnData;
   }
 
+  // The rows have no per-channel expansion, so the module chevron just
+  // toggles between collapsed and open.
   function rotateState() {
-    if (visible === VisibleState.Collapsed) {
-      visible = VisibleState.Down;
-      down_array = [false, false, false, false, false];
-    } else if (visible === VisibleState.Down) {
-      visible = VisibleState.DoubleDown;
-      down_array = [true, true, true, true, true];
-    } else {
-      visible = VisibleState.Collapsed;
-    }
+    visible =
+      visible === VisibleState.Collapsed
+        ? VisibleState.DoubleDown
+        : VisibleState.Collapsed;
 
-    // Store the visible state in localStorage
     localStorage.setItem("visible" + module_index, visible.toString());
   }
 
-  function onChevClick(i: number) {
-    down_array[i] = !down_array[i];
-    if (down_array.every((val) => val === true)) {
-      visible = VisibleState.DoubleDown;
-    }
+  // ── polling controls ──────────────────────────────────────────────
+  let freqEditing = false;
+  let freqText: string | number = $state(
+    String(this_component_data.polling.frequency),
+  );
 
-    // if all values of down_array are false, set visible to down
-    if (down_array.every((val) => val === false)) {
-      visible = VisibleState.Down;
+  $effect(() => {
+    if (!freqEditing) freqText = String(this_component_data.polling.frequency);
+  });
+
+  async function setPolling(running: boolean, frequency: number) {
+    if (system_state.valid) {
+      await requestPollingUpdate({ module_index, running, frequency });
+    } else {
+      this_component_data.polling.running = running;
+      this_component_data.polling.frequency = frequency;
+    }
+  }
+
+  function applyFrequency() {
+    freqEditing = false;
+    const parsed = parseFloat(String(freqText));
+    if (!isNaN(parsed) && parsed > 0) {
+      setPolling(this_component_data.polling.running, parsed);
+    } else {
+      freqText = String(this_component_data.polling.frequency);
+    }
+  }
+
+  function handleFreqKeyDown(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      applyFrequency();
+      (event.target as HTMLInputElement).blur();
     }
   }
 </script>
 
 {#snippet menu_buttons()}
-  <MenuButton onclick={() => console.log("ADC4D menu action")}
-    >Settings</MenuButton
+  <MenuButton
+    onclick={() =>
+      setPolling(
+        !this_component_data.polling.running,
+        this_component_data.polling.frequency,
+      )}
+    >{this_component_data.polling.running
+      ? "Stop Polling"
+      : "Start Polling"}</MenuButton
   >
+  <div class="freq-row">
+    <div class="freq-label">Polling rate (Hz)</div>
+    <input
+      class="freq-input"
+      type="number"
+      min="0.1"
+      max="20"
+      step="0.1"
+      bind:value={freqText}
+      onfocus={() => (freqEditing = true)}
+      onblur={applyFrequency}
+      onkeydown={handleFreqKeyDown}
+    />
+  </div>
 {/snippet}
 
 <div class="module-container">
@@ -89,13 +124,11 @@
   <div class="body">
     {#if !(visible == VisibleState.Collapsed)}
       <div class="content">
-        {#each channel_list as _, i}
+        {#each channel_list as i (i)}
           <div transition:slide|global class="channel">
-            <SenseChannel
+            <SenseRow
               ch={this_component_data.vsense.channels[i]}
               {module_index}
-              down={down_array[i]}
-              onChevronClick={() => onChevClick(i)}
               {onChannelChange}
             />
           </div>
@@ -126,6 +159,35 @@
     justify-content: center;
     margin-bottom: 2rem;
     box-shadow: 0 0 9px rgba(0, 0, 0, 0.05);
+  }
+
+  .freq-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+  }
+
+  .freq-label {
+    font-size: 1.1rem;
+    color: var(--text-color);
+  }
+
+  .freq-input {
+    width: 4.5rem;
+    font-size: 1.1rem;
+    color: var(--digits-color);
+    background-color: transparent;
+    border: 1.3px solid var(--value-border-color);
+    border-radius: 4px;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .freq-input:focus {
+    outline: none;
+    border-color: var(--edit-blue);
   }
 
   @media (min-width: 460px) {

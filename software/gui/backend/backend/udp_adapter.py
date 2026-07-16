@@ -17,7 +17,7 @@ class UDPAdapter(IConnection):
 
     By holding a reference to ParentUDP (not the inner UDP), this adapter
     correctly uses the current UDP instance even after dynamic replacement
-    via /initialize-vsource.
+    via the initialize_vsource lab-link command.
     """
 
     def __init__(self, parent_udp: "ParentUDP"):
