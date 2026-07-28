@@ -1,17 +1,15 @@
 from dbay.addons.vsource import VsourceChange
-from dbay.state import IModule, Core
-from typing import Any, Literal, Union, Optional
-from dbay.addons.vsource import IVsourceAddon
+from dbay.state import Dac4DPartialState
+from typing import Any, Optional, Union
 from dbay.direct import DeviceConnection
 
 MODE_GUI = 'gui'
 MODE_DIRECT = 'direct'
 
 
-class dac4D_spec(IModule):
-    module_type: Literal["dac4D"] = "dac4D"
-    core: Core
-    vsource: Optional[IVsourceAddon] = None  # optional in direct mode
+# Defined in dbay.state so client, GUI backend and external consumers share
+# one definition. Aliased for the existing call sites below.
+dac4D_spec = Dac4DPartialState
 
 
 class dac4D_direct:

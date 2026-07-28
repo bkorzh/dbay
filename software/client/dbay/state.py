@@ -44,6 +44,8 @@ __all__ = [
     "Empty",
     "Dac4DState",
     "Dac16DState",
+    "Dac4DPartialState",
+    "Dac16DPartialState",
     "Adc4DState",
     "UnknownModuleState",
     "SystemState",
@@ -155,6 +157,34 @@ BUILTIN_MODULE_STATES: tuple[type[ModuleState], ...] = (
     Dac16DState,
     Adc4DState,
 )
+
+
+# --------------------------- partial (direct-mode) states ---------------------------
+#
+# In direct mode there is no GUI server and therefore no addon state to read —
+# a module is constructed from whatever the caller passes, which is typically
+# just ``core``. These variants describe that partial reading of the same
+# module. They are deliberately *not* in BUILTIN_MODULE_STATES: the tagged
+# union above describes what a GUI server reports, where the addons are always
+# present.
+
+
+class Dac4DPartialState(ModuleState):
+    """dac4D as a direct-mode client sees it — ``vsource`` may be absent."""
+
+    module_type: Literal["dac4D"] = "dac4D"
+    core: Core
+    vsource: IVsourceAddon | None = None
+
+
+class Dac16DPartialState(ModuleState):
+    """dac16D as a direct-mode client sees it — addon state may be absent."""
+
+    module_type: Literal["dac16D"] = "dac16D"
+    core: Core
+    vsource: IVsourceAddon | None = None
+    vsb: ChSourceState | None = None
+    vr: ChSenseState | None = None
 
 
 # --------------------------- system state ---------------------------

@@ -167,3 +167,30 @@ def test_extra_module_without_literal_discriminator_is_rejected_clearly():
 
     with pytest.raises(TypeError, match="must be a Literal"):
         build_system_state_model(BadState)
+
+
+def test_partial_states_tolerate_missing_addons():
+    """Direct mode has no GUI server, so a module is often just its core."""
+    from dbay.state import Dac4DPartialState, Dac16DPartialState
+
+    core = {"slot": 0, "type": "dac4D", "name": "D"}
+    partial = Dac4DPartialState(core=core)
+    assert partial.vsource is None
+    assert partial.core.slot == 0
+
+    d16 = Dac16DPartialState(core={"slot": 1, "type": "dac16D", "name": "D16"})
+    assert (d16.vsource, d16.vsb, d16.vr) == (None, None, None)
+
+    # The strict variants still require the addon state a GUI server always sends.
+    with pytest.raises(ValidationError):
+        Dac4DState(core=core)
+
+
+def test_module_classes_use_the_shared_partial_states():
+    """The client's module classes must not reintroduce a private copy."""
+    from dbay.modules.dac4d import dac4D_spec
+    from dbay.modules.dac16d import dac16D_spec
+    from dbay.state import Dac4DPartialState, Dac16DPartialState
+
+    assert dac4D_spec is Dac4DPartialState
+    assert dac16D_spec is Dac16DPartialState

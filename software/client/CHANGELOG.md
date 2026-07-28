@@ -40,9 +40,16 @@ section with the version and date on each release.
   **Potentially breaking**: a model nested inside one of these must now also
   subclass `ReactiveModel` — lab-link rejects a plain `BaseModel` child rather
   than silently losing reactivity.
-- `dbay.addons.vsource` and `dbay.addons.vsense` re-export their state models
-  from `dbay.state` instead of defining a second copy. The message payloads
-  (`VsourceChange`, `SharedVsourceChange`, `VsenseChange`) are unchanged.
+- `dbay.addons.vsource` and `dbay.addons.vsense` are now the single definition
+  of both the addon state models (re-exported from `dbay.state`) and the
+  command payloads `VsourceChange`, `SharedVsourceChange` and `VsenseChange`.
+  The GUI backend re-exports all of them rather than defining its own copies.
+- `Dac4DPartialState` / `Dac16DPartialState` describe a module as a *direct
+  mode* client sees it, where there is no GUI server and the addon state may be
+  absent. `dbay.modules.dac4d.dac4D_spec` and `dbay.modules.dac16d.dac16D_spec`
+  are now aliases of these rather than separate declarations, so the loose
+  direct-mode shape is defined once alongside the strict one. `dac16D`'s `vsb`
+  and `vr` gain real types (`ChSourceState` / `ChSenseState`) instead of `dict`.
 - `IModule` and `Empty` remain as aliases for `ModuleState` and `EmptyState`.
 
 ## [0.5.0] - 2026-07-28

@@ -1,19 +1,9 @@
-"""Voltage-sense addon: shared state models + GUI command payloads.
+"""Voltage-sense addon — re-exported from the shared client package.
 
-See :mod:`backend.addons.vsource` for why the state models are re-exported
-here rather than imported from :mod:`dbay.state` at each call site.
+See :mod:`backend.addons.vsource` for why these are re-exported here rather
+than imported from :mod:`dbay.addons.vsense` at each call site.
 """
 
-from pydantic import BaseModel
-
-from dbay.state import ChSenseState, IVsenseAddon
+from dbay.addons.vsense import ChSenseState, IVsenseAddon, VsenseChange
 
 __all__ = ["ChSenseState", "IVsenseAddon", "VsenseChange"]
-
-
-class VsenseChange(BaseModel):
-    module_index: int
-    index: int
-    voltage: float
-    measuring: bool
-    name: str

@@ -1,16 +1,12 @@
 from dbay.addons.vsource import VsourceChange, SharedVsourceChange
-from dbay.state import IModule, Core
-from typing import Any, Literal, Union, List, Optional
-from dbay.addons.vsource import IVsourceAddon
+from dbay.state import Dac16DPartialState
+from typing import Any, List, Optional, Union
 from dbay.direct import DeviceConnection
 
 
-class dac16D_spec(IModule):
-    module_type: Literal["dac16D"] = "dac16D"
-    core: Core
-    vsource: Optional[IVsourceAddon] = None  # optional in direct mode
-    vsb: Optional[dict] = None
-    vr: Optional[dict] = None
+# Defined in dbay.state so client, GUI backend and external consumers share
+# one definition. Aliased for the existing call sites below.
+dac16D_spec = Dac16DPartialState
 
 
 class dac16D:
