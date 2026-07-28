@@ -51,8 +51,7 @@
 /******************* Macros and Constants Definitions *************************/
 /******************************************************************************/
 
-#define SPIBAUD 10000
-#define SPIMODE SPI_MODE3
+
 
 
 
@@ -158,12 +157,8 @@
 class ltc268x {
     
     public:
-
-
-
+    
   //struct no_os_spi_desc     *spi_desc;
-
-  
     ltc268x_device_id      dev_id;
     uint16_t            pwd_dac_setting;
     uint16_t            dither_toggle_en;
@@ -209,6 +204,9 @@ private:
   PCA9557 *_BoardSel;
   char _err[1024];
   int _PCA9557busDAC_CS;
+
+  int SPIBAUD_ = 10000;
+
 };
 
 /*struct ltc268x_init_param {

@@ -20,6 +20,8 @@
 #define dbay32DAC_OPAMPGAIN 3.2
 #define dbay32DAC_ADC_CS  2
 
+#define DACbaseRef 2.5
+
 class dbay32DAC : public dbayDev{
 
   public:
@@ -31,7 +33,7 @@ class dbay32DAC : public dbayDev{
     int SetVoltageDiff(int diffchannel, double voltage) override;
     int reset() override;
     double ReadVoltage(int channel) override;
-    int SetBase(double voltage) override;
+    //int SetBase(double voltage) override;
     
     DAC_AD5684 *DAC4ch;
     
