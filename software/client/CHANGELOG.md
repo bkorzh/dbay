@@ -10,6 +10,27 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+### Added
+
+- `DBayClient.on_patch()` and `DBayClient.on_snapshot()`: public subscriptions to
+  the GUI server's state broadcasts, so a consumer can keep a derived view live
+  instead of polling `snapshot()`. Both connect the sync transport on demand
+  (so they work with `load_state=False`) and return an unsubscribe callable.
+  Previously the underlying lab-link callbacks were reachable only by going
+  through `client._sync._client`.
+- `DBayClient.state_version`: the version of the state the client currently
+  holds, bumped on every applied patch. Lets a consumer cache a derived view and
+  revalidate only when it changes, and detect a dropped update by comparing
+  against the last version it saw.
+- `GuiSync.on_patch()`, `GuiSync.on_snapshot()`, and `GuiSync.version` — the
+  passthroughs the above are built on.
+
+Note that the client applies each incoming patch to its own snapshot *before*
+invoking callbacks, so subscribers never apply patch operations themselves;
+re-reading `snapshot()` in the callback is sufficient. `PatchEvent.origin_client_id`
+identifies which client's command produced a change, so a subscriber can ignore
+echoes of its own writes.
+
 ## [0.4.1] - 2026-07-02
 
 ### Fixed

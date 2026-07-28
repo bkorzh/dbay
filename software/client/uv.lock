@@ -3,15 +3,6 @@ revision = 3
 requires-python = ">=3.11"
 
 [[package]]
-name = "annotated-doc"
-version = "0.0.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/57/ba/046ceea27344560984e26a590f90bc7f4a75b06701f653222458922b558c/annotated_doc-0.0.4.tar.gz", hash = "sha256:fbcda96e87e9c92ad167c2e53839e57503ecfda18804ea28102353485033faa4", size = 7288, upload-time = "2025-11-10T22:07:42.062Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/d3/26bf1008eb3d2daa8ef4cacc7f3bfdc11818d111f7e2d0201bc6e3b49d45/annotated_doc-0.0.4-py3-none-any.whl", hash = "sha256:571ac1dc6991c450b25a9c2d84a3705e2ae7a53467b5d111c24fa8baabbed320", size = 5303, upload-time = "2025-11-10T22:07:40.673Z" },
-]
-
-[[package]]
 name = "annotated-types"
 version = "0.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -44,7 +35,7 @@ wheels = [
 
 [[package]]
 name = "dbay"
-version = "0.3.0"
+version = "0.4.1"
 source = { editable = "." }
 dependencies = [
     { name = "lab-link" },
@@ -59,29 +50,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "lab-link", specifier = ">=0.2.0" },
+    { name = "lab-link", specifier = ">=0.3.0" },
     { name = "pydantic", specifier = ">=2.10.6" },
     { name = "pyserial", specifier = ">=3.5" },
 ]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=8.3.5" }]
-
-[[package]]
-name = "fastapi"
-version = "0.136.3"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "annotated-doc" },
-    { name = "pydantic" },
-    { name = "starlette" },
-    { name = "typing-extensions" },
-    { name = "typing-inspection" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/81/2d/ff8d91d7b564d464629a0fd50a4489c97fcb836ac230bf3a7269232a9b1f/fastapi-0.136.3.tar.gz", hash = "sha256:e487fae93ad408e6f47641ee4dfe389864fd7bec92e547ea8498fc13f43e83ab", size = 396410, upload-time = "2026-05-23T18:53:15.192Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/e0/82/45359b62a067409bd929ae8a56b8ed13e5a8c8a61194b3c236920999ab83/fastapi-0.136.3-py3-none-any.whl", hash = "sha256:3d2a69bdf04b7e9f3afa292c3bc7a98816bbfafa10bc9b45f3f3700d2f761620", size = 117481, upload-time = "2026-05-23T18:53:16.924Z" },
-]
 
 [[package]]
 name = "idna"
@@ -124,17 +99,17 @@ wheels = [
 
 [[package]]
 name = "lab-link"
-version = "0.2.0"
+version = "0.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "fastapi" },
     { name = "jsonpatch" },
     { name = "pydantic" },
+    { name = "starlette" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/26/14/1166535d91a2144ee97feca8429fa2e95069d3e8e2496ad37edc493b7e93/lab_link-0.2.0.tar.gz", hash = "sha256:56b44715484ea3e9631f9fb3f013a92a61a602e2d41072e21f2426f71e66f77b", size = 13867, upload-time = "2026-06-02T23:35:29.933Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/71/23/1fe062ded022886ca26271bd6aba79edabdb40ee54d70960129992397ada/lab_link-0.3.0.tar.gz", hash = "sha256:2919eba31c928e0567950fa46aeff17262dac8538bbf4a301db192521bb1954a", size = 19840, upload-time = "2026-06-12T04:08:38.366Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/93/fe/bf5befd1db1e49701c17cd6766f1bd75f8510863e926dc16338f3143c679/lab_link-0.2.0-py3-none-any.whl", hash = "sha256:443af1561037383506f9dfb06f3e79b826aafa638243ae12bbeaf7a9d42031f7", size = 18212, upload-time = "2026-06-02T23:35:28.771Z" },
+    { url = "https://files.pythonhosted.org/packages/52/0e/25ae4b36030a42b958203c36446ba82c29924939ca59f9f5c7aeaeeee81e/lab_link-0.3.0-py3-none-any.whl", hash = "sha256:9337c666c3e085a6aa32cd56e949b8c9b823681fe2470a70f883683339a2500b", size = 24383, upload-time = "2026-06-12T04:08:37.062Z" },
 ]
 
 [[package]]
@@ -276,18 +251,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/df/db/f35a00659bc03fec321ba8bce9420de607a1d37f8342eee1863174c69557/typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8", size = 85321, upload-time = "2024-06-07T18:52:15.995Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/26/9f/ad63fc0248c5379346306f8668cda6e2e2e9c95e01216d2b8ffd9ff037d0/typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d", size = 37438, upload-time = "2024-06-07T18:52:13.582Z" },
-]
-
-[[package]]
-name = "typing-inspection"
-version = "0.4.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/55/e3/70399cb7dd41c10ac53367ae42139cf4b1ca5f36bb3dc6c9d33acdb43655/typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464", size = 75949, upload-time = "2025-10-01T02:14:41.687Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/dc/9b/47798a6c91d8bdb567fe2698fe81e0c6b7cb7ef4d13da4114b41d239f65d/typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7", size = 14611, upload-time = "2025-10-01T02:14:40.154Z" },
 ]
 
 [[package]]

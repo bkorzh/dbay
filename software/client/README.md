@@ -82,6 +82,50 @@ h.set_voltage(0, 0.75)
 client.direct_send("DAC16D VS 1 5 2.5")
 ```
 
+### Reacting to State Changes (GUI Only)
+
+The GUI backend broadcasts every state change to all connected clients. Rather
+than polling `snapshot()`, subscribe:
+
+```python
+from dbay import DBayClient
+
+client = DBayClient(mode="gui", server_address="192.168.0.50")
+
+def on_change(event):
+    # The snapshot is already up to date — the client applied the patch before
+    # calling back, so you never apply patch operations yourself.
+    if event.origin_client_id == client_id_of_mine:
+        return                      # ignore echoes of our own commands
+    print("version", event.version, client.snapshot()["data"][0])
+
+unsubscribe = client.on_patch(on_change)
+client.on_snapshot(lambda e: print("resync at version", e.version))
+...
+unsubscribe()
+```
+
+`client.state_version` is bumped on every applied patch, so a consumer holding a
+derived view (e.g. a typed model validated from the snapshot) can cache it and
+recompute only when the version changes:
+
+```python
+class MirroredState:
+    def __init__(self, model_cls, client):
+        self._model_cls, self._client = model_cls, client
+        self._cached, self._version = None, -1
+
+    def current(self):
+        if self._client.state_version != self._version:
+            self._cached = self._model_cls.model_validate(self._client.snapshot())
+            self._version = self._client.state_version
+        return self._cached
+```
+
+Both subscription methods connect the sync transport on demand, so they work on
+a client built with `load_state=False`. Callbacks run on the lab-link client's
+own thread — guard any state they touch accordingly.
+
 ## Module Methods (Summary)
 
 | Module  | Methods (Common)                                                  | GUI Support                  | Direct Support |
