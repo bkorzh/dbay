@@ -1,6 +1,6 @@
 [project]
 name = "dbay"
-version = "0.4.1"
+version = "0.5.0"
 description = "Unified dual-mode client (lab-link GUI sync + direct UDP/Serial) for Device Bay VME racks"
 
 readme = "README.md"
