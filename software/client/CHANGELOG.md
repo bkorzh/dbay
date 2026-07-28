@@ -10,6 +10,8 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-07-28
+
 ### Added
 
 - `dbay.state` now holds the **full rack state schema** — `SystemState`, the
