@@ -1,16 +1,14 @@
+"""Voltage-sense addon: shared state models + GUI command payloads.
+
+See :mod:`backend.addons.vsource` for why the state models are re-exported
+here rather than imported from :mod:`dbay.state` at each call site.
+"""
+
 from pydantic import BaseModel
-from lab_link import ReactiveModel
 
+from dbay.state import ChSenseState, IVsenseAddon
 
-class ChSenseState(ReactiveModel):
-    index: int
-    voltage: float
-    measuring: bool
-    name: str
-
-class IVsenseAddon(ReactiveModel):
-    channels: list[ChSenseState]
-
+__all__ = ["ChSenseState", "IVsenseAddon", "VsenseChange"]
 
 
 class VsenseChange(BaseModel):

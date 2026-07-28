@@ -10,6 +10,41 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+### Added
+
+- `dbay.state` now holds the **full rack state schema** — `SystemState`, the
+  per-module states (`Dac4DState`, `Dac16DState`, `Adc4DState`, `EmptyState`),
+  the addon states (`ChSourceState`, `IVsourceAddon`, `ChSenseState`,
+  `IVsenseAddon`, `PollingState`), and `Core` / `ModuleState`. The GUI backend
+  imports these instead of defining its own, so client and server validate
+  against one definition rather than three parallel copies that could drift.
+- `UnknownModuleState`: a module type this build doesn't recognize no longer
+  fails validation of the whole snapshot. It validates into this fallback with
+  `core` typed and every other field preserved verbatim, so a consumer running
+  an older build than the rack still sees the slots it does understand. A
+  *malformed* module still raises — the fallback is for unknown modules, not
+  invalid ones.
+- `build_system_state_model(*extra_module_states)`: builds a `SystemState`
+  whose module union also accepts custom modules. Which modules are valid is a
+  backend concern (it has a plugin registry), so the backend calls this with
+  its registry while plain consumers use `SystemState`. Raises a direct
+  `TypeError` if a module's `module_type` is not a `Literal`, rather than
+  letting pydantic fail from inside union construction.
+
+### Changed
+
+- State models now subclass `lab_link.ReactiveModel` rather than `BaseModel`.
+  On the backend, assignments emit patch operations; off it, the node is not
+  part of a bound state tree, so writes are simply not recorded and the model
+  behaves as an ordinary validating pydantic model. One class serves both sides.
+  **Potentially breaking**: a model nested inside one of these must now also
+  subclass `ReactiveModel` — lab-link rejects a plain `BaseModel` child rather
+  than silently losing reactivity.
+- `dbay.addons.vsource` and `dbay.addons.vsense` re-export their state models
+  from `dbay.state` instead of defining a second copy. The message payloads
+  (`VsourceChange`, `SharedVsourceChange`, `VsenseChange`) are unchanged.
+- `IModule` and `Empty` remain as aliases for `ModuleState` and `EmptyState`.
+
 ## [0.5.0] - 2026-07-28
 
 ### Added

@@ -2,7 +2,8 @@ from backend.addons.vsource import VsourceChange, SharedVsourceChange
 from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
-from backend.modules.dac16D_spec import dac16D, dac16DController
+from dbay.state import Dac16DState
+from backend.modules.dac16D_controller import dac16DController
 from backend.sync import sync
 from lab_link import CommandContext, CommandError, ptr
 
@@ -30,11 +31,11 @@ def _command_error(
     )
 
 
-def _validated_change(params: dict) -> tuple[dac16D, VsourceChange]:
+def _validated_change(params: dict) -> tuple[Dac16DState, VsourceChange]:
     change = VsourceChange(**params)
 
     try:
-        module = cast(dac16D, global_state.system_state.data[change.module_index])
+        module = cast(Dac16DState, global_state.system_state.data[change.module_index])
     except IndexError as exc:
         raise _command_error(
             "invalid_module",
@@ -85,11 +86,11 @@ def _hardware_error(change: VsourceChange, detail: str) -> CommandError:
     )
 
 
-def _validated_vsb_change(params: dict) -> tuple[dac16D, VsourceChange]:
+def _validated_vsb_change(params: dict) -> tuple[Dac16DState, VsourceChange]:
     change = VsourceChange(**params)
 
     try:
-        module = cast(dac16D, global_state.system_state.data[change.module_index])
+        module = cast(Dac16DState, global_state.system_state.data[change.module_index])
     except IndexError as exc:
         raise _command_error(
             "invalid_module",

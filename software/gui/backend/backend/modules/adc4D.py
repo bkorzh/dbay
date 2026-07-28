@@ -6,11 +6,11 @@ from backend.addons.vsense import VsenseChange
 from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
-from backend.modules.adc4D_spec import (
+from dbay.state import Adc4DState
+from backend.modules.adc4D_controller import (
     MAX_POLLING_HZ,
     MIN_POLLING_HZ,
     NUM_CHANNELS,
-    adc4D,
     adc4DController,
 )
 from backend.sync import sync
@@ -47,7 +47,7 @@ def _command_error(
     )
 
 
-def _get_adc4d(module_index: int) -> adc4D:
+def _get_adc4d(module_index: int) -> Adc4DState:
     try:
         module = global_state.system_state.data[module_index]
     except IndexError as exc:
@@ -64,7 +64,7 @@ def _get_adc4d(module_index: int) -> adc4D:
             path=ptr("data", module_index),
         )
 
-    return cast(adc4D, module)
+    return cast(Adc4DState, module)
 
 
 @sync.command
@@ -139,7 +139,7 @@ async def _poll_adc4d(module_index: int) -> None:
             module = global_state.system_state.data[module_index]
             if module.core.type != "adc4D" or not module.polling.running:  # type: ignore[attr-defined]
                 break
-            module = cast(adc4D, module)
+            module = cast(Adc4DState, module)
             controller = cast(adc4DController, global_state.controllers[module_index])
 
             measuring = [ch.index for ch in module.vsense.channels if ch.measuring]

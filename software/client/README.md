@@ -126,6 +126,36 @@ Both subscription methods connect the sync transport on demand, so they work on
 a client built with `load_state=False`. Callbacks run on the lab-link client's
 own thread — guard any state they touch accordingly.
 
+## State Schema
+
+`dbay.state` is the single definition of what a rack's state looks like. The GUI
+backend binds it to lab-link and mutates it; clients validate the snapshot they
+receive against it. Both sides import the same classes.
+
+```python
+from dbay import DBayClient
+from dbay.state import SystemState, Dac4DState
+
+client = DBayClient(mode="gui", server_address="192.168.0.50")
+state = SystemState.model_validate(client.snapshot())
+
+module = state.data[1]
+if isinstance(module, Dac4DState):
+    print(module.vsource.channels[0].bias_voltage)
+```
+
+A module type this build doesn't recognize validates into `UnknownModuleState`
+rather than failing the whole snapshot — `core` stays typed and unrecognized
+fields are preserved, so a consumer older than the rack still reads the slots it
+understands. A *malformed* module still raises.
+
+A backend registering custom modules extends the union:
+
+```python
+from dbay.state import build_system_state_model
+SystemState = build_system_state_model(MyModuleState)   # module_type must be a Literal
+```
+
 ## Module Methods (Summary)
 
 | Module  | Methods (Common)                                                  | GUI Support                  | Direct Support |

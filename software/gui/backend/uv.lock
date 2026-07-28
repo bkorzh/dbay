@@ -65,7 +65,7 @@ wheels = [
 
 [[package]]
 name = "dbay"
-version = "0.3.1"
+version = "0.5.0"
 source = { editable = "../../client" }
 dependencies = [
     { name = "lab-link" },

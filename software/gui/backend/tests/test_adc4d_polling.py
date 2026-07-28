@@ -3,7 +3,7 @@ from starlette.testclient import TestClient
 
 from backend.initialize import global_state
 from backend.main import app
-from backend.modules.adc4D_spec import NUM_CHANNELS, adc4DController
+from backend.modules.adc4D_controller import NUM_CHANNELS, adc4DController
 
 
 def send_command(websocket, command: str, params: dict, request_id: str = "test"):

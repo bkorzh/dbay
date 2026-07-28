@@ -1,18 +1,22 @@
-from pydantic import BaseModel
+"""Voltage-source addon: shared state models + command payloads.
+
+The state models are re-exported from :mod:`dbay.state`, which is the single
+definition shared with the GUI backend. They previously existed here as a
+parallel `BaseModel` copy that could drift from the server's.
+"""
+
 from typing import List
 
+from pydantic import BaseModel
 
-# STATE ##################################
-class ChSourceState(BaseModel):
-    index: int
-    bias_voltage: float
-    activated: bool
-    heading_text: str
-    measuring: bool
+from dbay.state import ChSourceState, IVsourceAddon
 
-
-class IVsourceAddon(BaseModel):
-    channels: List[ChSourceState]
+__all__ = [
+    "ChSourceState",
+    "IVsourceAddon",
+    "VsourceChange",
+    "SharedVsourceChange",
+]
 
 
 # MESSAGE ##################################

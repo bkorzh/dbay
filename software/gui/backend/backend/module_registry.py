@@ -2,9 +2,10 @@ from dataclasses import dataclass
 from typing import Callable
 
 from backend.module import IModule
-from backend.modules.adc4D_spec import adc4D, adc4DController, create_prototype as create_adc4D
-from backend.modules.dac16D_spec import dac16D, dac16DController, create_prototype as create_dac16D
-from backend.modules.dac4D_spec import dac4D, dac4DController, create_prototype as create_dac4D
+from dbay.state import Adc4DState, Dac16DState, Dac4DState
+from backend.modules.adc4D_controller import adc4DController, create_prototype as create_adc4D
+from backend.modules.dac16D_controller import dac16DController, create_prototype as create_dac16D
+from backend.modules.dac4D_controller import dac4DController, create_prototype as create_dac4D
 from backend.udp_control import Controller, ParentUDP
 
 
@@ -19,17 +20,17 @@ class ModuleRegistration:
 # this dictionary so the backend state and initialization logic stay in sync.
 REGISTERED_MODULES: dict[str, ModuleRegistration] = {
     "dac4D": ModuleRegistration(
-        model_class=dac4D,
+        model_class=Dac4DState,
         create_prototype=create_dac4D,
         controller_class=dac4DController,
     ),
     "dac16D": ModuleRegistration(
-        model_class=dac16D,
+        model_class=Dac16DState,
         create_prototype=create_dac16D,
         controller_class=dac16DController,
     ),
     "adc4D": ModuleRegistration(
-        model_class=adc4D,
+        model_class=Adc4DState,
         create_prototype=create_adc4D,
         controller_class=adc4DController,
     ),
