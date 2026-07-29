@@ -12,6 +12,8 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-07-29
+
 ### Changed
 
 - The backend no longer defines its own state models. `SystemState`, the
