@@ -15,11 +15,13 @@ a = Analysis(
         ('compiled_frontend/', 'compiled_frontend'),
         ('modules/', 'modules'),  # Include module spec files for dynamic loading
     ],
-    hiddenimports=['dbay', 'dbay.client', 'dbay.direct', 'dbay.http', 'dbay.state', 
+    # 'dbay.http' was dropped when the client moved to lab-link websocket sync;
+    # 'dbay.gui_sync' replaces it.
+    hiddenimports=['dbay', 'dbay.client', 'dbay.direct', 'dbay.gui_sync', 'dbay.state',
                    'dbay.modules', 'dbay.modules.dac4d', 'dbay.modules.dac16d',
                    'dbay.modules.adc4d', 'dbay.modules.fafd', 'dbay.modules.hic4',
                    'dbay.modules.dac4eth', 'dbay.modules.empty', 'dbay.addons',
-                   'dbay.addons.vsource',
+                   'dbay.addons.vsource', 'dbay.addons.vsense',
                    # lab-link persistence: sqlmodel is imported lazily inside
                    # lab_link.persistence, sqlite dialect via sqlalchemy registry
                    'sqlmodel', 'sqlalchemy.dialects.sqlite',

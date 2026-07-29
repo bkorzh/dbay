@@ -12,6 +12,30 @@ section with the version and date on each release.
 
 ## [Unreleased]
 
+### Changed
+
+- The backend no longer defines its own state models. `SystemState`, the
+  per-module states and the addon states now come from `dbay.state` (client
+  0.6.0), so the GUI and any Python client validate against one schema instead
+  of parallel copies that could drift. Which modules are valid remains a
+  backend concern: `module_registry` feeds `build_system_state_model()`.
+- A module type absent from the registry now validates as
+  `dbay.state.UnknownModuleState` rather than failing the whole snapshot.
+- `backend/modules/*_spec.py` renamed to `*_controller.py`, which is what they
+  hold now that the state models have moved out. The split from the command
+  modules stays — it breaks a real import cycle
+  (`sync` → `initialize` → `module_registry`).
+- No user-visible change: the sync wire format is unchanged, and the frontend's
+  generated `interface.ts` still gets `ChSourceState`, `IVsourceAddon`,
+  `ChSenseState`, `IVsenseAddon`, `VsourceChange` and `SharedVsourceChange`
+  from `backend/addons/`, which re-export them.
+
+### Fixed
+
+- PyInstaller `hiddenimports` referenced `dbay.http`, removed when the client
+  moved to lab-link websocket sync. Replaced with `dbay.gui_sync`, and
+  `dbay.addons.vsense` added.
+
 ## [0.2.0] - 2026-06-16
 
 ### Changed
