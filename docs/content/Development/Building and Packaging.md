@@ -47,7 +47,7 @@ bun ./build.ts --flatpak    # build a Flatpak bundle (Linux only, after a Tauri 
 software/gui/backend/backend/compiled_frontend/
 ```
 
-That directory is what lets the backend serve the UI on its own. Until the frontend has been built at least once, a backend started outside the Vite workflow has no `index.html` to serve and you get a blank page or missing-asset errors.
+That directory is what lets the backend serve the UI on its own. `index.html` is committed but `assets/` is gitignored, so until the frontend has been built at least once a backend started outside the Vite workflow serves the page and 404s for its JavaScript and CSS. The backend still starts — it creates the empty directory if it is missing — so this shows up as a blank page rather than a crash.
 
 ### Backend
 

@@ -46,10 +46,28 @@ async def return_index(request: Request) -> FileResponse:
     return FileResponse(Path(WEB_DIR, "index.html"))
 
 
+# compiled_frontend/assets/ is a build artifact and is gitignored, so a fresh
+# clone has none until `build.sh frontend` runs. StaticFiles refuses to serve a
+# directory that does not exist — at import with check_dir=True, and on the first
+# request otherwise — which would stop the backend from starting at all, and stop
+# the tests from importing this module. Creating it empty keeps startup working
+# and turns asset requests into ordinary 404s, which is the right answer during
+# browser development because Vite serves the UI then. A packaged build always
+# has the real files.
+ASSETS_DIR = Path(WEB_DIR, "assets")
+try:
+    ASSETS_DIR.mkdir(parents=True, exist_ok=True)
+except OSError as exc:  # e.g. a read-only filesystem; check_dir=False covers it
+    logger.warning("could not create %s: %s", ASSETS_DIR, exc)
+
 routes = [
     Route("/", return_index),
     WebSocketRoute("/sync/ws", sync.handle_ws),
-    Mount("/assets", app=StaticFiles(directory=Path(WEB_DIR, "assets")), name="assets"),
+    Mount(
+        "/assets",
+        app=StaticFiles(directory=ASSETS_DIR, check_dir=False),
+        name="assets",
+    ),
 ]
 
 origins = [

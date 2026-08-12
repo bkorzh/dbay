@@ -86,15 +86,15 @@ curl -i -H "Connection: Upgrade" -H "Upgrade: websocket" \
 
 A healthy backend answers `101 Switching Protocols`.
 
-## Blank page or missing assets when the backend serves the UI
+## Blank page, or 404s for `/assets/…`, on port 8345
 
-The backend can only serve the UI from `software/gui/backend/backend/compiled_frontend/`, which is populated by the frontend build. If you started the backend on its own and opened port `8345` directly, build the frontend once:
+A fresh clone has no compiled frontend. `compiled_frontend/index.html` is in Git but `compiled_frontend/assets/` is gitignored, because it is a build artifact — so the backend serves the page and then 404s for the JavaScript and CSS it references. Build the frontend once:
 
 ```bash
 ./software/gui/build.sh frontend
 ```
 
-During normal browser development you use Vite on port `5173` instead, and this does not apply.
+During normal browser development you use Vite on port `5173` instead, and this does not apply — Vite serves the UI itself, and the backend only handles `/sync/ws`.
 
 ## Yesterday's rack state came back
 
