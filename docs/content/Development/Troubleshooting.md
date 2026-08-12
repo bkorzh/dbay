@@ -86,15 +86,15 @@ curl -i -H "Connection: Upgrade" -H "Upgrade: websocket" \
 
 A healthy backend answers `101 Switching Protocols`.
 
-## Blank page, or 404s for `/assets/…`, on port 8345
+## "The frontend has not been built" on port 8345
 
-A fresh clone has no compiled frontend. `compiled_frontend/index.html` is in Git but `compiled_frontend/assets/` is gitignored, because it is a build artifact — so the backend serves the page and then 404s for the JavaScript and CSS it references. Build the frontend once:
+Exactly what it says: the compiled frontend is a build artifact and is not in Git, so a fresh clone has none. The backend still starts and answers `/sync/ws`; it just has no interface to serve on `/`, and returns that page (HTTP 503) instead. Build it once:
 
 ```bash
 ./software/gui/build.sh frontend
 ```
 
-During normal browser development you use Vite on port `5173` instead, and this does not apply — Vite serves the UI itself, and the backend only handles `/sync/ws`.
+During normal browser development you never need this — run `./software/gui/dev-browser.sh` and use Vite on port `5173`, which serves the interface itself.
 
 ## Yesterday's rack state came back
 

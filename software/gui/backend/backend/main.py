@@ -5,7 +5,7 @@ from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
-from starlette.responses import FileResponse
+from starlette.responses import FileResponse, HTMLResponse, Response
 from starlette.routing import Mount, Route, WebSocketRoute
 from starlette.staticfiles import StaticFiles
 
@@ -41,9 +41,48 @@ async def lifespan(app: Starlette):
         yield
 
 
+# Shown instead of a blank page when the frontend has never been built. The
+# compiled frontend is not in git, so this is what a fresh clone sees if someone
+# opens the backend's port directly.
+NOT_BUILT_PAGE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Device Bay — frontend not built</title>
+  <style>
+    body { font-family: system-ui, sans-serif; line-height: 1.5; margin: 4rem auto;
+           max-width: 34rem; padding: 0 1.5rem; color: #2d2d32; }
+    h1 { font-size: 1.4rem; font-weight: 600; }
+    code, pre { background: #f2f4f8; border-radius: 4px; }
+    code { padding: 0.1rem 0.3rem; }
+    pre { padding: 0.7rem 0.9rem; overflow-x: auto; }
+    p { margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <h1>The frontend has not been built</h1>
+  <p>The backend is running, but it has no compiled user interface to serve. The
+  compiled frontend is a build artifact and is not kept in version control, so a
+  fresh clone starts out without one.</p>
+  <p>Build it once, from the repository root:</p>
+  <pre>./software/gui/build.sh frontend</pre>
+  <p>For day-to-day development you usually do not need this: run
+  <code>./software/gui/dev-browser.sh</code> and open
+  <a href="http://localhost:5173">localhost:5173</a>, where Vite serves the
+  interface and reloads it as you edit.</p>
+  <p>See <code>docs/content/Development/Start Here.md</code>.</p>
+</body>
+</html>
+"""
+
+
 # return the index.html file on browser
-async def return_index(request: Request) -> FileResponse:
-    return FileResponse(Path(WEB_DIR, "index.html"))
+async def return_index(request: Request) -> Response:
+    index = Path(WEB_DIR, "index.html")
+    if not index.is_file():
+        # 503 rather than 404: the route exists, the app just is not serveable yet.
+        return HTMLResponse(NOT_BUILT_PAGE, status_code=503)
+    return FileResponse(index)
 
 
 # compiled_frontend/assets/ is a build artifact and is gitignored, so a fresh

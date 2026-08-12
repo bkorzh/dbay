@@ -47,7 +47,7 @@ bun ./build.ts --flatpak    # build a Flatpak bundle (Linux only, after a Tauri 
 software/gui/backend/backend/compiled_frontend/
 ```
 
-That directory is what lets the backend serve the UI on its own. `index.html` is committed but `assets/` is gitignored, so until the frontend has been built at least once a backend started outside the Vite workflow serves the page and 404s for its JavaScript and CSS. The backend still starts — it creates the empty directory if it is missing — so this shows up as a blank page rather than a crash.
+That directory is what lets the backend serve the UI on its own. It is **not in Git** — `index.html` references content-hashed asset filenames, so a committed copy would go stale on any code change and dirty the tree after every build. A fresh clone therefore has no compiled frontend, and a backend started outside the Vite workflow answers `/` with a short "the frontend has not been built" page instead. It still starts and still serves `/sync/ws`.
 
 ### Backend
 
@@ -58,6 +58,17 @@ uv run --project ./ pyinstaller backend/main.spec
 ```
 
 The result is `software/gui/backend/dist/dbaybackend/`, containing the `dbaybackend` executable and its `device-bay_internal/` support directory. The build clears `dist/` and `build/` first so stale artifacts cannot leak into a release.
+
+PyInstaller bundles `compiled_frontend/` wholesale, so packaging without building the frontend first would produce an installer with no interface. The `backend` target refuses to run in that case:
+
+```text
+>>>>> No compiled frontend to package.
+Expected .../backend/compiled_frontend/index.html
+Run the frontend build first:
+  ./software/gui/build.sh frontend
+```
+
+The check runs before anything is deleted, so a failed run leaves an existing build alone. `all` is unaffected, since it builds the frontend first.
 
 Because the executable bundles whatever is in the environment, packaging is only reproducible if the environment was created with `uv sync` — this is the main reason the project standardizes on `uv` (see [[Repository Tour]]).
 
