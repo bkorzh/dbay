@@ -77,6 +77,8 @@ The compiled frontend is copied into `backend/backend/compiled_frontend/` so a p
 
 The Svelte UI, the Bun scripts, and the Tauri desktop wrapper in `src-tauri/`. Module UI components live in `src/lib/modules_dbay/`, reusable addons (voltage source, voltage sense) in `src/lib/addons/`, and the sync plumbing in `src/sync/` and `src/state/`.
 
+Two files in `src/lib/modules_dbay/` decide which modules the app supports: `module_catalog.ts` describes each type (title, icon, adder blurb) and `index.svelte.ts` binds each type to its state class and component. The module adder's dropdown and every heading title and icon are derived from those, and a test fails if the two lists disagree. See [[Adding a Module]].
+
 ### Shell wrappers
 
 `build.sh`, `dev-browser.sh`, and `dev-tauri.sh` in `software/gui/` are thin wrappers over the Bun scripts in `frontend/package.json`. They exist so you can work from the repository root without remembering which directory each command belongs in, and they run `bun install` first so a `git pull` that adds a dependency cannot leave you with a stale `node_modules`. They are Bash scripts, so on Windows either use Git Bash or call the underlying Bun scripts directly.

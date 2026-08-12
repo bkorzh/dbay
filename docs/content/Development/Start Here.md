@@ -171,9 +171,11 @@ cd software/gui/frontend && bun run test
 
 ## Working without hardware
 
-The app starts, and the UI works, with no rack connected. Module slots stay empty until you initialize a source through the UI, and hardware-dependent actions will fail or time out.
+The app starts, and the UI works, with no rack connected. Add modules, set voltages, and the UI behaves normally.
 
-The connection settings live in `software/gui/backend/backend/config/vsource_params.json`, including a `dev_mode` flag. Note that with `dev_mode` enabled and no rack to reach, hardware requests wait for a UDP timeout, which shows up as a sluggish UI rather than an obvious error.
+That works because of `dev_mode` in `software/gui/backend/backend/config/vsource_params.json`, which ships enabled. In `dev_mode` nothing goes on the wire: every hardware command is acknowledged locally with `+ok`, so commands succeed instantly and the state updates as though a rack replied. The same file holds the rack's address and port.
+
+Turn `dev_mode` off (through the UI, or in that file) when you have real hardware. If you turn it off *without* a rack at the configured address, each hardware command waits on UDP timeouts before giving up, which shows up as a sluggish UI rather than a clear error.
 
 ## Your rack state is saved between runs
 

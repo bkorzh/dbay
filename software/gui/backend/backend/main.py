@@ -16,6 +16,7 @@ from backend import server_api as _server_api_commands  # noqa: F401
 from backend.modules import adc4D as _adc4D_commands  # noqa: F401
 from backend.modules import dac16D as _dac16D_commands  # noqa: F401
 from backend.modules import dac4D as _dac4D_commands  # noqa: F401
+from backend.modules import demoD as _demoD_commands  # noqa: F401
 from backend.server_logging import get_logger
 from backend.location import WEB_DIR
 from backend.sync import restore_hardware_bindings, sync
@@ -27,8 +28,10 @@ mimetypes.init()
 mimetypes.add_type("application/javascript", ".js")
 
 
-# NOTE: if dev_mode is true and there's no VME rack to connect to, the fetch requests will take longer and there will be a
-# hard to debug delay in the frontend!
+# NOTE: dev_mode short-circuits UDP entirely (see udp_control.UDP.send_message):
+# commands are acknowledged locally with "+ok" and nothing is sent. With
+# dev_mode *off* and no VME rack to reach, every hardware command waits out UDP
+# timeouts instead, which surfaces as a hard-to-debug delay in the frontend.
 
 
 @asynccontextmanager

@@ -109,7 +109,9 @@ Channel `activated` and `measuring` flags always reset on startup even when the 
 
 ## Everything is slow, and nothing errors
 
-If `dev_mode` is enabled in `software/gui/backend/backend/config/vsource_params.json` and there is no rack at the configured address, hardware requests wait for a UDP timeout. The symptom is a sluggish UI rather than a clear failure.
+You have `dev_mode` **off** with no rack at the configured address. Each hardware command then sends UDP and waits for a reply that never comes, retrying before it gives up, so the UI feels sluggish instead of reporting a failure.
+
+With `dev_mode` on — the default in `software/gui/backend/backend/config/vsource_params.json` — commands are acknowledged locally and return instantly. Check the flag in that file, and remember the UI can change it at runtime.
 
 ## Import errors when running `main.py`
 

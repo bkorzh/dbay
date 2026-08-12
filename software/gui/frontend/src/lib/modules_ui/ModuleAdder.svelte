@@ -3,12 +3,11 @@
   import SubmitButton from "../buttons/SubmitButton.svelte";
   import GeneralButton from "../buttons/GeneralButton.svelte";
   import { ui_state } from "../../state/uiState.svelte";
+  import { system_state } from "../../state/systemState.svelte";
   import { initializeModule } from "../../api";
   import { updateSystemStatefromJson } from "../modules_dbay/index.svelte";
 
-  const dac4D_icon = "/assets/dac4D_icon.svg";
-  const adc4D_icon = "/assets/adc4D_icon.svg";
-  const dac16D_icon = "/assets/dac16D_icon.svg";
+  import { addableModules } from "../modules_dbay/module_catalog";
 
   let selectedSlot = $state("");
   let selectedType = $state("");
@@ -24,32 +23,16 @@
     { value: "7", label: "Slot 8" },
   ];
 
-  const moduleTypes = [
-    {
-      value: "dac4D",
-      label: "dac4D",
-      description: "4 ch. differential",
-      icon: dac4D_icon,
-    },
-    {
-      value: "adc4D",
-      label: "adc4D",
-      description: "5 ch. voltage sensing",
-      icon: adc4D_icon,
-    },
-    {
-      value: "dac16D",
-      label: "dac16D",
-      description: "16 ch. differential",
-      icon: dac16D_icon,
-    },
-  ];
+  // Every addable module type, straight from the catalog — nothing to keep in
+  // step here when a module is added. dev-only types (the demoD tutorial
+  // module) appear only when the backend reports dev_mode.
+  let moduleTypes = $derived(addableModules(system_state.dev_mode));
 
   let selectedSlotLabel = $derived(
     slots.find((s) => s.value === selectedSlot)?.label ?? "Select module slot"
   );
   let selectedTypeInfo = $derived(
-    moduleTypes.find((m) => m.value === selectedType)
+    moduleTypes.find((m) => m.type === selectedType)
   );
 
   async function initialize() {
@@ -130,11 +113,11 @@
             <div {...wrapperProps}>
               <div {...props} class="dropdown-content">
                 {#each moduleTypes as mod}
-                  <DropdownMenu.Item onSelect={() => (selectedType = mod.value)}>
+                  <DropdownMenu.Item onSelect={() => (selectedType = mod.type)}>
                     {#snippet child({ props: itemProps }: { props: Record<string, unknown> })}
                       <div
                         {...itemProps}
-                        class="dropdown-item module-item {selectedType === mod.value ? 'item-selected' : ''}"
+                        class="dropdown-item module-item {selectedType === mod.type ? 'item-selected' : ''}"
                       >
                         <img src={mod.icon} alt={mod.label} class="module-icon" />
                         <span class="module-info">

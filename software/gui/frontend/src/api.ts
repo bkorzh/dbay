@@ -65,6 +65,20 @@ export function requestSharedChannelUpdate(dst: SharedVsourceChange, endpoint: s
 
 
 
+// demoD — the worked example from the Adding a Module guide. Not real hardware.
+export function requestDemodVsource(dst: VsourceChange): Promise<VsourceChange> {
+    return sendCommand<VsourceChange>("set_demod_vsource", { ...dst });
+}
+
+export interface DemodTrimChange {
+    module_index: number;
+    voltage: number;
+}
+
+export function requestDemodTrim(dst: DemodTrimChange): Promise<DemodTrimChange> {
+    return sendCommand<DemodTrimChange>("set_demod_trim", { ...dst });
+}
+
 export function initializeModule(slot: number, type: string): Promise<JsonSystemState> {
     return sendCommand<JsonSystemState>("initialize_module", { slot, type });
 }

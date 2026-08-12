@@ -6,6 +6,7 @@ from dbay.state import Adc4DState, Dac16DState, Dac4DState
 from backend.modules.adc4D_controller import adc4DController, create_prototype as create_adc4D
 from backend.modules.dac16D_controller import dac16DController, create_prototype as create_dac16D
 from backend.modules.dac4D_controller import dac4DController, create_prototype as create_dac4D
+from backend.modules.demoD_controller import DemoDState, demoDController, create_prototype as create_demoD
 from backend.udp_control import Controller, ParentUDP
 
 
@@ -33,6 +34,15 @@ REGISTERED_MODULES: dict[str, ModuleRegistration] = {
         model_class=Adc4DState,
         create_prototype=create_adc4D,
         controller_class=adc4DController,
+    ),
+    # Not real hardware: the worked example in the Adding a Module guide. Its
+    # state model lives next to its controller rather than in `dbay.state`,
+    # which is what this registry being a plugin point makes possible. The
+    # frontend only offers it in the module adder when dev_mode is on.
+    "demoD": ModuleRegistration(
+        model_class=DemoDState,
+        create_prototype=create_demoD,
+        controller_class=demoDController,
     ),
 }
 
