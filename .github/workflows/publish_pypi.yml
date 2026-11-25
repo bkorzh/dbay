@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write  # For PyPI trusted publishing
+      contents: write  # For creating the GitHub release from the changelog
     steps:
       - uses: actions/checkout@v4
       
@@ -42,4 +43,16 @@ jobs:
         with:
           packages-dir: software/client/dist/
           # No need to provide PyPI token when using trusted publishing with id-token: write permission
+
+      - name: Extract release notes from changelog
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          python3 scripts/extract_changelog.py software/client/CHANGELOG.md "${TAG#py-v}" > RELEASE_NOTES.md
+          echo "Release notes:" && cat RELEASE_NOTES.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          body_path: RELEASE_NOTES.md
 

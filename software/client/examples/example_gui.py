@@ -1,10 +1,10 @@
-"""Example: Using DBayClient in GUI (HTTP/stateful) mode.
+"""Example: Using DBayClient in GUI lab-link sync mode.
 
 Run this while the DBay GUI backend is running and accessible.
 Adjust SERVER_IP if necessary.
 """
 from dbay import DBayClient
-from dbay import dac16D, dac4D
+from dbay import dac4D
 from typing import cast
 
 SERVER_IP = "0.0.0.0"  # Change to the host running the GUI backend
@@ -20,9 +20,6 @@ def main():
     mod = cast(dac4D, client.module(2, expected="dac4D"))
     if mod:
         mod.set_voltage(1, 2.0, activated=True)
-        # mod.set_voltage_shared(0.5)
-        # mod.set_bias(2.0)
-        
         print("Updated dac4D slot 2")
     else:
         print("No dac4D in slot 2.")

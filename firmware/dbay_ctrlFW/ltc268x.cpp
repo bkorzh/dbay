@@ -55,8 +55,8 @@ ltc268x::ltc268x(   enum ltc268x_device_id       dev_id,
 
   // Set the address pin HIGH so we don't talk to multiple chips at once. 
 
-  if (!_BoardSel->digitalWrite(_PCA9557busDAC_CS,HIGH)) {
-      sprintf(_err, "Error setting address pin for board %i HIGH\n", BoardSel->boardN);
+  if (!_BoardSel->digitalWrite(this->_PCA9557busDAC_CS,HIGH)) {
+      sprintf(_err, "Error setting address pin for board %i HIGH\n", _BoardSel->boardN);
       Serial.print(_err);
       //rv = -1;
   }      
@@ -145,19 +145,33 @@ int32_t ltc268x::spi_write(uint8_t reg, uint16_t data){
   
   ret=0;
   //ret = no_os_spi_write_and_read(dev->spi_desc, buf, 3);
-  _BoardSel->digitalWrite(_PCA9557busDAC_CS, LOW);
-  delay(1);
-  SPI.beginTransaction(SPISettings(SPIBAUD, MSBFIRST, SPIMODE));
+ //Serial.println(this->_PCA9557busDAC_CS);
+ //delayMicroseconds(1);
+  if (!_BoardSel->digitalWrite(this->_PCA9557busDAC_CS,LOW)) {
+      sprintf(_err, "Error setting address pin for board %i HIGH\n", _BoardSel->boardN);
+      Serial.print(_err);
+      //rv = -1;
+  }      
+
+ delayMicroseconds(1);
+  
+  SPI.beginTransaction(SPISettings(SPIBAUD_, MSBFIRST, SPI_MODE3));
   //for (int i=2;  i >= 0; i--){
   for (int i=0;  i < 3; i++){
     //DEBUG_PRINTELN
-    Serial.println(buf[i],HEX);
+    //Serial.println(buf[i],HEX);
     //rx_array[i] = 
     SPI.transfer(buf[i]);    //! 2) Read and send byte array
   }
   SPI.endTransaction();
-  _BoardSel->digitalWrite(_PCA9557busDAC_CS, HIGH);
-  //delay(1);
+  //_BoardSel->digitalWrite(_PCA9557busDAC_CS, HIGH);
+  delayMicroseconds(1);
+  if (!_BoardSel->digitalWrite(this->_PCA9557busDAC_CS,HIGH)) {
+      sprintf(_err, "Error setting address pin for board %i HIGH\n", _BoardSel->boardN);
+      Serial.print(_err);
+      //rv = -1;
+  }      
+  delayMicroseconds(1);
  /* SPI.beginTransaction(SPISettings(SPIBAUD, MSBFIRST, SPIMODE));
   for (int i=0;  i < 3; i++){
   SPI.transfer(0xF);    //! 2) Read and send byte array
@@ -182,11 +196,11 @@ int32_t ltc268x::spi_read(uint8_t reg, uint16_t *data)
   uint8_t rx_array[3];
 
   this->spi_write(reg | LTC268X_READ_OPERATION, 0x0000);
-
+  
   buf[0] = LTC268X_CMD_NOOP;
   //ret = no_os_spi_write_and_read(dev->spi_desc, buf, 3);
-  _BoardSel->digitalWrite(_PCA9557busDAC_CS, LOW);
-  SPI.beginTransaction(SPISettings(SPIBAUD, MSBFIRST, SPIMODE));
+  _BoardSel->digitalWrite(this->_PCA9557busDAC_CS, LOW);
+  SPI.beginTransaction(SPISettings(SPIBAUD_, MSBFIRST, SPI_MODE3));
   //for (int i=2;  i >= 0; i--){
   for (int i=0;  i < 3; i++){
     rx_array[i] = SPI.transfer(buf[i]);    //! 2) Read and send byte array
@@ -230,7 +244,7 @@ int32_t ltc268x::spi_update_bits(uint8_t reg, uint16_t mask, uint16_t val)
  */
 int32_t ltc268x::set_pwr_dac(uint16_t setting)
 {
-  Serial.println("set_pwr_dac");
+  //Serial.println("set_pwr_dac");
   int32_t ret;
 
   ret = this->spi_write(LTC268X_CMD_POWERDOWN_REG, setting);
@@ -251,7 +265,7 @@ int32_t ltc268x::set_pwr_dac(uint16_t setting)
  */
 int32_t ltc268x::set_dither_toggle(uint16_t setting)
 {
-  Serial.println("set_dither_toggle");
+  //Serial.println("set_dither_toggle");
   int32_t ret;
 
   ret = this->spi_write(LTC268X_CMD_TOGGLE_DITHER_EN_REG, setting);
@@ -271,7 +285,7 @@ int32_t ltc268x::set_dither_toggle(uint16_t setting)
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_dither_mode(uint8_t channel,bool en){
-  Serial.println("set_dither_mode");
+  //Serial.println("set_dither_mode");
   uint16_t val = 0;
   int32_t ret;
 
@@ -300,7 +314,7 @@ int32_t ltc268x::set_dither_mode(uint8_t channel,bool en){
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_span(uint8_t channel, enum ltc268x_voltage_range range){
-  Serial.println("set_span");
+  //Serial.println("set_span");
   int32_t ret;
 
   if (channel >= this->num_channels)
@@ -326,7 +340,7 @@ int32_t ltc268x::set_span(uint8_t channel, enum ltc268x_voltage_range range){
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_dither_phase(uint8_t channel, enum  ltc268x_dither_phase phase){
-  Serial.println("set_dither_phase");
+  //Serial.println("set_dither_phase");
   int32_t ret;
   if (channel >= this->num_channels)
     return -ENOENT;
@@ -348,7 +362,7 @@ int32_t ltc268x::set_dither_phase(uint8_t channel, enum  ltc268x_dither_phase ph
  * @return 0 in case of success, negative error code otherwise.
  */
 int32_t ltc268x::set_dither_period(uint8_t channel, enum  ltc268x_dither_period period){
-  Serial.println("set_dither_period");
+  //Serial.println("set_dither_period");
   int32_t ret;
 
   if (channel >= this->num_channels)
@@ -466,7 +480,7 @@ int32_t ltc268x::set_voltage(uint8_t channel, float voltage){
   range_offset = ltc268x_span_tbl[this->crt_range[channel]].min;
   v_ref = ltc268x_span_tbl[this->crt_range[channel]].max -
     ltc268x_span_tbl[this->crt_range[channel]].min;
-    Serial.println("set voltage:");
+    //Serial.println("set voltage:");
    //Serial.print("min: ");Serial.println(ltc268x_span_tbl[this->crt_range[channel]].min);
    //Serial.print("max: ");Serial.println(ltc268x_span_tbl[this->crt_range[channel]].max);
    /*Serial.print("channel: ");Serial.println(channel);
@@ -474,7 +488,7 @@ int32_t ltc268x::set_voltage(uint8_t channel, float voltage){
    Serial.print("range offset: ");Serial.println(range_offset);
    Serial.print("v_ref: ");Serial.println(v_ref);*/
   /* Compute the binary code from the value(mA) provided by user. */
-  code = (uint32_t)((voltage - range_offset) * (1l << 16) / v_ref);
+  code = (uint32_t)((voltage - range_offset) * ((1l << 16) / v_ref)); // Changed by Fadri
   if(code > 0xFFFF)
     code = 0xFFFF;
 

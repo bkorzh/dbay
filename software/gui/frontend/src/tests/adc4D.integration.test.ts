@@ -24,10 +24,10 @@ describe('ADC4D Module Integration', () => {
                     { index: 0, voltage: 0, measuring: false, name: "Channel 0" },
                     { index: 1, voltage: 0, measuring: false, name: "Channel 1" },
                     { index: 2, voltage: 0, measuring: false, name: "Channel 2" },
-                    { index: 3, voltage: 0, measuring: false, name: "Channel 3" },
-                    { index: 4, voltage: 0, measuring: false, name: "Channel 4" }
+                    { index: 3, voltage: 0, measuring: false, name: "Channel 3" }
                 ]
-            }
+            },
+            polling: { running: false, frequency: 2 }
         };
         testModule = new adc4D(mockData);
     });
@@ -39,8 +39,8 @@ describe('ADC4D Module Integration', () => {
         expect(testModule.vsense).toBeInstanceOf(VsenseAddon);
     });
 
-    it('should have 5 voltage sensing channels', () => {
-        expect(testModule.vsense.channels).toHaveLength(5);
+    it('should have 4 voltage sensing channels', () => {
+        expect(testModule.vsense.channels).toHaveLength(4);
 
         testModule.vsense.channels.forEach((channel, index) => {
             expect(channel.index).toBe(index);
@@ -48,6 +48,11 @@ describe('ADC4D Module Integration', () => {
             expect(channel.measuring).toBe(false);
             expect(channel.name).toBe(`Channel ${index}`);
         });
+    });
+
+    it('should initialize polling state from data', () => {
+        expect(testModule.polling.running).toBe(false);
+        expect(testModule.polling.frequency).toBe(2);
     });
 
     it('should enable/disable channel measurement', () => {
@@ -89,10 +94,10 @@ describe('ADC4D Module Integration', () => {
                     { index: 0, voltage: 1.5, measuring: true, name: "Updated Channel 0" },
                     { index: 1, voltage: -0.8, measuring: false, name: "Updated Channel 1" },
                     { index: 2, voltage: 3.2, measuring: true, name: "Updated Channel 2" },
-                    { index: 3, voltage: 0.0, measuring: false, name: "Updated Channel 3" },
-                    { index: 4, voltage: -2.1, measuring: true, name: "Updated Channel 4" }
+                    { index: 3, voltage: 0.0, measuring: false, name: "Updated Channel 3" }
                 ]
-            }
+            },
+            polling: { running: true, frequency: 5 }
         };
 
         testModule.update(updateData);
@@ -102,7 +107,9 @@ describe('ADC4D Module Integration', () => {
         expect(testModule.vsense.channels[0].measuring).toBe(true);
         expect(testModule.vsense.channels[0].name).toBe('Updated Channel 0');
         expect(testModule.vsense.channels[2].voltage).toBe(3.2);
-        expect(testModule.vsense.channels[4].voltage).toBe(-2.1);
+        expect(testModule.vsense.channels[3].voltage).toBe(0.0);
+        expect(testModule.polling.running).toBe(true);
+        expect(testModule.polling.frequency).toBe(5);
     });
 
     it('should handle missing vsense data gracefully', () => {
@@ -118,14 +125,15 @@ describe('ADC4D Module Integration', () => {
 
         expect(minimalModule.core.type).toBe('adc4D');
         expect(minimalModule.vsense).toBeInstanceOf(VsenseAddon);
-        expect(minimalModule.vsense.channels).toHaveLength(5);
+        expect(minimalModule.vsense.channels).toHaveLength(4);
+        expect(minimalModule.polling.running).toBe(false);
     });
 
     it('should validate channel indices', () => {
         testModule.vsense.channels.forEach((channel, index) => {
             expect(channel.index).toBe(index);
             expect(channel.index).toBeGreaterThanOrEqual(0);
-            expect(channel.index).toBeLessThan(5);
+            expect(channel.index).toBeLessThan(4);
         });
     });
 });

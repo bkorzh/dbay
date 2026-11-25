@@ -11,6 +11,10 @@ Depending on the method, follow either step 1a or 1b below.
 ## 1a. Current method
 ![[rack_slots.png]]
 Make sure that the control module is in the right slot according to the picture above. The module gets addressed depending on which slot in the rack it is in. Do not use the slot labeled with NC.
+
+**Warning:** Make sure that the switches of the switch array (labelled A0, A1, A2 on the board) are all off.
+If that is not the case, it will interfere with the automatic addressing.
+
 ## 1b. Legacy method Setting the I2C Address
 
 On the card, there is a switch array controlling three bits (labelled A0, A1, A2 on the board). The switch array is displayed on the image below for the Dac4D module card. 
@@ -32,7 +36,7 @@ I2C device found at address XXX !
 where `XXX`is the value of the address you set.
 
 # 4. Initializing the Module
-This step depends on the way the rack is going to be used. Either, the initialization can be done in the frontendor directly via serial communication.
+This step depends on the way the rack is going to be used. Either, the initialization can be done in the frontend or directly via serial communication.
 ## Option 1: Via Serial Communication
 With the serial monitor still open from  [[#3. Check if the Control Module Recognizes the Card|Step 3]], send the command
 ```
@@ -59,4 +63,5 @@ If you have the development environment set up, start the UI by following [[Deve
 If you have the DBay software from https://github.com/bkorzh/dbay/releases installed, you can start the GUI this way
 
 
-In the UI, click on the menu bar (![[menu_bar.png]]) and select *Add a module*. Then, in the newly opened box, select the module slot (it is the address value +1). Then select the module type and click *Add Module*.
+In the UI, click on the menu bar (three horizontal lines) and select *Add a module*. Then, in the newly opened box, 
+select the module slot (it is the address value +1). Then select the module type and click *Add Module*.

@@ -17,8 +17,13 @@ const HELP = `Usage:
   bun scripts/release.ts <target> <bump> [options]
 
 Targets:
-  gui       Bump GUI versions (tauri.conf.json + Cargo.toml), create gui-vX.Y.Z tag
-  client    Bump Python client version (pyproject.toml), create py-vX.Y.Z tag
+  gui       Bump GUI versions (tauri.conf.json + Cargo.toml + Cargo.lock),
+            stamp software/gui/CHANGELOG.md, create gui-vX.Y.Z tag
+  client    Bump Python client version (pyproject.toml), stamp
+            software/client/CHANGELOG.md, create py-vX.Y.Z tag
+
+Each release stamps the changelog's '## [Unreleased]' section into a dated
+'## [X.Y.Z]' section; CI extracts it for the GitHub Release notes.
 
 Bump:
   patch | minor | major
@@ -71,11 +76,25 @@ const repoRoot = path.resolve(import.meta.dir, "..");
 const guiFiles = {
   tauriConf: path.join(repoRoot, "software/gui/frontend/src-tauri/tauri.conf.json"),
   cargoToml: path.join(repoRoot, "software/gui/frontend/src-tauri/Cargo.toml"),
+  cargoLock: path.join(repoRoot, "software/gui/frontend/src-tauri/Cargo.lock"),
+  changelog: path.join(repoRoot, "software/gui/CHANGELOG.md"),
 };
 
 const clientFiles = {
   pyprojectToml: path.join(repoRoot, "software/client/pyproject.toml"),
+  changelog: path.join(repoRoot, "software/client/CHANGELOG.md"),
 };
+
+// The GUI backend bundles the `dbay` client as an editable path dependency, so
+// a client version bump leaves software/gui/backend/uv.lock stale. The Tauri
+// build runs `uv sync --locked`, which then fails. A GUI release re-locks the
+// backend so the lockfile always matches the client version being shipped.
+const backendDir = path.join(repoRoot, "software/gui/backend");
+const backendLock = path.join(backendDir, "uv.lock");
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
 function runGit(args: string[], capture = true): string {
   const result = spawnSync("git", args, {
@@ -164,6 +183,42 @@ function readGuiVersion(): string {
   return tauriVersion;
 }
 
+function relockBackend() {
+  const result = spawnSync("uv", ["lock"], { cwd: backendDir, encoding: "utf-8" });
+  if (result.error || result.status !== 0) {
+    const detail = result.error ? result.error.message : (result.stderr || "").trim();
+    throw new Error(
+      `Failed to refresh backend uv.lock (the GUI build runs 'uv sync --locked'): ${detail}\n` +
+        "Install 'uv', or run 'uv lock' in software/gui/backend manually before releasing."
+    );
+  }
+}
+
+function readGuiCrateName(): string {
+  const cargoText = readFileSync(guiFiles.cargoToml, "utf-8");
+  const match = cargoText.match(/^\[package\][\s\S]*?^name\s*=\s*"([^"]+)"/m);
+  if (!match) {
+    throw new Error("Could not locate [package].name in Cargo.toml");
+  }
+  return match[1];
+}
+
+// Keep Cargo.lock in step with the [package].version bump. The local crate's
+// version is not a registry dependency, so `cargo update --precise` can't set
+// it; rather than shell out to cargo (full toolchain + network, and it may bump
+// unrelated transitive deps), rewrite the one `version` line of the crate's own
+// [[package]] entry. Deterministic and dependency-free.
+function updateCargoLockVersion(crateName: string, nextVersion: string) {
+  const lockText = readFileSync(guiFiles.cargoLock, "utf-8");
+  const pattern = new RegExp(
+    `(\\[\\[package\\]\\]\\nname = "${escapeRegExp(crateName)}"\\nversion = )"([^"]+)"`
+  );
+  if (!pattern.test(lockText)) {
+    throw new Error(`Could not find [[package]] '${crateName}' in Cargo.lock`);
+  }
+  writeFileSync(guiFiles.cargoLock, lockText.replace(pattern, `$1"${nextVersion}"`), "utf-8");
+}
+
 function updateGuiVersion(nextVersion: string) {
   const tauri = JSON.parse(readFileSync(guiFiles.tauriConf, "utf-8"));
   tauri.version = nextVersion;
@@ -178,6 +233,37 @@ function updateGuiVersion(nextVersion: string) {
     throw new Error("Failed to update Cargo.toml [package].version");
   }
   writeFileSync(guiFiles.cargoToml, replaced, "utf-8");
+
+  updateCargoLockVersion(readGuiCrateName(), nextVersion);
+}
+
+// Convert the `## [Unreleased]` section into a dated `## [X.Y.Z]` release
+// section (Keep a Changelog flow) and open a fresh empty Unreleased above it.
+// CI reads the stamped section verbatim for the GitHub Release body.
+function stampChangelog(changelogPath: string, nextVersion: string) {
+  const text = readFileSync(changelogPath, "utf-8");
+  const heading = text.match(/^## \[Unreleased\][^\n]*\n/m);
+  if (!heading) {
+    throw new Error(`No '## [Unreleased]' heading in ${path.relative(repoRoot, changelogPath)}`);
+  }
+
+  // Body of Unreleased = lines between its heading and the next '## ' heading.
+  const afterHeading = text.slice(text.indexOf(heading[0]) + heading[0].length);
+  const nextHeadingIdx = afterHeading.search(/^## /m);
+  const body = (nextHeadingIdx === -1 ? afterHeading : afterHeading.slice(0, nextHeadingIdx)).trim();
+  if (!body) {
+    console.warn(
+      `Warning: '## [Unreleased]' in ${path.relative(repoRoot, changelogPath)} is empty; ` +
+        "the GitHub Release notes will be blank."
+    );
+  }
+
+  const date = new Date().toISOString().slice(0, 10);
+  const stamped = text.replace(
+    heading[0],
+    `${heading[0]}\n## [${nextVersion}] - ${date}\n`
+  );
+  writeFileSync(changelogPath, stamped, "utf-8");
 }
 
 function readClientVersion(): string {
@@ -218,10 +304,11 @@ function main() {
     throw new Error(`Tag ${tagName} already exists`);
   }
 
+  const changelogPath = target === "gui" ? guiFiles.changelog : clientFiles.changelog;
   const filesToUpdate =
     target === "gui"
-      ? [guiFiles.tauriConf, guiFiles.cargoToml]
-      : [clientFiles.pyprojectToml];
+      ? [guiFiles.tauriConf, guiFiles.cargoToml, guiFiles.cargoLock, backendLock, changelogPath]
+      : [clientFiles.pyprojectToml, changelogPath];
 
   console.log(`Target: ${target}`);
   console.log(`Current version: ${currentVersion}`);
@@ -236,9 +323,11 @@ function main() {
 
   if (target === "gui") {
     updateGuiVersion(nextVersion);
+    relockBackend();
   } else {
     updateClientVersion(nextVersion);
   }
+  stampChangelog(changelogPath, nextVersion);
 
   if (noCommit) {
     console.log("Updated files only (--no-commit).");

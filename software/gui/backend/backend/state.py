@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from lab_link import ReactiveModel
 
 from typing import Literal, Union
 from typing_extensions import Annotated
@@ -24,7 +25,7 @@ You need the tagged Union[Empty, ...registered module models...] to be able to v
 
 '''
 
-class SystemState(BaseModel):
+class SystemState(ReactiveModel):
     data: list[GenericModule]
     valid: bool
     dev_mode: bool

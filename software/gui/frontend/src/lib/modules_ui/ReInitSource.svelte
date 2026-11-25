@@ -14,6 +14,7 @@
   let port = 8880;
   let timeout = 5;
   let dev_mode = false;
+  let submitted = false;
 
   function toggleIpEditable() {
     ipEditable = !ipEditable;
@@ -27,14 +28,11 @@
     timeoutEditable = !timeoutEditable;
   }
 
-  function submit() {
-    console.log("dev mode: ", dev_mode);
-
+  async function submit() {
     system_state.dev_mode = dev_mode;
 
-    console.log("done");
-
-    initializeVsource({ ipaddr, port, timeout, dev_mode });
+    await initializeVsource({ ipaddr, port, timeout, dev_mode });
+    submitted = true;
   }
 </script>
 
@@ -53,6 +51,7 @@
         <input
           type="text"
           bind:value={ipaddr}
+          on:input={() => (submitted = false)}
           readonly={!ipEditable}
           class:non-editable={!ipEditable}
         />
@@ -74,6 +73,7 @@
         <input
           type="text"
           bind:value={port}
+          on:input={() => (submitted = false)}
           readonly={!portEditable}
           class:non-editable={!portEditable}
         />
@@ -95,6 +95,7 @@
         <input
           type="text"
           bind:value={timeout}
+          on:input={() => (submitted = false)}
           readonly={!timeoutEditable}
           class:non-editable={!timeoutEditable}
         />
@@ -113,7 +114,7 @@
     <div class="param">
       <div class="label">Dev-Mode</div>
       <div class="input-params">
-        <input class="check" type="checkbox" bind:checked={dev_mode} />
+        <input class="check" type="checkbox" bind:checked={dev_mode} on:change={() => (submitted = false)} />
       </div>
     </div>
 
@@ -121,7 +122,7 @@
     <SubmitButton onclick={submit}>Re-Initialize</SubmitButton>
     <br />
     <GeneralButton onclick={() => (ui_state.show_source_reinit = false)}
-      >Cancel</GeneralButton
+      >{submitted ? "Done" : "Cancel"}</GeneralButton
     >
   </div>
 </div>

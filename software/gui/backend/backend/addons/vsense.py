@@ -1,13 +1,14 @@
 from pydantic import BaseModel
+from lab_link import ReactiveModel
 
 
-class ChSenseState(BaseModel):
+class ChSenseState(ReactiveModel):
     index: int
     voltage: float
     measuring: bool
     name: str
 
-class IVsenseAddon(BaseModel):
+class IVsenseAddon(ReactiveModel):
     channels: list[ChSenseState]
 
 

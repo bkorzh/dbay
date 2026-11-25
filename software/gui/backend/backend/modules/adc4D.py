@@ -1,91 +1,159 @@
+import asyncio
+
+from pydantic import BaseModel
+
 from backend.addons.vsense import VsenseChange
-from fastapi import Request
-from fastapi import APIRouter, HTTPException
 from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
-from backend.modules.adc4D_spec import adc4D, adc4DController
-from backend.util import identify_change
+from backend.modules.adc4D_spec import (
+    MAX_POLLING_HZ,
+    MIN_POLLING_HZ,
+    NUM_CHANNELS,
+    adc4D,
+    adc4DController,
+)
+from backend.sync import sync
+from lab_link import CommandContext, CommandError, ptr
 
 
 logger = get_logger(__name__)
 
-router = APIRouter(
-    prefix="/adc4D",
-    responses={404: {"description": "Not found"}},
-)
+# slot -> running polling task
+_polling_tasks: dict[int, asyncio.Task] = {}
 
 
+class PollingChange(BaseModel):
+    module_index: int
+    running: bool
+    frequency: float
 
 
-@router.put("/vsense/")
-async def voltage_read(request: Request, change: VsenseChange):
-    try:
-        assert global_state.system_state.data[change.module_index].core.type == "adc4D" # type: ignore
-    except AssertionError:
-        logger.error("Module not adc4D")
-        raise HTTPException(status_code=404, detail="Module not adc4D")
-    
-    slot = change.module_index
-    assert slot == global_state.system_state.data[change.module_index].core.slot # type: ignore
-    adc_4d = cast(adc4D, global_state.system_state.data[change.module_index]) # type: ignore
-    
-    identify_change(
-        change, adc_4d.vsense.channels[change.index]
+def _command_error(
+    code: str,
+    message: str,
+    *,
+    path: str | None = None,
+    display: str = "toast",
+    severity: str = "warning",
+) -> CommandError:
+    return CommandError(
+        code=code,
+        message=message,
+        display=display,  # type: ignore[arg-type]
+        severity=severity,  # type: ignore[arg-type]
+        path=path,
+        recoverable=True,
     )
-    
-    sense_channel = adc_4d.vsense.channels[change.index]
+
+
+def _get_adc4d(module_index: int) -> adc4D:
+    try:
+        module = global_state.system_state.data[module_index]
+    except IndexError as exc:
+        raise _command_error(
+            "invalid_module",
+            f"Slot {module_index + 1} is not an adc4D module.",
+            path=ptr("data", module_index),
+        ) from exc
+
+    if module.core.type != "adc4D":
+        raise _command_error(
+            "invalid_module",
+            f"Slot {module_index + 1} is not an adc4D module.",
+            path=ptr("data", module_index),
+        )
+
+    return cast(adc4D, module)
+
+
+@sync.command
+async def set_adc4d_vsense(ctx: CommandContext, **params):
+    change = VsenseChange(**params)
+    module = _get_adc4d(change.module_index)
+
+    if change.index < 0 or change.index >= NUM_CHANNELS:
+        raise _command_error(
+            "invalid_channel_index",
+            f"Channel {change.index} is outside the adc4D range.",
+            path=ptr("data", change.module_index, "vsense"),
+        )
+
+    controller = cast(adc4DController, global_state.controllers[change.module_index])
+
+    # One-shot read on enabling measurement so the display updates immediately,
+    # without waiting for the next polling tick.
+    if change.measuring:
+        voltage = await asyncio.to_thread(
+            controller.readChannelVoltage, change.module_index, change.index
+        )
+    else:
+        voltage = 0.0
+
+    sense_channel = module.vsense.channels[change.index]
     sense_channel.name = change.name
     sense_channel.measuring = change.measuring
-    adc4d_controller = cast(adc4DController, global_state.controllers[slot])
+    sense_channel.voltage = voltage
+    change.voltage = voltage
 
+    return change.model_dump(mode="json")
+
+
+@sync.command
+async def set_adc4d_polling(ctx: CommandContext, **params):
+    change = PollingChange(**params)
+    module = _get_adc4d(change.module_index)
+
+    frequency = min(max(change.frequency, MIN_POLLING_HZ), MAX_POLLING_HZ)
+
+    module.polling.running = change.running
+    module.polling.frequency = frequency
+
+    task = _polling_tasks.get(change.module_index)
+    if change.running:
+        if task is None or task.done():
+            _polling_tasks[change.module_index] = asyncio.create_task(
+                _poll_adc4d(change.module_index)
+            )
+    elif task is not None:
+        task.cancel()
+        _polling_tasks.pop(change.module_index, None)
+
+    return {
+        "module_index": change.module_index,
+        "running": change.running,
+        "frequency": frequency,
+    }
+
+
+async def _poll_adc4d(module_index: int) -> None:
+    """Poll the hardware for all measuring channels until polling is stopped.
+
+    Frequency changes take effect on the next tick because the live module
+    state is re-read every iteration. The loop also exits on its own if the
+    slot is re-initialized as a different module type.
+    """
+    logger.info(f"adc4D polling started for slot {module_index}")
     try:
-        assert (change.index >= 0 and change.index <= 4)
-    except AssertionError:
-        logger.error("Channel index not in 0-4 range")
-        raise HTTPException(status_code=404, detail="Channel index not in 0-4 range")
+        while True:
+            module = global_state.system_state.data[module_index]
+            if module.core.type != "adc4D" or not module.polling.running:  # type: ignore[attr-defined]
+                break
+            module = cast(adc4D, module)
+            controller = cast(adc4DController, global_state.controllers[module_index])
 
-    if change.measuring:
-        logger.info(f"starting measurement on channel {change.index}")
-        voltage = adc4d_controller.readChannelVoltage(slot, change.index)
-        sense_channel.voltage = voltage
-        logger.info(f"measured voltage: {voltage}V on channel {change.index}")
-    else:
-        logger.info(f"stopping measurement on channel {change.index}")
-        sense_channel.voltage = 0.0
+            measuring = [ch.index for ch in module.vsense.channels if ch.measuring]
+            if measuring:
+                voltages = await asyncio.to_thread(
+                    lambda: [controller.readChannelVoltage(module_index, i) for i in measuring]
+                )
+                # same-tick writes batch into one patch; if the slot was
+                # re-initialized, the orphaned module swallows them harmlessly
+                for index, voltage in zip(measuring, voltages):
+                    module.vsense.channels[index].voltage = voltage
 
-    return change
-
-
-@router.get("/read_channel/{channel}")
-async def read_single_channel(channel: int, module_index: int):
-    """Read voltage from a single ADC channel"""
-    try:
-        assert global_state.system_state.data[module_index].core.type == "adc4D" # type: ignore
-    except (AssertionError, IndexError):
-        logger.error("Module not adc4D or invalid module index")
-        raise HTTPException(status_code=404, detail="Module not adc4D or invalid module index")
-    
-    if channel < 0 or channel > 4:
-        logger.error(f"Channel {channel} out of range (0-4)")
-        raise HTTPException(status_code=400, detail="Channel out of range (0-4)")
-    
-    adc4d_controller = cast(adc4DController, global_state.controllers[module_index])
-    voltage = adc4d_controller.readChannelVoltage(module_index, channel)
-    
-    return {"channel": channel, "voltage": voltage}
-
-
-@router.get("/read_all/")
-async def read_all_channels(module_index: int):
-    """Read voltages from all ADC channels"""
-    try:
-        assert global_state.system_state.data[module_index].core.type == "adc4D" # type: ignore
-    except (AssertionError, IndexError):
-        logger.error("Module not adc4D or invalid module index")
-        raise HTTPException(status_code=404, detail="Module not adc4D or invalid module index")
-    
-    adc4d_controller = cast(adc4DController, global_state.controllers[module_index])
-    voltages = adc4d_controller.readAllChannels(module_index)
-    
-    return {"voltages": voltages, "channels": list(range(5))}
+            await asyncio.sleep(1.0 / module.polling.frequency)
+    except asyncio.CancelledError:
+        pass
+    finally:
+        logger.info(f"adc4D polling stopped for slot {module_index}")

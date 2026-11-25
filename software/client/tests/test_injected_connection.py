@@ -23,4 +23,4 @@ def test_injected_connection_used():
     mod = client.attach_module(0, dac4D)
     mod.set_voltage(0, 1.0)
     assert fake.sent, "Expected command to be sent via injected connection"
-    assert any(cmd.startswith("DAC4D VS 0 0 1.0") for cmd in fake.sent)
+    assert any(cmd.startswith("DAC4D VSD 0 0 1.0") for cmd in fake.sent)
