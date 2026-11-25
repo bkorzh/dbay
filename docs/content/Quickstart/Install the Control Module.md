@@ -6,9 +6,9 @@ If the control module is assembled by a third party, you might have to mount the
 
 
 Please mount the Teensy in the following way:
-1. Plug the two rows of pin header (XXX) and the 2x3 receptacle into the module as shown in the picture below.
-XXX picture
-2. Plug the teensy on the just inserted header pins and receptacle. Then solder everything
+1. Plug the two rows of 1x24 pin header as shown in the picture below. Then put the Teensy4.1 on top and solder it
+	![[teensy4_1_mounting01.jpg]]
+2. Plug the 2x3 receptacle into the module as shown in the picture below and solder it![[teensy4_1_mounting02.jpg]]
 
 **Remark:** Depending on the exact height of the pins and receptacles, the pogo pins below the micro USB port of the Teensy might not connect. In this case, use the micro USB directly instead of the USB B connector at the edge of the module.
 

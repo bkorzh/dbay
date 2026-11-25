@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "de4c7fe72b332087",
+        "id": "121ad9da2eeeff5f",
         "type": "tabs",
         "children": [
           {
-            "id": "c271d2f563cf325d",
+            "id": "a9d0986a0c2ff3e2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Quickstart/Writing documentation.md",
+                "file": "Quickstart/Install the Control Module.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Writing documentation"
+              "title": "Install the Control Module"
             }
           }
         ]
@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -94,8 +96,8 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Development/Development.md",
-                "collapseAll": false,
+                "file": "Modules and Rack/The Rack.md",
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
@@ -104,7 +106,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Development"
+              "title": "Backlinks for The Rack"
             }
           },
           {
@@ -113,12 +115,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Development/Development.md",
+                "file": "Modules and Rack/The Rack.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Development"
+              "title": "Outgoing links from The Rack"
             }
           },
           {
@@ -128,7 +130,9 @@
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
-                "useHierarchy": true
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-tags",
               "title": "Tags"
@@ -140,18 +144,21 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Development/Development.md"
+                "file": "Quickstart/Install the Control Module.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Development"
+              "title": "Outline"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -164,28 +171,20 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c271d2f563cf325d",
+  "active": "a9d0986a0c2ff3e2",
   "lastOpenFiles": [
-    "Quickstart/Setup the Control Module Firmware.md",
-    "Quickstart/Install and run.md",
-    "Modules/5 Channel ADC (adc4D).md",
-    "Modules/4 Channel Differential (dac4D).md",
-    "Modules/16 Channel Differential (dac16D).md",
-    "Modules",
-    "Development/Development Setup.md",
-    "Development/Software frontend and backend.md~",
-    "Quickstart/Install a Module.md~",
-    "index.md~",
-    "Development/Development Environment.md~",
-    "Development/Development.md~",
+    "attachments/teensy4_1_mounting01.jpg.sb-c3ca66d9-ef5wUm",
+    "attachments/teensy4_1_mounting02.jpg",
+    "attachments/teensy4_1_mounting01.jpg",
+    "Quickstart/Writing documentation.md",
+    "Development/Development Environment.md",
     "attachments/rack_slots.svg",
-    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page05.svg",
-    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page04.svg",
-    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page03.svg",
-    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page02.svg",
-    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page01.svg",
-    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay.pdf",
+    "attachments/menu_bar.png",
+    "attachments/demoD_module.png",
+    "attachments/demoD_adder.png",
+    "attachments/2025_12_11_address_switch.jpg",
     "Quickstart/Install the Control Module.md",
+    "Quickstart/Install a Module.md",
     "Modules and Rack/The Rack.md",
     "Modules and Rack/Summary.md",
     "Modules and Rack/Control Module.md",
@@ -194,22 +193,31 @@
     "Modules and Rack/4 Channel Differential (dac4D).md",
     "Modules and Rack/16 Channel Differential (dac16D).md",
     "Modules and Rack",
-    "Development/Development Environment.md",
-    "Quickstart/Setup the Control Module Firmware.md~",
-    "index.md",
-    "Untitled.base",
-    "Development/Software frontend and backend.md",
-    "Quickstart/Install a Module.md",
-    "Development/Development.md",
-    "attachments/IMG_20240620_121948.jpg",
-    "attachments/rack_slots.png",
-    "Quickstart/Setup the Control Module Hardware and Firmware.md",
-    "Development/Untitled.md",
-    "attachments/menu_bar.png",
-    "attachments/2025_12_11_address_switch.jpg",
+    "Development/Troubleshooting.md",
+    "Development/Start Here.md",
+    "Development/Repository Tour.md",
+    "Development/Building and Packaging.md",
+    "Development/Architecture.md",
+    "Development/Adding a Module.md",
+    "Quickstart/Install and run.md",
+    "Modules/5 Channel ADC (adc4D).md",
+    "Modules/4 Channel Differential (dac4D).md",
+    "Modules/16 Channel Differential (dac16D).md",
+    "Modules",
     "Development/Tutorial - creating a new module.md",
-    "Tauri.md",
-    "Development/Index.md",
-    "Quickstart/Writing documentation.md"
+    "attachments/rack_slots.png",
+    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page05.svg",
+    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay_page04.svg",
+    "attachments/2025_02_09_VectorInc_rack_specs_for_dbay.pdf",
+    "index.md",
+    "Development/Software frontend and backend.md",
+    "Development/Development.md",
+    "Untitled.base",
+    "Untitled 1.base",
+    "Usage",
+    "Quickstart",
+    "Development",
+    "Software",
+    "attachments"
   ]
 }
