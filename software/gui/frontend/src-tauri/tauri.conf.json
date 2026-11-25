@@ -1,0 +1,56 @@
+{
+  "productName": "DeviceBay",
+  "version": "0.2.1",
+  "identifier": "device.bay",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "bun run dev",
+    "beforeBuildCommand": "bun run build"
+  },
+  "app": {
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 800,
+        "resizable": true,
+        "title": "Device Bay",
+        "width": 438
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "windows": {
+      "wix": {
+        "fragmentPaths": [
+          "./windows/fragments/frag.wxs"
+        ],
+        "componentRefs": [
+          "FirewallExceptions"
+        ]
+      }
+    },
+    "resources": {
+      "resources/": "resources/"
+    },
+    "shortDescription": "Device Bay",
+    "active": true,
+    "targets": [
+      "deb",
+      "rpm",
+      "msi",
+      "dmg"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  },
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json"
+}

@@ -8,7 +8,9 @@ Repository for the Device Bay (DBay) Electronics System
 
 See the `README.md` files in the subfolders for detailed information.
 
-<a href="https://github.com/bkorzh/dbay/releases/tag/v0.1.2"><span style="font-size: 14px;">> Install the Device Bay user interface</span></a>
+Developing on this repository? Run `./setup.sh` (macOS/Linux) or `.\setup.ps1` (Windows) to set up the development environment, or read [`docs/content/Development/Start Here.md`](docs/content/Development/Start%20Here.md) to walk through the same steps by hand. The docs are also published at [devicebay.org](https://www.devicebay.org) under Development.
+
+<a href="https://github.com/bkorzh/dbay/releases/latest"><span style="font-size: 14px;">> Install the Device Bay user interface</span></a>
 
 <img src="./readme/dbay_hero.jpeg">
 

@@ -1,0 +1,159 @@
+from dbay.addons.vsource import VsourceChange, SharedVsourceChange
+from dbay.state import Dac16DPartialState
+from typing import Any, List, Optional, Union
+from dbay.direct import DeviceConnection
+
+
+# Defined in dbay.state so client, GUI backend and external consumers share
+# one definition. Aliased for the existing call sites below.
+dac16D_spec = Dac16DPartialState
+
+
+class dac16D:
+    CORE_TYPE = "dac16D"
+    def __init__(
+        self,
+        data,
+        *,
+        sync: Any = None,
+        connection: Optional[DeviceConnection] = None,
+        mode: str = "gui",
+        retain_changes: bool = True,
+    ):
+        self.mode = mode.lower()
+        if self.mode not in {"gui", "direct"}:
+            raise ValueError("mode must be 'gui' or 'direct'")
+        self.sync = sync
+        self.connection = connection
+        self.retain_changes = retain_changes
+        self.data = dac16D_spec(**data)
+
+    def __del__(self):  # pragma: no cover
+        if self.mode != "gui" or self.retain_changes:
+            return
+        if not self.data.vsource or not self.sync:
+            return
+        try:
+            for idx in range(min(16, len(self.data.vsource.channels))):
+                ch = self.data.vsource.channels[idx]
+                change = VsourceChange(
+                    module_index=self.data.core.slot,
+                    index=idx,
+                    bias_voltage=ch.bias_voltage,
+                    activated=ch.activated,
+                    heading_text=ch.heading_text,
+                    measuring=False,
+                )
+                self.sync.send_command("set_dac16d_vsource", change.model_dump())
+        except Exception:
+            pass
+
+    def set_voltage(self, channel: int, voltage: float, activated: Union[bool, None] = None):
+        """Set voltage on a channel using VSD (differential) command.
+        
+        This is the standard voltage-setting method for dac16D.
+        """
+        if not (0 <= channel <= 15):
+            raise ValueError("channel must be 0..15")
+        if not (-10 <= voltage <= 10):
+            raise ValueError("voltage must be -10..10 V")
+        if self.mode == "gui":
+            if channel >= len(self.data.vsource.channels):  # type: ignore
+                raise ValueError("channel exceeds GUI state channels")
+            if activated is None:
+                activated = self.data.vsource.channels[channel].activated  # type: ignore
+            change = VsourceChange(
+                module_index=self.data.core.slot,
+                index=channel,
+                bias_voltage=voltage,
+                activated=activated,
+                heading_text=self.data.vsource.channels[channel].heading_text,  # type: ignore
+                measuring=True,
+            )
+            assert self.sync is not None
+            self.sync.send_command("set_dac16d_vsource", change.model_dump())
+            self._refresh()
+        else:
+            assert self.connection is not None
+            self.connection.send(f"DAC16D VSD {self.data.core.slot} {channel} {voltage}")
+
+    def set_voltage_single(self, channel: int, voltage: float):
+        """Set single-ended voltage output using VS command.
+        
+        Use set_voltage() for standard differential output.
+        """
+        if not (0 <= channel <= 31):
+            raise ValueError("channel must be 0..31")
+        if not (-10 <= voltage <= 10):
+            raise ValueError("voltage must be -10..10 V")
+        if self.mode == "gui":
+            raise NotImplementedError("Single-ended voltage not exposed in GUI")
+        assert self.connection is not None
+        self.connection.send(f"DAC16D VS {self.data.core.slot} {channel} {voltage}")
+
+    # Backwards compatibility aliases
+    def voltage_set(self, channel: int, voltage: float, activated: Union[bool, None] = None):
+        """Legacy alias for set_voltage()."""
+        return self.set_voltage(channel, voltage, activated=activated)
+
+    def set_voltage_diff(self, channel: int, voltage: float):
+        """Alias for set_voltage() - VSD is now the default."""
+        return self.set_voltage(channel, voltage)
+
+    def set_voltage_shared(self, voltage: float, activated: bool = True, channels: Union[List[bool], None] = None):
+        """Set the same voltage on multiple channels using VSD commands."""
+        if channels is None:
+            channels = [True] * 16
+        if len(channels) != 16:
+            raise ValueError("channels list must have length 16")
+        if not (-10 <= voltage <= 10):
+            raise ValueError("voltage must be -10..10 V")
+        if self.mode == "gui":
+            change = VsourceChange(
+                module_index=self.data.core.slot,
+                index=0,
+                bias_voltage=voltage,
+                activated=activated,
+                heading_text=self.data.vsource.channels[0].heading_text,  # type: ignore
+                measuring=True,
+            )
+            shared_change = SharedVsourceChange(change=change, link_enabled=channels)
+            assert self.sync is not None
+            self.sync.send_command(
+                "set_dac16d_vsource_shared",
+                shared_change.model_dump(),
+            )
+            self._refresh()
+        else:
+            # Iterate each channel for now (could optimize later if protocol adds batch)
+            assert self.connection is not None
+            for idx, enabled in enumerate(channels):
+                if enabled:
+                    self.connection.send(f"DAC16D VSD {self.data.core.slot} {idx} {voltage}")
+
+    def set_bias(self, voltage: float):
+        if not (0 <= voltage <= 8):
+            raise ValueError("bias voltage must be 0..8 V")
+        if self.mode == "gui":
+            raise NotImplementedError("dac16D.set_bias not implemented for GUI sync")
+        else:
+            assert self.connection is not None
+            self.connection.send(f"DAC16D VSB {self.data.core.slot} {voltage}")
+
+    def read(self):
+        if self.mode == "gui":
+            raise NotImplementedError("read() not implemented for GUI mode")
+        assert self.connection is not None
+        return self.connection.send(f"DAC16D VR {self.data.core.slot}")
+
+    def __str__(self):
+        slot = self.data.core.slot
+        if self.mode == "gui" and self.data.vsource:
+            active_channels = sum(1 for ch in self.data.vsource.channels if ch.activated)
+            return f"dac16D (Slot {slot}): {active_channels}/16 channels active"
+        return f"dac16D (Slot {slot}) [direct]"
+
+    def _refresh(self):
+        if self.sync is None:
+            return
+        self.data = dac16D_spec(**self.sync.module_data(self.data.core.slot))

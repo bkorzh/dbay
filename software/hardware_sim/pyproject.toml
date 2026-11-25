@@ -1,0 +1,20 @@
+[project]
+name = "dbay-hardware-sim"
+version = "0.1.0"
+description = "Virtual DBay hardware: a UDP server that mimics the Teensy firmware for testing"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+dbay-sim = "dbay_sim.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["dbay_sim"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
