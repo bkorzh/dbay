@@ -2,7 +2,8 @@ from backend.addons.vsource import VsourceChange
 from backend.initialize import global_state
 from typing import cast
 from backend.server_logging import get_logger
-from backend.modules.dac4D_spec import dac4D, dac4DController
+from dbay.state import Dac4DState
+from backend.modules.dac4D_controller import dac4DController
 from backend.sync import sync
 from lab_link import CommandContext, CommandError, ptr
 
@@ -35,7 +36,7 @@ def set_dac4d_vsource(ctx: CommandContext, **params):
     change = VsourceChange(**params)
 
     try:
-        module = cast(dac4D, global_state.system_state.data[change.module_index])
+        module = cast(Dac4DState, global_state.system_state.data[change.module_index])
     except IndexError as exc:
         raise _command_error(
             "invalid_module",

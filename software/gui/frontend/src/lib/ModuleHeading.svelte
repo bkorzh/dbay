@@ -6,6 +6,7 @@
   import type { IModule } from "../state/systemState.svelte";
   import type { Snippet } from "svelte";
   import { hexToRGBA } from "../util";
+  import { moduleIcon, moduleTitle } from "./modules_dbay/module_catalog";
 
 
   interface Props {
@@ -13,13 +14,27 @@
     visible: VisibleState;
     rotateState: () => void;
     module_index: number;
-    name: string;
     menu_buttons: Snippet;
-    icon_name: string;
+    /** Overrides the catalog title. Rarely needed. */
+    name?: string;
+    /** Overrides the catalog icon. Rarely needed. */
+    icon_name?: string;
   }
 
-  let { m, visible, rotateState, module_index, name, menu_buttons, icon_name }: Props =
-    $props();
+  let {
+    m,
+    visible,
+    rotateState,
+    module_index,
+    menu_buttons,
+    name,
+    icon_name,
+  }: Props = $props();
+
+  // Title and icon come from the module catalog, keyed by the type the backend
+  // reported, so a module component does not restate them. See module_catalog.ts.
+  let heading_name = $derived(name ?? moduleTitle(m.core.type));
+  let heading_icon = $derived(icon_name ?? moduleIcon(m.core.type));
 
   let glowColor: string | null = $state("");
   let showDropdown = $state(false);
@@ -35,17 +50,17 @@
   <div class="left">
     <ModuleChevron bind:visible {rotateState}></ModuleChevron>
     <div class="identifier">M{module_index + 1}:</div>
-    <div class="identifier">{name}</div>
+    <div class="identifier">{heading_name}</div>
   </div>
   <div class="right">
     <DropdownMenu.Root bind:open={showDropdown}>
       <DropdownMenu.Trigger>
         {#snippet child({ props }: { props: Record<string, unknown> })}
           <ModuleIcon
-            {icon_name}
+            icon_name={heading_icon}
             bind:glowColor
             triggerProps={props}
-            ariaLabel={`${name} actions`}
+            ariaLabel={`${heading_name} actions`}
           />
         {/snippet}
       </DropdownMenu.Trigger>

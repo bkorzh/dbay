@@ -1,21 +1,9 @@
-from pydantic import BaseModel
-from lab_link import ReactiveModel
+"""Voltage-sense addon — re-exported from the shared client package.
 
+See :mod:`backend.addons.vsource` for why these are re-exported here rather
+than imported from :mod:`dbay.addons.vsense` at each call site.
+"""
 
-class ChSenseState(ReactiveModel):
-    index: int
-    voltage: float
-    measuring: bool
-    name: str
+from dbay.addons.vsense import ChSenseState, IVsenseAddon, VsenseChange
 
-class IVsenseAddon(ReactiveModel):
-    channels: list[ChSenseState]
-
-
-
-class VsenseChange(BaseModel):
-    module_index: int
-    index: int
-    voltage: float
-    measuring: bool
-    name: str
+__all__ = ["ChSenseState", "IVsenseAddon", "VsenseChange"]

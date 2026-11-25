@@ -138,6 +138,20 @@ if (values.frontend || values.all) {
 
 
 if (values.backend || values.all) {
+    // PyInstaller bundles compiled_frontend/ wholesale, and that directory is not
+    // in git. Packaging without building the frontend first therefore produces an
+    // installer whose UI is simply missing — silently. Checked before anything is
+    // deleted below, so a failed check leaves an existing build alone.
+    if (!existsSync(path.join(output_directory, "index.html"))) {
+        console.error('\x1b[31m>>>>> No compiled frontend to package.\x1b[0m');
+        console.error(`Expected ${path.join(output_directory, "index.html")}`);
+        console.error("Run the frontend build first:");
+        console.error("  ./software/gui/build.sh frontend      (or: bun ./build.ts --frontend)");
+        console.error("Or build everything in order with:");
+        console.error("  ./software/gui/build.sh all");
+        process.exit(1);
+    }
+
     const distPath = path.join(backend_parent, "dist");
     const buildPath = path.join(backend_parent, "build");
 

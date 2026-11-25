@@ -7,7 +7,9 @@ dispatch because their semantics differ (stateful vs stateless).
 
 from __future__ import annotations
 
-from typing import List, Union, Optional, Type, TypeVar, Any, Sequence
+from typing import Callable, List, Union, Optional, Type, TypeVar, Any, Sequence
+
+from lab_link import PatchEvent, SnapshotEvent
 
 from dbay.modules.dac4d import dac4D
 from dbay.modules.dac16d import dac16D
@@ -233,6 +235,55 @@ class DBayClient:
         if not self._sync.connected:
             self._sync.connect()
         return self._sync.snapshot()
+
+    @property
+    def state_version(self) -> int:
+        """Version of the GUI server state this client currently holds.
+
+        Bumped on every applied patch. Consumers that derive a typed view from
+        :meth:`snapshot` can cache it and revalidate only when this changes.
+        """
+        if self.mode != "gui":
+            raise ValueError("state_version is only valid in gui mode")
+        if self._sync is None:
+            raise DBayError("GUI sync not initialized")
+        return self._sync.version
+
+    def on_patch(self, callback: Callable[[PatchEvent], Any]) -> Callable[[], None]:
+        """Subscribe to state patches broadcast by the GUI server (gui mode).
+
+        The snapshot is already updated when the callback runs, so a consumer
+        keeping a derived view in sync can simply re-read :meth:`snapshot`
+        rather than applying patch operations itself. Use
+        ``PatchEvent.origin_client_id`` to ignore echoes of your own commands.
+
+        Connects the sync transport on demand, so this works on a client built
+        with ``load_state=False``. Returns a callable that unsubscribes.
+        """
+        return self._sync_for_subscription().on_patch(callback)
+
+    def on_snapshot(
+        self, callback: Callable[[SnapshotEvent], Any]
+    ) -> Callable[[], None]:
+        """Subscribe to full-state snapshots from the GUI server (gui mode).
+
+        Fired on initial sync and on any resync. A consumer should treat this as
+        "rebuild from scratch" — patches alone cannot repair a missed update.
+
+        Connects the sync transport on demand. Returns a callable that
+        unsubscribes.
+        """
+        return self._sync_for_subscription().on_snapshot(callback)
+
+    def _sync_for_subscription(self) -> GuiSync:
+        """Validated, connected sync transport for the subscription helpers."""
+        if self.mode != "gui":
+            raise ValueError("subscriptions are only valid in gui mode")
+        if self._sync is None:
+            raise DBayError("GUI sync not initialized")
+        if not self._sync.connected:
+            self._sync.connect()
+        return self._sync
 
     def present_modules(self) -> List[tuple]:
         """Return ``(slot, type)`` for each module the GUI server reports.

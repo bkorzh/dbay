@@ -1,28 +1,25 @@
-build: 
-	@echo "Building frontend..."
-	cd .. && cd .. && cd frontend && npm run build && npm run move && cd .. && cd backend/backend
+# Thin aliases for the real entry points in software/gui/. Everything here
+# delegates, so build steps live in exactly one place (build.sh -> build.ts)
+# and cannot drift out of sync with this file.
 
+.PHONY: build serve build-python build-tauri build-all
+
+# Build the frontend into backend/compiled_frontend/
+build:
+	cd ../.. && ./build.sh frontend
+
+# Run the backend and the Vite dev server together (browser development)
 serve:
-	@echo "Starting server..."
-	cd .. && cd .. && cd frontend && npm run build && npm run move && cd .. && cd backend/backend && fastapi dev main.py --host 0.0.0.0
+	cd ../.. && ./dev-browser.sh
 
+# Package the backend into a standalone executable with PyInstaller
 build-python:
-	@echo "Building python..."
-	yes | pyinstaller main.spec&& cp -r dist/main/* ../../frontend/src-tauri/python_binary/
-	cp ../../frontend/src-tauri/python_binary/main ../../frontend/src-tauri/python_binary/main-aarch64-apple-darwin
+	cd ../.. && ./build.sh backend
 
-
+# Build the Tauri desktop installers (expects a packaged backend)
 build-tauri:
-	@echo "Building tauri..."
-	cd ../../frontend && npm run tauri build
+	cd ../.. && ./build.sh tauri
 
-
-
-
-# steps
-# go into frontend
-# npm run build
-# npm run move   # that moves the built files to /compiled_frontend/
-# 
-
-# run "pyinstaller main.spec"
+# Frontend, backend, and installers in sequence
+build-all:
+	cd ../.. && ./build.sh all

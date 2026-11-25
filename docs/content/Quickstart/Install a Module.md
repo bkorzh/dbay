@@ -59,7 +59,7 @@ Now, you can send module-specific commands via serial communication.
 
 ## Option 2: In the Frontend
 ### With the development environment
-If you have the development environment set up, start the UI by following [[Development Setup#Browser Development]]. 
+If you have the development environment set up, start the UI by following [[Start Here]]. 
 If you have the DBay software from https://github.com/bkorzh/dbay/releases installed, you can start the GUI this way
 
 

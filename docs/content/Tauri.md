@@ -28,7 +28,7 @@ plugins: [svelte()],
 
 I eventually figured this out after (a) turning on the dev tools feature for tauri builds. This showed me that there seemed to be MIME type errors for javascript and css. It turns out the directory just wasn't working for the javascript and css. The tauri webview couldn't find them. It found them when I removed the `compiled_frontend` portion of the address. Huh. 
 
-2. Inside the `api.ts` file, I did some checks to get the fastapi-served (for web browser access) and tauri-served versions of the app to behave the same. 
+2. Inside the `api.ts` file, I did some checks to get the backend-served (for web browser access) and tauri-served versions of the app to behave the same. 
 ```ts
 const baseUrl = "http://127.0.0.1:8000";
 

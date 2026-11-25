@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Callable
 from urllib.parse import urlsplit, urlunsplit
 
-from lab_link import LabLinkClient
+from lab_link import LabLinkClient, PatchEvent, SnapshotEvent
+
+Unsubscribe = Callable[[], None]
 
 
 class GuiSync:
@@ -29,6 +31,16 @@ class GuiSync:
     def connected(self) -> bool:
         return self._client.connected
 
+    @property
+    def version(self) -> int:
+        """Version of the state the client currently holds.
+
+        Bumped by the server on every applied patch, so a consumer can cache
+        derived views and recompute only when this changes, and can detect a
+        dropped update by comparing against the version it last saw.
+        """
+        return self._client.version
+
     def connect(self) -> GuiSync:
         self._client.connect()
         return self
@@ -48,6 +60,28 @@ class GuiSync:
         if not isinstance(module, dict):
             raise TypeError(f"Module state for slot {slot} is not an object")
         return module
+
+    def on_patch(self, callback: Callable[[PatchEvent], Any]) -> Unsubscribe:
+        """Register ``callback`` for every state patch the server broadcasts.
+
+        The client applies each patch to its own snapshot before the callback
+        runs, so ``snapshot()`` is already current when the callback fires and
+        consumers never apply patch operations themselves.
+
+        ``PatchEvent.origin_client_id`` identifies the client whose command
+        produced the change, so a consumer can ignore echoes of its own writes.
+        Returns a callable that unregisters the callback.
+        """
+        return self._client.on_patch(callback)
+
+    def on_snapshot(self, callback: Callable[[SnapshotEvent], Any]) -> Unsubscribe:
+        """Register ``callback`` for full-state snapshots.
+
+        Fired on the initial sync and on any resync, so a consumer can rebuild
+        derived state that a patch stream alone would leave stale.
+        Returns a callable that unregisters the callback.
+        """
+        return self._client.on_snapshot(callback)
 
     def send_command(self, command: str, params: dict[str, Any]) -> Any:
         ack = self._client.send_command(command, params)

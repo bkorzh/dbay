@@ -1,35 +1,24 @@
-from pydantic import BaseModel
-from lab_link import ReactiveModel
+"""Voltage-source addon — re-exported from the shared client package.
 
+Both the state models and the command payloads live in :mod:`dbay.addons.vsource`
+so the GUI backend and any client validate against one definition. They are
+re-exported *here* rather than imported directly at each call site because
+`pydantic_to_typescript.py` generates the frontend's
+`lib/addons/vsource/interface.ts` from this module: the frontend imports
+`ChSourceState`, `IVsourceAddon`, `VsourceChange` and `SharedVsourceChange`
+from it by name.
+"""
 
+from dbay.addons.vsource import (
+    ChSourceState,
+    IVsourceAddon,
+    SharedVsourceChange,
+    VsourceChange,
+)
 
-# STATE ##################################
-class ChSourceState(ReactiveModel):
-    index: int
-    bias_voltage: float
-    activated: bool
-    heading_text: str
-    measuring: bool
-
-
-class IVsourceAddon(ReactiveModel):
-    channels: list[ChSourceState]
-
-
-
-# MESSAGE ##################################
-class VsourceChange(BaseModel):
-    module_index: int
-    index: int
-    bias_voltage: float
-    activated: bool
-    heading_text: str
-    measuring: bool
-
-class SharedVsourceChange(BaseModel):
-    change: VsourceChange # the change to apply
-    link_enabled: list[bool] # the channels to apply the change to
-
-
-
-
+__all__ = [
+    "ChSourceState",
+    "IVsourceAddon",
+    "VsourceChange",
+    "SharedVsourceChange",
+]

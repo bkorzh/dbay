@@ -19,6 +19,7 @@ export interface JsonModule {
   vsource?: IVsourceAddon;
   vsense?: IVsenseAddon;
   polling?: AdcPollingState;
+  trim_voltage?: number; // demoD only — see the Adding a Module guide
 }
 
 export interface AdcPollingState {

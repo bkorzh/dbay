@@ -12,6 +12,10 @@ import { empty } from "./empty_data.svelte";
 import { default as dac16D_component } from "./dac16D.svelte";
 import { dac16D } from "./dac16D_data.svelte";
 
+// demoD is the worked example from the Adding a Module guide, not real hardware.
+import { default as demoD_component } from "./demoD.svelte";
+import { demoD } from "./demoD_data.svelte";
+
 import type { IModule } from "../../state/systemState.svelte";
 // import { SvelteComponent } from 'svelte'
 import type { CoreModule } from "../../state/systemState.svelte";
@@ -25,17 +29,12 @@ import { system_state } from "../../state/systemState.svelte";
 import type { JsonModule } from "../../state/systemState.svelte";
 import { syncRuntime } from "../../sync/runtime.svelte";
 import { joinJsonPointer } from "lab-link/core";
+import { MODULE_CATALOG, moduleCatalogEntry } from "./module_catalog";
 
 
 interface ModuleProps {
   module_index: number;
 }
-
-const components: any = {
-  dac4D: dac4D_component,
-  adc4D: adc4D_component,
-  dac16D: dac16D_component,
-};
 
 // Make ComponentHolder generic to accept props type with proper constraint
 interface ComponentHolder<P extends Record<string, any> = {}> {
@@ -49,36 +48,6 @@ interface ComponentCollection {
   [key: string]: ComponentHolder<ModuleProps>;
 }
 
-// Now the constant is properly typed with the required props
-const cc: ComponentCollection = {
-  dac4D: {
-    name: "dac4D",
-    component: dac4D_component,
-    module_index: 0,
-  },
-  adc4D: {
-    name: "adc4D",
-    component: adc4D_component,
-    module_index: 0,
-  },
-  dac16D: {
-    name: "dac16D",
-    component: dac16D_component,
-    module_index: 0,
-  }
-};
-
-
-const modules: ModulesDict = {
-  empty,
-  dac4D,
-  adc4D,
-  // dac4D_old,
-  dac16D,
-};
-
-// interface IModuleUpdater extends IModule, Updater {}
-
 type ReplaceModule = (data: JsonModule) => void;
 type Constructor<T> = new (
   data: any,
@@ -90,6 +59,82 @@ type Constructor<T> = new (
 interface ModulesDict {
   [key: string]: Constructor<IModule>;
 }
+
+/**
+ * The code bound to each module type: the class that mirrors its state, and the
+ * component that draws it. Presentation (title, icon, adder blurb) lives in
+ * `module_catalog.ts`; these two lists must cover the same types, which
+ * `assertRegistryMatchesCatalog` and `module_registry.test.ts` enforce.
+ *
+ * A type with no component is never drawn — `empty` is the only one.
+ */
+export interface ModuleBinding {
+  data: Constructor<IModule>;
+  component?: Component<ModuleProps>;
+}
+
+export const MODULE_BINDINGS: Record<string, ModuleBinding> = {
+  empty: { data: empty },
+  dac4D: { data: dac4D, component: dac4D_component },
+  adc4D: { data: adc4D, component: adc4D_component },
+  dac16D: { data: dac16D, component: dac16D_component },
+  // demoD is the worked example from the Adding a Module guide, not real hardware.
+  demoD: { data: demoD, component: demoD_component },
+};
+
+/**
+ * Fails loudly when the catalog and the bindings disagree — the drift this
+ * split is meant to prevent. Called at module load so a mistake shows up the
+ * first time the app runs, not when a user picks the broken entry.
+ */
+export function assertRegistryMatchesCatalog(): string[] {
+  const problems: string[] = [];
+  const bound = new Set(Object.keys(MODULE_BINDINGS));
+
+  for (const entry of MODULE_CATALOG) {
+    if (!bound.has(entry.type)) {
+      problems.push(
+        `"${entry.type}" is in module_catalog.ts but has no entry in MODULE_BINDINGS, ` +
+          `so the app cannot construct or draw it.`,
+      );
+      continue;
+    }
+    if (entry.addable !== false && !MODULE_BINDINGS[entry.type].component) {
+      problems.push(
+        `"${entry.type}" can be added to a slot but has no component to draw it.`,
+      );
+    }
+  }
+
+  for (const type of bound) {
+    if (!moduleCatalogEntry(type)) {
+      problems.push(
+        `"${type}" is in MODULE_BINDINGS but missing from module_catalog.ts, ` +
+          `so it has no title, icon, or entry in the module adder.`,
+      );
+    }
+  }
+
+  return problems;
+}
+
+for (const problem of assertRegistryMatchesCatalog()) {
+  console.error(`[module registry] ${problem}`);
+}
+
+// Derived from the two lists above, so adding a module never means editing these.
+const modules: ModulesDict = Object.fromEntries(
+  Object.entries(MODULE_BINDINGS).map(([type, binding]) => [type, binding.data]),
+);
+
+const cc: ComponentCollection = Object.fromEntries(
+  Object.entries(MODULE_BINDINGS)
+    .filter(([, binding]) => binding.component)
+    .map(([type, binding]) => [
+      type,
+      { name: type, component: binding.component!, module_index: 0 },
+    ]),
+);
 
 export class ComponentManager {
   public component_array: Array<ComponentHolder<ModuleProps>> = $state([]);

@@ -20,23 +20,30 @@ if [ "$#" -ne 1 ]; then
   exit 1
 fi
 
-cd "$SCRIPT_DIR/frontend"
-
 case "$1" in
   frontend)
-    exec bun run buildfrontend
+    script=buildfrontend
     ;;
   backend)
-    exec bun run buildbackend
+    script=buildbackend
     ;;
   tauri)
-    exec bun run buildtauri
+    script=buildtauri
     ;;
   all)
-    exec bun run buildall
+    script=buildall
     ;;
   *)
     usage
     exit 1
     ;;
 esac
+
+cd "$SCRIPT_DIR/frontend"
+
+# node_modules is gitignored, so a `git pull` that adds or bumps a dependency
+# leaves a stale install behind. Installing here keeps it in sync (it's a no-op
+# when nothing changed) instead of failing later with an unresolved import.
+bun install
+
+exec bun run "$script"

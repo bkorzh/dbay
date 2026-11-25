@@ -1,6 +1,4 @@
-from backend.module import IModule, Core
-from backend.addons.vsource import IVsourceAddon, ChSourceState
-from typing import Literal
+from dbay.state import Core, Dac4DState, IVsourceAddon, ChSourceState
 from backend.udp_control import Controller, ParentUDP
 from backend.dbay_bridge import dbay_client
 from dbay.modules.dac4d import dac4D as ClientDac4D
@@ -10,16 +8,9 @@ logger = get_logger(__name__)
 
 
 
-class dac4D(IModule):
-    """Backend state model for dac4D module (tracks GUI state)."""
-    module_type: Literal["dac4D"] = "dac4D"
-    core: Core
-    vsource: IVsourceAddon
-
-
 def create_prototype(slot: int):
     channels = [ChSourceState(index=i, bias_voltage=0, activated=False, heading_text="", measuring=False) for i in range(4)]
-    return dac4D(core=Core(slot=slot, type="dac4D", name="my dac4D module"), vsource=IVsourceAddon(channels=channels))
+    return Dac4DState(core=Core(slot=slot, type="dac4D", name="my dac4D module"), vsource=IVsourceAddon(channels=channels))
 
 
 

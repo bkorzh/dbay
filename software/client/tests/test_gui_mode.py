@@ -127,3 +127,71 @@ def test_snapshot_rejects_direct_mode():
 
     with pytest.raises(ValueError):
         client.snapshot()
+
+
+class FakeSubscribableSync:
+    """GuiSync stand-in that records subscriptions and connects on demand."""
+
+    def __init__(self, *args, **kwargs):
+        self.connected = False
+        self.connect_calls = 0
+        self.patch_callbacks = []
+        self.snapshot_callbacks = []
+        self.version = 7
+
+    def connect(self):
+        self.connected = True
+        self.connect_calls += 1
+        return self
+
+    def close(self):
+        self.connected = False
+
+    def on_patch(self, callback):
+        self.patch_callbacks.append(callback)
+        return lambda: self.patch_callbacks.remove(callback)
+
+    def on_snapshot(self, callback):
+        self.snapshot_callbacks.append(callback)
+        return lambda: self.snapshot_callbacks.remove(callback)
+
+
+def test_subscriptions_connect_lazily_and_unsubscribe(monkeypatch):
+    """on_patch/on_snapshot work with load_state=False and return an unsubscribe."""
+    monkeypatch.setattr("dbay.client.GuiSync", FakeSubscribableSync)
+    client = DBayClient(mode="gui", server_address="127.0.0.1", load_state=False)
+    assert client._sync.connected is False
+
+    seen = []
+    unsubscribe = client.on_patch(seen.append)
+    assert client._sync.connected is True
+    assert client._sync.connect_calls == 1
+    assert client._sync.patch_callbacks == [seen.append]
+
+    # A second subscription reuses the already-connected transport.
+    client.on_snapshot(seen.append)
+    assert client._sync.connect_calls == 1
+    assert client._sync.snapshot_callbacks == [seen.append]
+
+    unsubscribe()
+    assert client._sync.patch_callbacks == []
+
+
+def test_state_version_reports_sync_version(monkeypatch):
+    monkeypatch.setattr("dbay.client.GuiSync", FakeSubscribableSync)
+    client = DBayClient(mode="gui", server_address="127.0.0.1", load_state=False)
+    assert client.state_version == 7
+
+
+def test_subscriptions_and_state_version_reject_direct_mode():
+    import pytest
+
+    client = DBayClient(
+        mode="direct", direct_transport="udp", direct_host="127.0.0.1", direct_port=8880
+    )
+    with pytest.raises(ValueError):
+        client.on_patch(lambda event: None)
+    with pytest.raises(ValueError):
+        client.on_snapshot(lambda event: None)
+    with pytest.raises(ValueError):
+        client.state_version

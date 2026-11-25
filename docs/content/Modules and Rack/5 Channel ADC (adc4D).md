@@ -143,9 +143,11 @@ The ADC4D module integrates seamlessly with the D-Bay module system:
 The ADC4D module follows the standard D-Bay module architecture:
 
 1. **Frontend**: Svelte components for UI
-2. **Data Layer**: TypeScript classes for state management
-3. **API Layer**: FastAPI endpoints for backend communication
+2. **Data Layer**: TypeScript classes mirroring the backend's shared state
+3. **Sync Layer**: lab-link state patches and commands over the backend WebSocket
 4. **Hardware Layer**: Firmware drivers for ADC control
+
+See [[Adding a Module]] for the concrete steps and files involved.
 
 ### Testing
 

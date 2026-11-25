@@ -16,7 +16,9 @@ const { values, positionals } = parseArgs({
 
 
 const current_directory = import.meta.dir;
-const backend_directory = path.join(current_directory, "../backend/backend");
+// The uv project root, not the inner package directory: `backend.main` only
+// imports when the project root is the working directory.
+const backend_directory = path.join(current_directory, "../backend");
 
 // Function to start a process and pipe its output to the current terminal
 function startProcess(command: string, args: string[], options: { cwd?: string }) {
@@ -32,9 +34,10 @@ function startProcess(command: string, args: string[], options: { cwd?: string }
 }
 
 
-// Start the backend dev server
-// uv run fastapi dev main.py --port 8345 --host 0.0.0.0
-startProcess("uv", ["run", "fastapi", "dev", "main.py", "--port", "8345", "--host", "0.0.0.0"], { cwd: backend_directory });
+// Start the backend dev server. The backend is a Starlette app served by
+// uvicorn; --reload-dir keeps the file watcher off .venv.
+// uv run uvicorn backend.main:app --port 8345 --host 0.0.0.0 --reload --reload-dir backend
+startProcess("uv", ["run", "uvicorn", "backend.main:app", "--port", "8345", "--host", "0.0.0.0", "--reload", "--reload-dir", "backend"], { cwd: backend_directory });
 
 
 // wait for 0.3 second

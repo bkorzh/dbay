@@ -8,7 +8,6 @@
   import { VisibleState } from "../buttons/module_chevron";
   import ModuleHeading from "../ModuleHeading.svelte";
   import MenuButton from "../buttons/MenuButton.svelte";
-  const adc4D_icon = "/assets/adc4D_icon.svg";
 
   interface MyProps {
     module_index: number;
@@ -116,9 +115,7 @@
     {visible}
     {rotateState}
     {module_index}
-    name={"Voltage Sensor"}
     {menu_buttons}
-    icon_name={adc4D_icon}
   ></ModuleHeading>
 
   <div class="body">

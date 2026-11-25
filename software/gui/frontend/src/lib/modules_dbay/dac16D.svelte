@@ -28,7 +28,6 @@
   import PlusMinus from "../PlusMinus.svelte";
   import NumberedHoveredDotMenu from "../buttons/NumberedHoveredDotMenu.svelte";
   import ModuleHeading from "../ModuleHeading.svelte";
-  const dac16D_icon = "/assets/dac16D_icon.svg";
 
   interface MyProps {
     module_index: number;
@@ -198,9 +197,7 @@
     {visible}
     {rotateState}
     {module_index}
-    name={"16 Ch. Voltage Source"}
     {menu_buttons}
-    icon_name={dac16D_icon}
   ></ModuleHeading>
 
   {#if visible}

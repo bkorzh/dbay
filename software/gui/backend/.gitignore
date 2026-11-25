@@ -4,4 +4,7 @@ dist/
 
 backend/file.log
 
-backend/compiled_frontend/assets/
+# The whole compiled frontend is a build artifact: `build.sh frontend` writes it,
+# and index.html references content-hashed asset filenames, so a committed copy
+# goes stale on any code change and dirties the tree after every build.
+backend/compiled_frontend/
